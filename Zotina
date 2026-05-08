@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Minha Rotina</title>
+    <!-- Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-color: #FFFFFF;
+            --card-bg: #F8F9FA;
+            --accent: #475569;
+            --text-main: #0F172A;
+            --text-muted: #94A3B8;
+            --active: #000000;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: var(--bg-color); 
+            color: var(--text-main);
+            margin: 0; padding: 0; padding-bottom: 80px;
+        }
+
+        /* Header e Tabs */
+        header { padding: 20px; text-align: left; border-bottom: 1px solid #eee; }
+        .tab-content { padding: 15px; display: none; }
+        .tab-content.active { display: block; }
+
+        /* Barra de Navegação Inferior */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: var(--card-bg); border-top: 1px solid #e2e8f0;
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 1000;
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; 
+            cursor: pointer; color: var(--text-muted); position: relative;
+        }
+        .nav-item.active { color: var(--active); }
+        .nav-item.active::after {
+            content: ''; width: 4px; height: 4px; background: black;
+            border-radius: 50%; position: absolute; bottom: -8px;
+        }
+
+        /* Calendário */
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .cal-day { padding: 10px 0; font-size: 0.9rem; border-radius: 8px; position: relative; cursor: pointer; }
+        .cal-day.today { font-weight: bold; text-decoration: underline; }
+        .cal-day.has-event::after {
+            content: ''; width: 4px; height: 4px; background: var(--accent);
+            border-radius: 50%; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .cal-day.selected { background: var(--accent); color: white; }
+
+        /* Cards e Botões */
+        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .btn-add { 
+            width: 100%; padding: 12px; border: 2px dashed #475569; 
+            background: transparent; color: #475569; border-radius: 8px; 
+            font-weight: bold; margin-bottom: 15px; cursor: pointer;
+        }
+        .btn-save { background: #0F172A !important; color: white !important; border: none; padding: 12px; border-radius: 8px; width: 100%; }
+
+        /* Gráficos */
+        .chart-container { height: 200px; margin-top: 10px; }
+        
+        /* Modal */
+        #modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .modal-body { background: white; width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2 id="view-title">Calendário</h2>
+    </header>
+
+    <!-- VIEWS -->
+    <div id="calendar" class="tab-content active">
+        <div class="cal-header">
+            <button onclick="changeMonth(-1)" style="background:none; border:none; color:#000"><i data-lucide="chevron-left"></i></button>
+            <h3 id="month-display">Maio 2026</h3>
+            <button onclick="changeMonth(1)" style="background:none; border:none; color:#000"><i data-lucide="chevron-right"></i></button>
+        </div>
+        <div class="cal-grid" id="calendar-days"></div>
+        <div id="day-events" style="margin-top:20px"></div>
+    </div>
+
+    <div id="workout" class="tab-content">
+        <div class="card">
+            <h3>Foco: Hipertrofia + 10km</h3>
+            <p><strong>Hoje:</strong> Musculação + 20min Corrida Z2</p>
+        </div>
+        <button class="btn-add">+ Adicionar Exercício</button>
+    </div>
+
+    <div id="diet" class="tab-content">
+        <div class="card">
+            <h3>Refeições</h3>
+            <p>Consulta Nutricionista: 12/05 às 15h</p>
+        </div>
+        <button class="btn-add">+ Registrar Refeição</button>
+    </div>
+
+    <div id="measurements" class="tab-content">
+        <div class="card">
+            <canvas id="weightChart"></canvas>
+        </div>
+        <button class="btn-add" onclick="openMeasurementModal()">+ Nova Medição</button>
+        <div id="history-list"></div>
+    </div>
+
+    <div id="tasks" class="tab-content">
+        <div id="task-list"></div>
+        <button class="btn-add">+ Nova Tarefa</button>
+    </div>
+
+    <!-- NAVEGAÇÃO -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('calendar', this)"><i data-lucide="calendar"></i></div>
+        <div class="nav-item" onclick="switchTab('workout', this)"><i data-lucide="dumbbell"></i></div>
+        <div class="nav-item" onclick="switchTab('diet', this)"><i data-lucide="apple"></i></div>
+        <div class="nav-item" onclick="switchTab('measurements', this)"><i data-lucide="scale"></i></div>
+        <div class="nav-item" onclick="switchTab('tasks', this)"><i data-lucide="check-square"></i></div>
+    </div>
+
+    <!-- MODAL MEDIÇÕES -->
+    <div id="modal">
+        <div class="modal-body">
+            <h3>Registrar Medida</h3>
+            <input type="number" id="m-weight" placeholder="Peso (kg)">
+            <input type="number" id="m-fat" placeholder="Gordura (%)">
+            <input type="number" id="m-muscle" placeholder="Músculo (%)">
+            <button class="btn-save" onclick="saveMeasurement()">Salvar</button>
+            <button onclick="closeModal()" style="width:100%; background:none; border:none; margin-top:10px; color:#475569">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // Inicialização de Ícones
+        lucide.createIcons();
+
+        // Estado do App
+        let currentMonth = new Date(2026, 4, 1); // Maio 2026
+        let measurements = JSON.parse(localStorage.getItem('measurements')) || [
+            { date: '2026-05-01', weight: 81, fat: 22, muscle: 38 },
+            { date: '2026-05-05', weight: 80.5, fat: null, muscle: 38.2 }
+        ];
+
+        // Navegação de Abas
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+            
+            const titles = { 'calendar': 'Calendário', 'workout': 'Treino', 'diet': 'Dieta', 'measurements': 'Progresso', 'tasks': 'Tarefas' };
+            document.getElementById('view-title').innerText = titles[tabId];
+            if(tabId === 'measurements') renderCharts();
+        }
+
+        // Lógica do Calendário
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-days');
+            const display = document.getElementById('month-display');
+            grid.innerHTML = '';
+            
+            display.innerText = currentMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
+            const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
+
+            for(let i = 0; i < firstDay; i++) grid.innerHTML += '<div></div>';
+            
+            for(let d = 1; d <= daysInMonth; d++) {
+                const isEvent = (d === 12); // Exemplo: Nutricionista
+                grid.innerHTML += `<div class="cal-day ${isEvent ? 'has-event' : ''}" onclick="showDay(${d})">${d}</div>`;
+            }
+        }
+
+        function changeMonth(step) {
+            currentMonth.setMonth(currentMonth.getMonth() + step);
+            renderCalendar();
+        }
+
+        // Gráficos (Medições)
+        let chartInstance = null;
+        function renderCharts() {
+            const ctx = document.getElementById('weightChart').getContext('2d');
+            if(chartInstance) chartInstance.destroy();
+
+            const labels = measurements.map(m => m.date);
+            const dataWeight = measurements.map(m => m.weight);
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Peso (kg)',
+                        data: dataWeight,
+                        borderColor: '#475569',
+                        tension: 0.3,
+                        spanGaps: true, // A linha continua mesmo se houver null
+                        pointRadius: dataWeight.map(v => v === null ? 0 : 5) // Remove a bolinha se nulo
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // Funções de Modal
+        function openMeasurementModal() { document.getElementById('modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        
+        function saveMeasurement() {
+            const weight = document.getElementById('m-weight').value;
+            if(weight) {
+                measurements.push({
+                    date: new Date().toISOString().split('T')[0],
+                    weight: parseFloat(weight),
+                    fat: parseFloat(document.getElementById('m-fat').value) || null,
+                    muscle: parseFloat(document.getElementById('m-muscle').value) || null
+                });
+                localStorage.setItem('measurements', JSON.stringify(measurements));
+                renderCharts();
+                closeModal();
+            }
+        }
+
+        // Inicializar
+        renderCalendar();
+    </script>
+</body>
+</html>
