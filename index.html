@@ -1,246 +1,474 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Minha Rotina</title>
-    <!-- Chart.js para os gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-            --bg-color: #FFFFFF;
-            --card-bg: #F8F9FA;
-            --accent: #475569;
-            --text-main: #0F172A;
-            --text-muted: #94A3B8;
-            --active: #000000;
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background: var(--bg-color); 
-            color: var(--text-main);
-            margin: 0; padding: 0; padding-bottom: 80px;
-        }
-
-        /* Header e Tabs */
-        header { padding: 20px; text-align: left; border-bottom: 1px solid #eee; }
-        .tab-content { padding: 15px; display: none; }
-        .tab-content.active { display: block; }
-
-        /* Barra de Navegação Inferior */
-        .nav-bar {
-            position: fixed; bottom: 0; width: 100%; height: 70px;
-            background: var(--card-bg); border-top: 1px solid #e2e8f0;
-            display: flex; justify-content: space-around; align-items: center;
-            z-index: 1000;
-        }
-        .nav-item { 
-            display: flex; flex-direction: column; align-items: center; 
-            cursor: pointer; color: var(--text-muted); position: relative;
-        }
-        .nav-item.active { color: var(--active); }
-        .nav-item.active::after {
-            content: ''; width: 4px; height: 4px; background: black;
-            border-radius: 50%; position: absolute; bottom: -8px;
-        }
-
-        /* Calendário */
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-        .cal-day { padding: 10px 0; font-size: 0.9rem; border-radius: 8px; position: relative; cursor: pointer; }
-        .cal-day.today { font-weight: bold; text-decoration: underline; }
-        .cal-day.has-event::after {
-            content: ''; width: 4px; height: 4px; background: var(--accent);
-            border-radius: 50%; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
-        }
-        .cal-day.selected { background: var(--accent); color: white; }
-
-        /* Cards e Botões */
-        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-        .btn-add { 
-            width: 100%; padding: 12px; border: 2px dashed #475569; 
-            background: transparent; color: #475569; border-radius: 8px; 
-            font-weight: bold; margin-bottom: 15px; cursor: pointer;
-        }
-        .btn-save { background: #0F172A !important; color: white !important; border: none; padding: 12px; border-radius: 8px; width: 100%; }
-
-        /* Gráficos */
-        .chart-container { height: 200px; margin-top: 10px; }
-        
-        /* Modal */
-        #modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 2000;
-        }
-        .modal-body { background: white; width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Minha Rotina">
+  <meta name="theme-color" content="#FFFFFF">
+  <title>Minha Rotina</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#fff;color:#0F172A;-webkit-font-smoothing:antialiased;}
+    .wrap{max-width:400px;margin:0 auto;background:#fff;min-height:100vh;}
+    .header{padding:18px 16px 10px;border-bottom:1px solid #CBD5E1;}
+    .greeting{font-size:19px;font-weight:500;color:#000;}
+    .subdate{font-size:12px;color:#64748B;margin-top:2px;}
+    .nav{display:flex;background:#F8F9FA;border-bottom:1px solid #CBD5E1;position:sticky;top:0;z-index:10;}
+    .tab{flex:1;padding:10px 0 8px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+    .tab i{font-size:20px;color:#94A3B8;}
+    .tab-dot{width:4px;height:4px;border-radius:50%;background:transparent;}
+    .tab.active i{color:#000!important;}
+    .tab.active .tab-dot{background:#000;}
+    .sec{display:none;padding:16px;}
+    .sec.active{display:block;}
+    .card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+    .section-label{font-size:11px;font-weight:500;color:#64748B;letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;}
+    .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+    .stat-card{background:#F8F9FA;border:1px solid #CBD5E1;border-radius:10px;padding:12px;}
+    .stat-label{font-size:11px;color:#64748B;}
+    .stat-val{font-size:21px;font-weight:500;color:#000;margin-top:2px;}
+    .stat-sub{font-size:11px;color:#64748B;margin-top:1px;}
+    .prog-bar{height:5px;background:#F1F5F9;border-radius:99px;overflow:hidden;margin-top:7px;}
+    .prog-fill{height:100%;border-radius:99px;}
+    .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:500;}
+    .b-green{background:#F0FDF4;color:#16A34A;}
+    .b-blue{background:#EFF6FF;color:#2563EB;}
+    .b-amber{background:#FFFBEB;color:#D97706;}
+    .b-coral{background:#FEF2F2;color:#DC2626;}
+    .b-gray{background:#F1F5F9;color:#334155;}
+    .ex-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #CBD5E1;cursor:pointer;}
+    .ex-row:last-child{border-bottom:none;}
+    .ex-name{font-size:14px;font-weight:500;color:#000;}
+    .ex-sub{font-size:12px;color:#64748B;margin-top:1px;}
+    .meal-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #CBD5E1;}
+    .meal-row:last-child{border-bottom:none;}
+    .ev-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #CBD5E1;align-items:flex-start;}
+    .ev-row:last-child{border-bottom:none;}
+    .ev-time{font-size:12px;color:#64748B;min-width:42px;padding-top:2px;}
+    .ev-title{font-size:14px;font-weight:500;color:#000;}
+    .ev-sub{font-size:12px;color:#64748B;margin-top:1px;}
+    .todo-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #CBD5E1;}
+    .todo-row:last-child{border-bottom:none;}
+    .todo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .todo-row input[type=checkbox]{width:16px;height:16px;accent-color:#000;cursor:pointer;}
+    .todo-row label{font-size:14px;color:#000;cursor:pointer;flex:1;}
+    .todo-row label.done{text-decoration:line-through;color:#94A3B8;}
+    .add-btn{width:100%;padding:10px;border-radius:6px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;background:#fff!important;color:#334155!important;border:1.5px dashed #475569!important;}
+    .add-btn:hover{background:#F8F9FA!important;}
+    .add-btn i{color:#334155!important;}
+    .cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .cal-nav{background:#F1F5F9;border:1px solid #94A3B8;border-radius:6px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .cal-nav i{font-size:18px;color:#000!important;}
+    .cal-nav:hover{background:#E2E8F0;}
+    .cal-month{font-size:14px;font-weight:500;color:#000;}
+    .cal-table{width:100%;border-collapse:collapse;}
+    .cal-table th{font-size:11px;color:#64748B;font-weight:500;text-align:center;padding:0 0 8px;}
+    .cal-cell{text-align:center;padding:2px;vertical-align:top;width:14.28%;}
+    .cal-inner{display:flex;flex-direction:column;align-items:center;padding:3px 1px;cursor:pointer;border-radius:6px;min-height:42px;}
+    .cal-inner:hover{background:#F1F5F9;}
+    .cal-num{font-size:13px;color:#000;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin-bottom:2px;}
+    .cal-num.today{background:#000;color:#fff;font-weight:500;}
+    .cal-num.selected{background:#F1F5F9;color:#000;font-weight:500;outline:1px solid #000;}
+    .cal-num.other{color:#94A3B8;}
+    .cal-dots{display:flex;gap:2px;justify-content:center;}
+    .cal-dot{width:4px;height:4px;border-radius:50%;}
+    .cal-detail-lbl{font-size:13px;font-weight:500;color:#334155;margin:16px 0 10px;}
+    .cal-ev-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #CBD5E1;cursor:pointer;border-radius:4px;transition:background 0.1s;}
+    .cal-ev-item:last-child{border-bottom:none;}
+    .cal-ev-item:hover{background:#F8F9FA;}
+    .cal-ev-bar{width:3px;border-radius:99px;min-height:36px;flex-shrink:0;}
+    .cal-ev-time{font-size:11px;color:#64748B;}
+    .cal-ev-title{font-size:14px;font-weight:500;color:#000;}
+    .cal-ev-sub{font-size:12px;color:#64748B;}
+    .cal-empty{font-size:13px;color:#64748B;text-align:center;padding:28px 0;}
+    .med-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+    .chart-wrap{width:100%;height:140px;position:relative;margin:8px 0 4px;}
+    .med-latest{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+    .med-card{background:#F8F9FA;border:1px solid #CBD5E1;border-radius:8px;padding:10px;text-align:center;}
+    .med-card-val{font-size:18px;font-weight:500;}
+    .med-card-lbl{font-size:10px;color:#64748B;margin-top:2px;}
+    .med-card-delta{font-size:10px;margin-top:2px;}
+    .delta-good{color:#16A34A;}
+    .delta-bad{color:#DC2626;}
+    .hist-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #F1F5F9;}
+    .hist-row:last-child{border-bottom:none;}
+    .hist-date{font-size:12px;color:#64748B;min-width:52px;}
+    .hist-vals{flex:1;display:flex;gap:8px;flex-wrap:wrap;}
+    .hist-val{font-size:12px;}
+    .hist-actions{display:flex;gap:4px;}
+    .hist-btn{width:28px;height:28px;border-radius:6px;border:1px solid #CBD5E1;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .hist-btn i{font-size:14px;}
+    .hist-btn.edit-btn{color:#2563EB!important;border-color:#BFDBFE!important;}
+    .hist-btn.del-btn{color:#DC2626!important;border-color:#FECACA!important;}
+    .hist-btn.edit-btn:hover{background:#EFF6FF!important;}
+    .hist-btn.del-btn:hover{background:#FEF2F2!important;}
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center;}
+    .modal-bg.open{display:flex;}
+    .modal{background:#fff;border-radius:10px;padding:20px;width:calc(100% - 32px);max-width:360px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);}
+    .modal h3{font-size:15px;font-weight:500;color:#000;margin-bottom:6px;}
+    .modal-hint{font-size:12px;color:#64748B;margin-bottom:14px;line-height:1.5;}
+    .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+    .modal-field label{font-size:11px;color:#64748B;display:block;margin-bottom:4px;}
+    .modal-field input{width:100%;border:1px solid #CBD5E1;border-radius:6px;padding:8px 10px;font-size:14px;color:#000;background:#fff;}
+    .modal-field input:focus{outline:none;border-color:#000;}
+    .modal-btns{display:flex;gap:8px;}
+    .btn-save{flex:1;padding:10px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;background:#0F172A!important;color:#ffffff!important;border:none!important;}
+    .btn-cancel{flex:1;padding:10px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;background:#ffffff!important;color:#0F172A!important;border:1.5px solid #475569!important;}
+    .btn-save:hover{background:#334155!important;}
+    .btn-cancel:hover{background:#F1F5F9!important;}
+    .treino-day{margin-bottom:14px;}
+    .treino-day-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+    .treino-day-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;}
+    .treino-day-title{font-size:14px;font-weight:500;color:#000;}
+    .treino-ex{padding:8px 0;border-bottom:1px solid #CBD5E1;display:flex;justify-content:space-between;align-items:center;}
+    .treino-ex:last-child{border-bottom:none;}
+    .treino-ex-name{font-size:13px;color:#000;}
+    .treino-ex-detail{font-size:12px;color:#64748B;}
+    .treino-tip{background:#F8F9FA;border-left:3px solid #000;border-radius:0 6px 6px 0;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#334155;line-height:1.5;}
+  </style>
 </head>
 <body>
-
-    <header>
-        <h2 id="view-title">Calendário</h2>
-    </header>
-
-    <!-- VIEWS -->
-    <div id="calendar" class="tab-content active">
-        <div class="cal-header">
-            <button onclick="changeMonth(-1)" style="background:none; border:none; color:#000"><i data-lucide="chevron-left"></i></button>
-            <h3 id="month-display">Maio 2026</h3>
-            <button onclick="changeMonth(1)" style="background:none; border:none; color:#000"><i data-lucide="chevron-right"></i></button>
-        </div>
-        <div class="cal-grid" id="calendar-days"></div>
-        <div id="day-events" style="margin-top:20px"></div>
+<div class="wrap">
+  <div class="header">
+    <div class="greeting" id="greeting"></div>
+    <div class="subdate" id="subdate"></div>
+  </div>
+  <div class="nav">
+    <button class="tab active" onclick="switchTab('calendario')" id="tab-calendario" aria-label="Calendário"><i class="ti ti-calendar-month"></i><span class="tab-dot"></span></button>
+    <button class="tab" onclick="switchTab('treino')" id="tab-treino" aria-label="Treino"><i class="ti ti-barbell"></i><span class="tab-dot"></span></button>
+    <button class="tab" onclick="switchTab('dieta')" id="tab-dieta" aria-label="Dieta"><i class="ti ti-salad"></i><span class="tab-dot"></span></button>
+    <button class="tab" onclick="switchTab('agenda')" id="tab-agenda" aria-label="Agenda"><i class="ti ti-calendar-event"></i><span class="tab-dot"></span></button>
+    <button class="tab" onclick="switchTab('medicoes')" id="tab-medicoes" aria-label="Medições"><i class="ti ti-scale"></i><span class="tab-dot"></span></button>
+    <button class="tab" onclick="switchTab('tarefas')" id="tab-tarefas" aria-label="Tarefas"><i class="ti ti-checklist"></i><span class="tab-dot"></span></button>
+  </div>
+ 
+  <!-- CALENDÁRIO -->
+  <div class="sec active" id="sec-calendario">
+    <div class="cal-hdr">
+      <button class="cal-nav" onclick="changeMonth(-1)"><i class="ti ti-chevron-left"></i></button>
+      <span class="cal-month" id="cal-month-lbl"></span>
+      <button class="cal-nav" onclick="changeMonth(1)"><i class="ti ti-chevron-right"></i></button>
     </div>
-
-    <div id="workout" class="tab-content">
-        <div class="card">
-            <h3>Foco: Hipertrofia + 10km</h3>
-            <p><strong>Hoje:</strong> Musculação + 20min Corrida Z2</p>
-        </div>
-        <button class="btn-add">+ Adicionar Exercício</button>
+    <div class="card" style="padding:12px;">
+      <table class="cal-table">
+        <thead><tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th></tr></thead>
+        <tbody id="cal-body"></tbody>
+      </table>
     </div>
-
-    <div id="diet" class="tab-content">
-        <div class="card">
-            <h3>Refeições</h3>
-            <p>Consulta Nutricionista: 12/05 às 15h</p>
-        </div>
-        <button class="btn-add">+ Registrar Refeição</button>
+    <div id="cal-detail"></div>
+  </div>
+ 
+  <!-- TREINO -->
+  <div class="sec" id="sec-treino">
+    <div class="treino-tip"><strong>Objetivo:</strong> Hipertrofia + Corrida 10km (out/2026) + Emagrecimento · 6x/semana · 1h–1h30</div>
+    <p class="section-label">Semana de treino</p>
+    <div class="treino-day"><div class="treino-day-header"><span class="treino-day-badge b-blue">Seg</span><span class="treino-day-title">Peito + Tríceps</span></div><div class="card" style="padding:8px 14px;"><div class="treino-ex"><span class="treino-ex-name">Supino Reto</span><span class="treino-ex-detail">4x 10–12</span></div><div class="treino-ex"><span class="treino-ex-name">Supino Inclinado Halteres</span><span class="treino-ex-detail">3x 12</span></div><div class="treino-ex"><span class="treino-ex-name">Crucifixo Polia</span><span class="treino-ex-detail">3x 15</span></div><div class="treino-ex"><span class="treino-ex-name">Tríceps Corda</span><span class="treino-ex-detail">4x 12</span></div><div class="treino-ex"><span class="treino-ex-name">Tríceps Francês</span><span class="treino-ex-detail">3x 12</span></div><div class="treino-ex"><span class="treino-ex-name" style="color:#16A34A;">Corrida Esteira (ritmo leve)</span><span class="treino-ex-detail">20 min Z2</span></div></div></div>
+    <div class="treino-day"><div class="treino-day-header"><span class="treino-day-badge b-blue">Ter</span><span class="treino-day-title">Costas + Bíceps</span></div><div class="card" style="padding:8px 14px;"><div class="treino-ex"><span class="treino-ex-name">Puxada Frente</span><span class="treino-ex-detail">4x 10–12</span></div><div class="treino-ex"><span class="treino-ex-name">Remada Curvada</span><span class="treino-ex-detail">4x 10</span></div><div class="treino-ex"><span class="treino-ex-name">Remada Unilateral</span><span class="treino-ex-detail">3x 12</span></div><div class="treino-ex"><span class="treino-ex-name">Rosca Direta</span><span class="treino-ex-detail">3x 12</span></div><div class="treino-ex"><span class="treino-ex-name">Rosca Martelo</span><span class="treino-ex-detail">3x 12</span></div><div class="treino-ex"><span class="treino-ex-name" style="color:#16A34A;">Corrida Esteira</span><span class="treino-ex-detail">20 min Z2</span></div></div></div>
+    <div class="treino-day"><div class="treino-day-header"><span class="treino-day-badge b-amber">Qua</span><span class="treino-day-title">Corrida + Core</span></div><div class="card" style="padding:8px 14px;"><div class="treino-ex"><span class="treino-ex-name" style="color:#16A34A;">Corrida Rua ou Esteira</span><span class="treino-ex-detail">40–50 min Z2/Z3</span></div><div class="treino-ex"><span class="treino-ex-name">Prancha Frontal</span><span class="treino-ex-detail">3x 45s</span></div><div class="treino-ex"><span class="treino-ex-name">Abdominal Infra</span><span class="treino-ex-detail">3x 15</span></div><div class="treino-ex"><span class="treino-ex-name">Oblíquos</span><span class="treino-ex-detail">3x 15 cada</span></div><div class="treino-ex"><span class="treino-ex-name" style="color:#7C3AED;">Sauna</span><span class="treino-ex-detail">10–15 min</span></div></div></div>
+    <div class="treino-day"><div class="treino-day-header"><span class="treino-day-badge b-blue">Qui</span><span class="treino-day-title">Ombros + Trapézio</span></div><div class="card" style="padding:8px 14px;"><div class="treino-ex"><span class="treino-ex-name">Desenvolvimento Halteres</span><span class="treino-ex-detail">4x 10–12</span></div><div class="treino-ex"><span class="treino-ex-name">Elevação Lateral</span><span class="treino-ex-detail">4x 15</span></div><div class="treino-ex"><span class="treino-ex-name">Elevação Frontal</span><span class="treino-ex-detail">3x 12</span></div><div class="treino-ex"><span class="treino-ex-name">Encolhimento Barra</span><span class="treino-ex-detail">3x 15</span></div><div class="treino-ex"><span class="treino-ex-name" style="color:#16A34A;">Corrida Esteira</span><span class="treino-ex-detail">20 min Z2</span></div></div></div>
+    <div class="treino-day"><div class="treino-day-header"><span class="treino-day-badge b-amber">Sex</span><span class="treino-day-title">Corrida Longa + Pernas</span></div><div class="card" style="padding:8px 14px;"><div class="treino-ex"><span class="treino-ex-name" style="color:#16A34A;">Corrida Rua (longa)</span><span class="treino-ex-detail">50–60 min Z2</span></div><div class="treino-ex"><span class="treino-ex-name">Agachamento Livre</span><span class="treino-ex-detail">4x 12</span></div><div class="treino-ex"><span class="treino-ex-name">Leg Press</span><span class="treino-ex-detail">3x 15</span></div><div class="treino-ex"><span class="treino-ex-name">Panturrilha em Pé</span><span class="treino-ex-detail">4x 20</span></div></div></div>
+    <div class="treino-day"><div class="treino-day-header"><span class="treino-day-badge b-green">Sáb</span><span class="treino-day-title">Treino Livre + Sauna</span></div><div class="card" style="padding:8px 14px;"><div class="treino-ex"><span class="treino-ex-name">Reforço Musculação</span><span class="treino-ex-detail">30–40 min</span></div><div class="treino-ex"><span class="treino-ex-name" style="color:#16A34A;">Caminhada ou Trote leve</span><span class="treino-ex-detail">20–30 min</span></div><div class="treino-ex"><span class="treino-ex-name" style="color:#7C3AED;">Sauna</span><span class="treino-ex-detail">15 min</span></div></div></div>
+    <div class="card" style="background:#F0FDF4;border-color:#BBF7D0;"><p style="font-size:12px;color:#166534;line-height:1.6;"><strong>Dom — Descanso ativo</strong><br>Caminhada leve, alongamento ou recuperação.</p></div>
+    <div class="card" style="background:#F5F3FF;border-color:#DDD6FE;"><p style="font-size:12px;color:#5B21B6;line-height:1.6;"><strong>Progressão 10km</strong><br>Mai–Jun: base Z2 · Jul–Ago: volume + ritmo · Set: tiros · Out: afunilamento</p></div>
+  </div>
+ 
+  <!-- DIETA -->
+  <div class="sec" id="sec-dieta">
+    <div class="card" style="background:#FFFBEB;border-color:#FDE68A;"><p style="font-size:12px;color:#92400E;line-height:1.6;"><strong>Consulta nutricionista — 12/05 às 15h</strong><br>Dieta personalizada será definida após a consulta.</p></div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-label">Calorias</div><div class="stat-val">1.640<span style="font-size:12px;font-weight:400;">/2.200</span></div><div class="prog-bar"><div class="prog-fill" style="width:68%;background:#16A34A;"></div></div></div>
+      <div class="stat-card"><div class="stat-label">Proteína</div><div class="stat-val">112g<span style="font-size:12px;font-weight:400;">/160g</span></div><div class="prog-bar"><div class="prog-fill" style="width:70%;background:#2563EB;"></div></div></div>
     </div>
-
-    <div id="measurements" class="tab-content">
-        <div class="card">
-            <canvas id="weightChart"></canvas>
-        </div>
-        <button class="btn-add" onclick="openMeasurementModal()">+ Nova Medição</button>
-        <div id="history-list"></div>
+    <p class="section-label">Refeições de hoje</p>
+    <div class="card">
+      <div class="meal-row"><div><div style="font-size:14px;font-weight:500;">Café da manhã</div><div style="font-size:12px;color:#64748B;">Ovos mexidos + aveia</div></div><span class="badge b-green">420 kcal</span></div>
+      <div class="meal-row"><div><div style="font-size:14px;font-weight:500;">Almoço</div><div style="font-size:12px;color:#64748B;">Frango, arroz, feijão, salada</div></div><span class="badge b-green">680 kcal</span></div>
+      <div class="meal-row"><div><div style="font-size:14px;font-weight:500;">Pré-treino</div><div style="font-size:12px;color:#64748B;">Batata-doce + atum</div></div><span class="badge b-blue">540 kcal</span></div>
+      <div class="meal-row"><div><div style="font-size:14px;font-weight:500;">Jantar</div><div style="font-size:12px;color:#64748B;">Não registrado</div></div><span class="badge b-gray">pendente</span></div>
     </div>
-
-    <div id="tasks" class="tab-content">
-        <div id="task-list"></div>
-        <button class="btn-add">+ Nova Tarefa</button>
+  </div>
+ 
+  <!-- AGENDA -->
+  <div class="sec" id="sec-agenda">
+    <p class="section-label">Hoje</p>
+    <div class="card">
+      <div class="ev-row"><div class="ev-time">07:00</div><div><div class="ev-title">Academia</div><div class="ev-sub">Peito + Tríceps · 1h</div></div><span class="badge b-green" style="margin-left:auto;">Hoje</span></div>
+      <div class="ev-row"><div class="ev-time">10:00</div><div><div class="ev-title">Reunião semanal</div><div class="ev-sub">Google Meet · 1h</div></div><span class="badge b-blue" style="margin-left:auto;">Trabalho</span></div>
+      <div class="ev-row"><div class="ev-time">14:00</div><div><div class="ev-title">Consulta médica</div><div class="ev-sub">Dr. Almeida</div></div><span class="badge b-amber" style="margin-left:auto;">Saúde</span></div>
     </div>
-
-    <!-- NAVEGAÇÃO -->
-    <div class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('calendar', this)"><i data-lucide="calendar"></i></div>
-        <div class="nav-item" onclick="switchTab('workout', this)"><i data-lucide="dumbbell"></i></div>
-        <div class="nav-item" onclick="switchTab('diet', this)"><i data-lucide="apple"></i></div>
-        <div class="nav-item" onclick="switchTab('measurements', this)"><i data-lucide="scale"></i></div>
-        <div class="nav-item" onclick="switchTab('tasks', this)"><i data-lucide="check-square"></i></div>
+    <p class="section-label" style="margin-top:4px;">Próximos</p>
+    <div class="card">
+      <div class="ev-row"><div class="ev-time">12/05</div><div><div class="ev-title">Nutricionista</div><div class="ev-sub">15:00 · Definição da dieta</div></div><span class="badge b-green" style="margin-left:auto;">Saúde</span></div>
+      <div class="ev-row"><div class="ev-time">Dom</div><div><div class="ev-title">Churrasco família</div><div class="ev-sub">15:00 · Casa dos pais</div></div><span class="badge b-coral" style="margin-left:auto;">Pessoal</span></div>
     </div>
-
-    <!-- MODAL MEDIÇÕES -->
-    <div id="modal">
-        <div class="modal-body">
-            <h3>Registrar Medida</h3>
-            <input type="number" id="m-weight" placeholder="Peso (kg)">
-            <input type="number" id="m-fat" placeholder="Gordura (%)">
-            <input type="number" id="m-muscle" placeholder="Músculo (%)">
-            <button class="btn-save" onclick="saveMeasurement()">Salvar</button>
-            <button onclick="closeModal()" style="width:100%; background:none; border:none; margin-top:10px; color:#475569">Cancelar</button>
-        </div>
+  </div>
+ 
+  <!-- MEDIÇÕES -->
+  <div class="sec" id="sec-medicoes">
+    <div class="med-tabs" id="med-tabs"></div>
+    <div class="card" id="med-chart-card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+        <span id="med-title" style="font-size:13px;font-weight:500;color:#000;"></span>
+        <span id="med-current" style="font-size:20px;font-weight:500;"></span>
+      </div>
+      <div class="chart-wrap"><canvas id="medChart"></canvas></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#94A3B8;" id="med-dates"></div>
     </div>
-
-    <script>
-        // Inicialização de Ícones
-        lucide.createIcons();
-
-        // Estado do App
-        let currentMonth = new Date(2026, 4, 1); // Maio 2026
-        let measurements = JSON.parse(localStorage.getItem('measurements')) || [
-            { date: '2026-05-01', weight: 81, fat: 22, muscle: 38 },
-            { date: '2026-05-05', weight: 80.5, fat: null, muscle: 38.2 }
-        ];
-
-        // Navegação de Abas
-        function switchTab(tabId, el) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            el.classList.add('active');
-            
-            const titles = { 'calendar': 'Calendário', 'workout': 'Treino', 'diet': 'Dieta', 'measurements': 'Progresso', 'tasks': 'Tarefas' };
-            document.getElementById('view-title').innerText = titles[tabId];
-            if(tabId === 'measurements') renderCharts();
-        }
-
-        // Lógica do Calendário
-        function renderCalendar() {
-            const grid = document.getElementById('calendar-days');
-            const display = document.getElementById('month-display');
-            grid.innerHTML = '';
-            
-            display.innerText = currentMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-            
-            const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
-            const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
-
-            for(let i = 0; i < firstDay; i++) grid.innerHTML += '<div></div>';
-            
-            for(let d = 1; d <= daysInMonth; d++) {
-                const isEvent = (d === 12); // Exemplo: Nutricionista
-                grid.innerHTML += `<div class="cal-day ${isEvent ? 'has-event' : ''}" onclick="showDay(${d})">${d}</div>`;
-            }
-        }
-
-        function changeMonth(step) {
-            currentMonth.setMonth(currentMonth.getMonth() + step);
-            renderCalendar();
-        }
-
-        // Gráficos (Medições)
-        let chartInstance = null;
-        function renderCharts() {
-            const ctx = document.getElementById('weightChart').getContext('2d');
-            if(chartInstance) chartInstance.destroy();
-
-            const labels = measurements.map(m => m.date);
-            const dataWeight = measurements.map(m => m.weight);
-
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Peso (kg)',
-                        data: dataWeight,
-                        borderColor: '#475569',
-                        tension: 0.3,
-                        spanGaps: true, // A linha continua mesmo se houver null
-                        pointRadius: dataWeight.map(v => v === null ? 0 : 5) // Remove a bolinha se nulo
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-
-        // Funções de Modal
-        function openMeasurementModal() { document.getElementById('modal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
-        
-        function saveMeasurement() {
-            const weight = document.getElementById('m-weight').value;
-            if(weight) {
-                measurements.push({
-                    date: new Date().toISOString().split('T')[0],
-                    weight: parseFloat(weight),
-                    fat: parseFloat(document.getElementById('m-fat').value) || null,
-                    muscle: parseFloat(document.getElementById('m-muscle').value) || null
-                });
-                localStorage.setItem('measurements', JSON.stringify(measurements));
-                renderCharts();
-                closeModal();
-            }
-        }
-
-        // Inicializar
-        renderCalendar();
-    </script>
+    <p class="section-label">Resumo atual</p>
+    <div class="med-latest" id="med-latest"></div>
+    <p class="section-label" style="margin-top:4px;">Histórico</p>
+    <div class="card" id="med-history" style="padding:4px 16px;"></div>
+    <button class="add-btn" onclick="openModal()"><i class="ti ti-plus"></i>Adicionar medição</button>
+  </div>
+ 
+  <!-- TAREFAS -->
+  <div class="sec" id="sec-tarefas">
+    <p class="section-label">Prioridade alta</p>
+    <div class="card">
+      <div class="todo-row"><span class="todo-dot" style="background:#DC2626;"></span><input type="checkbox" id="t1" onchange="toggleTask(this)"><label for="t1">Entregar relatório Q2</label><span class="badge b-coral" style="font-size:10px;">hoje</span></div>
+      <div class="todo-row"><span class="todo-dot" style="background:#DC2626;"></span><input type="checkbox" id="t2" onchange="toggleTask(this)"><label for="t2">Revisar proposta do cliente</label><span class="badge b-amber" style="font-size:10px;">amanhã</span></div>
+    </div>
+    <p class="section-label" style="margin-top:16px;">Esta semana</p>
+    <div class="card">
+      <div class="todo-row"><span class="todo-dot" style="background:#2563EB;"></span><input type="checkbox" id="t3" onchange="toggleTask(this)"><label for="t3">Agendar call com fornecedor</label></div>
+      <div class="todo-row"><span class="todo-dot" style="background:#2563EB;"></span><input type="checkbox" id="t4" onchange="toggleTask(this)" checked><label for="t4" class="done">Pagar conta do gym</label></div>
+      <div class="todo-row"><span class="todo-dot" style="background:#16A34A;"></span><input type="checkbox" id="t5" onchange="toggleTask(this)"><label for="t5">Comprar suplementos</label></div>
+      <div class="todo-row"><span class="todo-dot" style="background:#16A34A;"></span><input type="checkbox" id="t6" onchange="toggleTask(this)"><label for="t6">Montar cardápio com nutricionista</label></div>
+    </div>
+  </div>
+</div>
+ 
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">Nova medição</h3>
+    <p class="modal-hint">Preencha apenas os campos que deseja registrar. Os demais serão mantidos da última medição ou deixados em branco.</p>
+    <div class="modal-grid">
+      <div class="modal-field" style="grid-column:1/-1;"><label>Data</label><input type="date" id="m-data"></div>
+      <div class="modal-field"><label>Peso (kg)</label><input type="number" id="m-peso" step="0.1" placeholder="opcional"></div>
+      <div class="modal-field"><label>Água (%)</label><input type="number" id="m-agua" step="0.1" placeholder="opcional"></div>
+      <div class="modal-field"><label>Gordura (%)</label><input type="number" id="m-gordura" step="0.1" placeholder="opcional"></div>
+      <div class="modal-field"><label>Músculo (%)</label><input type="number" id="m-musculo" step="0.1" placeholder="opcional"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveMed()">Salvar</button>
+    </div>
+  </div>
+</div>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const DIAS=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const MESES_S=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const now=new Date();
+const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+let calY=today.getFullYear(),calM=today.getMonth(),selDate=new Date(today);
+ 
+const medMeta=[
+  {key:'peso',label:'Peso',unit:'kg',color:'#2563EB',decimals:1},
+  {key:'imc',label:'IMC',unit:'',color:'#7C3AED',decimals:1},
+  {key:'agua',label:'Água',unit:'%',color:'#0891B2',decimals:1},
+  {key:'gordura',label:'Gordura',unit:'%',color:'#DC2626',decimals:1},
+  {key:'musculo',label:'Músculo',unit:'%',color:'#16A34A',decimals:1},
+];
+ 
+let medData=JSON.parse(localStorage.getItem('medData')||'[{"data":"2025-03-01","peso":83.5,"agua":53.2,"gordura":24.1,"musculo":36.8},{"data":"2025-03-15","peso":82.8,"agua":null,"gordura":23.6,"musculo":null},{"data":"2025-04-01","peso":82.1,"agua":54.2,"gordura":23,"musculo":37.5},{"data":"2025-04-15","peso":null,"agua":54.6,"gordura":null,"musculo":37.9},{"data":"2025-05-01","peso":81,"agua":55,"gordura":22,"musculo":38.2}]');
+ 
+let editIndex=null,currentMed='peso',chartInstance=null;
+ 
+function calcIMC(p){return p!=null?+(p/(1.74*1.74)).toFixed(1):null;}
+function getMedVal(e,k){return k==='imc'?calcIMC(e.peso):e[k];}
+function getSeriesWithCarry(key){let last=null;return medData.map(e=>{const v=getMedVal(e,key);if(v!=null)last=v;return last;});}
+function getPointsReal(key){return medData.map(e=>{const v=getMedVal(e,key);return v!=null?v:null;});}
+ 
+function renderMedTabs(){
+  const c=document.getElementById('med-tabs');
+  c.innerHTML='';
+  medMeta.forEach(m=>{
+    const btn=document.createElement('button');
+    btn.textContent=m.label;
+    const active=currentMed===m.key;
+    btn.style.cssText=`padding:6px 14px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;border:2px solid ${m.color};background:${active?m.color:'#ffffff'};color:${active?'#ffffff':m.color};`;
+    btn.onclick=()=>selectMed(m.key);
+    c.appendChild(btn);
+  });
+}
+ 
+function selectMed(key){currentMed=key;renderMedTabs();renderMedChart();}
+ 
+function renderMedChart(){
+  const meta=medMeta.find(m=>m.key===currentMed);
+  const lineVals=getSeriesWithCarry(currentMed),pointVals=getPointsReal(currentMed);
+  const labels=medData.map(e=>{const d=new Date(e.data);return d.getDate()+'/'+(d.getMonth()+1);});
+  const lastReal=pointVals.filter(v=>v!=null).pop();
+  document.getElementById('med-title').textContent=meta.label;
+  document.getElementById('med-current').textContent=lastReal!=null?lastReal.toFixed(meta.decimals)+(meta.unit?' '+meta.unit:''):'—';
+  document.getElementById('med-current').style.color=meta.color;
+  document.getElementById('med-dates').innerHTML='<span>'+labels[0]+'</span><span>'+labels[labels.length-1]+'</span>';
+  if(chartInstance)chartInstance.destroy();
+  const ctx=document.getElementById('medChart').getContext('2d');
+  chartInstance=new Chart(ctx,{type:'line',data:{labels,datasets:[{data:lineVals,borderColor:meta.color,backgroundColor:meta.color+'18',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},{data:pointVals,borderColor:meta.color,backgroundColor:meta.color,borderWidth:0,pointRadius:pointVals.map(v=>v!=null?4:0),pointHoverRadius:6,fill:false,tension:0.3,spanGaps:false,showLine:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y!=null?c.parsed.y.toFixed(meta.decimals)+(meta.unit?' '+meta.unit:''):''}}},scales:{x:{display:false},y:{display:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',maxTicksLimit:4,callback:v=>v.toFixed(meta.decimals)}}}}});
+  renderMedSummary();
+  renderMedHistory();
+}
+ 
+function renderMedSummary(){
+  function lastReal(key){for(let i=medData.length-1;i>=0;i--){const v=getMedVal(medData[i],key);if(v!=null)return v;}return null;}
+  function prevReal(key){let found=false;for(let i=medData.length-1;i>=0;i--){const v=getMedVal(medData[i],key);if(v!=null){if(found)return v;found=true;}}return null;}
+  let html='';
+  medMeta.forEach(m=>{
+    const val=lastReal(m.key),pval=prevReal(m.key);
+    if(val==null){html+=`<div class="med-card" style="border-top:3px solid ${m.color};"><div class="med-card-val" style="color:${m.color};">—</div><div class="med-card-lbl">${m.label}</div><div class="med-card-delta">sem dados</div></div>`;return;}
+    const diff=pval!=null?+(val-pval).toFixed(1):null;
+    const goodDown=['peso','imc','gordura'].includes(m.key);
+    const cls=diff==null||diff===0?'':goodDown?diff<0?'delta-good':'delta-bad':diff>0?'delta-good':'delta-bad';
+    const sign=diff!=null&&diff>0?'+':'';
+    html+=`<div class="med-card" style="border-top:3px solid ${m.color};"><div class="med-card-val" style="color:${m.color};">${val.toFixed(m.decimals)}<span style="font-size:10px;color:#64748B;">${m.unit}</span></div><div class="med-card-lbl">${m.label}</div><div class="med-card-delta ${cls}">${diff!=null&&diff!==0?sign+diff:'—'}</div></div>`;
+  });
+  document.getElementById('med-latest').innerHTML=html;
+}
+ 
+function renderMedHistory(){
+  let html='';
+  [...medData].reverse().forEach((e,ri)=>{
+    const i=medData.length-1-ri;
+    const d=new Date(e.data);
+    const lbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
+    const vals=[];
+    if(e.peso!=null)vals.push(`<span class="hist-val" style="color:#2563EB;">${e.peso}kg</span>`);
+    if(e.gordura!=null)vals.push(`<span class="hist-val" style="color:#DC2626;">${e.gordura}%g</span>`);
+    if(e.musculo!=null)vals.push(`<span class="hist-val" style="color:#16A34A;">${e.musculo}%m</span>`);
+    if(e.agua!=null)vals.push(`<span class="hist-val" style="color:#0891B2;">${e.agua}%a</span>`);
+    html+=`<div class="hist-row"><span class="hist-date">${lbl}</span><div class="hist-vals">${vals.join('')}</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editMed(${i})"><i class="ti ti-pencil" style="color:#2563EB!important;"></i></button><button class="hist-btn del-btn" onclick="deleteMed(${i})"><i class="ti ti-trash" style="color:#DC2626!important;"></i></button></div></div>`;
+  });
+  document.getElementById('med-history').innerHTML=html||'<div style="font-size:13px;color:#94A3B8;padding:8px 0;">Nenhum registro ainda.</div>';
+}
+ 
+function openModal(idx){
+  editIndex=idx!=null?idx:null;
+  document.getElementById('modal-title').textContent=editIndex!=null?'Editar medição':'Nova medição';
+  if(editIndex!=null){
+    const e=medData[editIndex];
+    document.getElementById('m-data').value=e.data;
+    document.getElementById('m-peso').value=e.peso!=null?e.peso:'';
+    document.getElementById('m-agua').value=e.agua!=null?e.agua:'';
+    document.getElementById('m-gordura').value=e.gordura!=null?e.gordura:'';
+    document.getElementById('m-musculo').value=e.musculo!=null?e.musculo:'';
+  } else {
+    document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
+    document.getElementById('m-peso').value='';
+    document.getElementById('m-agua').value='';
+    document.getElementById('m-gordura').value='';
+    document.getElementById('m-musculo').value='';
+  }
+  document.getElementById('modal').classList.add('open');
+}
+ 
+function editMed(i){openModal(i);}
+function deleteMed(i){if(!confirm('Excluir esta medição?'))return;medData.splice(i,1);localStorage.setItem('medData',JSON.stringify(medData));renderMedChart();}
+function closeModal(){document.getElementById('modal').classList.remove('open');editIndex=null;}
+ 
+function saveMed(){
+  const data=document.getElementById('m-data').value;
+  if(!data)return alert('Informe a data.');
+  const peso=document.getElementById('m-peso').value!==''?parseFloat(document.getElementById('m-peso').value):null;
+  const agua=document.getElementById('m-agua').value!==''?parseFloat(document.getElementById('m-agua').value):null;
+  const gordura=document.getElementById('m-gordura').value!==''?parseFloat(document.getElementById('m-gordura').value):null;
+  const musculo=document.getElementById('m-musculo').value!==''?parseFloat(document.getElementById('m-musculo').value):null;
+  if(peso==null&&agua==null&&gordura==null&&musculo==null)return alert('Preencha ao menos um campo.');
+  const existing=medData.findIndex(e=>e.data===data);
+  if(editIndex!=null){medData[editIndex]={data,peso,agua,gordura,musculo};}
+  else if(existing>=0){if(peso!=null)medData[existing].peso=peso;if(agua!=null)medData[existing].agua=agua;if(gordura!=null)medData[existing].gordura=gordura;if(musculo!=null)medData[existing].musculo=musculo;}
+  else{medData.push({data,peso,agua,gordura,musculo});medData.sort((a,b)=>a.data.localeCompare(b.data));}
+  localStorage.setItem('medData',JSON.stringify(medData));
+  closeModal();
+  renderMedChart();
+}
+ 
+function dk(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function addD(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+const TAB_ICON={treino:'ti-barbell',dieta:'ti-salad',agenda:'ti-calendar-event',tarefas:'ti-checklist',medicoes:'ti-scale'};
+const EVENTS={};
+EVENTS[dk(today)]=[{time:'07:00',title:'Academia',sub:'Peito + Tríceps',color:'#16A34A',tab:'treino'},{time:'10:00',title:'Reunião semanal',sub:'Google Meet',color:'#2563EB',tab:'agenda'},{time:'14:00',title:'Consulta médica',sub:'Dr. Almeida',color:'#D97706',tab:'agenda'}];
+EVENTS[dk(new Date(2025,4,12))]=[{time:'15:00',title:'Nutricionista',sub:'Definição da dieta',color:'#16A34A',tab:'dieta'}];
+EVENTS[dk(addD(today,2))]=[{time:'15:00',title:'Churrasco família',sub:'Casa dos pais',color:'#DC2626',tab:'agenda'}];
+EVENTS[dk(addD(today,7))]=[{time:'10:00',title:'Revisão mensal',sub:'Escritório',color:'#2563EB',tab:'agenda'}];
+ 
+function renderCal(){
+  document.getElementById('cal-month-lbl').textContent=MONTHS[calM]+' '+calY;
+  const first=new Date(calY,calM,1).getDay(),dim=new Date(calY,calM+1,0).getDate(),dip=new Date(calY,calM,0).getDate();
+  let html='',day=1,nd=1;
+  for(let w=0;w<6;w++){
+    if(day>dim&&w>0)break;
+    html+='<tr>';
+    for(let d=0;d<7;d++){
+      let dt,other=false;
+      if(w===0&&d<first){dt=new Date(calY,calM-1,dip-first+d+1);other=true;}
+      else if(day>dim){dt=new Date(calY,calM+1,nd++);other=true;}
+      else{dt=new Date(calY,calM,day++);}
+      const key=dk(dt),isT=dt.getTime()===today.getTime(),isS=dt.getTime()===selDate.getTime();
+      const cls=other?'other':isT?'today':isS?'selected':'';
+      const evs=EVENTS[key]||[];
+      const dots=evs.slice(0,3).map(e=>'<div class="cal-dot" style="background:'+e.color+';"></div>').join('');
+      html+='<td class="cal-cell"><div class="cal-inner" onclick="selDay('+dt.getFullYear()+','+dt.getMonth()+','+dt.getDate()+')">';
+      html+='<div class="cal-num '+cls+'">'+dt.getDate()+'</div>';
+      if(dots)html+='<div class="cal-dots">'+dots+'</div>';
+      html+='</div></td>';
+    }
+    html+='</tr>';
+  }
+  document.getElementById('cal-body').innerHTML=html;
+  renderDetail();
+}
+ 
+function renderDetail(){
+  const key=dk(selDate),evs=EVENTS[key]||[];
+  const lbl=DIAS[selDate.getDay()]+', '+selDate.getDate()+' de '+MONTHS[selDate.getMonth()];
+  let html='<div class="cal-detail-lbl">'+lbl+'</div>';
+  if(!evs.length){html+='<div class="cal-empty"><i class="ti ti-calendar-off" style="font-size:26px;display:block;margin-bottom:8px;color:#94A3B8;"></i>Nenhum evento neste dia</div>';}
+  else{
+    html+='<div class="card" style="padding:4px 16px;">';
+    evs.forEach(e=>{
+      const icon=TAB_ICON[e.tab]||'ti-calendar-event';
+      html+='<div class="cal-ev-item" onclick="switchTab(\''+e.tab+'\')">';
+      html+='<div class="cal-ev-bar" style="background:'+e.color+';"></div>';
+      html+='<div style="flex:1;"><div class="cal-ev-time">'+e.time+'</div><div class="cal-ev-title">'+e.title+'</div><div class="cal-ev-sub">'+e.sub+'</div></div>';
+      html+='<i class="ti '+icon+'" style="font-size:16px;color:#000;margin-left:auto;align-self:center;padding-right:4px;"></i>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+  document.getElementById('cal-detail').innerHTML=html;
+}
+ 
+function selDay(y,m,d){selDate=new Date(y,m,d);renderCal();}
+function changeMonth(dir){calM+=dir;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderCal();}
+ 
+function switchTab(name){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active');t.querySelector('i').style.color='#94A3B8';});
+  document.getElementById('sec-'+name).classList.add('active');
+  const at=document.getElementById('tab-'+name);
+  at.classList.add('active');
+  at.querySelector('i').style.color='#000';
+  if(name==='calendario')renderCal();
+  if(name==='medicoes'){renderMedTabs();renderMedChart();}
+}
+ 
+function toggleTask(cb){const lbl=document.querySelector('label[for="'+cb.id+'"]');cb.checked?lbl.classList.add('done'):lbl.classList.remove('done');}
+ 
+const h=now.getHours();
+document.getElementById('greeting').textContent=h<12?'Bom dia!':h<18?'Boa tarde!':'Boa noite!';
+document.getElementById('subdate').textContent=DIAS[now.getDay()]+', '+now.getDate()+' de '+MESES_S[now.getMonth()]+' de '+now.getFullYear();
+document.querySelectorAll('.tab').forEach(t=>t.querySelector('i').style.color='#94A3B8');
+document.getElementById('tab-calendario').querySelector('i').style.color='#000';
+renderMedTabs();
+renderCal();
+</script>
 </body>
 </html>
