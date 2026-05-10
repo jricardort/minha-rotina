@@ -32,12 +32,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .prog-bar{height:5px;background:#F1F5F9;border-radius:99px;overflow:hidden;margin-top:7px}
 .prog-fill{height:100%;border-radius:99px}
 .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:500}
-.b-green{background:#F0FDF4;color:#16A34A}
-.b-blue{background:#EFF6FF;color:#2563EB}
-.b-amber{background:#FFFBEB;color:#D97706}
-.b-coral{background:#FEF2F2;color:#DC2626}
-.b-gray{background:#F1F5F9;color:#334155}
-.b-purple{background:#F5F3FF;color:#7C3AED}
+.b-green{background:#F0FDF4;color:#16A34A}.b-blue{background:#EFF6FF;color:#2563EB}
+.b-amber{background:#FFFBEB;color:#D97706}.b-coral{background:#FEF2F2;color:#DC2626}
+.b-gray{background:#F1F5F9;color:#334155}.b-purple{background:#F5F3FF;color:#7C3AED}
 .ex-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #CBD5E1}
 .ex-row:last-child{border-bottom:0}
 .ex-name{font-size:14px;font-weight:500;color:#000;flex:1}
@@ -46,11 +43,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .icon-btn:hover{background:#F1F5F9}
 .meal-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #CBD5E1}
 .meal-row:last-child{border-bottom:0}
-.ev-row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #CBD5E1;align-items:flex-start}
-.ev-row:last-child{border-bottom:0}
-.ev-time{font-size:12px;color:#64748B;min-width:42px;padding-top:2px}
-.ev-title{font-size:14px;font-weight:500;color:#000;flex:1}
-.ev-sub{font-size:12px;color:#64748B;margin-top:1px}
 .todo-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #CBD5E1}
 .todo-row:last-child{border-bottom:0}
 .todo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
@@ -77,10 +69,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .cal-dots{display:flex;gap:2px;justify-content:center}
 .cal-dot{width:4px;height:4px;border-radius:50%}
 .cal-detail-lbl{font-size:13px;font-weight:500;color:#334155;margin:16px 0 10px}
-.cal-ev-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #CBD5E1}
-.cal-ev-item:last-child{border-bottom:0}
-.cal-ev-bar{width:3px;border-radius:99px;min-height:36px;flex-shrink:0}
-.cal-empty{font-size:13px;color:#64748B;text-align:center;padding:28px 0}
+.cal-section{font-size:11px;font-weight:600;color:#64748B;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 8px;display:flex;align-items:center;gap:6px}
+.cal-empty{font-size:13px;color:#64748B;text-align:center;padding:20px 0}
 .med-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .chart-wrap{width:100%;height:140px;position:relative;margin:8px 0 4px}
 .med-latest{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
@@ -88,8 +78,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .med-card-val{font-size:18px;font-weight:500}
 .med-card-lbl{font-size:10px;color:#64748B;margin-top:2px}
 .med-card-delta{font-size:10px;margin-top:2px}
-.delta-good{color:#16A34A}
-.delta-bad{color:#DC2626}
+.delta-good{color:#16A34A}.delta-bad{color:#DC2626}
 .hist-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #F1F5F9}
 .hist-row:last-child{border-bottom:0}
 .hist-date{font-size:12px;color:#64748B;min-width:52px}
@@ -100,8 +89,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .hist-btn i{font-size:14px}
 .hist-btn.edit-btn{color:#2563EB!important;border-color:#BFDBFE!important}
 .hist-btn.del-btn{color:#DC2626!important;border-color:#FECACA!important}
-.hist-btn.edit-btn:hover{background:#EFF6FF!important}
-.hist-btn.del-btn:hover{background:#FEF2F2!important}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
 .modal{background:#fff;border-radius:10px;padding:20px;width:calc(100% - 32px);max-width:360px;box-shadow:0 20px 25px -5px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto}
@@ -115,8 +102,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .modal-btns{display:flex;gap:8px}
 .btn-save{flex:1;padding:10px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;background:#0F172A!important;color:#fff!important;border:0!important}
 .btn-cancel{flex:1;padding:10px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;background:#fff!important;color:#0F172A!important;border:1.5px solid #475569!important}
-.btn-save:hover{background:#334155!important}
-.btn-cancel:hover{background:#F1F5F9!important}
 .btn-del{padding:10px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;background:#DC2626!important;color:#fff!important;border:0!important}
 .treino-tip{background:#F8F9FA;border-left:3px solid #000;border-radius:0 6px 6px 0;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#334155;line-height:1.5}
 .treino-week{margin-bottom:20px}
@@ -132,15 +117,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </head>
 <body>
 <div class="wrap">
-<div class="header">
-<div class="greeting" id="greeting"></div>
-<div class="subdate" id="subdate"></div>
-</div>
+<div class="header"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div>
 <div class="nav">
 <button class="tab active" onclick="switchTab('calendario')" id="tab-calendario"><i class="ti ti-calendar-month"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('treino')" id="tab-treino"><i class="ti ti-barbell"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('dieta')" id="tab-dieta"><i class="ti ti-salad"></i><span class="tab-dot"></span></button>
-<button class="tab" onclick="switchTab('agenda')" id="tab-agenda"><i class="ti ti-calendar-event"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('medicoes')" id="tab-medicoes"><i class="ti ti-scale"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('tarefas')" id="tab-tarefas"><i class="ti ti-checklist"></i><span class="tab-dot"></span></button>
 </div>
@@ -152,11 +133,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <div class="card" style="padding:12px"><table class="cal-table"><thead><tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th></tr></thead><tbody id="cal-body"></tbody></table></div>
 <div id="cal-detail"></div>
-<button class="add-btn" onclick="openEventModal()"><i class="ti ti-plus"></i>Novo evento</button>
 </div>
 <div class="sec" id="sec-treino">
-<div class="treino-tip"><strong>META:</strong> 10km < 55min (pace 5:30/km) · Maratona de Munique · Outubro/2026</div>
-<div style="display:flex;gap:8px;margin-bottom:14px"><button class="add-btn" style="margin-top:0" onclick="editWorkoutWeek()"><i class="ti ti-edit"></i>Editar treino semanal</button></div>
+<div class="treino-tip"><strong>META:</strong> 10km < 55min (pace 5:30/km) · Maratona de Munique · 11/Out/2026</div>
+<button class="add-btn" style="margin-bottom:14px" onclick="editWorkoutWeek()"><i class="ti ti-edit"></i>Editar treino semanal</button>
 <div id="treino-content"></div>
 </div>
 <div class="sec" id="sec-dieta">
@@ -172,11 +152,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="meal-row"><div><div style="font-size:14px;font-weight:500">Pré-treino</div><div style="font-size:12px;color:#64748B">Batata-doce + atum</div></div><span class="badge b-blue">540 kcal</span></div>
 <div class="meal-row"><div><div style="font-size:14px;font-weight:500">Jantar</div><div style="font-size:12px;color:#64748B">Não registrado</div></div><span class="badge b-gray">pendente</span></div>
 </div>
-</div>
-<div class="sec" id="sec-agenda">
-<p class="section-label">Próximos eventos</p>
-<div class="card" id="events-list"></div>
-<button class="add-btn" onclick="openEventModal()"><i class="ti ti-plus"></i>Novo evento</button>
 </div>
 <div class="sec" id="sec-medicoes">
 <div class="med-tabs" id="med-tabs"></div>
@@ -197,9 +172,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 </div>
 <div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha apenas os campos que deseja registrar.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="m-peso" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Água (%)</label><input type="number" id="m-agua" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Gordura (%)</label><input type="number" id="m-gordura" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Músculo (%)</label><input type="number" id="m-musculo" step="0.1" placeholder="opcional"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-grid"><div class="modal-field"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-field"><label>Hora</label><input type="time" id="ev-time"></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div><div class="modal-field" style="margin-top:10px"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option></select></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-task"><div class="modal"><h3 id="modal-task-title">Nova tarefa</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Tarefa</label><input type="text" id="task-text" placeholder="O que precisa ser feito?"></div><div class="modal-grid"><div class="modal-field"><label>Prioridade</label><select id="task-priority"><option value="high">🔴 Alta</option><option value="medium">🔵 Média</option><option value="low">🟢 Baixa</option></select></div><div class="modal-field"><label>Prazo</label><input type="date" id="task-due"></div></div></div><div class="modal-btns" id="task-btns"><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -208,77 +182,104 @@ const MESES_S=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov'
 const now=new Date();
 const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
 let calY=today.getFullYear(),calM=today.getMonth(),selDate=new Date(today);
-const START_DATE=new Date(2025,4,12);
+const START_DATE=new Date(2026,4,11);
 const RACE_DATE=new Date(2026,9,11);
- 
+function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function generatePlan(){
 const p=[];
+const wt=Math.floor((RACE_DATE-START_DATE)/(7*24*60*60*1000));
 const phases=[
-{name:'Base Aeróbica',weeks:16,color:'#EFF6FF',text:'#1E40AF',days:[
-[{t:'Musculação + Corrida',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tríceps Francês 3x12','Corrida Z2 20min']}],
-[{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Rosca Martelo 3x12','Corrida Z2 20min']}],
-[{t:'Corrida Moderada',ex:['Corrida Contínua Z2 40-60min','Core: Prancha 3x45s','Abdominal 3x15','Oblíquos 3x15','Sauna 10min']}],
-[{t:'Musculação + Corrida',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Encolhimento 3x15','Corrida Z2 20min']}],
-[{t:'Corrida Longa',ex:['Corrida Longa Z2 50-70min','Agachamento 4x12','Leg Press 3x15','Panturrilha 4x20']}],
-[{t:'Ativo + Sauna',ex:['Musculação Leve 30min','Caminhada/Trote 20min','Sauna 15min']}],
-[{t:'Descanso',ex:['Descanso ativo','Alongamento','Recuperação']}]
-]},{name:'Aumento de Volume',weeks:16,color:'#F0FDF4',text:'#166534',days:[
-[{t:'Musculação + Tiros',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tiros 6x400m R:2min']}],
-[{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Corrida Z2 25min']}],
-[{t:'Tempo Run',ex:['Aquecimento 10min','Tempo Run Z3 20-35min','Desaquecimento 10min','Core 3 exercícios']}],
-[{t:'Musculação + Fartlek',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Fartlek 30min (2min forte/2min leve)']}],
-[{t:'Long Run',ex:['Corrida Longa Z2 60-90min','Agachamento 4x12','Leg Press 3x15','Afundo 3x12']}],
-[{t:'Recuperação Ativa',ex:['Corrida Regenerativa Z1 30min','Musculação Leve','Sauna 15min']}],
-[{t:'Descanso',ex:['Descanso completo ou caminhada leve']}]
-]},{name:'Fase de Intensidade',weeks:12,color:'#FEF2F2',text:'#991B1B',days:[
-[{t:'Musculação + Intervalado',ex:['Supino Reto 4x8','Supino Inclinado 3x10','Crucifixo 3x12','Tríceps 4x12','Intervalado: 8x800m (pace 5:20) R:2min']}],
-[{t:'Musculação + Regenerativo',ex:['Puxada 4x10','Remada 4x10','Rosca 3x12','Corrida Regenerativa Z1 20min']}],
-[{t:'Treino de Ritmo',ex:['Aquecimento 2km','3x2km pace 5:30 R:3min','Desaquecimento 1km','Core completo']}],
-[{t:'Musculação + Fartlek',ex:['Ombros completo','Fartlek Progressivo 35min']}],
-[{t:'Long Run Progressivo',ex:['16km: primeiros 10km Z2, últimos 6km Z3','Pernas leves pós-corrida']}],
-[{t:'Técnica + Força',ex:['Educativos de corrida 20min','Musculação moderada','Sauna']}],
-[{t:'Descanso',ex:['Descanso ativo']}]
-]},{name:'Pico de Performance',weeks:24,color:'#FFFBEB',text:'#92400E',days:[
-[{t:'Musculação + Tiros Curtos',ex:['Peito/Tríceps completo','12x400m pace 5:10 R:90s']}],
-[{t:'Musculação + Regenerativo',ex:['Costas/Bíceps completo','Corrida Z1 20min']}],
-[{t:'Treino Específico 10K',ex:['2km aquecimento','2x5km pace 5:30 R:4min','1km desaquecimento']}],
-[{t:'Musculação + Fartlek',ex:['Ombros/Trapézio','Fartlek Intenso 30min']}],
-[{t:'Long Run Ritmo',ex:['18km: últimos 8km em pace 5:40','Pernas']}],
-[{t:'Técnica',ex:['Educativos + tiros 30min','Força muscular']}],
-[{t:'Corrida Longa Fácil',ex:['90min Z1-Z2']}]
+{name:'Base Aeróbica',weeks:8,color:'#EFF6FF',text:'#1E40AF',template:[
+{t:'Musculação + Corrida',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tríceps Francês 3x12','Corrida Z2 20min']},
+{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Rosca Martelo 3x12','Corrida Z2 20min']},
+{t:'Corrida Moderada',ex:['Corrida Contínua Z2 40-50min','Core: Prancha 3x45s','Abdominal 3x15','Oblíquos 3x15','Sauna 10min']},
+{t:'Musculação + Corrida',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Encolhimento 3x15','Corrida Z2 20min']},
+{t:'Corrida Longa',ex:['Corrida Longa Z2 50-60min','Agachamento 4x12','Leg Press 3x15','Panturrilha 4x20']},
+{t:'Ativo + Sauna',ex:['Musculação Leve 30min','Caminhada/Trote 20min','Sauna 15min']},
+{t:'Descanso',ex:['Descanso ativo','Alongamento','Recuperação']}
+]},
+{name:'Aumento de Volume',weeks:6,color:'#F0FDF4',text:'#166534',template:[
+{t:'Musculação + Tiros',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tiros 6x400m R:2min']},
+{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Corrida Z2 25min']},
+{t:'Tempo Run',ex:['Aquecimento 10min','Tempo Run Z3 25-30min','Desaquecimento 10min','Core 3 exercícios']},
+{t:'Musculação + Fartlek',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Fartlek 30min (2min forte/2min leve)']},
+{t:'Long Run',ex:['Corrida Longa Z2 60-75min','Agachamento 4x12','Leg Press 3x15','Afundo 3x12']},
+{t:'Recuperação Ativa',ex:['Corrida Regenerativa Z1 30min','Musculação Leve','Sauna 15min']},
+{t:'Descanso',ex:['Descanso completo ou caminhada leve']}
+]},
+{name:'Fase de Intensidade',weeks:5,color:'#FEF2F2',text:'#991B1B',template:[
+{t:'Musculação + Intervalado',ex:['Supino Reto 4x8','Supino Inclinado 3x10','Crucifixo 3x12','Tríceps 4x12','Intervalado: 8x800m (pace 5:20) R:2min']},
+{t:'Musculação + Regenerativo',ex:['Puxada 4x10','Remada 4x10','Rosca 3x12','Corrida Regenerativa Z1 20min']},
+{t:'Treino de Ritmo',ex:['Aquecimento 2km','3x2km pace 5:30 R:3min','Desaquecimento 1km','Core completo']},
+{t:'Musculação + Fartlek',ex:['Ombros completo','Fartlek Progressivo 35min']},
+{t:'Long Run Progressivo',ex:['12-14km: primeiros 70% Z2, últimos 30% Z3','Pernas leves pós-corrida']},
+{t:'Técnica + Força',ex:['Educativos de corrida 20min','Musculação moderada','Sauna']},
+{t:'Descanso',ex:['Descanso ativo']}
+]},
+{name:'Pico de Performance',weeks:3,color:'#FFFBEB',text:'#92400E',template:[
+{t:'Musculação + Tiros Curtos',ex:['Peito/Tríceps completo','12x400m pace 5:10 R:90s']},
+{t:'Musculação + Regenerativo',ex:['Costas/Bíceps completo','Corrida Z1 20min']},
+{t:'Treino Específico 10K',ex:['2km aquecimento','2x5km pace 5:30 R:4min','1km desaquecimento']},
+{t:'Musculação + Fartlek',ex:['Ombros/Trapézio','Fartlek Intenso 30min']},
+{t:'Long Run Ritmo',ex:['14-16km: últimos 5km em pace 5:40','Pernas']},
+{t:'Técnica',ex:['Educativos + tiros 30min','Força muscular']},
+{t:'Corrida Longa Fácil',ex:['75-90min Z1-Z2']}
 ]}
 ];
-let wk=0;
-phases.forEach(ph=>{for(let w=0;w<ph.weeks;w++){
-const week={phase:ph.name,num:w+1,color:ph.color,text:ph.text,days:[]};
-const days=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
-const isDeload=(ph.name==='Pico de Performance'&&w%4===3);
-if(isDeload){
-week.days=[{d:'Seg',t:'Musculação Leve',ex:['Treino leve 40min','Corrida fácil 15min']},{d:'Ter',t:'Corrida Leve',ex:['Corrida Z1 30min']},{d:'Qua',t:'Descanso',ex:['Descanso completo']},{d:'Qui',t:'Técnica',ex:['Educativos 25min','Musculação leve']},{d:'Sex',t:'Corrida Moderada',ex:['8km ritmo confortável']},{d:'Sáb',t:'Regenerativo',ex:['Corrida Z1 25min','Sauna']},{d:'Dom',t:'Descanso',ex:['Descanso']}];
-}else{
-ph.days.forEach((d,i)=>{week.days.push({d:days[i],t:d[0].t,ex:d[0].ex});});
-}
-p.push(week);wk++;
-}});
-p.push({phase:'Taper (Semana -2)',num:1,color:'#F5F3FF',text:'#6B21A8',days:[{d:'Seg',t:'Manutenção',ex:['Musculação moderada 40min','Corrida Z2 15min']},{d:'Ter',t:'Tiros Curtos',ex:['Aquecimento 2km','6x400m pace 5:20 R:2min','Desaquecimento 1km']},{d:'Qua',t:'Descanso',ex:['Descanso completo ou caminhada']},{d:'Qui',t:'Corrida Fácil',ex:['6km Z1']},{d:'Sex',t:'Ritmo Leve',ex:['2km aquecimento','3km pace 5:35','1km desaquecimento']},{d:'Sáb',t:'Corrida Curtíssima',ex:['4km Z1']},{d:'Dom',t:'Descanso',ex:['Descanso completo']}]});
-p.push({phase:'Taper (Semana -1)',num:2,color:'#F5F3FF',text:'#6B21A8',days:[{d:'Seg',t:'Técnica Leve',ex:['Educativos 20min','Alongamento']},{d:'Ter',t:'Shakeout',ex:['3km Z1','Alguns strides 80m']},{d:'Qua',t:'Descanso',ex:['Descanso completo']},{d:'Qui',t:'Mini Shakeout',ex:['2km fácil','3x strides']},{d:'Sex',t:'Descanso',ex:['Caminhada leve 15min']},{d:'Sáb',t:'Descanso Pré-Prova',ex:['Descanso total','Hidratação','Carb load']},{d:'Dom',t:'🏁 PROVA',ex:['MARATONA DE MUNIQUE - 10KM','META: SUB-55MIN']}]});
+let weekNum=1;
+phases.forEach(ph=>{for(let w=0;w<ph.weeks;w++){p.push({phase:ph.name,num:weekNum++,color:ph.color,text:ph.text,template:ph.template});}});
+p.push({phase:'Taper (Semana -2)',num:weekNum++,color:'#F5F3FF',text:'#6B21A8',template:[
+{t:'Manutenção',ex:['Musculação moderada 40min','Corrida Z2 15min']},
+{t:'Tiros Curtos',ex:['Aquecimento 2km','6x400m pace 5:20 R:2min','Desaquecimento 1km']},
+{t:'Descanso',ex:['Descanso completo ou caminhada']},
+{t:'Corrida Fácil',ex:['6km Z1']},
+{t:'Ritmo Leve',ex:['2km aquecimento','3km pace 5:35','1km desaquecimento']},
+{t:'Corrida Curtíssima',ex:['4km Z1']},
+{t:'Descanso',ex:['Descanso completo']}
+]});
+p.push({phase:'Taper (Semana -1)',num:weekNum++,color:'#F5F3FF',text:'#6B21A8',template:[
+{t:'Técnica Leve',ex:['Educativos 20min','Alongamento']},
+{t:'Shakeout',ex:['3km Z1','Alguns strides 80m']},
+{t:'Descanso',ex:['Descanso completo']},
+{t:'Mini Shakeout',ex:['2km fácil','3x strides']},
+{t:'Descanso',ex:['Caminhada leve 15min']},
+{t:'Descanso Pré-Prova',ex:['Descanso total','Hidratação','Carb load']},
+{t:'🏁 PROVA',ex:['MARATONA DE MUNIQUE - 10KM','META: SUB-55MIN']}
+]});
 return p;
 }
 const plan=generatePlan();
+function getWorkoutForDate(d){
+const dt=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+if(dt<START_DATE||dt>RACE_DATE)return null;
+const diffDays=Math.floor((dt-START_DATE)/(24*60*60*1000));
+const weekIdx=Math.floor(diffDays/7);
+const dayOfWeek=dt.getDay();
+const dayIdx=dayOfWeek===0?6:dayOfWeek-1;
+if(weekIdx>=plan.length)return null;
+const wk=plan[weekIdx];
+return{phase:wk.phase,weekNum:wk.num,day:wk.template[dayIdx],dayName:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'][dayIdx]};
+}
 function renderPlan(){
 const c=document.getElementById('treino-content');
-const cw=Math.floor((today-START_DATE)/(7*24*60*60*1000));
-const si=Math.max(0,cw-1),ei=Math.min(plan.length,si+4);
+let cw=Math.floor((today-START_DATE)/(7*24*60*60*1000));
+if(cw<0)cw=0;
+const si=cw,ei=Math.min(plan.length,si+4);
 let h='';
+if(today<START_DATE){
+h+=`<div class="card" style="background:#EFF6FF;border-color:#BFDBFE;text-align:center"><p style="font-size:13px;color:#1E40AF;line-height:1.6"><strong>📅 Início do plano: 11/05/2026</strong><br>Mostrando primeiras 4 semanas do programa</p></div>`;
+}
 for(let i=si;i<ei;i++){
 const wk=plan[i];
 const ws=new Date(START_DATE);ws.setDate(ws.getDate()+i*7);
 const we=new Date(ws);we.setDate(we.getDate()+6);
-const cur=i===cw;
+const cur=today>=ws&&today<=we;
 h+=`<div class="treino-week"><span class="phase-badge" style="background:${wk.color};color:${wk.text}">${wk.phase}</span><div class="treino-week-hdr"><span class="treino-week-title">Semana ${wk.num}${cur?' (ATUAL)':''}</span><span class="treino-week-dates">${ws.getDate()}/${ws.getMonth()+1} - ${we.getDate()}/${we.getMonth()+1}/${we.getFullYear()}</span></div>`;
-wk.days.forEach(d=>{
-const badge=d.d==='Dom'?'b-green':d.d==='Qua'||d.d==='Sex'?'b-amber':'b-blue';
-h+=`<div class="treino-day"><div class="treino-day-hdr"><span class="treino-day-badge ${badge}">${d.d}</span><span class="treino-day-title">${d.t}</span></div><div class="card" style="padding:6px 12px">`;
+const dayNames=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+wk.template.forEach((d,idx)=>{
+const dn=dayNames[idx];
+const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
+h+=`<div class="treino-day"><div class="treino-day-hdr"><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${d.t}</span></div><div class="card" style="padding:6px 12px">`;
 d.ex.forEach(e=>{
 const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includes('Fartlek')||e.includes('PROVA');
 h+=`<div class="ex-row"><span class="ex-name" style="color:${isR?'#16A34A':'#000'}">${e}</span></div>`;
@@ -289,14 +290,25 @@ h+=`</div>`;
 }
 c.innerHTML=h;
 }
-let wkTmpl=JSON.parse(localStorage.getItem('workoutTemplate')||'[{"day":"Seg","ex":["Supino Reto 4x10","Crucifixo 3x15","Tríceps Corda 4x12","Corrida Z2 20min"]},{"day":"Ter","ex":["Puxada Frente 4x10","Remada Curvada 4x10","Rosca Direta 3x12","Corrida Z2 20min"]},{"day":"Qua","ex":["Corrida Contínua 40min Z2","Core: Prancha 3x45s","Sauna 10min"]},{"day":"Qui","ex":["Desenvolvimento 4x10","Elevação Lateral 4x15","Corrida Z2 20min"]},{"day":"Sex","ex":["Corrida Longa 50min","Agachamento 4x12","Leg Press 3x15"]},{"day":"Sáb","ex":["Musculação Leve 30min","Caminhada 20min","Sauna 15min"]},{"day":"Dom","ex":["Descanso ativo"]}]');
+let wkTmpl=JSON.parse(localStorage.getItem('workoutTemplate')||'null');
+if(!wkTmpl){
+wkTmpl=[
+{day:'Seg',ex:['Supino Reto 4x10','Crucifixo 3x15','Tríceps Corda 4x12','Corrida Z2 20min']},
+{day:'Ter',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Rosca Direta 3x12','Corrida Z2 20min']},
+{day:'Qua',ex:['Corrida Contínua 40min Z2','Core: Prancha 3x45s','Sauna 10min']},
+{day:'Qui',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Corrida Z2 20min']},
+{day:'Sex',ex:['Corrida Longa 50min','Agachamento 4x12','Leg Press 3x15']},
+{day:'Sáb',ex:['Musculação Leve 30min','Caminhada 20min','Sauna 15min']},
+{day:'Dom',ex:['Descanso ativo']}
+];
+}
 function editWorkoutWeek(){
 const m=document.getElementById('modal-workout');
 const c=document.getElementById('workout-edit-content');
 let h='';
 wkTmpl.forEach((d,i)=>{
 h+=`<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #E2E8F0"><div style="font-weight:500;margin-bottom:8px">${d.day}</div>`;
-d.ex.forEach((e,j)=>{h+=`<div style="display:flex;gap:8px;margin-bottom:6px"><input type="text" value="${e}" id="ex-${i}-${j}" style="flex:1;border:1px solid #CBD5E1;border-radius:6px;padding:6px 10px;font-size:13px"><button onclick="delEx(${i},${j})" style="background:#DC2626;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer"><i class="ti ti-trash" style="font-size:14px"></i></button></div>`;});
+d.ex.forEach((e,j)=>{h+=`<div style="display:flex;gap:8px;margin-bottom:6px"><input type="text" value="${e.replace(/"/g,'&quot;')}" id="ex-${i}-${j}" style="flex:1;border:1px solid #CBD5E1;border-radius:6px;padding:6px 10px;font-size:13px"><button onclick="delEx(${i},${j})" style="background:#DC2626;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer"><i class="ti ti-trash" style="font-size:14px"></i></button></div>`;});
 h+=`<button onclick="addEx(${i})" style="width:100%;padding:6px;background:#F1F5F9;border:1px solid #CBD5E1;border-radius:6px;font-size:12px;cursor:pointer;color:#334155;margin-top:4px">+ Adicionar exercício</button></div>`;
 });
 c.innerHTML=h;m.classList.add('open');
@@ -304,7 +316,7 @@ c.innerHTML=h;m.classList.add('open');
 function addEx(i){const n=prompt('Nome do exercício:');if(!n)return;wkTmpl[i].ex.push(n);editWorkoutWeek();}
 function delEx(i,j){wkTmpl[i].ex.splice(j,1);editWorkoutWeek();}
 function saveWorkout(){
-wkTmpl.forEach((d,i)=>{d.ex=d.ex.map((e,j)=>{const inp=document.getElementById(`ex-${i}-${j}`);return inp?inp.value:e;}).filter(Boolean);});
+wkTmpl.forEach((d,i)=>{d.ex=d.ex.map((e,j)=>{const inp=document.getElementById('ex-'+i+'-'+j);return inp?inp.value:e;}).filter(Boolean);});
 localStorage.setItem('workoutTemplate',JSON.stringify(wkTmpl));closeWorkoutModal();alert('Treino salvo!');
 }
 function closeWorkoutModal(){document.getElementById('modal-workout').classList.remove('open');}
@@ -317,7 +329,7 @@ function getSeriesCarry(k){let l=null;return medData.map(e=>{const v=getMedVal(e
 function getPointsReal(k){return medData.map(e=>{const v=getMedVal(e,k);return v!=null?v:null;});}
 function renderMedTabs(){
 const c=document.getElementById('med-tabs');c.innerHTML='';
-medMeta.forEach(m=>{const b=document.createElement('button');b.textContent=m.label;const a=currentMed===m.key;b.style.cssText=`padding:6px 14px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;border:2px solid ${m.color};background:${a?m.color:'#fff'};color:${a?'#fff':m.color}`;b.onclick=()=>selectMed(m.key);c.appendChild(b);});
+medMeta.forEach(m=>{const b=document.createElement('button');b.textContent=m.label;const a=currentMed===m.key;b.style.cssText='padding:6px 14px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;border:2px solid '+m.color+';background:'+(a?m.color:'#fff')+';color:'+(a?'#fff':m.color);b.onclick=()=>selectMed(m.key);c.appendChild(b);});
 }
 function selectMed(k){currentMed=k;renderMedTabs();renderMedChart();}
 function renderMedChart(){
@@ -340,12 +352,12 @@ function prevReal(k){let f=false;for(let i=medData.length-1;i>=0;i--){const v=ge
 let h='';
 medMeta.forEach(m=>{
 const val=lastReal(m.key),pval=prevReal(m.key);
-if(val==null){h+=`<div class="med-card" style="border-top:3px solid ${m.color}"><div class="med-card-val" style="color:${m.color}">—</div><div class="med-card-lbl">${m.label}</div><div class="med-card-delta">sem dados</div></div>`;return;}
+if(val==null){h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">—</div><div class="med-card-lbl">'+m.label+'</div><div class="med-card-delta">sem dados</div></div>';return;}
 const diff=pval!=null?+(val-pval).toFixed(1):null;
 const gd=['peso','imc','gordura'].includes(m.key);
 const cls=diff==null||diff===0?'':gd?diff<0?'delta-good':'delta-bad':diff>0?'delta-good':'delta-bad';
 const sign=diff!=null&&diff>0?'+':'';
-h+=`<div class="med-card" style="border-top:3px solid ${m.color}"><div class="med-card-val" style="color:${m.color}">${val.toFixed(m.decimals)}<span style="font-size:10px;color:#64748B">${m.unit}</span></div><div class="med-card-lbl">${m.label}</div><div class="med-card-delta ${cls}">${diff!=null&&diff!==0?sign+diff:'—'}</div></div>`;
+h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">'+val.toFixed(m.decimals)+'<span style="font-size:10px;color:#64748B">'+m.unit+'</span></div><div class="med-card-lbl">'+m.label+'</div><div class="med-card-delta '+cls+'">'+(diff!=null&&diff!==0?sign+diff:'—')+'</div></div>';
 });
 document.getElementById('med-latest').innerHTML=h;
 }
@@ -356,11 +368,11 @@ const i=medData.length-1-ri;
 const d=new Date(e.data);
 const lbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
 const vals=[];
-if(e.peso!=null)vals.push(`<span class="hist-val" style="color:#2563EB">${e.peso}kg</span>`);
-if(e.gordura!=null)vals.push(`<span class="hist-val" style="color:#DC2626">${e.gordura}%g</span>`);
-if(e.musculo!=null)vals.push(`<span class="hist-val" style="color:#16A34A">${e.musculo}%m</span>`);
-if(e.agua!=null)vals.push(`<span class="hist-val" style="color:#0891B2">${e.agua}%a</span>`);
-h+=`<div class="hist-row"><span class="hist-date">${lbl}</span><div class="hist-vals">${vals.join('')}</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editMed(${i})"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed(${i})"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>`;
+if(e.peso!=null)vals.push('<span class="hist-val" style="color:#2563EB">'+e.peso+'kg</span>');
+if(e.gordura!=null)vals.push('<span class="hist-val" style="color:#DC2626">'+e.gordura+'%g</span>');
+if(e.musculo!=null)vals.push('<span class="hist-val" style="color:#16A34A">'+e.musculo+'%m</span>');
+if(e.agua!=null)vals.push('<span class="hist-val" style="color:#0891B2">'+e.agua+'%a</span>');
+h+='<div class="hist-row"><span class="hist-date">'+lbl+'</span><div class="hist-vals">'+vals.join('')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editMed('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
 });
 document.getElementById('med-history').innerHTML=h||'<div style="font-size:13px;color:#94A3B8;padding:8px 0">Nenhum registro ainda.</div>';
 }
@@ -376,10 +388,8 @@ document.getElementById('m-gordura').value=e.gordura!=null?e.gordura:'';
 document.getElementById('m-musculo').value=e.musculo!=null?e.musculo:'';
 }else{
 document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
-document.getElementById('m-peso').value='';
-document.getElementById('m-agua').value='';
-document.getElementById('m-gordura').value='';
-document.getElementById('m-musculo').value='';
+document.getElementById('m-peso').value='';document.getElementById('m-agua').value='';
+document.getElementById('m-gordura').value='';document.getElementById('m-musculo').value='';
 }
 document.getElementById('modal-med').classList.add('open');
 }
@@ -400,80 +410,39 @@ else if(ex>=0){if(peso!=null)medData[ex].peso=peso;if(agua!=null)medData[ex].agu
 else{medData.push({data,peso,agua,gordura,musculo});medData.sort((a,b)=>a.data.localeCompare(b.data));}
 localStorage.setItem('medData',JSON.stringify(medData));closeMedModal();renderMedChart();
 }
-let events=JSON.parse(localStorage.getItem('events')||'[]');
-let editEvIdx=null;
-function renderEvents(){
-const c=document.getElementById('events-list');
-const future=events.filter(e=>new Date(e.date+' '+e.time)>=today).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-if(!future.length){c.innerHTML='<div class="cal-empty">Nenhum evento próximo</div>';return;}
-let h='';
-future.slice(0,10).forEach((e,i)=>{
-const d=new Date(e.date);
-const catColors={treino:'#16A34A',corrida:'#D97706',saude:'#2563EB',trabalho:'#334155',pessoal:'#DC2626'};
-h+=`<div class="ev-row"><div class="ev-time">${d.getDate()}/${d.getMonth()+1}</div><div style="flex:1"><div class="ev-title">${e.title}</div><div class="ev-sub">${e.time}${e.desc?' · '+e.desc:''}</div></div><div class="ex-actions"><button class="icon-btn" onclick="editEvent(${events.indexOf(e)})"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteEvent(${events.indexOf(e)})"><i class="ti ti-trash"></i></button></div></div>`;
-});
-c.innerHTML=h;
-}
-function openEventModal(idx){
-editEvIdx=idx!=null?idx:null;
-document.getElementById('modal-event-title').textContent=editEvIdx!=null?'Editar evento':'Novo evento';
-if(editEvIdx!=null){
-const e=events[editEvIdx];
-document.getElementById('ev-title').value=e.title;
-document.getElementById('ev-date').value=e.date;
-document.getElementById('ev-time').value=e.time;
-document.getElementById('ev-desc').value=e.desc||'';
-document.getElementById('ev-cat').value=e.cat;
-document.getElementById('ev-btns').innerHTML=`<button class="btn-del" onclick="deleteEvent(${editEvIdx});closeEventModal()">Excluir</button><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button>`;
-}else{
-document.getElementById('ev-title').value='';
-document.getElementById('ev-date').value=new Date().toISOString().split('T')[0];
-document.getElementById('ev-time').value='';
-document.getElementById('ev-desc').value='';
-document.getElementById('ev-cat').value='treino';
-document.getElementById('ev-btns').innerHTML=`<button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button>`;
-}
-document.getElementById('modal-event').classList.add('open');
-}
-function editEvent(i){openEventModal(i);}
-function deleteEvent(i){if(!confirm('Excluir evento?'))return;events.splice(i,1);localStorage.setItem('events',JSON.stringify(events));renderEvents();renderCal();}
-function closeEventModal(){document.getElementById('modal-event').classList.remove('open');editEvIdx=null;}
-function saveEvent(){
-const title=document.getElementById('ev-title').value;
-const date=document.getElementById('ev-date').value;
-const time=document.getElementById('ev-time').value;
-const desc=document.getElementById('ev-desc').value;
-const cat=document.getElementById('ev-cat').value;
-if(!title||!date)return alert('Preencha título e data.');
-if(editEvIdx!=null){events[editEvIdx]={title,date,time,desc,cat};}
-else{events.push({title,date,time,desc,cat});}
-localStorage.setItem('events',JSON.stringify(events));closeEventModal();renderEvents();renderCal();
-}
-let tasks=JSON.parse(localStorage.getItem('tasks')||'[{"text":"Entregar relatório Q2","priority":"high","due":"2025-05-10","done":false},{"text":"Revisar proposta do cliente","priority":"high","due":"2025-05-11","done":false},{"text":"Agendar call com fornecedor","priority":"medium","done":false},{"text":"Comprar suplementos","priority":"low","done":false}]');
+let tasks=JSON.parse(localStorage.getItem('tasks')||'[{"text":"Entregar relatório Q2","priority":"high","due":"2025-05-10","done":false},{"text":"Revisar proposta do cliente","priority":"high","due":"2025-05-11","done":false},{"text":"Agendar call com fornecedor","priority":"medium","due":"","done":false},{"text":"Comprar suplementos","priority":"low","due":"","done":false}]');
 let editTaskIdx=null;
 function renderTasks(){
 const c=document.getElementById('tasks-list');
 const byPri={high:[],medium:[],low:[]};
 tasks.forEach(t=>byPri[t.priority].push(t));
 let h='';
-if(byPri.high.length){h+='<p class="section-label">Prioridade alta</p><div class="card">';
-byPri.high.forEach((t,i)=>{
+const labels={high:'Prioridade alta',medium:'Prioridade média',low:'Prioridade baixa'};
+const colors={high:'#DC2626',medium:'#2563EB',low:'#16A34A'};
+['high','medium','low'].forEach(pri=>{
+if(byPri[pri].length){
+h+='<p class="section-label" style="margin-top:'+(pri==='high'?'0':'16px')+'">'+labels[pri]+'</p><div class="card">';
+byPri[pri].forEach(t=>{
 const idx=tasks.indexOf(t);
-h+=`<div class="todo-row"><span class="todo-dot" style="background:#DC2626"></span><input type="checkbox" id="t${idx}" ${t.done?'checked':''} onchange="toggleTask(${idx})"><label for="t${idx}" class="${t.done?'done':''}">${t.text}</label><div class="ex-actions"><button class="icon-btn" onclick="editTask(${idx})"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteTask(${idx})"><i class="ti ti-trash"></i></button></div></div>`;
-});h+='</div>';}
-if(byPri.medium.length){h+='<p class="section-label" style="margin-top:16px">Prioridade média</p><div class="card">';
-byPri.medium.forEach((t,i)=>{
-const idx=tasks.indexOf(t);
-h+=`<div class="todo-row"><span class="todo-dot" style="background:#2563EB"></span><input type="checkbox" id="t${idx}" ${t.done?'checked':''} onchange="toggleTask(${idx})"><label for="t${idx}" class="${t.done?'done':''}">${t.text}</label><div class="ex-actions"><button class="icon-btn" onclick="editTask(${idx})"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteTask(${idx})"><i class="ti ti-trash"></i></button></div></div>`;
-});h+='</div>';}
-if(byPri.low.length){h+='<p class="section-label" style="margin-top:16px">Prioridade baixa</p><div class="card">';
-byPri.low.forEach((t,i)=>{
-const idx=tasks.indexOf(t);
-h+=`<div class="todo-row"><span class="todo-dot" style="background:#16A34A"></span><input type="checkbox" id="t${idx}" ${t.done?'checked':''} onchange="toggleTask(${idx})"><label for="t${idx}" class="${t.done?'done':''}">${t.text}</label><div class="ex-actions"><button class="icon-btn" onclick="editTask(${idx})"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteTask(${idx})"><i class="ti ti-trash"></i></button></div></div>`;
-});h+='</div>';}
+const dueLabel=t.due?formatTaskDate(t.due):'';
+h+='<div class="todo-row"><span class="todo-dot" style="background:'+colors[pri]+'"></span><input type="checkbox" id="t'+idx+'" '+(t.done?'checked':'')+' onchange="toggleTask('+idx+')"><label for="t'+idx+'" class="'+(t.done?'done':'')+'">'+t.text+(dueLabel?' <span style="font-size:11px;color:#64748B">('+dueLabel+')</span>':'')+'</label><div class="ex-actions"><button class="icon-btn" onclick="editTask('+idx+')"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteTask('+idx+')"><i class="ti ti-trash"></i></button></div></div>';
+});
+h+='</div>';
+}
+});
+if(!h)h='<div class="cal-empty">Nenhuma tarefa cadastrada</div>';
 c.innerHTML=h;
 }
-function toggleTask(i){tasks[i].done=!tasks[i].done;localStorage.setItem('tasks',JSON.stringify(tasks));renderTasks();}
+function formatTaskDate(d){
+const dt=new Date(d);
+const t=new Date(today);
+const diff=Math.floor((dt-t)/(24*60*60*1000));
+if(diff===0)return 'hoje';
+if(diff===1)return 'amanhã';
+if(diff<0)return 'atrasada';
+return dt.getDate()+'/'+(dt.getMonth()+1);
+}
+function toggleTask(i){tasks[i].done=!tasks[i].done;localStorage.setItem('tasks',JSON.stringify(tasks));renderTasks();renderCal();}
 function openTaskModal(idx){
 editTaskIdx=idx!=null?idx:null;
 document.getElementById('modal-task-title').textContent=editTaskIdx!=null?'Editar tarefa':'Nova tarefa';
@@ -482,17 +451,17 @@ const t=tasks[editTaskIdx];
 document.getElementById('task-text').value=t.text;
 document.getElementById('task-priority').value=t.priority;
 document.getElementById('task-due').value=t.due||'';
-document.getElementById('task-btns').innerHTML=`<button class="btn-del" onclick="deleteTask(${editTaskIdx});closeTaskModal()">Excluir</button><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button>`;
+document.getElementById('task-btns').innerHTML='<button class="btn-del" onclick="deleteTask('+editTaskIdx+');closeTaskModal()">Excluir</button><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button>';
 }else{
 document.getElementById('task-text').value='';
 document.getElementById('task-priority').value='medium';
 document.getElementById('task-due').value='';
-document.getElementById('task-btns').innerHTML=`<button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button>`;
+document.getElementById('task-btns').innerHTML='<button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button>';
 }
 document.getElementById('modal-task').classList.add('open');
 }
 function editTask(i){openTaskModal(i);}
-function deleteTask(i){if(!confirm('Excluir tarefa?'))return;tasks.splice(i,1);localStorage.setItem('tasks',JSON.stringify(tasks));renderTasks();}
+function deleteTask(i){if(!confirm('Excluir tarefa?'))return;tasks.splice(i,1);localStorage.setItem('tasks',JSON.stringify(tasks));renderTasks();renderCal();}
 function closeTaskModal(){document.getElementById('modal-task').classList.remove('open');editTaskIdx=null;}
 function saveTask(){
 const text=document.getElementById('task-text').value;
@@ -501,9 +470,8 @@ const due=document.getElementById('task-due').value;
 if(!text)return alert('Preencha a tarefa.');
 if(editTaskIdx!=null){tasks[editTaskIdx]={text,priority,due,done:tasks[editTaskIdx].done};}
 else{tasks.push({text,priority,due,done:false});}
-localStorage.setItem('tasks',JSON.stringify(tasks));closeTaskModal();renderTasks();
+localStorage.setItem('tasks',JSON.stringify(tasks));closeTaskModal();renderTasks();renderCal();
 }
-function dk(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 function renderCal(){
 document.getElementById('cal-month-lbl').textContent=MONTHS[calM]+' '+calY;
 const first=new Date(calY,calM,1).getDay(),dim=new Date(calY,calM+1,0).getDate(),dip=new Date(calY,calM,0).getDate();
@@ -517,13 +485,20 @@ else if(day>dim){dt=new Date(calY,calM+1,nd++);other=true;}
 else{dt=new Date(calY,calM,day++);}
 const key=dk(dt),isT=dt.getTime()===today.getTime(),isS=dt.getTime()===selDate.getTime();
 const cls=other?'other':isT?'today':isS?'selected':'';
-const evs=events.filter(e=>e.date===key);
-const dots=evs.slice(0,3).map(e=>{
-const catColors={treino:'#16A34A',corrida:'#D97706',saude:'#2563EB',trabalho:'#334155',pessoal:'#DC2626'};
-return'<div class="cal-dot" style="background:'+(catColors[e.cat]||'#94A3B8')+'"></div>';
-}).join('');
-h+=`<td class="cal-cell"><div class="cal-inner" onclick="selDay(${dt.getFullYear()},${dt.getMonth()},${dt.getDate()})"><div class="cal-num ${cls}">${dt.getDate()}</div>`;
-if(dots)h+='<div class="cal-dots">'+dots+'</div>';
+const dots=[];
+const w2=getWorkoutForDate(dt);
+if(w2&&w2.day&&w2.day.t!=='Descanso')dots.push('#16A34A');
+const tasksOnDay=tasks.filter(t=>t.due===key&&!t.done);
+if(tasksOnDay.length){
+const hasHigh=tasksOnDay.some(t=>t.priority==='high');
+const hasMed=tasksOnDay.some(t=>t.priority==='medium');
+if(hasHigh)dots.push('#DC2626');
+else if(hasMed)dots.push('#2563EB');
+else dots.push('#16A34A');
+}
+const dotsHtml=dots.slice(0,3).map(c=>'<div class="cal-dot" style="background:'+c+'"></div>').join('');
+h+='<td class="cal-cell"><div class="cal-inner" onclick="selDay('+dt.getFullYear()+','+dt.getMonth()+','+dt.getDate()+')"><div class="cal-num '+cls+'">'+dt.getDate()+'</div>';
+if(dotsHtml)h+='<div class="cal-dots">'+dotsHtml+'</div>';
 h+='</div></td>';
 }
 h+='</tr>';
@@ -531,17 +506,37 @@ h+='</tr>';
 document.getElementById('cal-body').innerHTML=h;renderDetail();
 }
 function renderDetail(){
-const key=dk(selDate),evs=events.filter(e=>e.date===key);
+const key=dk(selDate);
 const lbl=DIAS[selDate.getDay()]+', '+selDate.getDate()+' de '+MONTHS[selDate.getMonth()];
 let h='<div class="cal-detail-lbl">'+lbl+'</div>';
-if(!evs.length){h+='<div class="cal-empty"><i class="ti ti-calendar-off" style="font-size:26px;display:block;margin-bottom:8px;color:#94A3B8"></i>Nenhum evento neste dia</div>';}
-else{
-h+='<div class="card" style="padding:4px 16px">';
-evs.forEach(e=>{
-const catColors={treino:'#16A34A',corrida:'#D97706',saude:'#2563EB',trabalho:'#334155',pessoal:'#DC2626'};
-h+=`<div class="cal-ev-item" onclick="editEvent(${events.indexOf(e)})"><div class="cal-ev-bar" style="background:${catColors[e.cat]||'#94A3B8'}"></div><div style="flex:1"><div style="font-size:11px;color:#64748B">${e.time}</div><div style="font-size:14px;font-weight:500;color:#000">${e.title}</div>${e.desc?'<div style="font-size:12px;color:#64748B">'+e.desc+'</div>':''}</div></div>`;
+const w=getWorkoutForDate(selDate);
+const tasksOnDay=tasks.filter(t=>t.due===key);
+let hasContent=false;
+if(w&&w.day){
+hasContent=true;
+const dn=w.dayName;
+const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
+h+='<div class="cal-section"><i class="ti ti-barbell" style="color:#16A34A"></i>Treino do dia · Semana '+w.weekNum+'</div>';
+h+='<div class="card" style="padding:8px 14px"><div class="treino-day-hdr"><span class="treino-day-badge '+badge+'">'+dn+'</span><span class="treino-day-title">'+w.day.t+'</span></div>';
+w.day.ex.forEach(e=>{
+const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includes('Fartlek')||e.includes('PROVA');
+h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+e+'</span></div>';
 });
 h+='</div>';
+}
+if(tasksOnDay.length){
+hasContent=true;
+const colors={high:'#DC2626',medium:'#2563EB',low:'#16A34A'};
+h+='<div class="cal-section"><i class="ti ti-checklist" style="color:#334155"></i>Tarefas do dia</div>';
+h+='<div class="card" style="padding:4px 16px">';
+tasksOnDay.forEach(t=>{
+const idx=tasks.indexOf(t);
+h+='<div class="todo-row"><span class="todo-dot" style="background:'+colors[t.priority]+'"></span><input type="checkbox" id="ct'+idx+'" '+(t.done?'checked':'')+' onchange="toggleTask('+idx+')"><label for="ct'+idx+'" class="'+(t.done?'done':'')+'">'+t.text+'</label></div>';
+});
+h+='</div>';
+}
+if(!hasContent){
+h+='<div class="cal-empty"><i class="ti ti-calendar-off" style="font-size:26px;display:block;margin-bottom:8px;color:#94A3B8"></i>Nenhum compromisso neste dia</div>';
 }
 document.getElementById('cal-detail').innerHTML=h;
 }
@@ -557,7 +552,6 @@ at.querySelector('i').style.color='#000';
 if(name==='calendario')renderCal();
 if(name==='treino')renderPlan();
 if(name==='medicoes'){renderMedTabs();renderMedChart();}
-if(name==='agenda')renderEvents();
 if(name==='tarefas')renderTasks();
 }
 const h=now.getHours();
