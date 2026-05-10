@@ -113,6 +113,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .treino-day-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;min-width:36px;text-align:center}
 .treino-day-title{font-size:13px;font-weight:500;color:#000}
 .phase-badge{display:inline-block;font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;margin-bottom:12px}
+.weight-btn{display:inline-flex;align-items:center;gap:4px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:2px 8px;font-size:11px;color:#2563EB!important;cursor:pointer;font-weight:500;margin-left:8px;white-space:nowrap}
+.weight-btn:hover{background:#DBEAFE}
+.weight-btn i{font-size:12px;color:#2563EB!important}
+.weight-current{color:#1E40AF!important;font-weight:600}
+.weight-empty{color:#94A3B8!important;font-style:italic}
+.ex-row-weight{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #CBD5E1;gap:8px;flex-wrap:wrap}
+.ex-row-weight:last-child{border-bottom:0}
+.weight-hist-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F1F5F9}
+.weight-hist-row:last-child{border-bottom:0}
+.weight-hist-date{font-size:12px;color:#64748B;min-width:60px}
+.weight-hist-val{font-size:14px;font-weight:600;color:#1E40AF;flex:1}
+.weight-hist-note{font-size:11px;color:#64748B;font-style:italic}
 </style>
 </head>
 <body>
@@ -175,6 +187,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha apenas os campos que deseja registrar.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="m-peso" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Água (%)</label><input type="number" id="m-agua" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Gordura (%)</label><input type="number" id="m-gordura" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Músculo (%)</label><input type="number" id="m-musculo" step="0.1" placeholder="opcional"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-task"><div class="modal"><h3 id="modal-task-title">Nova tarefa</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Tarefa</label><input type="text" id="task-text" placeholder="O que precisa ser feito?"></div><div class="modal-grid"><div class="modal-field"><label>Prioridade</label><select id="task-priority"><option value="high">🔴 Alta</option><option value="medium">🔵 Média</option><option value="low">🟢 Baixa</option></select></div><div class="modal-field"><label>Prazo</label><input type="date" id="task-due"></div></div></div><div class="modal-btns" id="task-btns"><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-grid"><div class="modal-field"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-field"><label>Hora</label><input type="time" id="ev-time"></div></div><div class="modal-field" style="margin-top:10px"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option></select></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-weight"><div class="modal"><h3 id="modal-weight-title">Registrar carga</h3><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -262,6 +275,15 @@ if(weekIdx>=plan.length)return null;
 const wk=plan[weekIdx];
 return{phase:wk.phase,weekNum:wk.num,day:wk.template[dayIdx],dayName:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'][dayIdx]};
 }
+let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
+function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Tempo Run|Intervalado|Shakeout|Educativos|strides|Sauna|Descanso|Alongamento|Recuperação|Core|Prancha|Abdominal|Oblíquos/i.test(e);}
+function getExKey(name){
+return name.replace(/\s*-?\s*\d+x\d+(-\d+)?.*$/i,'').replace(/\s+/g,' ').trim().toLowerCase();
+}
+function getLastWeight(exKey){
+const arr=(weightLog[exKey]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+return arr[0]||null;
+}
 function renderPlan(){
 const c=document.getElementById('treino-content');
 let cw=Math.floor((today-START_DATE)/(7*24*60*60*1000));
@@ -283,14 +305,101 @@ const dn=dayNames[idx];
 const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
 h+=`<div class="treino-day"><div class="treino-day-hdr"><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${d.t}</span></div><div class="card" style="padding:6px 12px">`;
 d.ex.forEach(e=>{
-const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includes('Fartlek')||e.includes('PROVA');
-h+=`<div class="ex-row"><span class="ex-name" style="color:${isR?'#16A34A':'#000'}">${e}</span></div>`;
+const isCard=isCardio(e);
+if(isCard){
+h+=`<div class="ex-row"><span class="ex-name" style="color:#16A34A">${e}</span></div>`;
+}else{
+const exKey=getExKey(e);
+const last=getLastWeight(exKey);
+const lastTxt=last?`${last.weight}kg`:'+ peso';
+const cls=last?'weight-current':'weight-empty';
+h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${e}</span><button class="weight-btn" onclick="openWeightModal('${exKey.replace(/'/g,"\\'")}','${e.replace(/'/g,"\\'")}')"><i class="ti ti-barbell"></i><span class="${cls}">${lastTxt}</span></button></div>`;
+}
 });
 h+=`</div></div>`;
 });
 h+=`</div>`;
 }
 c.innerHTML=h;
+}
+let currentExKey=null,currentExName=null,editWeightIdx=null,weightChartInst=null;
+function openWeightModal(exKey,exName){
+currentExKey=exKey;currentExName=exName;editWeightIdx=null;
+document.getElementById('modal-weight-title').textContent=exName;
+document.getElementById('modal-weight-hint').textContent='Registre o peso usado neste exercício para acompanhar sua evolução.';
+document.getElementById('w-data').value=new Date().toISOString().split('T')[0];
+const last=getLastWeight(exKey);
+document.getElementById('w-peso').value='';
+document.getElementById('w-reps').value='';
+document.getElementById('w-note').value='';
+if(last)document.getElementById('w-peso').placeholder='Último: '+last.weight+'kg';
+renderWeightHistory();
+renderWeightChart();
+document.getElementById('modal-weight').classList.add('open');
+}
+function closeWeightModal(){document.getElementById('modal-weight').classList.remove('open');if(weightChartInst){weightChartInst.destroy();weightChartInst=null;}currentExKey=null;editWeightIdx=null;}
+function saveWeight(){
+const data=document.getElementById('w-data').value;
+const peso=parseFloat(document.getElementById('w-peso').value);
+const reps=document.getElementById('w-reps').value.trim();
+const note=document.getElementById('w-note').value.trim();
+if(!data||isNaN(peso))return alert('Informe data e peso.');
+if(!weightLog[currentExKey])weightLog[currentExKey]=[];
+const entry={date:data,weight:peso,reps,note};
+if(editWeightIdx!=null){weightLog[currentExKey][editWeightIdx]=entry;editWeightIdx=null;}
+else{
+const existIdx=weightLog[currentExKey].findIndex(w=>w.date===data);
+if(existIdx>=0){if(!confirm('Já existe um registro nesta data. Substituir?'))return;weightLog[currentExKey][existIdx]=entry;}
+else weightLog[currentExKey].push(entry);
+}
+weightLog[currentExKey].sort((a,b)=>a.date.localeCompare(b.date));
+localStorage.setItem('weightLog',JSON.stringify(weightLog));
+document.getElementById('w-peso').value='';
+document.getElementById('w-reps').value='';
+document.getElementById('w-note').value='';
+renderWeightHistory();renderWeightChart();renderPlan();
+}
+function editWeight(i){
+const w=weightLog[currentExKey][i];
+editWeightIdx=i;
+document.getElementById('w-data').value=w.date;
+document.getElementById('w-peso').value=w.weight;
+document.getElementById('w-reps').value=w.reps||'';
+document.getElementById('w-note').value=w.note||'';
+document.getElementById('w-peso').focus();
+}
+function deleteWeight(i){
+if(!confirm('Excluir este registro?'))return;
+weightLog[currentExKey].splice(i,1);
+if(!weightLog[currentExKey].length)delete weightLog[currentExKey];
+localStorage.setItem('weightLog',JSON.stringify(weightLog));
+renderWeightHistory();renderWeightChart();renderPlan();
+}
+function renderWeightHistory(){
+const log=weightLog[currentExKey]||[];
+const container=document.getElementById('weight-history');
+const label=document.getElementById('weight-hist-label');
+if(!log.length){container.innerHTML='';label.style.display='none';return;}
+label.style.display='block';
+let h='';
+[...log].reverse().forEach((w,ri)=>{
+const i=log.length-1-ri;
+const d=new Date(w.date);
+const dlbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
+h+='<div class="weight-hist-row"><span class="weight-hist-date">'+dlbl+'</span><div style="flex:1"><span class="weight-hist-val">'+w.weight+'kg</span>'+(w.reps?' <span style="font-size:11px;color:#64748B">('+w.reps+' reps)</span>':'')+(w.note?'<div class="weight-hist-note">'+w.note+'</div>':'')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editWeight('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteWeight('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
+});
+container.innerHTML=h;
+}
+function renderWeightChart(){
+const log=(weightLog[currentExKey]||[]).slice().sort((a,b)=>a.date.localeCompare(b.date));
+const wrap=document.getElementById('weight-chart-wrap');
+if(log.length<2){wrap.style.display='none';if(weightChartInst){weightChartInst.destroy();weightChartInst=null;}return;}
+wrap.style.display='block';
+const labels=log.map(w=>{const d=new Date(w.date);return d.getDate()+'/'+(d.getMonth()+1);});
+const data=log.map(w=>w.weight);
+if(weightChartInst)weightChartInst.destroy();
+const ctx=document.getElementById('weightChart').getContext('2d');
+weightChartInst=new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderColor:'#2563EB',backgroundColor:'#2563EB18',borderWidth:2,pointRadius:4,pointBackgroundColor:'#2563EB',fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'kg'}}},scales:{x:{display:true,ticks:{font:{size:9},color:'#94A3B8'}},y:{display:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',maxTicksLimit:5,callback:v=>v+'kg'}}}}});
 }
 let wkTmpl=JSON.parse(localStorage.getItem('workoutTemplate')||'null');
 if(!wkTmpl){
