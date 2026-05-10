@@ -133,6 +133,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <div class="card" style="padding:12px"><table class="cal-table"><thead><tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th></tr></thead><tbody id="cal-body"></tbody></table></div>
 <div id="cal-detail"></div>
+<button class="add-btn" onclick="openEventModal()"><i class="ti ti-plus"></i>Novo evento</button>
 </div>
 <div class="sec" id="sec-treino">
 <div class="treino-tip"><strong>META:</strong> 10km < 55min (pace 5:30/km) · Maratona de Munique · 11/Out/2026</div>
@@ -173,6 +174,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha apenas os campos que deseja registrar.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="m-peso" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Água (%)</label><input type="number" id="m-agua" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Gordura (%)</label><input type="number" id="m-gordura" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Músculo (%)</label><input type="number" id="m-musculo" step="0.1" placeholder="opcional"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-task"><div class="modal"><h3 id="modal-task-title">Nova tarefa</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Tarefa</label><input type="text" id="task-text" placeholder="O que precisa ser feito?"></div><div class="modal-grid"><div class="modal-field"><label>Prioridade</label><select id="task-priority"><option value="high">🔴 Alta</option><option value="medium">🔵 Média</option><option value="low">🟢 Baixa</option></select></div><div class="modal-field"><label>Prazo</label><input type="date" id="task-due"></div></div></div><div class="modal-btns" id="task-btns"><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-grid"><div class="modal-field"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-field"><label>Hora</label><input type="time" id="ev-time"></div></div><div class="modal-field" style="margin-top:10px"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option></select></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -410,6 +412,45 @@ else if(ex>=0){if(peso!=null)medData[ex].peso=peso;if(agua!=null)medData[ex].agu
 else{medData.push({data,peso,agua,gordura,musculo});medData.sort((a,b)=>a.data.localeCompare(b.data));}
 localStorage.setItem('medData',JSON.stringify(medData));closeMedModal();renderMedChart();
 }
+let events=JSON.parse(localStorage.getItem('events')||'[]');
+let editEvIdx=null;
+const EV_COLORS={treino:'#16A34A',corrida:'#D97706',saude:'#2563EB',trabalho:'#334155',pessoal:'#DC2626'};
+const EV_LABELS={treino:'🏋️ Treino',corrida:'🏃 Corrida',saude:'🩺 Saúde',trabalho:'💼 Trabalho',pessoal:'🎉 Pessoal'};
+function openEventModal(idx,presetDate){
+editEvIdx=idx!=null?idx:null;
+document.getElementById('modal-event-title').textContent=editEvIdx!=null?'Editar evento':'Novo evento';
+if(editEvIdx!=null){
+const e=events[editEvIdx];
+document.getElementById('ev-title').value=e.title;
+document.getElementById('ev-date').value=e.date;
+document.getElementById('ev-time').value=e.time||'';
+document.getElementById('ev-desc').value=e.desc||'';
+document.getElementById('ev-cat').value=e.cat;
+document.getElementById('ev-btns').innerHTML='<button class="btn-del" onclick="deleteEvent('+editEvIdx+');closeEventModal()">Excluir</button><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button>';
+}else{
+document.getElementById('ev-title').value='';
+document.getElementById('ev-date').value=presetDate||dk(selDate);
+document.getElementById('ev-time').value='';
+document.getElementById('ev-desc').value='';
+document.getElementById('ev-cat').value='pessoal';
+document.getElementById('ev-btns').innerHTML='<button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button>';
+}
+document.getElementById('modal-event').classList.add('open');
+}
+function editEvent(i){openEventModal(i);}
+function deleteEvent(i){if(!confirm('Excluir evento?'))return;events.splice(i,1);localStorage.setItem('events',JSON.stringify(events));renderCal();}
+function closeEventModal(){document.getElementById('modal-event').classList.remove('open');editEvIdx=null;}
+function saveEvent(){
+const title=document.getElementById('ev-title').value.trim();
+const date=document.getElementById('ev-date').value;
+const time=document.getElementById('ev-time').value;
+const desc=document.getElementById('ev-desc').value.trim();
+const cat=document.getElementById('ev-cat').value;
+if(!title||!date)return alert('Preencha título e data.');
+if(editEvIdx!=null){events[editEvIdx]={title,date,time,desc,cat};}
+else{events.push({title,date,time,desc,cat});}
+localStorage.setItem('events',JSON.stringify(events));closeEventModal();renderCal();
+}
 let tasks=JSON.parse(localStorage.getItem('tasks')||'[{"text":"Entregar relatório Q2","priority":"high","due":"2025-05-10","done":false},{"text":"Revisar proposta do cliente","priority":"high","due":"2025-05-11","done":false},{"text":"Agendar call com fornecedor","priority":"medium","due":"","done":false},{"text":"Comprar suplementos","priority":"low","due":"","done":false}]');
 let editTaskIdx=null;
 function renderTasks(){
@@ -496,6 +537,8 @@ if(hasHigh)dots.push('#DC2626');
 else if(hasMed)dots.push('#2563EB');
 else dots.push('#16A34A');
 }
+const evsOnDay=events.filter(e=>e.date===key);
+evsOnDay.slice(0,2).forEach(e=>{dots.push(EV_COLORS[e.cat]||'#94A3B8');});
 const dotsHtml=dots.slice(0,3).map(c=>'<div class="cal-dot" style="background:'+c+'"></div>').join('');
 h+='<td class="cal-cell"><div class="cal-inner" onclick="selDay('+dt.getFullYear()+','+dt.getMonth()+','+dt.getDate()+')"><div class="cal-num '+cls+'">'+dt.getDate()+'</div>';
 if(dotsHtml)h+='<div class="cal-dots">'+dotsHtml+'</div>';
@@ -511,7 +554,18 @@ const lbl=DIAS[selDate.getDay()]+', '+selDate.getDate()+' de '+MONTHS[selDate.ge
 let h='<div class="cal-detail-lbl">'+lbl+'</div>';
 const w=getWorkoutForDate(selDate);
 const tasksOnDay=tasks.filter(t=>t.due===key);
+const evsOnDay=events.filter(e=>e.date===key).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
 let hasContent=false;
+if(evsOnDay.length){
+hasContent=true;
+h+='<div class="cal-section"><i class="ti ti-calendar-event" style="color:#334155"></i>Eventos</div>';
+h+='<div class="card" style="padding:4px 16px">';
+evsOnDay.forEach(e=>{
+const idx=events.indexOf(e);
+h+='<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #F1F5F9"><div style="width:3px;border-radius:99px;background:'+(EV_COLORS[e.cat]||'#94A3B8')+';align-self:stretch;min-height:36px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:11px;color:#64748B">'+(e.time||'Sem horário')+' · '+EV_LABELS[e.cat]+'</div><div style="font-size:14px;font-weight:500;color:#000">'+e.title+'</div>'+(e.desc?'<div style="font-size:12px;color:#64748B;margin-top:1px">'+e.desc+'</div>':'')+'</div><div class="ex-actions"><button class="icon-btn" onclick="editEvent('+idx+')"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteEvent('+idx+')"><i class="ti ti-trash"></i></button></div></div>';
+});
+h+='</div>';
+}
 if(w&&w.day){
 hasContent=true;
 const dn=w.dayName;
