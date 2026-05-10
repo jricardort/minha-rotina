@@ -609,7 +609,7 @@ if(name==='medicoes'){renderMedTabs();renderMedChart();}
 if(name==='tarefas')renderTasks();
 }
 const h=now.getHours();
-document.getElementById('greeting').textContent=h<12?'Bom dia!':h<18?'Boa tarde!':'Boa noite!';
+document.getElementById('greeting').textContent=h<12?'Bom dia, Zé Ricardo!':h<18?'Boa tarde, Zé Ricardo!':'Boa noite, Zé Ricardo!';
 document.getElementById('subdate').textContent=DIAS[now.getDay()]+', '+now.getDate()+' de '+MESES_S[now.getMonth()]+' de '+now.getFullYear();
 document.querySelectorAll('.tab').forEach(t=>t.querySelector('i').style.color='#94A3B8');
 document.getElementById('tab-calendario').querySelector('i').style.color='#000';
