@@ -560,7 +560,7 @@ if(e.proteina!=null)vals.push('<span class="hist-val" style="color:#0891B2">'+e.
 if(e.visceral!=null)vals.push('<span class="hist-val" style="color:#EA580C">Visc '+e.visceral+'</span>');
 if(e.bodyAge!=null)vals.push('<span class="hist-val" style="color:#6B21A8">Age '+e.bodyAge+'</span>');
 if(e.basal!=null)vals.push('<span class="hist-val" style="color:#B45309">'+e.basal+'kcal</span>');
-h+='<div class="hist-row"><div style="display:flex;justify-content:space-between;align-items:center;width:100%"><span class="hist-date" style="min-width:52px">'+lbl+'</span><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editMed('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div><div class="hist-vals" style="flex-wrap:wrap;gap:4px;margin-top:4px">'+vals.join('')+'</div></div>';
+h+='<div class="hist-row" style="align-items:flex-start"><span class="hist-date" style="min-width:52px;padding-top:2px">'+lbl+'</span><div class="hist-vals" style="flex-wrap:wrap;gap:4px 8px">'+vals.join('')+'</div><div class="hist-actions" style="flex-shrink:0"><button class="hist-btn edit-btn" onclick="editMed('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
 });
 document.getElementById('med-history').innerHTML=h||'<div style="font-size:13px;color:#94A3B8;padding:8px 0">Nenhum registro ainda.</div>';
 }
