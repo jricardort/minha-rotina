@@ -12,7 +12,15 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#0F172A}
 .wrap{max-width:400px;margin:0 auto;min-height:100vh;padding-bottom:40px}
-.header{padding:18px 16px 10px;border-bottom:1px solid #CBD5E1;background:#fff;position:sticky;top:0;z-index:20}
+.header{padding:18px 16px 10px;border-bottom:1px solid #CBD5E1;background:#fff;position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.auth-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.auth-btn{background:#F1F5F9;border:1px solid #CBD5E1;border-radius:99px;padding:6px 12px;font-size:12px;color:#334155;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500;white-space:nowrap}
+.auth-btn:hover{background:#E2E8F0}
+.auth-btn i{font-size:14px;color:#64748B}
+.auth-btn.logged-in{background:#F0FDF4;border-color:#86EFAC;color:#15803D}
+.auth-btn.logged-in i{color:#16A34A!important}
+.sync-status{font-size:10px;color:#64748B;text-align:right;padding:0 4px;min-height:12px;cursor:default}
+.sync-status.action{color:#2563EB;cursor:pointer;text-decoration:underline}
 .greeting{font-size:19px;font-weight:500;color:#000}
 .subdate{font-size:12px;color:#64748B;margin-top:2px}
 .nav{display:flex;background:#F8F9FA;border-bottom:1px solid #CBD5E1;position:sticky;top:62px;z-index:15}
@@ -148,7 +156,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </head>
 <body>
 <div class="wrap">
-<div class="header"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div>
+<div class="header"><div style="flex:1;min-width:0"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div><div class="auth-wrap"><button class="auth-btn" id="auth-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i> Entrar</button><span class="sync-status" id="sync-status"></span></div></div>
 <div class="nav">
 <button class="tab active" onclick="switchTab('calendario')" id="tab-calendario"><i class="ti ti-calendar-month"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('treino')" id="tab-treino"><i class="ti ti-barbell"></i><span class="tab-dot"></span></button>
@@ -807,6 +815,153 @@ document.getElementById('subdate').textContent=DIAS[now.getDay()]+', '+now.getDa
 document.querySelectorAll('.tab').forEach(t=>t.querySelector('i').style.color='#94A3B8');
 document.getElementById('tab-calendario').querySelector('i').style.color='#000';
 renderCal();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDRcptlyglwaAIHLzQz23qQ6p3Rkb7ZU_w",
+  authDomain: "zes-rotina.firebaseapp.com",
+  projectId: "zes-rotina",
+  storageBucket: "zes-rotina.firebasestorage.app",
+  messagingSenderId: "457351593568",
+  appId: "1:457351593568:web:2259e5649cf42bad1e4d05"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+const provider = new GoogleAuthProvider();
+
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate'];
+const origSetItem = localStorage.setItem.bind(localStorage);
+let currentUser = null;
+let syncTimer = null;
+let cloudUnsub = null;
+let suppressSync = false;
+
+function setStatus(text, action){
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  el.textContent = text || '';
+  el.classList.toggle('action', !!action);
+  el.onclick = action || null;
+}
+
+localStorage.setItem = function(key, value) {
+  origSetItem(key, value);
+  if (!suppressSync && KEYS.includes(key) && currentUser) {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => syncToCloud(), 800);
+  }
+};
+
+async function syncToCloud(){
+  if (!currentUser) return;
+  try {
+    setStatus('Sincronizando…');
+    const data = { lastSync: new Date().toISOString() };
+    KEYS.forEach(k => {
+      const v = localStorage.getItem(k);
+      if (v !== null && v !== 'null') {
+        try { data[k] = JSON.parse(v); } catch { /* ignore */ }
+      }
+    });
+    await setDoc(doc(db, 'users', currentUser.uid, 'data', 'main'), data, { merge: true });
+    setStatus('Sincronizado ✓');
+    setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Sincronizado ✓') setStatus(''); }, 2500);
+  } catch (e) {
+    console.error('Erro sync:', e);
+    setStatus('Erro ao sincronizar');
+  }
+}
+
+function applyCloudData(d){
+  let changed = false;
+  suppressSync = true;
+  KEYS.forEach(k => {
+    if (d[k] === undefined || d[k] === null) return;
+    const newVal = JSON.stringify(d[k]);
+    if (localStorage.getItem(k) !== newVal) {
+      origSetItem(k, newVal);
+      changed = true;
+    }
+  });
+  suppressSync = false;
+  return changed;
+}
+
+async function loadFromCloud(uid){
+  try {
+    setStatus('Carregando da nuvem…');
+    const docRef = doc(db, 'users', uid, 'data', 'main');
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      const changed = applyCloudData(snap.data());
+      if (changed) {
+        setStatus('Atualizando…');
+        setTimeout(() => location.reload(), 250);
+        return;
+      }
+      setStatus('Sincronizado ✓');
+      setTimeout(() => setStatus(''), 2000);
+    } else {
+      await syncToCloud();
+    }
+    if (cloudUnsub) cloudUnsub();
+    cloudUnsub = onSnapshot(docRef, (s) => {
+      if (s.metadata.hasPendingWrites) return;
+      const d = s.data();
+      if (!d) return;
+      const changed = applyCloudData(d);
+      if (changed) setStatus('Atualizado em outro dispositivo — clique para recarregar', () => location.reload());
+    });
+  } catch (e) {
+    console.error('Erro load:', e);
+    setStatus('Erro ao carregar');
+  }
+}
+
+window.handleAuthClick = async () => {
+  if (currentUser) {
+    if (confirm('Sair da conta? Seus dados continuam salvos na nuvem.')) {
+      try { await signOut(auth); } catch(e) { console.error(e); }
+    }
+  } else {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (e) {
+      if (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment') {
+        await signInWithRedirect(auth, provider);
+      } else if (e.code !== 'auth/cancelled-popup-request' && e.code !== 'auth/popup-closed-by-user') {
+        alert('Erro ao entrar: ' + e.message);
+      }
+    }
+  }
+};
+
+try { await getRedirectResult(auth); } catch (e) { console.error('Redirect err:', e); }
+
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  const btn = document.getElementById('auth-btn');
+  if (!btn) return;
+  if (user) {
+    const name = (user.displayName || '').split(' ')[0] || 'Conectado';
+    btn.innerHTML = '<i class="ti ti-cloud-check"></i> ' + name;
+    btn.title = user.email + ' — clique para sair';
+    btn.classList.add('logged-in');
+    await loadFromCloud(user.uid);
+  } else {
+    btn.innerHTML = '<i class="ti ti-cloud"></i> Entrar';
+    btn.title = 'Entrar com Google para sincronizar';
+    btn.classList.remove('logged-in');
+    if (cloudUnsub) { cloudUnsub(); cloudUnsub = null; }
+    setStatus('');
+  }
+});
 </script>
 </body>
 </html>
