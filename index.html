@@ -815,6 +815,23 @@ document.getElementById('subdate').textContent=DIAS[now.getDay()]+', '+now.getDa
 document.querySelectorAll('.tab').forEach(t=>t.querySelector('i').style.color='#94A3B8');
 document.getElementById('tab-calendario').querySelector('i').style.color='#000';
 renderCal();
+window.refreshDataFromStorage=function(){
+try{
+const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{};
+const wkR=localStorage.getItem('workoutTemplate');if(wkR&&wkR!=='null'){const p=JSON.parse(wkR);if(p)wkTmpl=p;}
+const mdR=localStorage.getItem('medData');if(mdR){const p=JSON.parse(mdR);if(Array.isArray(p))medData=p;}
+const evR=localStorage.getItem('events');events=evR?JSON.parse(evR)||[]:[];
+const tkR=localStorage.getItem('tasks');tasks=tkR?JSON.parse(tkR)||[]:[];
+renderCal();
+const act=document.querySelector('.sec.active');
+if(act){
+const id=act.id;
+if(id==='sec-treino')renderPlan();
+else if(id==='sec-medicoes'){renderMedTabs();renderMedChart();}
+else if(id==='sec-tarefas')renderTasks();
+}
+}catch(e){console.error('Refresh err:',e);}
+};
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
@@ -841,6 +858,14 @@ let currentUser = null;
 let syncTimer = null;
 let cloudUnsub = null;
 let suppressSync = false;
+let lastAppliedHash = {};
+
+function stableStr(v){
+  if (v === null || v === undefined) return JSON.stringify(v);
+  if (typeof v !== 'object') return JSON.stringify(v);
+  if (Array.isArray(v)) return '[' + v.map(stableStr).join(',') + ']';
+  return '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + stableStr(v[k])).join(',') + '}';
+}
 
 function setStatus(text, action){
   const el = document.getElementById('sync-status');
@@ -883,10 +908,18 @@ function applyCloudData(d){
   suppressSync = true;
   KEYS.forEach(k => {
     if (d[k] === undefined || d[k] === null) return;
-    const newVal = JSON.stringify(d[k]);
-    if (localStorage.getItem(k) !== newVal) {
-      origSetItem(k, newVal);
+    const cloudHash = stableStr(d[k]);
+    const localRaw = localStorage.getItem(k);
+    let localHash = null;
+    if (localRaw !== null && localRaw !== 'null') {
+      try { localHash = stableStr(JSON.parse(localRaw)); } catch {}
+    }
+    if (cloudHash !== localHash) {
+      origSetItem(k, JSON.stringify(d[k]));
+      lastAppliedHash[k] = cloudHash;
       changed = true;
+    } else {
+      lastAppliedHash[k] = cloudHash;
     }
   });
   suppressSync = false;
@@ -900,13 +933,11 @@ async function loadFromCloud(uid){
     const snap = await getDoc(docRef);
     if (snap.exists()) {
       const changed = applyCloudData(snap.data());
-      if (changed) {
-        setStatus('Atualizando…');
-        setTimeout(() => location.reload(), 250);
-        return;
+      if (changed && window.refreshDataFromStorage) {
+        window.refreshDataFromStorage();
       }
       setStatus('Sincronizado ✓');
-      setTimeout(() => setStatus(''), 2000);
+      setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Sincronizado ✓') setStatus(''); }, 2000);
     } else {
       await syncToCloud();
     }
@@ -916,7 +947,13 @@ async function loadFromCloud(uid){
       const d = s.data();
       if (!d) return;
       const changed = applyCloudData(d);
-      if (changed) setStatus('Atualizado em outro dispositivo — clique para recarregar', () => location.reload());
+      if (changed) {
+        setStatus('Atualizado em outro dispositivo — clique para aplicar', () => {
+          if (window.refreshDataFromStorage) window.refreshDataFromStorage();
+          setStatus('Atualizado ✓');
+          setTimeout(() => setStatus(''), 2000);
+        });
+      }
     });
   } catch (e) {
     console.error('Erro load:', e);
