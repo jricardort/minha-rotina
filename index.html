@@ -73,7 +73,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .cal-empty{font-size:13px;color:#64748B;text-align:center;padding:20px 0}
 .med-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .chart-wrap{width:100%;height:140px;position:relative;margin:8px 0 4px}
-.med-latest{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.med-latest{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .med-card{background:#F8F9FA;border:1px solid #CBD5E1;border-radius:8px;padding:10px;text-align:center}
 .med-card-val{font-size:18px;font-weight:500}
 .med-card-lbl{font-size:10px;color:#64748B;margin-top:2px}
@@ -203,7 +203,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <button class="add-btn" onclick="openTaskModal()"><i class="ti ti-plus"></i>Nova tarefa</button>
 </div>
 </div>
-<div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha apenas os campos que deseja registrar.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="m-peso" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Água (%)</label><input type="number" id="m-agua" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Gordura (%)</label><input type="number" id="m-gordura" step="0.1" placeholder="opcional"></div><div class="modal-field"><label>Músculo (%)</label><input type="number" id="m-musculo" step="0.1" placeholder="opcional"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha os campos disponíveis na sua balança. IMC, Gordura (kg) e Músculo (kg) são calculados automaticamente.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="m-peso" step="0.1" placeholder="Ex: 82.5"></div><div class="modal-field"><label>% Gordura</label><input type="number" id="m-gordura" step="0.1" placeholder="Ex: 22.0"></div><div class="modal-field"><label>% Músculo</label><input type="number" id="m-musculo" step="0.1" placeholder="Ex: 38.0"></div><div class="modal-field"><label>% Proteína</label><input type="number" id="m-proteina" step="0.1" placeholder="Ex: 17.5"></div><div class="modal-field"><label>Visceral Fat Rating</label><input type="number" id="m-visceral" step="1" placeholder="Ex: 8"></div><div class="modal-field"><label>Body Age (anos)</label><input type="number" id="m-bodyAge" step="1" placeholder="Ex: 34"></div><div class="modal-field" style="grid-column:1/-1"><label>Basal (kcal)</label><input type="number" id="m-basal" step="1" placeholder="Ex: 1850"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-task"><div class="modal"><h3 id="modal-task-title">Nova tarefa</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Tarefa</label><input type="text" id="task-text" placeholder="O que precisa ser feito?"></div><div class="modal-grid"><div class="modal-field"><label>Prioridade</label><select id="task-priority"><option value="high">🔴 Alta</option><option value="medium">🔵 Média</option><option value="low">🟢 Baixa</option></select></div><div class="modal-field"><label>Prazo</label><input type="date" id="task-due"></div></div></div><div class="modal-btns" id="task-btns"><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-field" style="margin-top:10px"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option></select></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><h3 id="modal-weight-title">Registrar carga</h3><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" onclick="saveWeight()">Salvar</button></div></div></div>
@@ -485,11 +485,27 @@ localStorage.setItem('workoutTemplate',JSON.stringify(wkTmpl));closeWorkoutModal
 function closeWorkoutModal(){document.getElementById('modal-workout').classList.remove('open');}
 function openInfoModal(){document.getElementById('modal-info').classList.add('open');}
 function closeInfoModal(){document.getElementById('modal-info').classList.remove('open');}
-const medMeta=[{key:'peso',label:'Peso',unit:'kg',color:'#2563EB',decimals:1},{key:'imc',label:'IMC',unit:'',color:'#7C3AED',decimals:1},{key:'agua',label:'Água',unit:'%',color:'#0891B2',decimals:1},{key:'gordura',label:'Gordura',unit:'%',color:'#DC2626',decimals:1},{key:'musculo',label:'Músculo',unit:'%',color:'#16A34A',decimals:1}];
+const medMeta=[
+{key:'peso',label:'Peso',unit:'kg',color:'#2563EB',decimals:1,input:true,goodDown:true},
+{key:'imc',label:'IMC',unit:'',color:'#7C3AED',decimals:1,input:false,goodDown:true},
+{key:'gordura',label:'% Gordura',unit:'%',color:'#DC2626',decimals:1,input:true,goodDown:true},
+{key:'gorduraKg',label:'Gordura',unit:'kg',color:'#EF4444',decimals:1,input:false,goodDown:true},
+{key:'musculo',label:'% Músculo',unit:'%',color:'#16A34A',decimals:1,input:true,goodDown:false},
+{key:'musculoKg',label:'Músculo',unit:'kg',color:'#15803D',decimals:1,input:false,goodDown:false},
+{key:'proteina',label:'% Proteína',unit:'%',color:'#0891B2',decimals:1,input:true,goodDown:false},
+{key:'visceral',label:'Visceral Fat',unit:'',color:'#EA580C',decimals:0,input:true,goodDown:true},
+{key:'bodyAge',label:'Body Age',unit:'anos',color:'#6B21A8',decimals:0,input:true,goodDown:true},
+{key:'basal',label:'Basal',unit:'kcal',color:'#B45309',decimals:0,input:true,goodDown:false}
+];
 let medData=JSON.parse(localStorage.getItem('medData')||'[{"data":"2025-03-01","peso":83.5,"agua":53.2,"gordura":24.1,"musculo":36.8},{"data":"2025-04-01","peso":82.1,"agua":54.2,"gordura":23,"musculo":37.5},{"data":"2025-05-01","peso":81,"agua":55,"gordura":22,"musculo":38.2}]');
 let editMedIdx=null,currentMed='peso',chartInstance=null;
 function calcIMC(p){return p!=null?+(p/3.0276).toFixed(1):null;}
-function getMedVal(e,k){return k==='imc'?calcIMC(e.peso):e[k];}
+function getMedVal(e,k){
+if(k==='imc')return calcIMC(e.peso);
+if(k==='gorduraKg')return(e.peso!=null&&e.gordura!=null)?+(e.peso*e.gordura/100).toFixed(1):null;
+if(k==='musculoKg')return(e.peso!=null&&e.musculo!=null)?+(e.peso*e.musculo/100).toFixed(1):null;
+return e[k]??null;
+}
 function getSeriesCarry(k){let l=null;return medData.map(e=>{const v=getMedVal(e,k);if(v!=null)l=v;return l;});}
 function getPointsReal(k){return medData.map(e=>{const v=getMedVal(e,k);return v!=null?v:null;});}
 function renderMedTabs(){
@@ -517,12 +533,12 @@ function prevReal(k){let f=false;for(let i=medData.length-1;i>=0;i--){const v=ge
 let h='';
 medMeta.forEach(m=>{
 const val=lastReal(m.key),pval=prevReal(m.key);
-if(val==null){h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">—</div><div class="med-card-lbl">'+m.label+'</div><div class="med-card-delta">sem dados</div></div>';return;}
-const diff=pval!=null?+(val-pval).toFixed(1):null;
-const gd=['peso','imc','gordura'].includes(m.key);
-const cls=diff==null||diff===0?'':gd?diff<0?'delta-good':'delta-bad':diff>0?'delta-good':'delta-bad';
+const calcTag=!m.input?'<span style="font-size:9px;color:#94A3B8;margin-left:2px">calc</span>':'';
+if(val==null){h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">—</div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta">sem dados</div></div>';return;}
+const diff=pval!=null?+(val-pval).toFixed(m.decimals):null;
+const cls=diff==null||diff===0?'':m.goodDown?diff<0?'delta-good':'delta-bad':diff>0?'delta-good':'delta-bad';
 const sign=diff!=null&&diff>0?'+':'';
-h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">'+val.toFixed(m.decimals)+'<span style="font-size:10px;color:#64748B">'+m.unit+'</span></div><div class="med-card-lbl">'+m.label+'</div><div class="med-card-delta '+cls+'">'+(diff!=null&&diff!==0?sign+diff:'—')+'</div></div>';
+h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">'+val.toFixed(m.decimals)+'<span style="font-size:10px;color:#64748B"> '+m.unit+'</span></div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta '+cls+'">'+(diff!=null&&diff!==0?sign+diff.toFixed(m.decimals):'—')+'</div></div>';
 });
 document.getElementById('med-latest').innerHTML=h;
 }
@@ -534,27 +550,31 @@ const d=new Date(e.data);
 const lbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
 const vals=[];
 if(e.peso!=null)vals.push('<span class="hist-val" style="color:#2563EB">'+e.peso+'kg</span>');
-if(e.gordura!=null)vals.push('<span class="hist-val" style="color:#DC2626">'+e.gordura+'%g</span>');
-if(e.musculo!=null)vals.push('<span class="hist-val" style="color:#16A34A">'+e.musculo+'%m</span>');
-if(e.agua!=null)vals.push('<span class="hist-val" style="color:#0891B2">'+e.agua+'%a</span>');
-h+='<div class="hist-row"><span class="hist-date">'+lbl+'</span><div class="hist-vals">'+vals.join('')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editMed('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
+const imc=calcIMC(e.peso);
+if(imc!=null)vals.push('<span class="hist-val" style="color:#7C3AED">IMC '+imc+'</span>');
+if(e.gordura!=null)vals.push('<span class="hist-val" style="color:#DC2626">'+e.gordura+'%gord</span>');
+if(e.peso!=null&&e.gordura!=null)vals.push('<span class="hist-val" style="color:#EF4444">'+(e.peso*e.gordura/100).toFixed(1)+'kg gord</span>');
+if(e.musculo!=null)vals.push('<span class="hist-val" style="color:#16A34A">'+e.musculo+'%musc</span>');
+if(e.peso!=null&&e.musculo!=null)vals.push('<span class="hist-val" style="color:#15803D">'+(e.peso*e.musculo/100).toFixed(1)+'kg musc</span>');
+if(e.proteina!=null)vals.push('<span class="hist-val" style="color:#0891B2">'+e.proteina+'%prot</span>');
+if(e.visceral!=null)vals.push('<span class="hist-val" style="color:#EA580C">Visc '+e.visceral+'</span>');
+if(e.bodyAge!=null)vals.push('<span class="hist-val" style="color:#6B21A8">Age '+e.bodyAge+'</span>');
+if(e.basal!=null)vals.push('<span class="hist-val" style="color:#B45309">'+e.basal+'kcal</span>');
+h+='<div class="hist-row"><div style="display:flex;justify-content:space-between;align-items:center;width:100%"><span class="hist-date" style="min-width:52px">'+lbl+'</span><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editMed('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div><div class="hist-vals" style="flex-wrap:wrap;gap:4px;margin-top:4px">'+vals.join('')+'</div></div>';
 });
 document.getElementById('med-history').innerHTML=h||'<div style="font-size:13px;color:#94A3B8;padding:8px 0">Nenhum registro ainda.</div>';
 }
 function openMedModal(idx){
 editMedIdx=idx!=null?idx:null;
 document.getElementById('modal-med-title').textContent=editMedIdx!=null?'Editar medição':'Nova medição';
+const fields=['peso','gordura','musculo','proteina','visceral','bodyAge','basal'];
 if(editMedIdx!=null){
 const e=medData[editMedIdx];
 document.getElementById('m-data').value=e.data;
-document.getElementById('m-peso').value=e.peso!=null?e.peso:'';
-document.getElementById('m-agua').value=e.agua!=null?e.agua:'';
-document.getElementById('m-gordura').value=e.gordura!=null?e.gordura:'';
-document.getElementById('m-musculo').value=e.musculo!=null?e.musculo:'';
+fields.forEach(f=>{document.getElementById('m-'+f).value=e[f]!=null?e[f]:'';});
 }else{
 document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
-document.getElementById('m-peso').value='';document.getElementById('m-agua').value='';
-document.getElementById('m-gordura').value='';document.getElementById('m-musculo').value='';
+fields.forEach(f=>{document.getElementById('m-'+f).value='';});
 }
 document.getElementById('modal-med').classList.add('open');
 }
@@ -564,15 +584,15 @@ function closeMedModal(){document.getElementById('modal-med').classList.remove('
 function saveMed(){
 const data=document.getElementById('m-data').value;
 if(!data)return alert('Informe a data.');
-const peso=document.getElementById('m-peso').value!==''?parseFloat(document.getElementById('m-peso').value):null;
-const agua=document.getElementById('m-agua').value!==''?parseFloat(document.getElementById('m-agua').value):null;
-const gordura=document.getElementById('m-gordura').value!==''?parseFloat(document.getElementById('m-gordura').value):null;
-const musculo=document.getElementById('m-musculo').value!==''?parseFloat(document.getElementById('m-musculo').value):null;
-if(peso==null&&agua==null&&gordura==null&&musculo==null)return alert('Preencha ao menos um campo.');
+const flds=['peso','gordura','musculo','proteina','visceral','bodyAge','basal'];
+const vals={};
+flds.forEach(f=>{const v=document.getElementById('m-'+f).value;vals[f]=v!==''?parseFloat(v):null;});
+if(flds.every(f=>vals[f]==null))return alert('Preencha ao menos um campo.');
 const ex=medData.findIndex(e=>e.data===data);
-if(editMedIdx!=null){medData[editMedIdx]={data,peso,agua,gordura,musculo};}
-else if(ex>=0){if(peso!=null)medData[ex].peso=peso;if(agua!=null)medData[ex].agua=agua;if(gordura!=null)medData[ex].gordura=gordura;if(musculo!=null)medData[ex].musculo=musculo;}
-else{medData.push({data,peso,agua,gordura,musculo});medData.sort((a,b)=>a.data.localeCompare(b.data));}
+const entry={data,...vals};
+if(editMedIdx!=null){medData[editMedIdx]=entry;}
+else if(ex>=0){flds.forEach(f=>{if(vals[f]!=null)medData[ex][f]=vals[f];});}
+else{medData.push(entry);medData.sort((a,b)=>a.data.localeCompare(b.data));}
 localStorage.setItem('medData',JSON.stringify(medData));closeMedModal();renderMedChart();
 }
 let events=JSON.parse(localStorage.getItem('events')||'[]');
