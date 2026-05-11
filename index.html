@@ -493,6 +493,7 @@ localStorage.setItem('weightLog',JSON.stringify(weightLog));
 renderWeightHistory();renderWeightChart();renderPlan();
 const last=getLastWeight(currentExKey);
 if(last)showWeightViewMode(last);
+if(window.syncNow)window.syncNow();
 }
 function editWeight(i){
 const w=weightLog[currentExKey][i];
@@ -629,6 +630,7 @@ localStorage.setItem('cardioLog',JSON.stringify(cardioLog));
 renderRunHistory();renderPlan();
 const last=getLastRun(currentRunKey);
 if(last)showRunViewMode(last);
+if(window.syncNow)window.syncNow();
 }
 function editRun(i){
 const r=cardioLog[currentRunKey][i];
@@ -694,7 +696,7 @@ function addEx(i){const n=prompt('Nome do exercício:');if(!n)return;wkTmpl[i].e
 function delEx(i,j){wkTmpl[i].ex.splice(j,1);editWorkoutWeek();}
 function saveWorkout(){
 wkTmpl.forEach((d,i)=>{d.ex=d.ex.map((e,j)=>{const inp=document.getElementById('ex-'+i+'-'+j);return inp?inp.value:e;}).filter(Boolean);});
-localStorage.setItem('workoutTemplate',JSON.stringify(wkTmpl));closeWorkoutModal();alert('Treino salvo!');
+localStorage.setItem('workoutTemplate',JSON.stringify(wkTmpl));closeWorkoutModal();alert('Treino salvo!');if(window.syncNow)window.syncNow();
 }
 function closeWorkoutModal(){document.getElementById('modal-workout').classList.remove('open');}
 function openInfoModal(){document.getElementById('modal-info').classList.add('open');}
@@ -808,6 +810,7 @@ if(editMedIdx!=null){medData[editMedIdx]=entry;}
 else if(ex>=0){flds.forEach(f=>{if(vals[f]!=null)medData[ex][f]=vals[f];});}
 else{medData.push(entry);medData.sort((a,b)=>a.data.localeCompare(b.data));}
 localStorage.setItem('medData',JSON.stringify(medData));closeMedModal();renderMedChart();
+if(window.syncNow)window.syncNow();
 }
 let events=JSON.parse(localStorage.getItem('events')||'[]');
 let editEvIdx=null;
@@ -850,6 +853,7 @@ if(!title||!date)return alert('Preencha título e data.');
 if(editEvIdx!=null){events[editEvIdx]={title,date,time,timeEnd,desc,cat};}
 else{events.push({title,date,time,timeEnd,desc,cat});}
 localStorage.setItem('events',JSON.stringify(events));closeEventModal();renderCal();
+if(window.syncNow)window.syncNow();
 }
 let tasks=JSON.parse(localStorage.getItem('tasks')||'[{"text":"Entregar relatório Q2","priority":"high","due":"2025-05-10","done":false},{"text":"Revisar proposta do cliente","priority":"high","due":"2025-05-11","done":false},{"text":"Agendar call com fornecedor","priority":"medium","due":"","done":false},{"text":"Comprar suplementos","priority":"low","due":"","done":false}]');
 let editTaskIdx=null;
@@ -912,6 +916,7 @@ if(!text)return alert('Preencha a tarefa.');
 if(editTaskIdx!=null){tasks[editTaskIdx]={text,priority,due,done:tasks[editTaskIdx].done};}
 else{tasks.push({text,priority,due,done:false});}
 localStorage.setItem('tasks',JSON.stringify(tasks));closeTaskModal();renderTasks();renderCal();
+if(window.syncNow)window.syncNow();
 }
 function renderCal(){
 document.getElementById('cal-month-lbl').textContent=MONTHS[calM]+' '+calY;
@@ -1060,6 +1065,8 @@ const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
 const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog'];
+const TS_LOCAL = '_localModified';
+const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
 let currentUser = null;
 let syncTimer = null;
@@ -1084,17 +1091,47 @@ function setStatus(text, action){
 
 localStorage.setItem = function(key, value) {
   origSetItem(key, value);
-  if (!suppressSync && KEYS.includes(key) && currentUser) {
-    clearTimeout(syncTimer);
-    syncTimer = setTimeout(() => syncToCloud(), 800);
+  if (!suppressSync && KEYS.includes(key)) {
+    origSetItem(TS_LOCAL, String(Date.now()));
+    if (currentUser) {
+      clearTimeout(syncTimer);
+      setStatus('Pendente…');
+      syncTimer = setTimeout(() => syncToCloud(), 200);
+    } else {
+      setStatus('Offline — entre para sincronizar');
+    }
   }
 };
+
+window.syncNow = async function(){
+  if (!currentUser) {
+    setStatus('Offline — entre para sincronizar');
+    return false;
+  }
+  clearTimeout(syncTimer);
+  syncTimer = null;
+  await syncToCloud();
+  return true;
+};
+
+function flushPending(){
+  if (syncTimer && currentUser) {
+    clearTimeout(syncTimer);
+    syncTimer = null;
+    syncToCloud();
+  }
+}
+window.addEventListener('beforeunload', flushPending);
+window.addEventListener('pagehide', flushPending);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') flushPending();
+});
 
 async function syncToCloud(){
   if (!currentUser) return;
   try {
-    setStatus('Sincronizando…');
-    const data = { lastSync: new Date().toISOString() };
+    setStatus('Salvando na nuvem…');
+    const data = { lastSync: new Date().toISOString(), localModified: parseInt(localStorage.getItem(TS_LOCAL) || '0') };
     KEYS.forEach(k => {
       const v = localStorage.getItem(k);
       if (v !== null && v !== 'null') {
@@ -1102,11 +1139,13 @@ async function syncToCloud(){
       }
     });
     await setDoc(doc(db, 'users', currentUser.uid, 'data', 'main'), data, { merge: true });
-    setStatus('Sincronizado ✓');
-    setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Sincronizado ✓') setStatus(''); }, 2500);
+    origSetItem(TS_SYNC, String(Date.now()));
+    setStatus('Salvo na nuvem ✓');
+    setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Salvo na nuvem ✓') setStatus(''); }, 2500);
   } catch (e) {
     console.error('Erro sync:', e);
-    setStatus('Erro ao sincronizar');
+    setStatus('Erro — tentando novamente em 5s', () => syncToCloud());
+    setTimeout(() => { if (currentUser) syncToCloud(); }, 5000);
   }
 }
 
@@ -1137,14 +1176,26 @@ async function loadFromCloud(uid){
   try {
     setStatus('Carregando da nuvem…');
     const docRef = doc(db, 'users', uid, 'data', 'main');
+    const localMod = parseInt(localStorage.getItem(TS_LOCAL) || '0');
+    const lastSync = parseInt(localStorage.getItem(TS_SYNC) || '0');
+    if (localMod > 0 && localMod > lastSync) {
+      setStatus('Salvando mudanças locais…');
+      await syncToCloud();
+    }
     const snap = await getDoc(docRef);
     if (snap.exists()) {
-      const changed = applyCloudData(snap.data());
-      if (changed && window.refreshDataFromStorage) {
-        window.refreshDataFromStorage();
+      const cloudMod = snap.data().localModified || 0;
+      if (localMod > cloudMod && localMod > 0) {
+        setStatus('Local mais recente — mantendo dados locais');
+        await syncToCloud();
+      } else {
+        const changed = applyCloudData(snap.data());
+        if (changed && window.refreshDataFromStorage) {
+          window.refreshDataFromStorage();
+        }
+        setStatus('Sincronizado ✓');
+        setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Sincronizado ✓') setStatus(''); }, 2000);
       }
-      setStatus('Sincronizado ✓');
-      setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Sincronizado ✓') setStatus(''); }, 2000);
     } else {
       await syncToCloud();
     }
