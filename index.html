@@ -286,6 +286,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .fav-row .fav-name{font-size:12px;font-weight:500;color:#0F172A}
 .fav-row .fav-macros{font-size:10px;color:#64748B}
 .fav-row .fav-del{background:0;border:0;cursor:pointer;color:#DC2626;padding:2px;font-size:14px}
+.subtabs{display:flex;gap:4px;background:#F1F5F9;border-radius:8px;padding:3px;margin-bottom:14px}
+.subtab{flex:1;padding:8px 12px;border:0;background:0;border-radius:6px;font-size:12px;font-weight:500;color:#64748B;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.subtab.active{background:#fff;color:#0F172A;box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:600}
+.subtab i{font-size:14px}
+.tooltip-icon{display:inline-flex;width:18px;height:18px;border-radius:50%;background:#E2E8F0;color:#64748B;font-size:11px;align-items:center;justify-content:center;cursor:pointer;margin-left:6px;font-weight:600}
+.tooltip-icon:hover{background:#CBD5E1}
+.compact-balance{padding:12px 14px}
+.compact-balance .cb-row{display:flex;align-items:center;gap:10px}
+.compact-balance .cb-col{text-align:center;flex:1;min-width:0}
+.compact-balance .cb-val{font-size:14px;font-weight:600;color:#0F172A}
+.compact-balance .cb-lbl{font-size:9px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+.compact-balance .cb-sep{font-size:14px;color:#94A3B8}
+.compact-balance .cb-deficit{flex:1.2}
+.compact-balance .cb-deficit-val{font-size:20px;font-weight:700;color:#15803D}
+.compact-balance.over .cb-deficit-val{color:#B91C1C}
+.compact-balance .cb-meta{padding-left:10px;border-left:1px dashed #CBD5E1;text-align:center;min-width:75px}
+.compact-balance .cb-meta-val{font-size:16px;font-weight:700;color:#0F172A}
+.compact-balance .cb-meta-val.pos{color:#15803D}
+.compact-balance .cb-meta-val.neg{color:#B91C1C}
+.compact-balance .cb-meta-lbl{font-size:9px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+.macros-line{display:flex;justify-content:space-between;align-items:baseline;gap:4px}
+.macros-line-val{font-size:13px;font-weight:600;color:#0F172A}
+.macros-line-goal{font-size:11px;color:#94A3B8}
+.water-row{display:flex;align-items:center;gap:2px;overflow-x:auto;padding:4px 0;font-size:18px;line-height:1;white-space:nowrap;scrollbar-width:none}
+.water-row::-webkit-scrollbar{display:none}
+.weekly-limits-card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px;margin-bottom:12px}
+.limits-row{display:flex;justify-content:space-around;gap:10px;margin-top:8px}
+.limits-col{flex:1;text-align:center;background:#F8F9FA;border-radius:8px;padding:10px;border:1px solid #E2E8F0}
+.limits-col .lc-icon{font-size:24px;line-height:1}
+.limits-col .lc-val{font-size:18px;font-weight:700;color:#0F172A;margin-top:4px}
+.limits-col .lc-val.warn{color:#F59E0B}
+.limits-col .lc-val.over{color:#DC2626}
+.limits-col .lc-lbl{font-size:10px;color:#64748B;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.tooltip-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+.tooltip-modal.open{display:flex}
+.tooltip-modal .tm-box{background:#fff;border-radius:10px;padding:16px;max-width:340px;width:100%;box-shadow:0 20px 25px -5px rgba(0,0,0,.2)}
+.tooltip-modal .tm-title{font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px;color:#0F172A}
+.tooltip-modal .tm-close{margin-top:10px;width:100%;padding:8px;background:#0F172A;color:#fff;border:0;border-radius:6px;font-size:13px;cursor:pointer}
 .info-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid #CBD5E1;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#64748B;margin-left:8px;vertical-align:middle;flex-shrink:0}
 .info-btn:hover{background:#F1F5F9;border-color:#94A3B8}
 .info-btn i{font-size:16px}
@@ -338,8 +376,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="dieta-content"></div>
 </div>
 <div class="sec" id="sec-medicoes">
-<div id="emag-dashboard"></div>
-<p class="section-label">Histórico de medições</p>
+<div class="subtabs"><button class="subtab active" id="subtab-evolucao" onclick="switchMedSubtab('evolucao')"><i class="ti ti-trending-up"></i>Evolução / Metas</button><button class="subtab" id="subtab-balanca" onclick="switchMedSubtab('balanca')"><i class="ti ti-scale"></i>Balança</button></div>
+<div id="sub-evolucao"><div id="emag-dashboard"></div></div>
+<div id="sub-balanca" style="display:none">
 <div class="med-tabs" id="med-tabs"></div>
 <div class="card">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><span id="med-title" style="font-size:13px;font-weight:500"></span><span id="med-current" style="font-size:20px;font-weight:500"></span></div>
@@ -352,6 +391,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="card" id="med-history" style="padding:4px 16px"></div>
 <button class="add-btn" onclick="openMedModal()"><i class="ti ti-plus"></i>Adicionar medição</button>
 </div>
+</div>
 <div class="sec" id="sec-tarefas">
 <div id="tasks-list"></div>
 <button class="add-btn" onclick="openTaskModal()"><i class="ti ti-plus"></i>Nova tarefa</button>
@@ -362,6 +402,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><h3 id="modal-weight-title">Registrar carga</h3><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
+<div class="modal-bg" id="modal-meal-builder"><div class="modal" style="max-width:400px"><h3>Adicionar refeição</h3><p class="modal-hint">Monte a refeição combinando os itens do plano. Os valores são auto-calculados.</p><div class="modal-field" style="margin-bottom:10px"><label>Refeição</label><select id="mb-type"><option value="cafe">☕ Café da manhã</option><option value="pos_treino">💊 Pós-treino</option><option value="almoco">🍛 Almoço</option><option value="lanche">🥑 Lanche da tarde</option><option value="jantar">🍲 Jantar</option><option value="ceia">🌙 Ceia</option><option value="extra">✏️ Extra / livre</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Hora</label><input type="time" id="mb-time"></div><div id="mb-items" style="margin-bottom:10px"></div><div class="modal-field" style="margin-bottom:10px"><label>Observações (opcional)</label><input type="text" id="mb-note" maxlength="120" placeholder="Ex: troquei frango por peixe"></div><div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:#15803D;text-transform:uppercase;letter-spacing:.04em;font-weight:600">Total estimado</span><b id="mb-total" style="font-size:16px;color:#15803D">0 kcal</b></div><div style="font-size:10px;color:#15803D;margin-top:4px" id="mb-macros">P: 0g · C: 0g · G: 0g</div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMealBuilderModal()">Cancelar</button><button class="btn-save" onclick="saveMealBuilder()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-extras"><div class="modal"><h3>Registrar extras</h3><p class="modal-hint">Registre cerveja ou refeição "off" (fora do plano).</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ex-type"><option value="beer">🍺 Cerveja</option><option value="off">🍕 Refeição off (fora do plano)</option></select></div><div id="ex-beer-fields"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de cerveja</label><select id="ex-beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" id="ex-beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="ex-beer-calc">— kcal · — carbo</span></div></div><div id="ex-off-fields" style="display:none"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de refeição</label><select id="ex-off-type" onchange="updateOffPreset()"><option value="">— escolha um preset —</option><option value="pizza">🍕 Pizza (média/2 fatias)</option><option value="japones">🍣 Japonês (combinado)</option><option value="mcdonalds">🍔 McDonald's (Big Mac + fritas)</option><option value="hamburguer">🍔 Hambúrguer artesanal</option><option value="churrasco">🥩 Churrasco/rodízio</option><option value="custom">✏️ Personalizado</option></select></div><div class="modal-grid"><div class="modal-field"><label>Calorias</label><input type="number" id="ex-off-kcal" step="10" placeholder="600"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="ex-off-carb" step="1" placeholder="60"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="ex-off-prot" step="1" placeholder="30"></div><div class="modal-field"><label>Gordura (g)</label><input type="number" id="ex-off-gord" step="1" placeholder="25"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ex-off-desc" maxlength="80" placeholder="Pizza calabresa"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Hora (opcional)</label><input type="time" id="ex-time"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeExtrasModal()">Cancelar</button><button class="btn-save" onclick="saveExtras()">Salvar</button></div></div></div>
+<div class="tooltip-modal" id="tooltip-gasto" onclick="if(event.target===this)closeTooltipGasto()"><div class="tm-box"><div class="tm-title"><i class="ti ti-flame" style="color:#DC2626"></i>Detalhamento do gasto</div><div id="tooltip-gasto-content"></div><button class="tm-close" onclick="closeTooltipGasto()">Fechar</button></div></div>
 <div class="modal-bg" id="modal-meal"><div class="modal"><h3 id="modal-meal-title">Nova refeição</h3><p class="modal-hint">Registre o que comeu. Macros são opcionais.</p><div class="modal-field" style="margin-bottom:10px"><label>Nome</label><input type="text" id="meal-name" maxlength="60" placeholder="Ex: Café da manhã, Almoço"></div><div class="modal-grid"><div class="modal-field"><label>Hora</label><input type="time" id="meal-time"></div><div class="modal-field"><label>Calorias (kcal)</label><input type="number" id="meal-kcal" step="1" placeholder="420"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="meal-prot" step="0.1" placeholder="32"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="meal-carb" step="0.1" placeholder="55"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Gordura (g)</label><input type="number" id="meal-gord" step="0.1" placeholder="8"></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="meal-items" maxlength="200" placeholder="Aveia 50g, Banana, Whey 30g"></div><div class="modal-field" style="margin-bottom:14px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="meal-fav" style="width:auto"><label for="meal-fav" style="margin:0;font-size:12px;cursor:pointer">Salvar como favorito</label></div><div class="modal-btns" id="meal-btns"></div></div></div>
 <div class="modal-bg" id="modal-beer"><div class="modal"><h3 id="modal-beer-title">Registrar cerveja</h3><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" id="beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="beer-calc">— kcal · — carbo</span></div><div class="modal-grid"><div class="modal-field"><label>Hora (opcional)</label><input type="time" id="beer-time"></div><div class="modal-field"><label>Marca / local (opc)</label><input type="text" id="beer-note" maxlength="40" placeholder="Augustiner"></div></div><div class="modal-btns" id="beer-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="number" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="number" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="number" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="number" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
@@ -417,60 +460,60 @@ const p=[];
 const wt=Math.floor((RACE_DATE-START_DATE)/(7*24*60*60*1000));
 const phases=[
 {name:'Base Aeróbica',weeks:8,color:'#EFF6FF',text:'#1E40AF',template:[
-{t:'Musculação + Corrida',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tríceps Francês 3x12','Tríceps Testa 3x12','Corrida Z2 20min']},
-{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Rosca Martelo 3x12','Rosca Scott 3x12','Corrida Z2 20min']},
-{t:'Corrida Moderada',ex:['Corrida Contínua Z2 40-50min','Core: Prancha 3x45s','Abdominal 3x15','Oblíquos 3x15','Sauna 10min']},
-{t:'Musculação + Corrida',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Encolhimento 3x15','Corrida Z2 20min']},
-{t:'Corrida Longa',ex:['Corrida Longa Z2 50-60min','Agachamento 4x12','Leg Press 3x15','Panturrilha 4x20']},
-{t:'Ativo + Sauna',ex:['Musculação Leve 30min','Caminhada/Trote 20min','Sauna 15min']},
+{t:'Peito + Tríceps + Z2',ex:['Supino Reto Barra 4x8-10','Supino Inclinado Halteres 4x10','Crucifixo Inclinado 3x12','Crossover Cabos 3x15','Tríceps Pulley Corda 4x12','Tríceps Testa Barra W 3x10','Tríceps Francês Unilateral 3x12','Corrida Z2 30min']},
+{t:'Costas + Bíceps + Tempo',ex:['Stiff Halteres 4x8','Puxada Frente Aberta 4x10','Remada Curvada Barra 4x10','Remada Cavalinho 3x12','Pulldown Triangular 3x12','Rosca Direta Barra 4x10','Rosca Scott Halteres 3x12','Rosca Martelo Cabos 3x12','Tempo Run Z3 25min']},
+{t:'Pernas + Core',ex:['Agachamento Livre 4x8','Leg Press 45° 4x12','Cadeira Extensora 3x15','Cadeira Flexora 3x15','Afundo Búlgaro 3x12 cada','Panturrilha em Pé 4x20','Panturrilha Sentado 3x15','Prancha 3x45s','Abdominal Infra 3x15']},
+{t:'Ombros + Trapézio + Intervalado',ex:['Desenvolvimento Militar Barra 4x8','Desenvolvimento Halteres 3x10','Elevação Lateral Halteres 4x12','Elevação Frontal Anilha 3x12','Crucifixo Inverso Halteres 3x15','Encolhimento Halteres 4x12','Face Pull Corda 3x15','Intervalado: 6x400m R:90s']},
+{t:'Z2 Leve + Mobilidade',ex:['Corrida Z2 30min','Mobilidade quadril 10min','Alongamento dinâmico','Sauna 10min']},
+{t:'Long Run + Sauna',ex:['Long Run Z2 50-60min','Core leve pós-corrida','Sauna 15min']},
 {t:'Descanso',ex:['Descanso ativo','Alongamento','Recuperação']}
 ]},
 {name:'Aumento de Volume',weeks:6,color:'#F0FDF4',text:'#166534',template:[
-{t:'Musculação + Tiros',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tríceps Testa 3x12','Tiros 6x400m R:2min']},
-{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Rosca Scott 3x12','Corrida Z2 25min']},
-{t:'Tempo Run',ex:['Aquecimento 10min','Tempo Run Z3 25-30min','Desaquecimento 10min','Core 3 exercícios']},
-{t:'Musculação + Fartlek',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Fartlek 30min (2min forte/2min leve)']},
-{t:'Long Run',ex:['Corrida Longa Z2 60-75min','Agachamento 4x12','Leg Press 3x15','Afundo 3x12']},
-{t:'Recuperação Ativa',ex:['Corrida Regenerativa Z1 30min','Musculação Leve','Sauna 15min']},
+{t:'Peito + Tríceps + Tiros',ex:['Supino Reto Barra 5x6-8','Supino Inclinado Halteres 4x10','Crucifixo Inclinado 3x12','Crossover Cabos 3x12','Mergulho Paralela 3x10','Tríceps Pulley Corda 4x12','Tríceps Testa Barra W 4x10','Tiros: 6x400m R:2min']},
+{t:'Costas + Bíceps + Z2',ex:['Stiff Halteres 4x8','Puxada Frente Aberta 4x8','Remada Curvada Barra 4x8','Remada Unilateral Halter 4x10','Pullover Halter 3x12','Rosca Direta Barra 4x10','Rosca Scott Halteres 4x10','Rosca Martelo Cabos 3x12','Corrida Z2 30min']},
+{t:'Pernas + Core',ex:['Agachamento Livre 5x6-8','Leg Press 45° 4x10','Stiff Barra 4x8','Cadeira Extensora 3x12','Cadeira Flexora 3x12','Afundo Búlgaro 3x10 cada','Panturrilha em Pé 4x15','Prancha 3x60s','Abdominal Roda 3x12']},
+{t:'Tempo Run + Core',ex:['Aquecimento 10min','Tempo Run Z3 25-30min','Desaquecimento 10min','Core: 3 exercícios']},
+{t:'Ombros + Fartlek',ex:['Desenvolvimento Militar Barra 4x6-8','Arnold Press Halteres 3x10','Elevação Lateral Halteres 5x12','Elevação Frontal Anilha 3x12','Crucifixo Inverso Halteres 3x15','Encolhimento Halteres 4x15','Face Pull Corda 4x15','Fartlek 30min (2min Z3/2min Z2)']},
+{t:'Long Run + Sauna',ex:['Long Run Z2 60-75min','Educativos 15min','Sauna 15min']},
 {t:'Descanso',ex:['Descanso completo ou caminhada leve']}
 ]},
 {name:'Fase de Intensidade',weeks:5,color:'#FEF2F2',text:'#991B1B',template:[
-{t:'Musculação + Intervalado',ex:['Supino Reto 4x8','Supino Inclinado 3x10','Crucifixo 3x12','Tríceps Corda 4x12','Tríceps Testa 3x10','Intervalado: 8x800m (pace 5:20) R:2min']},
-{t:'Musculação + Regenerativo',ex:['Puxada 4x10','Remada 4x10','Rosca Direta 3x10','Rosca Scott 3x10','Corrida Regenerativa Z1 20min']},
-{t:'Treino de Ritmo',ex:['Aquecimento 2km','3x2km pace 5:30 R:3min','Desaquecimento 1km','Core completo']},
-{t:'Musculação + Fartlek',ex:['Ombros completo','Fartlek Progressivo 35min']},
-{t:'Long Run Progressivo',ex:['12-14km: primeiros 70% Z2, últimos 30% Z3','Pernas leves pós-corrida']},
-{t:'Técnica + Força',ex:['Educativos de corrida 20min','Musculação moderada','Sauna']},
-{t:'Descanso',ex:['Descanso ativo']}
+{t:'Peito + Tríceps + Intervalado',ex:['Supino Reto Barra 5x5','Supino Inclinado Halteres 4x8','Crucifixo Inclinado 3x10','Crossover Cabos 3x10','Mergulho Paralela 4x8','Tríceps Pulley Corda 5x10','Tríceps Testa Barra W 4x8','Intervalado: 8x800m (pace 5:20) R:2min']},
+{t:'Costas + Bíceps + Regenerativo',ex:['Stiff Halteres 4x6','Puxada Frente Aberta 5x6','Remada Curvada Barra 5x6','Remada Cavalinho 4x10','Rosca Direta Barra 5x8','Rosca Scott Halteres 4x8','Rosca Martelo 3x10','Corrida Regenerativa Z1 20min']},
+{t:'Pernas + Treino de Ritmo',ex:['Agachamento Livre 5x5','Hack Squat 4x10','Stiff Barra 4x8','Cadeira Flexora 4x10','Panturrilha 4x12','Treino Ritmo: 3x2km pace 5:30 R:3min']},
+{t:'Ombros + Fartlek Progressivo',ex:['Desenvolvimento Militar 5x5','Arnold Press 4x10','Elevação Lateral 5x12','Crucifixo Inverso 4x12','Face Pull 4x12','Encolhimento 4x12','Fartlek Progressivo 35min']},
+{t:'Z2 Leve + Mobilidade',ex:['Corrida Z2 30min','Mobilidade completa 15min','Liberação miofascial']},
+{t:'Long Run Progressivo',ex:['Long Run 12-14km','Primeiros 70% Z2 · últimos 30% Z3','Sauna pós']},
+{t:'Descanso',ex:['Descanso ativo','Alongamento longo']}
 ]},
 {name:'Pico de Performance',weeks:3,color:'#FFFBEB',text:'#92400E',template:[
-{t:'Musculação + Tiros Curtos',ex:['Peito/Tríceps completo','12x400m pace 5:10 R:90s']},
-{t:'Musculação + Regenerativo',ex:['Costas/Bíceps completo','Corrida Z1 20min']},
-{t:'Treino Específico 10K',ex:['2km aquecimento','2x5km pace 5:30 R:4min','1km desaquecimento']},
-{t:'Musculação + Fartlek',ex:['Ombros/Trapézio','Fartlek Intenso 30min']},
-{t:'Long Run Ritmo',ex:['14-16km: últimos 5km em pace 5:40','Pernas']},
-{t:'Técnica',ex:['Educativos + tiros 30min','Força muscular']},
-{t:'Corrida Longa Fácil',ex:['75-90min Z1-Z2']}
+{t:'Peito + Tríceps + Tiros Curtos',ex:['Supino Reto Barra 4x4','Supino Inclinado Halteres 3x6','Crucifixo Inclinado 3x10','Tríceps Pulley Corda 4x10','Tríceps Testa Barra W 3x8','Tiros: 12x400m pace 5:10 R:90s']},
+{t:'Costas + Bíceps + Regenerativo',ex:['Puxada Frente Aberta 4x6','Remada Curvada Barra 4x6','Remada Unilateral 3x8','Rosca Direta Barra 4x8','Rosca Scott 3x8','Corrida Z1 20min']},
+{t:'Pernas + Treino Específico 10K',ex:['Agachamento Livre 4x6 (leve)','Leg Press 3x10','Stiff 3x10','Específico 10K: 2x5km pace 5:30 R:4min']},
+{t:'Ombros + Fartlek Intenso',ex:['Desenvolvimento Militar 4x6','Elevação Lateral 4x12','Crucifixo Inverso 3x12','Encolhimento 3x12','Fartlek Intenso 30min']},
+{t:'Z2 Leve + Técnica',ex:['Educativos de corrida 20min','Corrida Z2 20min','Strides 4x80m']},
+{t:'Long Run Ritmo',ex:['Long Run 14-16km','Últimos 5km em pace 5:40','Sauna pós']},
+{t:'Descanso Total',ex:['Descanso completo','Alongamento leve']}
 ]}
 ];
 let weekNum=1;
 phases.forEach(ph=>{for(let w=0;w<ph.weeks;w++){p.push({phase:ph.name,num:weekNum++,color:ph.color,text:ph.text,template:ph.template});}});
 p.push({phase:'Taper (Semana -2)',num:weekNum++,color:'#F5F3FF',text:'#6B21A8',template:[
-{t:'Manutenção',ex:['Musculação moderada 40min','Corrida Z2 15min']},
-{t:'Tiros Curtos',ex:['Aquecimento 2km','6x400m pace 5:20 R:2min','Desaquecimento 1km']},
-{t:'Descanso',ex:['Descanso completo ou caminhada']},
-{t:'Corrida Fácil',ex:['6km Z1']},
-{t:'Ritmo Leve',ex:['2km aquecimento','3km pace 5:35','1km desaquecimento']},
-{t:'Corrida Curtíssima',ex:['4km Z1']},
+{t:'Peito + Tríceps (manutenção)',ex:['Supino Reto 3x6 (leve)','Tríceps Pulley 3x10','Corrida Z2 15min']},
+{t:'Costas + Bíceps + Tiros Curtos',ex:['Puxada 3x8 (leve)','Rosca Direta 3x10','Aquecimento 2km','6x400m pace 5:20 R:2min','Desaquecimento 1km']},
+{t:'Descanso',ex:['Descanso ou caminhada leve 20min']},
+{t:'Ombros (leve) + Z1',ex:['Desenvolvimento 3x8','Elevação Lateral 3x10','Corrida Fácil 6km Z1']},
+{t:'Ritmo Leve',ex:['Aquecimento 2km','3km pace 5:35','Desaquecimento 1km']},
+{t:'Corrida Curtíssima',ex:['4km Z1','Strides 4x80m']},
 {t:'Descanso',ex:['Descanso completo']}
 ]});
 p.push({phase:'Taper (Semana -1)',num:weekNum++,color:'#F5F3FF',text:'#6B21A8',template:[
-{t:'Técnica Leve',ex:['Educativos 20min','Alongamento']},
-{t:'Shakeout',ex:['3km Z1','Alguns strides 80m']},
+{t:'Técnica Leve',ex:['Educativos de corrida 20min','Alongamento completo']},
+{t:'Shakeout',ex:['3km Z1','Strides 4x80m']},
 {t:'Descanso',ex:['Descanso completo']},
 {t:'Mini Shakeout',ex:['2km fácil','3x strides']},
-{t:'Descanso',ex:['Caminhada leve 15min']},
-{t:'Descanso Pré-Prova',ex:['Descanso total','Hidratação','Carb load']},
+{t:'Descanso',ex:['Caminhada leve 15min','Hidratação']},
+{t:'Pré-Prova',ex:['Descanso total','Hidratação','Carb load']},
 {t:'🏁 PROVA',ex:['MARATONA DE MUNIQUE - 10KM','META: SUB-55MIN']}
 ]});
 return p;
@@ -1427,6 +1470,185 @@ d.meals=d.meals.filter(x=>x.id!==mealId);
 saveDiet(key,d);
 renderDiet();
 }
+const MEAL_BUILDER_OPTIONS={
+cafe:[
+{group:'Sem exercício',items:[{name:'Iogurte proteico',kcal:120,prot:18,carb:8,gord:1}]},
+{group:'Com exercício — frutas',items:[{name:'Banana 1un',kcal:90,prot:1,carb:23,gord:0},{name:'Maçã 1un',kcal:80,prot:0,carb:21,gord:0},{name:'Mamão papaia 1/2un',kcal:60,prot:1,carb:15,gord:0},{name:'Morangos 200g',kcal:64,prot:1,carb:15,gord:0},{name:'Kiwi 2un',kcal:80,prot:1,carb:20,gord:0},{name:'Melão fatia',kcal:55,prot:1,carb:14,gord:0}]}
+],
+pos_treino:[
+{group:'Whey',items:[{name:'1 dose whey (com musc)',kcal:120,prot:24,carb:3,gord:1},{name:'½ dose whey (sem musc)',kcal:60,prot:12,carb:1.5,gord:0.5}]}
+],
+almoco:[
+{group:'Vegetais folhosos (à vontade)',items:[{name:'Alface/rúcula/agrião',kcal:15,prot:1,carb:2,gord:0}]},
+{group:'Vegetais cozidos 120g',items:[{name:'Brócolis 120g',kcal:42,prot:3,carb:8,gord:0},{name:'Couve-flor 120g',kcal:30,prot:2,carb:6,gord:0},{name:'Abobrinha 120g',kcal:24,prot:1,carb:5,gord:0},{name:'Cenoura 120g',kcal:48,prot:1,carb:11,gord:0},{name:'Berinjela 120g',kcal:30,prot:1,carb:7,gord:0}]},
+{group:'Carbo (escolha 1)',items:[{name:'Arroz integral 80g',kcal:88,prot:2,carb:18,gord:1},{name:'Arroz branco 80g',kcal:104,prot:2,carb:23,gord:0},{name:'Batata 80g',kcal:60,prot:1,carb:14,gord:0},{name:'Mandioca 80g',kcal:128,prot:1,carb:31,gord:0},{name:'Massa integral 100g',kcal:150,prot:5,carb:30,gord:1},{name:'Quinoa 100g',kcal:120,prot:4,carb:21,gord:2}]},
+{group:'Leguminosa 120g (escolha 1)',items:[{name:'Feijão preto 120g',kcal:96,prot:7,carb:17,gord:0},{name:'Feijão carioca 120g',kcal:90,prot:6,carb:16,gord:0},{name:'Ervilha 120g',kcal:96,prot:6,carb:17,gord:0},{name:'Grão de bico 120g',kcal:144,prot:8,carb:24,gord:2},{name:'Lentilha 120g',kcal:138,prot:11,carb:24,gord:0}]},
+{group:'Proteína (escolha 1)',items:[{name:'Frango grelhado 100g',kcal:165,prot:31,carb:0,gord:3},{name:'Filé mignon suíno 100g',kcal:143,prot:26,carb:0,gord:4},{name:'Lombo suíno 100g',kcal:165,prot:27,carb:0,gord:6},{name:'2 ovos',kcal:140,prot:12,carb:1,gord:10}]},
+{group:'Tempero',items:[{name:'Azeite 1 colher sobremesa',kcal:60,prot:0,carb:0,gord:7}]}
+],
+lanche:[
+{group:'Fruta',items:[{name:'Banana 1un',kcal:90,prot:1,carb:23,gord:0},{name:'Maçã 1un',kcal:80,prot:0,carb:21,gord:0},{name:'Pera 1un',kcal:60,prot:0,carb:15,gord:0}]},
+{group:'Oleaginosas 15g',items:[{name:'Castanha do Pará 15g',kcal:100,prot:2,carb:2,gord:10},{name:'Amêndoas 15g',kcal:87,prot:3,carb:3,gord:7},{name:'Nozes 15g',kcal:98,prot:2,carb:2,gord:10}]},
+{group:'Pão + cottage',items:[{name:'1 fatia pão forma + 30g cottage',kcal:120,prot:8,carb:14,gord:3}]}
+],
+jantar:[
+{group:'Vegetais folhosos (à vontade)',items:[{name:'Alface/rúcula/agrião',kcal:15,prot:1,carb:2,gord:0}]},
+{group:'Vegetais cozidos 120g',items:[{name:'Brócolis 120g',kcal:42,prot:3,carb:8,gord:0},{name:'Couve-flor 120g',kcal:30,prot:2,carb:6,gord:0},{name:'Abobrinha 120g',kcal:24,prot:1,carb:5,gord:0}]},
+{group:'Carbo (escolha 1, menor porção)',items:[{name:'Arroz integral 50g',kcal:55,prot:1,carb:11,gord:0},{name:'Batata 50g',kcal:38,prot:1,carb:9,gord:0},{name:'Massa integral 70g',kcal:105,prot:4,carb:21,gord:1},{name:'Quinoa 70g',kcal:84,prot:3,carb:15,gord:1}]},
+{group:'Leguminosa 80g',items:[{name:'Feijão 80g',kcal:64,prot:5,carb:11,gord:0},{name:'Lentilha 80g',kcal:92,prot:7,carb:16,gord:0}]},
+{group:'Proteína (escolha 1)',items:[{name:'Frango grelhado 100g',kcal:165,prot:31,carb:0,gord:3},{name:'Filé mignon suíno 100g',kcal:143,prot:26,carb:0,gord:4},{name:'2 ovos',kcal:140,prot:12,carb:1,gord:10}]},
+{group:'Tempero',items:[{name:'Azeite 1 colher sobremesa',kcal:60,prot:0,carb:0,gord:7}]}
+],
+ceia:[
+{group:'Escolha 1',items:[{name:'Iogurte zero/light',kcal:60,prot:8,carb:6,gord:0},{name:'Queijo 30g',kcal:90,prot:7,carb:1,gord:7},{name:'Leite desnatado 200ml + canela',kcal:90,prot:6,carb:9,gord:3}]}
+],
+extra:[
+{group:'Itens livres',items:[{name:'Doce 30g',kcal:120,prot:1,carb:25,gord:2}]}
+]
+};
+const MEAL_TYPE_LABELS={cafe:'☕ Café da manhã',pos_treino:'💊 Pós-treino',almoco:'🍛 Almoço',lanche:'🥑 Lanche da tarde',jantar:'🍲 Jantar',ceia:'🌙 Ceia',extra:'✏️ Extra / livre'};
+const OFF_PRESETS={
+pizza:{kcal:800,prot:30,carb:80,gord:35,desc:'Pizza média (2 fatias)'},
+japones:{kcal:700,prot:35,carb:80,gord:20,desc:'Japonês combinado'},
+mcdonalds:{kcal:900,prot:30,carb:90,gord:45,desc:"McDonald's (Big Mac + fritas)"},
+hamburguer:{kcal:750,prot:35,carb:55,gord:40,desc:'Hambúrguer artesanal'},
+churrasco:{kcal:1000,prot:80,carb:30,gord:60,desc:'Churrasco/rodízio'}
+};
+function openTooltipGasto(){
+const key=dk(today);
+const bal=calcBalance(key);
+const c=document.getElementById('tooltip-gasto-content');
+c.innerHTML=`<div class="kcal-spent-row"><span>Basal (TMB)</span><b>${bal.basal} kcal</b></div><div class="kcal-spent-row"><span>🏋️ Musculação${bal.spent.muscIsManual?'':' (estimado)'}</span><b>${bal.spent.musc} kcal</b></div><div class="kcal-spent-row"><span>🏃 Corrida${bal.spent.runIsManual?'':' (estimado)'}</span><b>${bal.spent.run} kcal</b></div><div class="kcal-spent-row kcal-spent-total"><span>Total</span><b>${bal.totalOut} kcal</b></div><div class="kcal-spent-note">ℹ️ Auto-calculado da aba Treino. Edite o gasto real nos cards de treino.</div>`;
+document.getElementById('tooltip-gasto').classList.add('open');
+}
+function closeTooltipGasto(){document.getElementById('tooltip-gasto').classList.remove('open');}
+function openExtrasModal(){
+document.getElementById('ex-type').value='beer';
+document.getElementById('ex-beer-type').value='pilsner';
+document.getElementById('ex-beer-volume').value=500;
+document.getElementById('ex-time').value=new Date().toTimeString().slice(0,5);
+document.getElementById('ex-off-type').value='';
+['kcal','prot','carb','gord','desc'].forEach(f=>{document.getElementById('ex-off-'+f).value='';});
+calcExBeer();
+document.getElementById('ex-type').onchange=switchExType;
+document.getElementById('ex-beer-type').onchange=calcExBeer;
+document.getElementById('ex-beer-volume').oninput=calcExBeer;
+switchExType();
+document.getElementById('modal-extras').classList.add('open');
+}
+function switchExType(){
+const t=document.getElementById('ex-type').value;
+document.getElementById('ex-beer-fields').style.display=t==='beer'?'block':'none';
+document.getElementById('ex-off-fields').style.display=t==='off'?'block':'none';
+}
+function calcExBeer(){
+const type=document.getElementById('ex-beer-type').value;
+const vol=parseFloat(document.getElementById('ex-beer-volume').value)||0;
+const bt=BEER_TYPES[type];
+if(!bt||!vol){document.getElementById('ex-beer-calc').textContent='— kcal · — carbo';return null;}
+const kcal=Math.round(bt.kcalPer100ml*(vol/100));
+const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
+document.getElementById('ex-beer-calc').textContent=kcal+' kcal · '+carb+'g carbo';
+return{kcal,carb};
+}
+function updateOffPreset(){
+const p=document.getElementById('ex-off-type').value;
+if(!p||p==='custom')return;
+const preset=OFF_PRESETS[p];
+if(!preset)return;
+document.getElementById('ex-off-kcal').value=preset.kcal;
+document.getElementById('ex-off-prot').value=preset.prot;
+document.getElementById('ex-off-carb').value=preset.carb;
+document.getElementById('ex-off-gord').value=preset.gord;
+document.getElementById('ex-off-desc').value=preset.desc;
+}
+function closeExtrasModal(){document.getElementById('modal-extras').classList.remove('open');}
+function saveExtras(){
+const t=document.getElementById('ex-type').value;
+const time=document.getElementById('ex-time').value||'';
+const key=dk(today);
+const d=getDiet(key);
+if(t==='beer'){
+const type=document.getElementById('ex-beer-type').value;
+const volume=parseFloat(document.getElementById('ex-beer-volume').value);
+if(!BEER_TYPES[type])return alert('Tipo inválido.');
+if(!volume||volume<=0)return alert('Informe o volume.');
+const calc=calcExBeer();
+d.beers.push({id:uid(),type,volume,kcal:calc.kcal,carb:calc.carb,time,note:''});
+d.beers.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+}else{
+const kcal=parseFloat(document.getElementById('ex-off-kcal').value);
+if(isNaN(kcal)||kcal<=0)return alert('Informe as calorias.');
+const prot=parseFloat(document.getElementById('ex-off-prot').value)||0;
+const carb=parseFloat(document.getElementById('ex-off-carb').value)||0;
+const gord=parseFloat(document.getElementById('ex-off-gord').value)||0;
+const desc=(document.getElementById('ex-off-desc').value||'').trim()||'Refeição off';
+d.meals.push({id:uid(),name:'🍕 OFF — '+desc,time:time||new Date().toTimeString().slice(0,5),kcal,prot,carb,gord,items:desc,type:'off'});
+d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+}
+saveDiet(key,d);
+closeExtrasModal();renderDiet();
+}
+let mealBuilderItems={};
+function openMealBuilderModal(){
+mealBuilderItems={};
+document.getElementById('mb-type').value='cafe';
+document.getElementById('mb-time').value=new Date().toTimeString().slice(0,5);
+document.getElementById('mb-note').value='';
+document.getElementById('mb-type').onchange=renderMealBuilder;
+renderMealBuilder();
+document.getElementById('modal-meal-builder').classList.add('open');
+}
+function renderMealBuilder(){
+const type=document.getElementById('mb-type').value;
+mealBuilderItems={};
+const opts=MEAL_BUILDER_OPTIONS[type]||[];
+const c=document.getElementById('mb-items');
+let h='';
+opts.forEach((grp,gi)=>{
+h+=`<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">${escapeHtml(grp.group)}</div>`;
+grp.items.forEach((item,ii)=>{
+const k='g'+gi+'i'+ii;
+h+=`<label style="display:flex;align-items:center;gap:6px;padding:4px 0;cursor:pointer;font-size:12px"><input type="checkbox" data-key="${k}" onchange="updateMealBuilderTotal()" style="width:16px;height:16px;accent-color:#16A34A"><span style="flex:1">${escapeHtml(item.name)}</span><span style="font-size:10px;color:#94A3B8">${item.kcal}kcal</span></label>`;
+mealBuilderItems[k]={item,checked:false};
+});
+h+=`</div>`;
+});
+c.innerHTML=h;
+updateMealBuilderTotal();
+}
+function updateMealBuilderTotal(){
+const inputs=document.querySelectorAll('#mb-items input[type=checkbox]');
+let kcal=0,prot=0,carb=0,gord=0;
+inputs.forEach(inp=>{
+const k=inp.getAttribute('data-key');
+if(mealBuilderItems[k])mealBuilderItems[k].checked=inp.checked;
+if(inp.checked&&mealBuilderItems[k]){
+const i=mealBuilderItems[k].item;
+kcal+=i.kcal;prot+=i.prot;carb+=i.carb;gord+=i.gord;
+}
+});
+document.getElementById('mb-total').textContent=kcal+' kcal';
+document.getElementById('mb-macros').textContent=`P: ${prot.toFixed(0)}g · C: ${carb.toFixed(0)}g · G: ${gord.toFixed(0)}g`;
+}
+function closeMealBuilderModal(){document.getElementById('modal-meal-builder').classList.remove('open');}
+function saveMealBuilder(){
+const type=document.getElementById('mb-type').value;
+const time=document.getElementById('mb-time').value||new Date().toTimeString().slice(0,5);
+const note=(document.getElementById('mb-note').value||'').trim().slice(0,120);
+let kcal=0,prot=0,carb=0,gord=0;
+const items=[];
+Object.values(mealBuilderItems).forEach(v=>{
+if(v.checked){kcal+=v.item.kcal;prot+=v.item.prot;carb+=v.item.carb;gord+=v.item.gord;items.push(v.item.name);}
+});
+if(items.length===0)return alert('Selecione ao menos um item.');
+const key=dk(today);
+const d=getDiet(key);
+d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal,prot:+prot.toFixed(1),carb:+carb.toFixed(1),gord:+gord.toFixed(1),items:items.join(' · ')+(note?' · '+note:''),type});
+d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+saveDiet(key,d);
+closeMealBuilderModal();renderDiet();
+}
 function quickAddPlanMeal(presetKey){
 const p=PLAN_PRESETS[presetKey];
 if(!p)return;
@@ -1696,24 +1918,27 @@ h+=`<details class="dash-card" style="padding:10px 14px;margin-bottom:12px"><sum
 const deficitOk=bal.deficit>=dietGoals.deficit;
 const deficitOverConsume=bal.deficit<0;
 const balCls=deficitOverConsume?'over':'';
-h+=`<div class="balance-card ${balCls}"><div class="dash-card-hdr"><i class="ti ti-scale"></i>Balanço energético — hoje</div><div class="balance-row"><div class="balance-col"><div class="balance-col-val" style="color:#16A34A">${bal.totalIn}</div><div class="balance-col-lbl">Entrada</div></div><div style="font-size:18px;color:#94A3B8">−</div><div class="balance-col"><div class="balance-col-val" style="color:#DC2626">${bal.totalOut}</div><div class="balance-col-lbl">Saída</div></div><div style="font-size:18px;color:#94A3B8">=</div><div class="balance-col"><div class="balance-result-val">${bal.deficit>0?'-':''}${Math.abs(bal.deficit)}</div><div class="balance-col-lbl">Déficit</div></div></div><div class="balance-meta">${deficitOverConsume?'⚠️ Você consumiu mais do que gastou hoje':deficitOk?'✅ Acima da meta de '+dietGoals.deficit+' kcal de déficit':'Meta: -'+dietGoals.deficit+' kcal · falta '+(dietGoals.deficit-bal.deficit)+' kcal'}</div></div>`;
+const metaDelta=bal.deficit-dietGoals.deficit;
+const metaSign=metaDelta>=0?'+':'-';
+const metaCls=metaDelta>=0?'pos':'neg';
+h+=`<div class="balance-card compact-balance ${balCls}"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:5px"><i class="ti ti-scale"></i>Balanço de hoje</div><span class="tooltip-icon" onclick="openTooltipGasto()" title="Ver detalhamento do gasto">i</span></div><div class="cb-row"><div class="cb-col"><div class="cb-val" style="color:#16A34A">${bal.totalIn}</div><div class="cb-lbl">Entrada</div></div><div class="cb-sep">−</div><div class="cb-col"><div class="cb-val" style="color:#DC2626">${bal.totalOut}</div><div class="cb-lbl">Saída</div></div><div class="cb-sep">=</div><div class="cb-col cb-deficit"><div class="cb-deficit-val">${bal.deficit>0?'-':''}${Math.abs(bal.deficit)}</div><div class="cb-lbl">Déficit</div></div><div class="cb-meta"><div class="cb-meta-val ${metaCls}">${metaSign}${Math.abs(metaDelta)}</div><div class="cb-meta-lbl">da meta</div></div></div></div>`;
 const pctK=Math.min(100,Math.round((macros.kcal/dietGoals.kcal)*100));
 const pctP=Math.min(100,Math.round((macros.prot/dietGoals.prot)*100));
 const pctC=Math.min(100,Math.round((macros.carb/dietGoals.carb)*100));
 const pctG=Math.min(100,Math.round((macros.gord/dietGoals.gord)*100));
-h+=`<div class="macros-card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-chart-bar"></i>Macros</div><button class="goals-btn" onclick="openGoalsModal()"><i class="ti ti-target"></i>Metas</button></div><div class="macros-row"><div class="macro-col"><div class="macro-val">${macros.kcal}</div><div class="macro-goal">/${dietGoals.kcal}</div><div class="macro-lbl">Kcal</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctK}%;background:#16A34A"></div></div></div><div class="macro-col"><div class="macro-val">${macros.prot.toFixed(0)}g</div><div class="macro-goal">/${dietGoals.prot}g</div><div class="macro-lbl">Prot</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctP}%;background:#2563EB"></div></div></div><div class="macro-col"><div class="macro-val">${macros.carb.toFixed(0)}g</div><div class="macro-goal">/${dietGoals.carb}g</div><div class="macro-lbl">Carb</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctC}%;background:#F59E0B"></div></div></div><div class="macro-col"><div class="macro-val">${macros.gord.toFixed(0)}g</div><div class="macro-goal">/${dietGoals.gord}g</div><div class="macro-lbl">Gord</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctG}%;background:#DC2626"></div></div></div></div>${beers.count>0?`<div style="font-size:11px;color:#92400E;margin-top:10px;padding-top:8px;border-top:1px dashed #FDE68A"><b>🍺 Inclui ${beers.count} cerveja(s):</b> +${beers.kcal} kcal e +${beers.carb.toFixed(0)}g carbo. Sem a cerveja: ${macros.kcal-beers.kcal} kcal · ${(macros.carb-beers.carb).toFixed(0)}g carbo.</div>`:''}</div>`;
+h+=`<div class="macros-card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-chart-bar"></i>Macros</div><button class="goals-btn" onclick="openGoalsModal()"><i class="ti ti-target"></i>Metas</button></div><div class="macros-row"><div class="macro-col"><div class="macros-line"><span class="macros-line-val">${macros.kcal}</span><span class="macros-line-goal">/${dietGoals.kcal}</span></div><div class="macro-lbl">Kcal</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctK}%;background:#16A34A"></div></div></div><div class="macro-col"><div class="macros-line"><span class="macros-line-val">${macros.prot.toFixed(0)}g</span><span class="macros-line-goal">/${dietGoals.prot}g</span></div><div class="macro-lbl">Prot</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctP}%;background:#2563EB"></div></div></div><div class="macro-col"><div class="macros-line"><span class="macros-line-val">${macros.carb.toFixed(0)}g</span><span class="macros-line-goal">/${dietGoals.carb}g</span></div><div class="macro-lbl">Carb</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctC}%;background:#F59E0B"></div></div></div><div class="macro-col"><div class="macros-line"><span class="macros-line-val">${macros.gord.toFixed(0)}g</span><span class="macros-line-goal">/${dietGoals.gord}g</span></div><div class="macro-lbl">Gord</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctG}%;background:#DC2626"></div></div></div></div>${beers.count>0?`<div style="font-size:11px;color:#92400E;margin-top:10px;padding-top:8px;border-top:1px dashed #FDE68A"><b>🍺 Inclui ${beers.count} cerveja(s):</b> +${beers.kcal} kcal · +${beers.carb.toFixed(0)}g carbo. Sem: ${macros.kcal-beers.kcal} kcal.</div>`:''}</div>`;
 const waterPct=Math.min(100,Math.round((d.water/dietGoals.water)*100));
 const glasses=Math.floor(d.water/250);
 const totalGlassesGoal=Math.ceil(dietGoals.water/250);
 let glassRow='';
 for(let i=0;i<totalGlassesGoal;i++)glassRow+=`<span class="water-glass ${i<glasses?'filled':'empty'}">💧</span>`;
-h+=`<div class="hydration-card"><div class="water-info"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-droplet"></i>Hidratação</div><div><span class="water-amount">${(d.water/1000).toFixed(2)}L</span> <span class="water-goal-txt">de ${(dietGoals.water/1000).toFixed(1)}L</span></div></div><div class="water-glasses">${glassRow}</div><div class="water-actions"><button class="water-btn" onclick="addWater(250)">+ Copo 250ml</button><button class="water-btn" onclick="addWater(500)">+ Garrafa 500ml</button><button class="water-btn" onclick="addWater(-250)" style="color:#DC2626">- 250ml</button></div></div>`;
-const dosePct=Math.min(100,Math.round((dosesSem.doses/MAX_DOSES_SEMANA)*100));
-const offPct=Math.min(100,Math.round((offSem/MAX_OFF_SEMANA)*100));
-h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-pill"></i>Suplementos & extras (hoje)</div><div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.creatina?'checked':''} onchange="toggleSupplement('creatina')" style="width:18px;height:18px;accent-color:#16A34A">💊 Creatina 7g (com carbo)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.leucina?'checked':''} onchange="toggleSupplement('leucina')" style="width:18px;height:18px;accent-color:#16A34A">💪 Leucina 5g (pré-treino)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.doce?'checked':''} onchange="toggleSupplement('doce')" style="width:18px;height:18px;accent-color:#F59E0B">🍬 Doce 30g (pré/pós-treino)</label></div><div style="padding-top:8px;border-top:1px dashed #E2E8F0"><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:6px">Limites semanais</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:12px"><span>🍺 Doses de cerveja</span><b style="color:${dosePct>100?'#DC2626':dosePct>75?'#F59E0B':'#16A34A'}">${dosesSem.doses} / ${MAX_DOSES_SEMANA}</b></div><div class="macro-bar"><div class="macro-bar-fill" style="width:${dosePct}%;background:${dosePct>100?'#DC2626':dosePct>75?'#F59E0B':'#16A34A'}"></div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;margin-bottom:4px;font-size:12px"><span>🍕 Refeições "off"</span><b style="color:${offPct>100?'#DC2626':offPct>75?'#F59E0B':'#16A34A'}">${offSem} / ${MAX_OFF_SEMANA}</b></div><div class="macro-bar"><div class="macro-bar-fill" style="width:${offPct}%;background:${offPct>100?'#DC2626':offPct>75?'#F59E0B':'#16A34A'}"></div></div></div></div>`;
-h+=`<div class="kcal-spent-card"><div class="dash-card-hdr"><i class="ti ti-flame"></i>Gasto calórico de hoje</div><div class="kcal-spent-row"><span>Basal (TMB)</span><b>${bal.basal} kcal</b></div><div class="kcal-spent-row"><span>🏋️ Musculação${bal.spent.muscIsManual?'':' (estimado)'}</span><b>${bal.spent.musc} kcal</b></div><div class="kcal-spent-row"><span>🏃 Corrida${bal.spent.runIsManual?'':' (estimado)'}</span><b>${bal.spent.run} kcal</b></div><div class="kcal-spent-row kcal-spent-total"><span>Total</span><b>${bal.totalOut} kcal</b></div><div class="kcal-spent-note">ℹ️ Auto-calculado da aba Treino. Edite o gasto real nos cards de treino.</div></div>`;
-h+=`<div class="section-title"><i class="ti ti-bolt"></i>Quick-add do plano</div><div style="margin-bottom:14px"><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Café da manhã</div><div style="margin-bottom:6px"><span class="fav-chip" style="background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF" onclick="quickAddPlanMeal('cafe_sem')"><i class="ti ti-plus"></i>Iogurte proteico</span><span class="fav-chip" style="background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF" onclick="quickAddPlanMeal('cafe_com')"><i class="ti ti-plus"></i>Porção de frutas</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Pós-treino</div><div style="margin-bottom:6px"><span class="fav-chip" style="background:#F0FDF4;border-color:#86EFAC;color:#15803D" onclick="quickAddPlanMeal('pos_musc')"><i class="ti ti-plus"></i>Whey 1 dose</span><span class="fav-chip" style="background:#F0FDF4;border-color:#86EFAC;color:#15803D" onclick="quickAddPlanMeal('pos_sem')"><i class="ti ti-plus"></i>Whey ½ dose</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Refeições principais</div><div style="margin-bottom:6px"><span class="fav-chip" onclick="quickAddPlanMeal('almoco_completo')"><i class="ti ti-plus"></i>Almoço completo · 680kcal</span><span class="fav-chip" onclick="quickAddPlanMeal('lanche_completo')"><i class="ti ti-plus"></i>Lanche · 340kcal</span><span class="fav-chip" onclick="quickAddPlanMeal('jantar_completo')"><i class="ti ti-plus"></i>Jantar · 540kcal</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Ceia (opcional)</div><div style="margin-bottom:6px"><span class="fav-chip" onclick="quickAddPlanMeal('ceia_iogurte')"><i class="ti ti-plus"></i>Iogurte zero</span><span class="fav-chip" onclick="quickAddPlanMeal('ceia_queijo')"><i class="ti ti-plus"></i>Queijo 30g</span><span class="fav-chip" onclick="quickAddPlanMeal('ceia_leite')"><i class="ti ti-plus"></i>Leite + canela</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Doce</div><div><span class="fav-chip" style="background:#FFFBEB;border-color:#FDE68A;color:#92400E" onclick="quickAddPlanMeal('doce_30g')"><i class="ti ti-plus"></i>Doce 30g</span></div></div>`;
-h+=`<div class="section-title"><i class="ti ti-tools-kitchen-2"></i>Refeições de hoje <button class="goals-btn" style="margin-left:auto" onclick="openMealModal()"><i class="ti ti-plus"></i>Adicionar</button></div>`;
+h+=`<div class="hydration-card"><div class="water-info"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-droplet"></i>Hidratação</div><div><span class="water-amount">${(d.water/1000).toFixed(2)}L</span> <span class="water-goal-txt">de ${(dietGoals.water/1000).toFixed(1)}L</span></div></div><div class="water-row">${glassRow}</div><div class="water-actions"><button class="water-btn" onclick="addWater(250)">+ 250ml</button><button class="water-btn" onclick="addWater(500)">+ 500ml</button><button class="water-btn" onclick="addWater(-250)" style="color:#DC2626">- 250ml</button></div></div>`;
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-pill"></i>Suplementos (hoje)</div><div style="display:flex;flex-direction:column;gap:6px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.creatina?'checked':''} onchange="toggleSupplement('creatina')" style="width:18px;height:18px;accent-color:#16A34A">💊 Creatina 7g (com carbo)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.leucina?'checked':''} onchange="toggleSupplement('leucina')" style="width:18px;height:18px;accent-color:#16A34A">💪 Leucina 5g (pré-treino)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.doce?'checked':''} onchange="toggleSupplement('doce')" style="width:18px;height:18px;accent-color:#F59E0B">🍬 Doce 30g (pré/pós-treino)</label></div></div>`;
+const doseColor=dosesSem.doses>MAX_DOSES_SEMANA?'over':dosesSem.doses>MAX_DOSES_SEMANA*0.75?'warn':'';
+const offColor=offSem>MAX_OFF_SEMANA?'over':offSem>MAX_OFF_SEMANA*0.75?'warn':'';
+h+=`<div class="weekly-limits-card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-calendar-stats"></i>Limites semanais</div><button class="goals-btn" onclick="openExtrasModal()" title="Adicionar extra"><i class="ti ti-plus"></i>Adicionar</button></div><div class="limits-row"><div class="limits-col"><div class="lc-icon">🍺</div><div class="lc-val ${doseColor}">${dosesSem.doses} / ${MAX_DOSES_SEMANA}</div><div class="lc-lbl">Doses de cerveja</div></div><div class="limits-col"><div class="lc-icon">🍕</div><div class="lc-val ${offColor}">${offSem} / ${MAX_OFF_SEMANA}</div><div class="lc-lbl">Refeições off</div></div></div></div>`;
+h+=`<div class="section-title" style="margin-bottom:6px"><i class="ti ti-tools-kitchen-2"></i>Refeições de hoje <button class="goals-btn" style="margin-left:auto" onclick="openMealBuilderModal()"><i class="ti ti-plus"></i>Adicionar</button></div>`;
+h+=`<div class="section-title" style="font-size:11px;color:#64748B;margin-top:6px"><i class="ti ti-bolt"></i>Quick-add do plano</div><div style="margin-bottom:14px"><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Café da manhã</div><div style="margin-bottom:6px"><span class="fav-chip" style="background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF" onclick="quickAddPlanMeal('cafe_sem')"><i class="ti ti-plus"></i>Iogurte proteico</span><span class="fav-chip" style="background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF" onclick="quickAddPlanMeal('cafe_com')"><i class="ti ti-plus"></i>Porção de frutas</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Pós-treino</div><div style="margin-bottom:6px"><span class="fav-chip" style="background:#F0FDF4;border-color:#86EFAC;color:#15803D" onclick="quickAddPlanMeal('pos_musc')"><i class="ti ti-plus"></i>Whey 1 dose</span><span class="fav-chip" style="background:#F0FDF4;border-color:#86EFAC;color:#15803D" onclick="quickAddPlanMeal('pos_sem')"><i class="ti ti-plus"></i>Whey ½ dose</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Refeições principais</div><div style="margin-bottom:6px"><span class="fav-chip" onclick="quickAddPlanMeal('almoco_completo')"><i class="ti ti-plus"></i>Almoço completo · 680kcal</span><span class="fav-chip" onclick="quickAddPlanMeal('lanche_completo')"><i class="ti ti-plus"></i>Lanche · 340kcal</span><span class="fav-chip" onclick="quickAddPlanMeal('jantar_completo')"><i class="ti ti-plus"></i>Jantar · 540kcal</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Ceia (opcional)</div><div style="margin-bottom:6px"><span class="fav-chip" onclick="quickAddPlanMeal('ceia_iogurte')"><i class="ti ti-plus"></i>Iogurte zero</span><span class="fav-chip" onclick="quickAddPlanMeal('ceia_queijo')"><i class="ti ti-plus"></i>Queijo 30g</span><span class="fav-chip" onclick="quickAddPlanMeal('ceia_leite')"><i class="ti ti-plus"></i>Leite + canela</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Doce</div><div><span class="fav-chip" style="background:#FFFBEB;border-color:#FDE68A;color:#92400E" onclick="quickAddPlanMeal('doce_30g')"><i class="ti ti-plus"></i>Doce 30g</span></div></div>`;
 if(d.meals.length===0){
 h+=`<div class="diet-empty">Nenhuma refeição registrada hoje</div>`;
 }else{
@@ -1731,8 +1956,6 @@ h+=`<div class="beer-item"><div class="beer-item-info"><div>${escapeHtml(bt.labe
 const balNoBeer=bal.totalIn-beers.kcal;
 const deficitNoBeer=bal.totalOut-balNoBeer;
 h+=`<div class="beer-no-impact">💡 <b>Sem as cervejas hoje:</b> ${balNoBeer} kcal de entrada e déficit de -${deficitNoBeer} kcal.</div></div>`;
-}else{
-h+=`<button class="add-btn" onclick="openBeerModal()"><i class="ti ti-beer"></i>Registrar cerveja</button>`;
 }
 if(dietFavorites.length>0){
 h+=`<div class="section-title"><i class="ti ti-star"></i>Favoritos <span style="font-size:10px;color:#94A3B8;font-weight:400;margin-left:6px">(clique para adicionar)</span></div>`;
@@ -1890,6 +2113,14 @@ document.getElementById('cal-detail').innerHTML=h;
 }
 function selDay(y,m,d){selDate=new Date(y,m,d);renderCal();}
 function changeMonth(dir){calM+=dir;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderCal();}
+function switchMedSubtab(name){
+document.getElementById('subtab-evolucao').classList.toggle('active',name==='evolucao');
+document.getElementById('subtab-balanca').classList.toggle('active',name==='balanca');
+document.getElementById('sub-evolucao').style.display=name==='evolucao'?'block':'none';
+document.getElementById('sub-balanca').style.display=name==='balanca'?'block':'none';
+if(name==='evolucao')renderEmagDashboard();
+else{renderMedTabs();renderMedChart();}
+}
 function switchTab(name){
 document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
 document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active');t.querySelector('i').style.color='#94A3B8';});
@@ -1900,7 +2131,10 @@ at.querySelector('i').style.color='#000';
 if(name==='calendario')renderCal();
 if(name==='treino')renderPlan();
 if(name==='dieta')renderDiet();
-if(name==='medicoes'){renderEmagDashboard();renderMedTabs();renderMedChart();}
+if(name==='medicoes'){
+const active=document.getElementById('subtab-balanca')?.classList.contains('active')?'balanca':'evolucao';
+switchMedSubtab(active);
+}
 if(name==='tarefas')renderTasks();
 }
 const h=now.getHours();
