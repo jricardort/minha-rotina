@@ -171,10 +171,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .alterar-btn:hover{background:#F1F5F9;border-color:#94A3B8}
 .alterar-btn i{font-size:13px;color:#94A3B8}
 .adherence-card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:12px 14px;margin-bottom:12px}
-.adherence-row{display:flex;justify-content:space-around;gap:8px;margin-top:8px}
-.adherence-stat{text-align:center;flex:1}
+.adherence-row{display:flex;justify-content:space-around;gap:6px;margin-top:8px}
+.adherence-stat{text-align:center;flex:1;min-width:0}
 .adherence-stat-val{font-size:18px;font-weight:600}
 .adherence-stat-lbl{font-size:10px;color:#64748B;margin-top:2px}
+.status-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;margin-left:6px;white-space:nowrap}
+.status-pill i{font-size:11px}
+.cumprido-banner{background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cumprido-banner .cb-label{font-size:11px;font-weight:700;color:#16A34A;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:5px}
+.cumprido-banner .cb-undo{background:#fff;border:1px solid #BBF7D0;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;color:#15803D;font-weight:500}
+.cumprido-banner .cb-undo:hover{background:#F0FDF4}
+.cumprido-btn{display:inline-flex;align-items:center;gap:4px;background:#F0FDF4;border:1px dashed #86EFAC;border-radius:6px;padding:4px 10px;font-size:11px;color:#16A34A;cursor:pointer;font-weight:500;margin-top:6px;margin-right:6px}
+.cumprido-btn:hover{background:#DCFCE7;border-color:#4ADE80}
+.cumprido-btn i{font-size:13px;color:#16A34A}
+.race-countdown{background:linear-gradient(135deg,#DBEAFE 0%,#BFDBFE 100%);border-left:4px solid #2563EB;border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:14px;color:#1E3A8A;display:flex;align-items:center;gap:10px}
+.race-countdown .rc-icon{font-size:22px;flex-shrink:0}
+.race-countdown .rc-content{flex:1;min-width:0}
+.race-countdown .rc-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#1E40AF}
+.race-countdown .rc-main{font-size:14px;font-weight:500;color:#1E3A8A;margin-top:2px}
+.race-countdown .rc-days{font-size:18px;font-weight:700;color:#1E40AF}
+.race-countdown.race-soon{background:linear-gradient(135deg,#FEF3C7 0%,#FDE68A 100%);border-color:#F59E0B;color:#78350F}
+.race-countdown.race-soon .rc-title{color:#92400E}
+.race-countdown.race-soon .rc-main{color:#78350F}
+.race-countdown.race-soon .rc-days{color:#92400E}
+.race-countdown.race-today{background:linear-gradient(135deg,#FEE2E2 0%,#FECACA 100%);border-color:#DC2626;color:#7F1D1D}
+.race-countdown.race-today .rc-title{color:#991B1B}
+.race-countdown.race-today .rc-main{color:#7F1D1D}
 .info-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid #CBD5E1;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#64748B;margin-left:8px;vertical-align:middle;flex-shrink:0}
 .info-btn:hover{background:#F1F5F9;border-color:#94A3B8}
 .info-btn i{font-size:16px}
@@ -208,6 +230,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <button class="tab" onclick="switchTab('tarefas')" id="tab-tarefas"><i class="ti ti-checklist"></i><span class="tab-dot"></span></button>
 </div>
 <div class="sec active" id="sec-calendario">
+<div class="race-countdown" id="race-countdown"></div>
 <div class="cal-hdr">
 <button class="cal-nav" onclick="changeMonth(-1)"><i class="ti ti-chevron-left"></i></button>
 <span class="cal-month" id="cal-month-lbl"></span>
@@ -387,6 +410,7 @@ function togglePastDay(k){if(!k)return;if(expandedPastDays.has(k))expandedPastDa
 let workoutOverrides={};
 try{const _raw=localStorage.getItem('workoutOverrides');workoutOverrides=_raw?JSON.parse(_raw)||{}:{};}catch(e){workoutOverrides={};console.warn('Override data corrupted, resetting');}
 const OVERRIDE_TYPES={
+cumprido:{label:'✓ Cumprido',color:'#16A34A',bg:'#F0FDF4',border:'#86EFAC'},
 outro_esporte:{label:'🏆 Outro esporte',color:'#7C3AED',bg:'#F5F3FF',border:'#C4B5FD'},
 atividade_leve:{label:'🚶 Atividade leve',color:'#0891B2',bg:'#ECFEFF',border:'#A5F3FC'},
 descanso:{label:'😴 Descanso',color:'#64748B',bg:'#F1F5F9',border:'#CBD5E1'},
@@ -394,6 +418,21 @@ lesao:{label:'🤕 Lesão / dor',color:'#DC2626',bg:'#FEF2F2',border:'#FECACA'},
 doenca:{label:'🤒 Doença',color:'#EA580C',bg:'#FFF7ED',border:'#FED7AA'},
 customizado:{label:'✏️ Personalizado',color:'#0F172A',bg:'#F8F9FA',border:'#CBD5E1'}
 };
+function markCumprido(dayKey){
+if(!isValidDateKey(dayKey))return;
+workoutOverrides[dayKey]={type:'cumprido',title:'',duration:'',note:'',timestamp:Date.now()};
+try{localStorage.setItem('workoutOverrides',JSON.stringify(workoutOverrides));}catch(e){return alert('Erro ao salvar: '+e.message);}
+renderPlan();renderCal();
+if(window.syncNow)window.syncNow();
+}
+function unmarkCumprido(dayKey){
+if(!isValidDateKey(dayKey))return;
+if(!confirm('Desmarcar este treino como cumprido?'))return;
+delete workoutOverrides[dayKey];
+try{localStorage.setItem('workoutOverrides',JSON.stringify(workoutOverrides));}catch(e){return alert('Erro ao salvar: '+e.message);}
+renderPlan();renderCal();
+if(window.syncNow)window.syncNow();
+}
 function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function isValidOverrideType(t){return t&&Object.prototype.hasOwnProperty.call(OVERRIDE_TYPES,t);}
 function isValidDateKey(k){return typeof k==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(k);}
@@ -405,21 +444,42 @@ if(!ov||typeof ov!=='object'||!isValidOverrideType(ov.type))return null;
 return ov;
 }
 function getAdherenceStats(daysBack){
-const stats={cumprido:0,alterado:0,descanso:0,total:0};
+const stats={cumprido:0,alterado:0,descanso:0,falta:0,total:0};
 const days=Math.max(1,Math.min(90,daysBack||14));
+const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 for(let i=0;i<days;i++){
-const d=new Date(today);d.setDate(d.getDate()-i);
+const d=new Date(tDate);d.setDate(d.getDate()-i);
+if(d>tDate)continue;
 if(d<START_DATE||d>RACE_DATE)continue;
 const w=getWorkoutForDate(d);
 if(!w||!w.day)continue;
 stats.total++;
 const ov=getWorkoutOverride(d);
 const isRest=w.day.t==='Descanso';
-if(ov){stats.alterado++;}
-else if(isRest){stats.descanso++;}
-else{stats.cumprido++;}
+if(ov){
+if(ov.type==='cumprido')stats.cumprido++;
+else if(ov.type==='descanso')stats.descanso++;
+else stats.alterado++;
+}else{
+if(isRest)stats.descanso++;
+else stats.falta++;
+}
 }
 return stats;
+}
+function getDayStatus(dayKey,plannedDay){
+const d=new Date(dayKey+'T00:00:00');
+const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const ov=getWorkoutOverride(dayKey);
+const isRest=plannedDay&&plannedDay.t==='Descanso';
+if(ov){
+if(ov.type==='cumprido')return{key:'cumprido',label:'Cumprido',icon:'ti-check',color:'#16A34A',bg:'#DCFCE7'};
+if(ov.type==='descanso')return{key:'descanso',label:'Descanso',icon:'ti-moon',color:'#64748B',bg:'#F1F5F9'};
+return{key:'alterado',label:'Alterado',icon:'ti-refresh',color:'#7C3AED',bg:'#F5F3FF'};
+}
+if(isRest)return{key:'descanso',label:'Descanso',icon:'ti-moon',color:'#64748B',bg:'#F1F5F9'};
+if(d<tDate)return{key:'falta',label:'Falta',icon:'ti-x',color:'#DC2626',bg:'#FEE2E2'};
+return null;
 }
 const BPM_ZONES={Z1:'<131bpm',Z2:'132-143bpm',Z3:'144-156bpm',Z4:'157-168bpm',Z5:'>169bpm'};
 function addBpmToZones(text){
@@ -448,7 +508,7 @@ h+=`<div class="card" style="background:#EFF6FF;border-color:#BFDBFE;text-align:
 }else{
 const st=getAdherenceStats(14);
 if(st.total>0){
-h+=`<div class="adherence-card"><p class="section-label" style="margin:0">Aderência — últimos 14 dias</p><div class="adherence-row"><div class="adherence-stat"><div class="adherence-stat-val" style="color:#16A34A">${st.cumprido}</div><div class="adherence-stat-lbl">Cumpridos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#7C3AED">${st.alterado}</div><div class="adherence-stat-lbl">Alterados</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#64748B">${st.descanso}</div><div class="adherence-stat-lbl">Descansos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#0F172A">${st.total}</div><div class="adherence-stat-lbl">Total</div></div></div></div>`;
+h+=`<div class="adherence-card"><p class="section-label" style="margin:0">Aderência — últimos 14 dias</p><div class="adherence-row"><div class="adherence-stat"><div class="adherence-stat-val" style="color:#16A34A">${st.cumprido}</div><div class="adherence-stat-lbl">Cumpridos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#7C3AED">${st.alterado}</div><div class="adherence-stat-lbl">Alterados</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#64748B">${st.descanso}</div><div class="adherence-stat-lbl">Descansos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#DC2626">${st.falta}</div><div class="adherence-stat-lbl">Faltas</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#0F172A">${st.total}</div><div class="adherence-stat-lbl">Total</div></div></div></div>`;
 }
 }
 for(let i=si;i<ei;i++){
@@ -468,12 +528,21 @@ const canAlter=dayDate<=tDate||Math.floor((dayDate-tDate)/(24*60*60*1000))<=7;
 const isPast=dayDate<tDate;
 const isExpanded=!isPast||expandedPastDays.has(dayKey);
 const ov=getWorkoutOverride(dayKey);
+const isCumprido=ov&&ov.type==='cumprido';
+const isRestDay=d.t==='Descanso';
+const status=getDayStatus(dayKey,d);
 const chevron=isPast?`<i class="ti ${isExpanded?'ti-chevron-up':'ti-chevron-down'}" style="color:#94A3B8;font-size:16px;margin-left:6px"></i>`:'';
 const hdrClick=isPast?` onclick="togglePastDay('${dayKey}')" style="cursor:pointer;user-select:none"`:'';
-const dayLabel=ov?(OVERRIDE_TYPES[ov.type].label+(ov.title?' — '+escapeHtml(ov.title):'')):escapeHtml(d.t);
-h+=`<div class="treino-day"><div class="treino-day-hdr"${hdrClick}><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${dayLabel}</span><span style="font-size:10px;color:#94A3B8;margin-left:auto">${dayDate.getDate()}/${dayDate.getMonth()+1}</span>${chevron}</div>`;
+const dayLabel=(ov&&!isCumprido)?(OVERRIDE_TYPES[ov.type].label+(ov.title?' — '+escapeHtml(ov.title):'')):escapeHtml(d.t);
+let pill='';
+if(!isExpanded&&status){
+pill=`<span class="status-pill" style="background:${status.bg};color:${status.color}"><i class="ti ${status.icon}"></i>${status.label}</span>`;
+}
+h+=`<div class="treino-day"><div class="treino-day-hdr"${hdrClick}><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${dayLabel}</span>${pill}<span style="font-size:10px;color:#94A3B8;margin-left:auto">${dayDate.getDate()}/${dayDate.getMonth()+1}</span>${chevron}</div>`;
 if(!isExpanded){h+=`</div>`;return;}
-if(ov){
+if(isCumprido){
+h+=`<div class="cumprido-banner"><span class="cb-label"><i class="ti ti-check"></i>Treino cumprido</span><button class="cb-undo" onclick="unmarkCumprido('${dayKey}')">Desmarcar</button></div>`;
+}else if(ov){
 const ot=OVERRIDE_TYPES[ov.type];
 h+=`<div class="override-card" style="background:${ot.bg};border-color:${ot.border}"><div class="ov-header"><span class="ov-label" style="color:${ot.color}">${ot.label}</span><button class="ov-edit" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
 if(ov.title)h+=`<div class="ov-title">${escapeHtml(ov.title)}</div>`;
@@ -506,7 +575,10 @@ h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displa
 }
 });
 h+=`</div>`;
-if(canAlter)h+=`<button class="alterar-btn" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>Alterar treino do dia</button>`;
+if(canAlter&&!isCumprido){
+if(!isRestDay)h+=`<button class="cumprido-btn" onclick="markCumprido('${dayKey}')"><i class="ti ti-check"></i>Cumprido</button>`;
+h+=`<button class="alterar-btn" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>${isRestDay?'Marcar atividade':'Alterar treino'}</button>`;
+}
 h+=`</div>`;
 });
 h+=`</div>`;
@@ -1079,7 +1151,27 @@ else{tasks.push({text,priority,due,done:false});}
 localStorage.setItem('tasks',JSON.stringify(tasks));closeTaskModal();renderTasks();renderCal();
 if(window.syncNow)window.syncNow();
 }
+function renderCountdown(){
+const el=document.getElementById('race-countdown');
+if(!el)return;
+const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const days=Math.ceil((RACE_DATE-tDate)/(24*60*60*1000));
+let cls='',icon='🏃',main='';
+if(days<0){
+el.className='race-countdown race-soon';
+el.innerHTML=`<span class="rc-icon">🏁</span><div class="rc-content"><div class="rc-title">Maratona de Munique 10K</div><div class="rc-main">A prova já passou! Espero que tenha sido incrível.</div></div>`;
+return;
+}
+if(days===0){cls='race-today';icon='🏁';main='<strong>É HOJE!</strong> Boa prova, Zé Ricardo!';}
+else if(days===1){cls='race-soon';icon='🏁';main='<strong>Amanhã!</strong> Bora pra prova!';}
+else if(days<=14){cls='race-soon';main=`Faltam <span class="rc-days">${days}</span> dias para a prova`;}
+else if(days<=30){main=`Faltam <span class="rc-days">${days}</span> dias para a prova`;}
+else{main=`Faltam <span class="rc-days">${days}</span> dias (${Math.floor(days/7)} sem.) para a prova`;}
+el.className='race-countdown'+(cls?' '+cls:'');
+el.innerHTML=`<span class="rc-icon">${icon}</span><div class="rc-content"><div class="rc-title">Maratona de Munique 10K · 11/Out/2026</div><div class="rc-main">${main}</div></div>`;
+}
 function renderCal(){
+renderCountdown();
 document.getElementById('cal-month-lbl').textContent=MONTHS[calM]+' '+calY;
 const first=new Date(calY,calM,1).getDay(),dim=new Date(calY,calM+1,0).getDate(),dip=new Date(calY,calM,0).getDate();
 let h='',day=1,nd=1;
@@ -1149,8 +1241,18 @@ const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
 const ovDay=getWorkoutOverride(key);
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const canAlterDay=selDate<=tDate||Math.floor((selDate-tDate)/(24*60*60*1000))<=7;
+const isCumpridoDay=ovDay&&ovDay.type==='cumprido';
+const isRestDayDet=w.day.t==='Descanso';
 h+='<div class="cal-section"><i class="ti ti-barbell" style="color:#16A34A"></i>Treino do dia · Semana '+w.weekNum+'</div>';
-if(ovDay){
+if(isCumpridoDay){
+h+='<div class="cumprido-banner"><span class="cb-label"><i class="ti ti-check"></i>Treino cumprido</span><button class="cb-undo" onclick="unmarkCumprido(\''+key+'\')">Desmarcar</button></div>';
+h+='<div class="card" style="padding:8px 14px"><div class="treino-day-hdr"><span class="treino-day-badge '+badge+'">'+dn+'</span><span class="treino-day-title">'+escapeHtml(w.day.t)+'</span></div>';
+w.day.ex.forEach(e=>{
+const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includes('Fartlek')||e.includes('PROVA');
+h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+escapeHtml(addBpmToZones(e))+'</span></div>';
+});
+h+='</div>';
+}else if(ovDay){
 const ot=OVERRIDE_TYPES[ovDay.type];
 h+='<div class="override-card" style="background:'+ot.bg+';border-color:'+ot.border+'"><div class="ov-header"><span class="ov-label" style="color:'+ot.color+'">'+ot.label+'</span><button class="ov-edit" onclick="openOverrideModal(\''+key+'\')"><i class="ti ti-pencil"></i>Editar</button></div>';
 if(ovDay.title)h+='<div class="ov-title">'+escapeHtml(ovDay.title)+'</div>';
@@ -1166,7 +1268,10 @@ const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includ
 h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+escapeHtml(addBpmToZones(e))+'</span></div>';
 });
 h+='</div>';
-if(canAlterDay)h+='<button class="alterar-btn" onclick="openOverrideModal(\''+key+'\')"><i class="ti ti-pencil"></i>Alterar treino do dia</button>';
+if(canAlterDay){
+if(!isRestDayDet)h+='<button class="cumprido-btn" onclick="markCumprido(\''+key+'\')"><i class="ti ti-check"></i>Cumprido</button>';
+h+='<button class="alterar-btn" onclick="openOverrideModal(\''+key+'\')"><i class="ti ti-pencil"></i>'+(isRestDayDet?'Marcar atividade':'Alterar treino')+'</button>';
+}
 }
 }
 if(tasksOnDay.length){
