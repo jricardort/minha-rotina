@@ -158,6 +158,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .zone-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .zone-grid .modal-field label{display:flex;align-items:center;gap:4px}
 .zone-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.override-card{border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid}
+.override-card .ov-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.override-card .ov-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:4px}
+.override-card .ov-title{font-size:13px;font-weight:600;color:#0F172A;margin-bottom:2px}
+.override-card .ov-meta{font-size:11px;color:#64748B}
+.override-card .ov-original{font-size:11px;color:#94A3B8;margin-top:6px;padding-top:6px;border-top:1px dashed #E2E8F0;line-height:1.5}
+.override-card .ov-original b{color:#64748B;font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.04em}
+.override-card .ov-edit{background:#fff;border:1px solid #CBD5E1;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;color:#334155;display:inline-flex;align-items:center;gap:3px;font-weight:500}
+.override-card .ov-edit:hover{background:#F8F9FA}
+.alterar-btn{display:inline-flex;align-items:center;gap:4px;background:#F8F9FA;border:1px dashed #CBD5E1;border-radius:6px;padding:4px 10px;font-size:11px;color:#64748B;cursor:pointer;font-weight:500;margin-top:6px}
+.alterar-btn:hover{background:#F1F5F9;border-color:#94A3B8}
+.alterar-btn i{font-size:13px;color:#94A3B8}
+.adherence-card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.adherence-row{display:flex;justify-content:space-around;gap:8px;margin-top:8px}
+.adherence-stat{text-align:center;flex:1}
+.adherence-stat-val{font-size:18px;font-weight:600}
+.adherence-stat-lbl{font-size:10px;color:#64748B;margin-top:2px}
 .info-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid #CBD5E1;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#64748B;margin-left:8px;vertical-align:middle;flex-shrink:0}
 .info-btn:hover{background:#F1F5F9;border-color:#94A3B8}
 .info-btn i{font-size:16px}
@@ -242,6 +259,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><h3 id="modal-weight-title">Registrar carga</h3><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
+<div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
 <div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="number" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><input type="time" id="r-z1" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><input type="time" id="r-z2" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><input type="time" id="r-z3" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><input type="time" id="r-z4" step="1" value="00:00:00"></div><div class="modal-field" style="grid-column:1/-1"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><input type="time" id="r-z5" step="1" value="00:00:00"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Tempo total (calculado)</label><input type="text" id="r-total" readonly style="background:#F1F5F9;color:#334155;font-weight:600"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -292,8 +310,8 @@ const p=[];
 const wt=Math.floor((RACE_DATE-START_DATE)/(7*24*60*60*1000));
 const phases=[
 {name:'Base Aeróbica',weeks:8,color:'#EFF6FF',text:'#1E40AF',template:[
-{t:'Musculação + Corrida',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tríceps Francês 3x12','Corrida Z2 20min']},
-{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Rosca Martelo 3x12','Corrida Z2 20min']},
+{t:'Musculação + Corrida',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tríceps Francês 3x12','Tríceps Testa 3x12','Corrida Z2 20min']},
+{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Rosca Martelo 3x12','Rosca Scott 3x12','Corrida Z2 20min']},
 {t:'Corrida Moderada',ex:['Corrida Contínua Z2 40-50min','Core: Prancha 3x45s','Abdominal 3x15','Oblíquos 3x15','Sauna 10min']},
 {t:'Musculação + Corrida',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Encolhimento 3x15','Corrida Z2 20min']},
 {t:'Corrida Longa',ex:['Corrida Longa Z2 50-60min','Agachamento 4x12','Leg Press 3x15','Panturrilha 4x20']},
@@ -301,8 +319,8 @@ const phases=[
 {t:'Descanso',ex:['Descanso ativo','Alongamento','Recuperação']}
 ]},
 {name:'Aumento de Volume',weeks:6,color:'#F0FDF4',text:'#166534',template:[
-{t:'Musculação + Tiros',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tiros 6x400m R:2min']},
-{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Corrida Z2 25min']},
+{t:'Musculação + Tiros',ex:['Supino Reto 4x10','Supino Inclinado 3x12','Crucifixo 3x15','Tríceps Corda 4x12','Tríceps Testa 3x12','Tiros 6x400m R:2min']},
+{t:'Musculação + Corrida',ex:['Puxada Frente 4x10','Remada Curvada 4x10','Remada Unilateral 3x12','Rosca Direta 3x12','Rosca Scott 3x12','Corrida Z2 25min']},
 {t:'Tempo Run',ex:['Aquecimento 10min','Tempo Run Z3 25-30min','Desaquecimento 10min','Core 3 exercícios']},
 {t:'Musculação + Fartlek',ex:['Desenvolvimento 4x10','Elevação Lateral 4x15','Elevação Frontal 3x12','Fartlek 30min (2min forte/2min leve)']},
 {t:'Long Run',ex:['Corrida Longa Z2 60-75min','Agachamento 4x12','Leg Press 3x15','Afundo 3x12']},
@@ -310,8 +328,8 @@ const phases=[
 {t:'Descanso',ex:['Descanso completo ou caminhada leve']}
 ]},
 {name:'Fase de Intensidade',weeks:5,color:'#FEF2F2',text:'#991B1B',template:[
-{t:'Musculação + Intervalado',ex:['Supino Reto 4x8','Supino Inclinado 3x10','Crucifixo 3x12','Tríceps 4x12','Intervalado: 8x800m (pace 5:20) R:2min']},
-{t:'Musculação + Regenerativo',ex:['Puxada 4x10','Remada 4x10','Rosca 3x12','Corrida Regenerativa Z1 20min']},
+{t:'Musculação + Intervalado',ex:['Supino Reto 4x8','Supino Inclinado 3x10','Crucifixo 3x12','Tríceps Corda 4x12','Tríceps Testa 3x10','Intervalado: 8x800m (pace 5:20) R:2min']},
+{t:'Musculação + Regenerativo',ex:['Puxada 4x10','Remada 4x10','Rosca Direta 3x10','Rosca Scott 3x10','Corrida Regenerativa Z1 20min']},
 {t:'Treino de Ritmo',ex:['Aquecimento 2km','3x2km pace 5:30 R:3min','Desaquecimento 1km','Core completo']},
 {t:'Musculação + Fartlek',ex:['Ombros completo','Fartlek Progressivo 35min']},
 {t:'Long Run Progressivo',ex:['12-14km: primeiros 70% Z2, últimos 30% Z3','Pernas leves pós-corrida']},
@@ -364,6 +382,43 @@ return{phase:wk.phase,weekNum:wk.num,day:wk.template[dayIdx],dayName:['Seg','Ter
 }
 let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
 let cardioLog=JSON.parse(localStorage.getItem('cardioLog')||'{}');
+let workoutOverrides={};
+try{const _raw=localStorage.getItem('workoutOverrides');workoutOverrides=_raw?JSON.parse(_raw)||{}:{};}catch(e){workoutOverrides={};console.warn('Override data corrupted, resetting');}
+const OVERRIDE_TYPES={
+outro_esporte:{label:'🏆 Outro esporte',color:'#7C3AED',bg:'#F5F3FF',border:'#C4B5FD'},
+atividade_leve:{label:'🚶 Atividade leve',color:'#0891B2',bg:'#ECFEFF',border:'#A5F3FC'},
+descanso:{label:'😴 Descanso',color:'#64748B',bg:'#F1F5F9',border:'#CBD5E1'},
+lesao:{label:'🤕 Lesão / dor',color:'#DC2626',bg:'#FEF2F2',border:'#FECACA'},
+doenca:{label:'🤒 Doença',color:'#EA580C',bg:'#FFF7ED',border:'#FED7AA'},
+customizado:{label:'✏️ Personalizado',color:'#0F172A',bg:'#F8F9FA',border:'#CBD5E1'}
+};
+function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function isValidOverrideType(t){return t&&Object.prototype.hasOwnProperty.call(OVERRIDE_TYPES,t);}
+function isValidDateKey(k){return typeof k==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(k);}
+function getWorkoutOverride(dateOrKey){
+const key=typeof dateOrKey==='string'?dateOrKey:(dateOrKey instanceof Date?dk(dateOrKey):null);
+if(!key||!isValidDateKey(key))return null;
+const ov=workoutOverrides[key];
+if(!ov||typeof ov!=='object'||!isValidOverrideType(ov.type))return null;
+return ov;
+}
+function getAdherenceStats(daysBack){
+const stats={cumprido:0,alterado:0,descanso:0,total:0};
+const days=Math.max(1,Math.min(90,daysBack||14));
+for(let i=0;i<days;i++){
+const d=new Date(today);d.setDate(d.getDate()-i);
+if(d<START_DATE||d>RACE_DATE)continue;
+const w=getWorkoutForDate(d);
+if(!w||!w.day)continue;
+stats.total++;
+const ov=getWorkoutOverride(d);
+const isRest=w.day.t==='Descanso';
+if(ov){stats.alterado++;}
+else if(isRest){stats.descanso++;}
+else{stats.cumprido++;}
+}
+return stats;
+}
 const BPM_ZONES={Z1:'<131bpm',Z2:'132-143bpm',Z3:'144-156bpm',Z4:'157-168bpm',Z5:'>169bpm'};
 function addBpmToZones(text){
 return text.replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+BPM_ZONES['Z'+n]+')');
@@ -388,6 +443,11 @@ const si=cw,ei=Math.min(plan.length,si+4);
 let h='';
 if(today<START_DATE){
 h+=`<div class="card" style="background:#EFF6FF;border-color:#BFDBFE;text-align:center"><p style="font-size:13px;color:#1E40AF;line-height:1.6"><strong>📅 Início do plano: 11/05/2026</strong><br>Mostrando primeiras 4 semanas do programa</p></div>`;
+}else{
+const st=getAdherenceStats(14);
+if(st.total>0){
+h+=`<div class="adherence-card"><p class="section-label" style="margin:0">Aderência — últimos 14 dias</p><div class="adherence-row"><div class="adherence-stat"><div class="adherence-stat-val" style="color:#16A34A">${st.cumprido}</div><div class="adherence-stat-lbl">Cumpridos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#7C3AED">${st.alterado}</div><div class="adherence-stat-lbl">Alterados</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#64748B">${st.descanso}</div><div class="adherence-stat-lbl">Descansos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#0F172A">${st.total}</div><div class="adherence-stat-lbl">Total</div></div></div></div>`;
+}
 }
 for(let i=si;i<ei;i++){
 const wk=plan[i];
@@ -399,7 +459,24 @@ const dayNames=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 wk.template.forEach((d,idx)=>{
 const dn=dayNames[idx];
 const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
-h+=`<div class="treino-day"><div class="treino-day-hdr"><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${d.t}</span></div><div class="card" style="padding:6px 12px">`;
+const dayDate=new Date(ws);dayDate.setDate(dayDate.getDate()+idx);
+const dayKey=dk(dayDate);
+const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const canAlter=dayDate<=tDate||Math.floor((dayDate-tDate)/(24*60*60*1000))<=7;
+const ov=getWorkoutOverride(dayKey);
+h+=`<div class="treino-day"><div class="treino-day-hdr"><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${d.t}</span><span style="font-size:10px;color:#94A3B8;margin-left:auto">${dayDate.getDate()}/${dayDate.getMonth()+1}</span></div>`;
+if(ov){
+const ot=OVERRIDE_TYPES[ov.type];
+h+=`<div class="override-card" style="background:${ot.bg};border-color:${ot.border}"><div class="ov-header"><span class="ov-label" style="color:${ot.color}">${ot.label}</span><button class="ov-edit" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
+if(ov.title)h+=`<div class="ov-title">${escapeHtml(ov.title)}</div>`;
+const metaParts=[];
+if(ov.duration)metaParts.push(escapeHtml(ov.duration));
+if(ov.note)metaParts.push(escapeHtml(ov.note));
+if(metaParts.length)h+=`<div class="ov-meta">${metaParts.join(' · ')}</div>`;
+h+=`<div class="ov-original"><b>Plano original:</b> ${escapeHtml(d.t)} (${d.ex.length} exercícios)</div></div></div>`;
+return;
+}
+h+=`<div class="card" style="padding:6px 12px">`;
 d.ex.forEach(e=>{
 const displayE=addBpmToZones(e);
 const isRun=isRunning(e);
@@ -420,7 +497,9 @@ const cls=last?'weight-current':'weight-empty';
 h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displayE}</span><button class="weight-btn" onclick="openWeightModal('${exKey.replace(/'/g,"\\'")}','${e.replace(/'/g,"\\'")}')"><i class="ti ti-barbell"></i><span class="${cls}">${lastTxt}</span></button></div>`;
 }
 });
-h+=`</div></div>`;
+h+=`</div>`;
+if(canAlter)h+=`<button class="alterar-btn" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>Alterar treino do dia</button>`;
+h+=`</div>`;
 });
 h+=`</div>`;
 }
@@ -545,6 +624,55 @@ const data=log.map(w=>w.weight);
 if(weightChartInst)weightChartInst.destroy();
 const ctx=document.getElementById('weightChart').getContext('2d');
 weightChartInst=new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderColor:'#2563EB',backgroundColor:'#2563EB18',borderWidth:2,pointRadius:4,pointBackgroundColor:'#2563EB',fill:true,tension:0.3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'kg'}}},scales:{x:{display:true,ticks:{font:{size:9},color:'#94A3B8'}},y:{display:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',maxTicksLimit:5,callback:v=>v+'kg'}}}}});
+}
+let currentOverrideDate=null;
+function openOverrideModal(dateKey){
+if(!isValidDateKey(dateKey))return alert('Data inválida.');
+const d=new Date(dateKey+'T00:00:00');
+if(isNaN(d.getTime()))return alert('Data inválida.');
+const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const daysDiff=Math.floor((d-tDate)/(24*60*60*1000));
+if(daysDiff<-90||daysDiff>7)return alert('Só é possível registrar alterações de até 90 dias atrás ou 7 dias à frente.');
+currentOverrideDate=dateKey;
+const existing=getWorkoutOverride(dateKey)||{};
+document.getElementById('ov-date').value=dateKey;
+document.getElementById('ov-type').value=existing.type||'';
+document.getElementById('ov-title').value=existing.title||'';
+document.getElementById('ov-duration').value=existing.duration||'';
+document.getElementById('ov-note').value=existing.note||'';
+const w=getWorkoutForDate(d);
+const planText=(w&&w.day)?(w.day.t+': '+w.day.ex.map(addBpmToZones).join(' · ')):'Sem treino planejado para este dia';
+document.getElementById('ov-original-plan').textContent=planText;
+const btns=document.getElementById('ov-btns');
+if(existing.type){
+btns.innerHTML='<button class="btn-del" onclick="removeOverride()">Remover</button><button class="btn-cancel" onclick="closeOverrideModal()">Cancelar</button><button class="btn-save" onclick="saveOverride()">Salvar</button>';
+}else{
+btns.innerHTML='<button class="btn-cancel" onclick="closeOverrideModal()">Cancelar</button><button class="btn-save" onclick="saveOverride()">Salvar</button>';
+}
+document.getElementById('modal-override').classList.add('open');
+}
+function closeOverrideModal(){document.getElementById('modal-override').classList.remove('open');currentOverrideDate=null;}
+function saveOverride(){
+if(!currentOverrideDate||!isValidDateKey(currentOverrideDate))return alert('Data inválida.');
+const type=document.getElementById('ov-type').value;
+if(!isValidOverrideType(type))return alert('Selecione um tipo de alteração.');
+const title=(document.getElementById('ov-title').value||'').trim().slice(0,80);
+const duration=(document.getElementById('ov-duration').value||'').trim().slice(0,20);
+const note=(document.getElementById('ov-note').value||'').trim().slice(0,200);
+workoutOverrides[currentOverrideDate]={type,title,duration,note,timestamp:Date.now()};
+try{localStorage.setItem('workoutOverrides',JSON.stringify(workoutOverrides));}catch(e){return alert('Erro ao salvar localmente: '+e.message);}
+closeOverrideModal();
+renderPlan();renderCal();
+if(window.syncNow)window.syncNow();
+}
+function removeOverride(){
+if(!currentOverrideDate)return;
+if(!confirm('Remover a alteração e voltar ao treino planejado?'))return;
+delete workoutOverrides[currentOverrideDate];
+try{localStorage.setItem('workoutOverrides',JSON.stringify(workoutOverrides));}catch(e){return alert('Erro ao salvar: '+e.message);}
+closeOverrideModal();
+renderPlan();renderCal();
+if(window.syncNow)window.syncNow();
 }
 let currentRunKey=null,currentRunName=null,editRunIdx=null;
 function showRunViewMode(entry){
@@ -959,7 +1087,9 @@ const cls=other?'other':isT?'today':isS?'selected':'';
 const dots=[];
 if(HOLIDAYS[key])dots.push('#F59E0B');
 const w2=getWorkoutForDate(dt);
-if(w2&&w2.day&&w2.day.t!=='Descanso')dots.push('#16A34A');
+const ovD=getWorkoutOverride(key);
+if(ovD){dots.push(OVERRIDE_TYPES[ovD.type].color);}
+else if(w2&&w2.day&&w2.day.t!=='Descanso')dots.push('#16A34A');
 const tasksOnDay=tasks.filter(t=>t.due===key&&!t.done);
 if(tasksOnDay.length){
 const hasHigh=tasksOnDay.some(t=>t.priority==='high');
@@ -1008,13 +1138,28 @@ if(w&&w.day){
 hasContent=true;
 const dn=w.dayName;
 const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
+const ovDay=getWorkoutOverride(key);
+const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const canAlterDay=selDate<=tDate||Math.floor((selDate-tDate)/(24*60*60*1000))<=7;
 h+='<div class="cal-section"><i class="ti ti-barbell" style="color:#16A34A"></i>Treino do dia · Semana '+w.weekNum+'</div>';
-h+='<div class="card" style="padding:8px 14px"><div class="treino-day-hdr"><span class="treino-day-badge '+badge+'">'+dn+'</span><span class="treino-day-title">'+w.day.t+'</span></div>';
+if(ovDay){
+const ot=OVERRIDE_TYPES[ovDay.type];
+h+='<div class="override-card" style="background:'+ot.bg+';border-color:'+ot.border+'"><div class="ov-header"><span class="ov-label" style="color:'+ot.color+'">'+ot.label+'</span><button class="ov-edit" onclick="openOverrideModal(\''+key+'\')"><i class="ti ti-pencil"></i>Editar</button></div>';
+if(ovDay.title)h+='<div class="ov-title">'+escapeHtml(ovDay.title)+'</div>';
+const metaParts=[];
+if(ovDay.duration)metaParts.push(escapeHtml(ovDay.duration));
+if(ovDay.note)metaParts.push(escapeHtml(ovDay.note));
+if(metaParts.length)h+='<div class="ov-meta">'+metaParts.join(' · ')+'</div>';
+h+='<div class="ov-original"><b>Plano original:</b> '+escapeHtml(w.day.t)+' — '+w.day.ex.map(e=>escapeHtml(addBpmToZones(e))).join(', ')+'</div></div>';
+}else{
+h+='<div class="card" style="padding:8px 14px"><div class="treino-day-hdr"><span class="treino-day-badge '+badge+'">'+dn+'</span><span class="treino-day-title">'+escapeHtml(w.day.t)+'</span></div>';
 w.day.ex.forEach(e=>{
 const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includes('Fartlek')||e.includes('PROVA');
-h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+addBpmToZones(e)+'</span></div>';
+h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+escapeHtml(addBpmToZones(e))+'</span></div>';
 });
 h+='</div>';
+if(canAlterDay)h+='<button class="alterar-btn" onclick="openOverrideModal(\''+key+'\')"><i class="ti ti-pencil"></i>Alterar treino do dia</button>';
+}
 }
 if(tasksOnDay.length){
 hasContent=true;
@@ -1056,6 +1201,7 @@ window.refreshDataFromStorage=function(){
 try{
 const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{};
 const clR=localStorage.getItem('cardioLog');cardioLog=clR?JSON.parse(clR)||{}:{};
+try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
 const wkR=localStorage.getItem('workoutTemplate');if(wkR&&wkR!=='null'){const p=JSON.parse(wkR);if(p)wkTmpl=p;}
 const mdR=localStorage.getItem('medData');if(mdR){const p=JSON.parse(mdR);if(Array.isArray(p))medData=p;}
 const evR=localStorage.getItem('events');events=evR?JSON.parse(evR)||[]:[];
@@ -1090,7 +1236,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
