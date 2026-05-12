@@ -382,6 +382,8 @@ return{phase:wk.phase,weekNum:wk.num,day:wk.template[dayIdx],dayName:['Seg','Ter
 }
 let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
 let cardioLog=JSON.parse(localStorage.getItem('cardioLog')||'{}');
+let expandedPastDays=new Set();
+function togglePastDay(k){if(!k)return;if(expandedPastDays.has(k))expandedPastDays.delete(k);else expandedPastDays.add(k);renderPlan();}
 let workoutOverrides={};
 try{const _raw=localStorage.getItem('workoutOverrides');workoutOverrides=_raw?JSON.parse(_raw)||{}:{};}catch(e){workoutOverrides={};console.warn('Override data corrupted, resetting');}
 const OVERRIDE_TYPES={
@@ -463,8 +465,14 @@ const dayDate=new Date(ws);dayDate.setDate(dayDate.getDate()+idx);
 const dayKey=dk(dayDate);
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const canAlter=dayDate<=tDate||Math.floor((dayDate-tDate)/(24*60*60*1000))<=7;
+const isPast=dayDate<tDate;
+const isExpanded=!isPast||expandedPastDays.has(dayKey);
 const ov=getWorkoutOverride(dayKey);
-h+=`<div class="treino-day"><div class="treino-day-hdr"><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${d.t}</span><span style="font-size:10px;color:#94A3B8;margin-left:auto">${dayDate.getDate()}/${dayDate.getMonth()+1}</span></div>`;
+const chevron=isPast?`<i class="ti ${isExpanded?'ti-chevron-up':'ti-chevron-down'}" style="color:#94A3B8;font-size:16px;margin-left:6px"></i>`:'';
+const hdrClick=isPast?` onclick="togglePastDay('${dayKey}')" style="cursor:pointer;user-select:none"`:'';
+const dayLabel=ov?(OVERRIDE_TYPES[ov.type].label+(ov.title?' — '+escapeHtml(ov.title):'')):escapeHtml(d.t);
+h+=`<div class="treino-day"><div class="treino-day-hdr"${hdrClick}><span class="treino-day-badge ${badge}">${dn}</span><span class="treino-day-title">${dayLabel}</span><span style="font-size:10px;color:#94A3B8;margin-left:auto">${dayDate.getDate()}/${dayDate.getMonth()+1}</span>${chevron}</div>`;
+if(!isExpanded){h+=`</div>`;return;}
 if(ov){
 const ot=OVERRIDE_TYPES[ov.type];
 h+=`<div class="override-card" style="background:${ot.bg};border-color:${ot.border}"><div class="ov-header"><span class="ov-label" style="color:${ot.color}">${ot.label}</span><button class="ov-edit" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
