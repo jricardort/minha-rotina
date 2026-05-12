@@ -197,6 +197,95 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .race-countdown.race-today{background:linear-gradient(135deg,#FEE2E2 0%,#FECACA 100%);border-color:#DC2626;color:#7F1D1D}
 .race-countdown.race-today .rc-title{color:#991B1B}
 .race-countdown.race-today .rc-main{color:#7F1D1D}
+.balance-card{background:linear-gradient(135deg,#F0FDF4 0%,#DCFCE7 100%);border:1px solid #86EFAC;border-radius:10px;padding:14px;margin-bottom:12px}
+.balance-card.over{background:linear-gradient(135deg,#FEF2F2 0%,#FEE2E2 100%);border-color:#FECACA}
+.balance-row{display:flex;align-items:center;justify-content:space-around;margin:8px 0;gap:6px}
+.balance-col{text-align:center;flex:1;min-width:0}
+.balance-col-val{font-size:18px;font-weight:600;color:#0F172A}
+.balance-col-lbl{font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.balance-result{text-align:center;padding-top:8px;border-top:1px dashed #86EFAC;margin-top:8px}
+.balance-card.over .balance-result{border-color:#FECACA}
+.balance-result-val{font-size:24px;font-weight:700;color:#15803D}
+.balance-card.over .balance-result-val{color:#B91C1C}
+.balance-result-lbl{font-size:11px;color:#64748B;margin-top:2px}
+.balance-meta{font-size:11px;color:#475569;text-align:center;margin-top:6px;padding:6px 10px;background:#fff;border-radius:6px}
+.macros-card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px;margin-bottom:12px}
+.macros-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.macro-col{text-align:center}
+.macro-val{font-size:16px;font-weight:600;color:#0F172A}
+.macro-goal{font-size:11px;color:#64748B}
+.macro-lbl{font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.macro-bar{height:4px;background:#F1F5F9;border-radius:99px;overflow:hidden;margin-top:4px}
+.macro-bar-fill{height:100%;border-radius:99px;transition:width .3s}
+.hydration-card{background:linear-gradient(135deg,#EFF6FF 0%,#DBEAFE 100%);border:1px solid #BFDBFE;border-radius:10px;padding:14px;margin-bottom:12px}
+.water-glasses{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0;font-size:20px;line-height:1}
+.water-glass{cursor:pointer}
+.water-glass.filled{filter:none}
+.water-glass.empty{filter:grayscale(1) opacity(.35)}
+.water-info{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.water-amount{font-size:18px;font-weight:600;color:#1E40AF}
+.water-goal-txt{font-size:11px;color:#64748B}
+.water-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.water-btn{flex:1;min-width:80px;background:#fff;border:1px solid #BFDBFE;border-radius:6px;padding:6px 10px;font-size:11px;color:#1E40AF;cursor:pointer;font-weight:500}
+.water-btn:hover{background:#EFF6FF}
+.kcal-spent-card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px;margin-bottom:12px}
+.kcal-spent-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0}
+.kcal-spent-row b{font-weight:600;color:#0F172A}
+.kcal-spent-row span{color:#475569}
+.kcal-spent-total{padding-top:8px;border-top:1px dashed #E2E8F0;margin-top:6px;font-weight:600;color:#0F172A}
+.kcal-spent-note{font-size:10px;color:#94A3B8;margin-top:4px;font-style:italic}
+.meal-card{background:#fff;border:1px solid #CBD5E1;border-radius:8px;padding:10px 12px;margin-bottom:8px}
+.meal-card-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px}
+.meal-card-title{font-size:13px;font-weight:600;color:#0F172A;flex:1}
+.meal-card-time{font-size:10px;color:#64748B}
+.meal-card-kcal{font-size:13px;font-weight:600;color:#16A34A;white-space:nowrap}
+.meal-card-items{font-size:11px;color:#64748B;line-height:1.4;margin:2px 0 4px}
+.meal-card-macros{font-size:10px;color:#94A3B8;display:flex;gap:8px}
+.meal-card-actions{display:flex;gap:4px;margin-top:6px}
+.meal-card-actions button{background:#F8F9FA;border:1px solid #E2E8F0;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;color:#475569;display:inline-flex;align-items:center;gap:3px}
+.meal-card-actions button:hover{background:#F1F5F9}
+.fav-chip{display:inline-flex;align-items:center;gap:3px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:99px;padding:4px 10px;font-size:11px;color:#78350F;cursor:pointer;margin:2px;font-weight:500}
+.fav-chip:hover{background:#FDE68A}
+.fav-chip i{font-size:12px}
+.beer-card{background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%);border:1px solid #FCD34D;border-radius:10px;padding:14px;margin-bottom:12px}
+.beer-summary{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:#78350F;font-size:13px;font-weight:600}
+.beer-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #FDE68A;font-size:12px}
+.beer-item:last-of-type{border-bottom:0}
+.beer-item-info{flex:1;color:#92400E}
+.beer-item-time{font-size:10px;color:#B45309}
+.beer-item-kcal{font-weight:600;color:#92400E;margin-right:8px}
+.beer-item-del{background:0;border:0;cursor:pointer;color:#B45309;padding:2px}
+.beer-quick-add{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.beer-quick-add button{flex:1;min-width:80px;background:#fff;border:1px solid #FCD34D;border-radius:6px;padding:6px 8px;font-size:11px;color:#92400E;cursor:pointer;font-weight:500}
+.beer-quick-add button:hover{background:#FEF3C7}
+.beer-no-impact{font-size:10px;color:#B45309;margin-top:8px;padding:6px 8px;background:#fff;border-radius:6px;font-style:italic}
+.section-title{font-size:13px;font-weight:600;color:#0F172A;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+.section-title i{color:#64748B}
+.diet-empty{text-align:center;padding:16px;color:#94A3B8;font-size:12px;background:#F8F9FA;border-radius:8px;border:1px dashed #CBD5E1}
+.goals-btn{background:#fff;border:1px solid #CBD5E1;border-radius:6px;padding:4px 10px;font-size:11px;color:#475569;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.goals-btn:hover{background:#F8F9FA}
+.dash-card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px;margin-bottom:12px}
+.dash-card-hdr{font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.goal-progress{display:flex;justify-content:space-between;font-size:13px;color:#475569;margin-bottom:6px}
+.goal-progress b{color:#0F172A;font-weight:600}
+.goal-bar{height:8px;background:#F1F5F9;border-radius:99px;overflow:hidden;margin-top:6px}
+.goal-bar-fill{height:100%;background:linear-gradient(90deg,#10B981,#16A34A);border-radius:99px}
+.dash-stat-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:#334155}
+.dash-stat-row b{color:#0F172A;font-weight:600}
+.dash-chart-wrap{width:100%;height:140px;margin:8px 0}
+.dash-note{font-size:11px;color:#64748B;margin-top:6px;padding:6px 8px;background:#F8F9FA;border-radius:6px;line-height:1.4}
+.dash-note.success{background:#F0FDF4;color:#15803D}
+.dash-note.warning{background:#FFFBEB;color:#92400E}
+.kcal-inline-card{background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:8px 12px;margin-top:6px;font-size:12px;color:#9A3412;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.kcal-inline-card b{font-weight:600}
+.kcal-inline-btn{background:#fff;border:1px solid #FED7AA;border-radius:5px;padding:3px 8px;font-size:10px;cursor:pointer;color:#9A3412;font-weight:500;display:inline-flex;align-items:center;gap:3px}
+.kcal-inline-btn:hover{background:#FFEDD5}
+.fav-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F1F5F9}
+.fav-row:last-child{border-bottom:0}
+.fav-row .fav-info{flex:1;min-width:0}
+.fav-row .fav-name{font-size:12px;font-weight:500;color:#0F172A}
+.fav-row .fav-macros{font-size:10px;color:#64748B}
+.fav-row .fav-del{background:0;border:0;cursor:pointer;color:#DC2626;padding:2px;font-size:14px}
 .info-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid #CBD5E1;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#64748B;margin-left:8px;vertical-align:middle;flex-shrink:0}
 .info-btn:hover{background:#F1F5F9;border-color:#94A3B8}
 .info-btn i{font-size:16px}
@@ -246,20 +335,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div id="treino-content"></div>
 </div>
 <div class="sec" id="sec-dieta">
-<div class="card" style="background:#FFFBEB;border-color:#FDE68A"><p style="font-size:12px;color:#92400E;line-height:1.6"><strong>Consulta nutricionista — 12/05 às 15h</strong><br>Dieta personalizada será definida após a consulta.</p></div>
-<div class="stat-row">
-<div class="stat-card"><div class="stat-label">Calorias</div><div class="stat-val">1.640<span style="font-size:12px;font-weight:400">/2.200</span></div><div class="prog-bar"><div class="prog-fill" style="width:68%;background:#16A34A"></div></div></div>
-<div class="stat-card"><div class="stat-label">Proteína</div><div class="stat-val">112g<span style="font-size:12px;font-weight:400">/160g</span></div><div class="prog-bar"><div class="prog-fill" style="width:70%;background:#2563EB"></div></div></div>
-</div>
-<p class="section-label">Refeições de hoje</p>
-<div class="card">
-<div class="meal-row"><div><div style="font-size:14px;font-weight:500">Café da manhã</div><div style="font-size:12px;color:#64748B">Ovos mexidos + aveia</div></div><span class="badge b-green">420 kcal</span></div>
-<div class="meal-row"><div><div style="font-size:14px;font-weight:500">Almoço</div><div style="font-size:12px;color:#64748B">Frango, arroz, feijão, salada</div></div><span class="badge b-green">680 kcal</span></div>
-<div class="meal-row"><div><div style="font-size:14px;font-weight:500">Pré-treino</div><div style="font-size:12px;color:#64748B">Batata-doce + atum</div></div><span class="badge b-blue">540 kcal</span></div>
-<div class="meal-row"><div><div style="font-size:14px;font-weight:500">Jantar</div><div style="font-size:12px;color:#64748B">Não registrado</div></div><span class="badge b-gray">pendente</span></div>
-</div>
+<div id="dieta-content"></div>
 </div>
 <div class="sec" id="sec-medicoes">
+<div id="emag-dashboard"></div>
+<p class="section-label">Histórico de medições</p>
 <div class="med-tabs" id="med-tabs"></div>
 <div class="card">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><span id="med-title" style="font-size:13px;font-weight:500"></span><span id="med-current" style="font-size:20px;font-weight:500"></span></div>
@@ -282,6 +362,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><h3 id="modal-weight-title">Registrar carga</h3><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
+<div class="modal-bg" id="modal-meal"><div class="modal"><h3 id="modal-meal-title">Nova refeição</h3><p class="modal-hint">Registre o que comeu. Macros são opcionais.</p><div class="modal-field" style="margin-bottom:10px"><label>Nome</label><input type="text" id="meal-name" maxlength="60" placeholder="Ex: Café da manhã, Almoço"></div><div class="modal-grid"><div class="modal-field"><label>Hora</label><input type="time" id="meal-time"></div><div class="modal-field"><label>Calorias (kcal)</label><input type="number" id="meal-kcal" step="1" placeholder="420"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="meal-prot" step="0.1" placeholder="32"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="meal-carb" step="0.1" placeholder="55"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Gordura (g)</label><input type="number" id="meal-gord" step="0.1" placeholder="8"></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="meal-items" maxlength="200" placeholder="Aveia 50g, Banana, Whey 30g"></div><div class="modal-field" style="margin-bottom:14px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="meal-fav" style="width:auto"><label for="meal-fav" style="margin:0;font-size:12px;cursor:pointer">Salvar como favorito</label></div><div class="modal-btns" id="meal-btns"></div></div></div>
+<div class="modal-bg" id="modal-beer"><div class="modal"><h3 id="modal-beer-title">Registrar cerveja</h3><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" id="beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="beer-calc">— kcal · — carbo</span></div><div class="modal-grid"><div class="modal-field"><label>Hora (opcional)</label><input type="time" id="beer-time"></div><div class="modal-field"><label>Marca / local (opc)</label><input type="text" id="beer-note" maxlength="40" placeholder="Augustiner"></div></div><div class="modal-btns" id="beer-btns" style="margin-top:14px"></div></div></div>
+<div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="number" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="number" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="number" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="number" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto real (relógio) ou deixe em branco para usar a estimativa do app.</p><div class="modal-field" style="margin-bottom:10px"><label>Musculação (kcal)</label><input type="number" id="kw-musc" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8" id="kw-musc-est"></span></div><div class="modal-field" style="margin-bottom:10px"><label>Corrida (kcal)</label><input type="number" id="kw-run" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8" id="kw-run-est"></span></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Total:</b> <span id="kw-total">— kcal</span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
 <div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="number" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><input type="time" id="r-z1" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><input type="time" id="r-z2" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><input type="time" id="r-z3" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><input type="time" id="r-z4" step="1" value="00:00:00"></div><div class="modal-field" style="grid-column:1/-1"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><input type="time" id="r-z5" step="1" value="00:00:00"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Tempo total (calculado)</label><input type="text" id="r-total" readonly style="background:#F1F5F9;color:#334155;font-weight:600"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
@@ -405,6 +489,137 @@ return{phase:wk.phase,weekNum:wk.num,day:wk.template[dayIdx],dayName:['Seg','Ter
 }
 let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
 let cardioLog=JSON.parse(localStorage.getItem('cardioLog')||'{}');
+let diet={};try{const _d=localStorage.getItem('diet');diet=_d?JSON.parse(_d)||{}:{};}catch(e){diet={};}
+const DEFAULT_GOALS={kcal:2200,prot:160,carb:250,gord:70,water:2800,deficit:500};
+let dietGoals=Object.assign({},DEFAULT_GOALS);try{const _g=localStorage.getItem('dietGoals');if(_g){const p=JSON.parse(_g);if(p)Object.assign(dietGoals,p);}}catch(e){}
+let dietFavorites=[];try{const _f=localStorage.getItem('dietFavorites');dietFavorites=_f?JSON.parse(_f)||[]:[];}catch(e){dietFavorites=[];}
+let workoutKcal={};try{const _w=localStorage.getItem('workoutKcal');workoutKcal=_w?JSON.parse(_w)||{}:{};}catch(e){workoutKcal={};}
+const BEER_TYPES={
+pilsner:{label:'Pilsner / Helles',kcalPer100ml:42,carbPer100ml:3.4},
+weissbier:{label:'Weißbier',kcalPer100ml:46,carbPer100ml:3.6},
+dunkel:{label:'Dunkel / Stout',kcalPer100ml:50,carbPer100ml:4.4},
+ipa:{label:'IPA artesanal',kcalPer100ml:60,carbPer100ml:4.5},
+oktoberfest:{label:'Märzen / Oktoberfest',kcalPer100ml:52,carbPer100ml:4.0},
+lager_br:{label:'Lager brasileira',kcalPer100ml:43,carbPer100ml:3.4}
+};
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+const PLAN_PRESETS={
+cafe_sem:{name:'Café — Iogurte proteico',kcal:120,prot:18,carb:8,gord:1,items:'1 iogurte proteico (sem exercício)'},
+cafe_com:{name:'Café — Porção de frutas',kcal:90,prot:1,carb:23,gord:0,items:'1 porção de frutas (com exercício)'},
+pos_musc:{name:'Pós-treino — Whey 1 dose',kcal:120,prot:24,carb:3,gord:1,items:'1 dose suplemento proteico (com musculação)'},
+pos_sem:{name:'Pós-treino — Whey ½ dose',kcal:60,prot:12,carb:1.5,gord:0.5,items:'½ dose suplemento proteico'},
+almoco_completo:{name:'Almoço completo',kcal:680,prot:42,carb:90,gord:15,items:'Vegetais folhosos · 120g vegetais · 80g arroz · 120g feijão · 100g frango'},
+lanche_completo:{name:'Lanche da tarde',kcal:340,prot:14,carb:30,gord:18,items:'1 porção fruta · 15g oleaginosas · 1 fatia pão + 30g cottage'},
+jantar_completo:{name:'Jantar completo',kcal:540,prot:38,carb:55,gord:14,items:'Vegetais folhosos · 120g vegetais · 50g arroz · 80g feijão · 100g frango'},
+ceia_iogurte:{name:'Ceia — Iogurte zero',kcal:60,prot:8,carb:6,gord:0,items:'1 iogurte zero/light/desnatado'},
+ceia_queijo:{name:'Ceia — Queijo',kcal:90,prot:7,carb:1,gord:7,items:'30g queijo'},
+ceia_leite:{name:'Ceia — Leite com canela',kcal:90,prot:6,carb:9,gord:3,items:'200ml leite desnatado + canela'},
+doce_30g:{name:'Doce 30g (pré/pós treino)',kcal:120,prot:1,carb:25,gord:2,items:'30g de doce'}
+};
+const DOSE_CERVEJA_ML=600;
+const MAX_DOSES_SEMANA=2;
+const MAX_OFF_SEMANA=2;
+function getWeekStart(date){
+const d=new Date(date.getFullYear(),date.getMonth(),date.getDate());
+const day=d.getDay();
+const diff=day===0?-6:1-day;
+d.setDate(d.getDate()+diff);
+return d;
+}
+function countBeerDosesThisWeek(){
+const ws=getWeekStart(today);
+let totalMl=0;
+for(let i=0;i<7;i++){
+const d=new Date(ws);d.setDate(d.getDate()+i);
+const dd=getDiet(dk(d));
+dd.beers.forEach(b=>{totalMl+=(Number(b.volume)||0);});
+}
+return{ml:totalMl,doses:+(totalMl/DOSE_CERVEJA_ML).toFixed(1)};
+}
+function countOffMealsThisWeek(){
+const ws=getWeekStart(today);
+let count=0;
+for(let i=0;i<7;i++){
+const d=new Date(ws);d.setDate(d.getDate()+i);
+const dd=getDiet(dk(d));
+count+=dd.meals.filter(m=>m.type==='off').length;
+}
+return count;
+}
+function getSupplements(dateKey){
+const d=diet[dateKey]||{};
+const s=d.supplements||{};
+return{creatina:!!s.creatina,leucina:!!s.leucina,doce:!!s.doce};
+}
+function toggleSupplement(field){
+const key=dk(today);
+const d=getDiet(key);
+const s=d.supplements||{};
+s[field]=!s[field];
+d.supplements=s;
+saveDiet(key,d);
+renderDiet();
+}
+function getLatestPeso(){for(let i=medData.length-1;i>=0;i--){if(medData[i].peso!=null)return medData[i].peso;}return 80;}
+function getLatestBasal(){for(let i=medData.length-1;i>=0;i--){if(medData[i].basal!=null)return medData[i].basal;}return 1800;}
+function estimateRunKcal(run,weight){
+if(!run)return 0;
+const METs={z1:7,z2:9,z3:11,z4:13,z5:16};
+let kcal=0,totalSec=0;
+Object.keys(METs).forEach(z=>{const s=parseTime(run[z]);totalSec+=s;kcal+=METs[z]*weight*(s/3600);});
+if(kcal===0&&run.total){const s=parseTime(run.total);kcal=9*weight*(s/3600);}
+return Math.round(kcal);
+}
+function estimateMuscKcalForDay(dateKey){
+let hasEntries=false;
+Object.values(weightLog).forEach(entries=>{if(entries.some(e=>e.date===dateKey))hasEntries=true;});
+return hasEntries?280:0;
+}
+function getDayKcalSpent(dateKey){
+const weight=getLatestPeso();
+const manual=workoutKcal[dateKey]||{};
+let runEst=0;
+Object.values(cardioLog).forEach(runs=>{const r=runs.find(x=>x.date===dateKey);if(r)runEst+=estimateRunKcal(r,weight);});
+const muscEst=estimateMuscKcalForDay(dateKey);
+const musc=manual.musc!=null?manual.musc:muscEst;
+const run=manual.run!=null?manual.run:runEst;
+return{musc,run,total:musc+run,muscIsManual:manual.musc!=null,runIsManual:manual.run!=null,muscEst,runEst};
+}
+function getDiet(dateKey){
+if(!diet[dateKey])return{meals:[],water:0,beers:[],supplements:{}};
+const d=diet[dateKey];
+return{meals:Array.isArray(d.meals)?d.meals:[],water:Number(d.water)||0,beers:Array.isArray(d.beers)?d.beers:[],supplements:d.supplements&&typeof d.supplements==='object'?d.supplements:{}};
+}
+function saveDiet(dateKey,obj){
+diet[dateKey]=obj;
+try{localStorage.setItem('diet',JSON.stringify(diet));}catch(e){alert('Erro ao salvar: '+e.message);}
+if(window.syncNow)window.syncNow();
+}
+function sumDietMacrosFood(dateKey){
+const d=getDiet(dateKey);
+const s={kcal:0,prot:0,carb:0,gord:0};
+d.meals.forEach(m=>{s.kcal+=Number(m.kcal)||0;s.prot+=Number(m.prot)||0;s.carb+=Number(m.carb)||0;s.gord+=Number(m.gord)||0;});
+return s;
+}
+function sumDietBeers(dateKey){
+const d=getDiet(dateKey);
+const s={kcal:0,carb:0,count:0};
+d.beers.forEach(b=>{s.kcal+=Number(b.kcal)||0;s.carb+=Number(b.carb)||0;s.count++;});
+return s;
+}
+function sumDietMacros(dateKey){
+const food=sumDietMacrosFood(dateKey);
+const beers=sumDietBeers(dateKey);
+return{kcal:food.kcal+beers.kcal,prot:food.prot,carb:food.carb+beers.carb,gord:food.gord};
+}
+function calcBalance(dateKey){
+const basal=getLatestBasal();
+const spent=getDayKcalSpent(dateKey);
+const macros=sumDietMacros(dateKey);
+const totalOut=basal+spent.total;
+const totalIn=macros.kcal;
+return{basal,spent,totalOut,totalIn,deficit:totalOut-totalIn};
+}
 let expandedPastDays=new Set();
 function togglePastDay(k){if(!k)return;if(expandedPastDays.has(k))expandedPastDays.delete(k);else expandedPastDays.add(k);renderPlan();}
 let workoutOverrides={};
@@ -575,6 +790,11 @@ h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displa
 }
 });
 h+=`</div>`;
+if(!isRestDay&&canAlter){
+const sp=getDayKcalSpent(dayKey);
+const isManual=sp.muscIsManual||sp.runIsManual;
+h+=`<div class="kcal-inline-card"><span>🔥 Kcal: <b>${sp.total}</b> <span style="font-size:10px;color:#9A3412">(M ${sp.musc} · C ${sp.run}${isManual?'':' · estimado'})</span></span><button class="kcal-inline-btn" onclick="openKcalWorkoutModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
+}
 if(canAlter&&!isCumprido){
 if(!isRestDay)h+=`<button class="cumprido-btn" onclick="markCumprido('${dayKey}')"><i class="ti ti-check"></i>Cumprido</button>`;
 h+=`<button class="alterar-btn" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>${isRestDay?'Marcar atividade':'Alterar treino'}</button>`;
@@ -1151,6 +1371,384 @@ else{tasks.push({text,priority,due,done:false});}
 localStorage.setItem('tasks',JSON.stringify(tasks));closeTaskModal();renderTasks();renderCal();
 if(window.syncNow)window.syncNow();
 }
+let editMealId=null;
+function openMealModal(mealId){
+const key=dk(today);
+const d=getDiet(key);
+editMealId=mealId||null;
+const m=mealId?d.meals.find(x=>x.id===mealId):null;
+document.getElementById('modal-meal-title').textContent=m?'Editar refeição':'Nova refeição';
+document.getElementById('meal-name').value=m?(m.name||''):'';
+document.getElementById('meal-time').value=m?(m.time||''):(new Date().toTimeString().slice(0,5));
+document.getElementById('meal-kcal').value=m?(m.kcal||''):'';
+document.getElementById('meal-prot').value=m?(m.prot||''):'';
+document.getElementById('meal-carb').value=m?(m.carb||''):'';
+document.getElementById('meal-gord').value=m?(m.gord||''):'';
+document.getElementById('meal-items').value=m?(m.items||''):'';
+document.getElementById('meal-fav').checked=false;
+const btns=document.getElementById('meal-btns');
+if(m){btns.innerHTML='<button class="btn-del" onclick="deleteMeal(\''+m.id+'\');closeMealModal()">Excluir</button><button class="btn-cancel" onclick="closeMealModal()">Cancelar</button><button class="btn-save" onclick="saveMeal()">Salvar</button>';}
+else{btns.innerHTML='<button class="btn-cancel" onclick="closeMealModal()">Cancelar</button><button class="btn-save" onclick="saveMeal()">Salvar</button>';}
+document.getElementById('modal-meal').classList.add('open');
+}
+function closeMealModal(){document.getElementById('modal-meal').classList.remove('open');editMealId=null;}
+function saveMeal(){
+const name=(document.getElementById('meal-name').value||'').trim().slice(0,60);
+if(!name)return alert('Informe o nome da refeição.');
+const time=document.getElementById('meal-time').value||'';
+const kcal=parseFloat(document.getElementById('meal-kcal').value)||0;
+const prot=parseFloat(document.getElementById('meal-prot').value)||0;
+const carb=parseFloat(document.getElementById('meal-carb').value)||0;
+const gord=parseFloat(document.getElementById('meal-gord').value)||0;
+const items=(document.getElementById('meal-items').value||'').trim().slice(0,200);
+const fav=document.getElementById('meal-fav').checked;
+const key=dk(today);
+const d=getDiet(key);
+if(editMealId){
+const i=d.meals.findIndex(x=>x.id===editMealId);
+if(i>=0)d.meals[i]={...d.meals[i],name,time,kcal,prot,carb,gord,items};
+}else{
+d.meals.push({id:uid(),name,time,kcal,prot,carb,gord,items});
+}
+d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+saveDiet(key,d);
+if(fav){
+dietFavorites.push({name,kcal,prot,carb,gord,items});
+try{localStorage.setItem('dietFavorites',JSON.stringify(dietFavorites));}catch(e){}
+if(window.syncNow)window.syncNow();
+}
+closeMealModal();renderDiet();
+}
+function deleteMeal(mealId){
+if(!confirm('Excluir esta refeição?'))return;
+const key=dk(today);
+const d=getDiet(key);
+d.meals=d.meals.filter(x=>x.id!==mealId);
+saveDiet(key,d);
+renderDiet();
+}
+function quickAddPlanMeal(presetKey){
+const p=PLAN_PRESETS[presetKey];
+if(!p)return;
+const key=dk(today);
+const d=getDiet(key);
+d.meals.push({id:uid(),name:p.name,time:new Date().toTimeString().slice(0,5),kcal:p.kcal,prot:p.prot,carb:p.carb,gord:p.gord,items:p.items});
+d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+saveDiet(key,d);
+renderDiet();
+}
+function addFavoriteAsMeal(idx){
+if(idx<0||idx>=dietFavorites.length)return;
+const f=dietFavorites[idx];
+const key=dk(today);
+const d=getDiet(key);
+d.meals.push({id:uid(),name:f.name,time:new Date().toTimeString().slice(0,5),kcal:f.kcal,prot:f.prot,carb:f.carb,gord:f.gord,items:f.items||''});
+d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+saveDiet(key,d);
+renderDiet();
+}
+function removeFavorite(idx){
+if(!confirm('Remover este favorito?'))return;
+dietFavorites.splice(idx,1);
+try{localStorage.setItem('dietFavorites',JSON.stringify(dietFavorites));}catch(e){}
+if(window.syncNow)window.syncNow();
+renderDiet();
+}
+let editBeerId=null;
+function calcBeerValues(){
+const type=document.getElementById('beer-type').value;
+const vol=parseFloat(document.getElementById('beer-volume').value)||0;
+const bt=BEER_TYPES[type];
+if(!bt||!vol){document.getElementById('beer-calc').textContent='— kcal · — carbo';return null;}
+const kcal=Math.round(bt.kcalPer100ml*(vol/100));
+const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
+document.getElementById('beer-calc').textContent=kcal+' kcal · '+carb+'g carbo';
+return{kcal,carb};
+}
+function openBeerModal(beerId){
+const key=dk(today);
+const d=getDiet(key);
+editBeerId=beerId||null;
+const b=beerId?d.beers.find(x=>x.id===beerId):null;
+document.getElementById('modal-beer-title').textContent=b?'Editar cerveja':'Registrar cerveja';
+document.getElementById('beer-type').value=b?(b.type||'pilsner'):'pilsner';
+document.getElementById('beer-volume').value=b?(b.volume||500):500;
+document.getElementById('beer-time').value=b?(b.time||''):(new Date().toTimeString().slice(0,5));
+document.getElementById('beer-note').value=b?(b.note||''):'';
+calcBeerValues();
+document.getElementById('beer-type').onchange=calcBeerValues;
+document.getElementById('beer-volume').oninput=calcBeerValues;
+const btns=document.getElementById('beer-btns');
+if(b){btns.innerHTML='<button class="btn-del" onclick="deleteBeer(\''+b.id+'\');closeBeerModal()">Excluir</button><button class="btn-cancel" onclick="closeBeerModal()">Cancelar</button><button class="btn-save" onclick="saveBeer()">Salvar</button>';}
+else{btns.innerHTML='<button class="btn-cancel" onclick="closeBeerModal()">Cancelar</button><button class="btn-save" onclick="saveBeer()">Salvar</button>';}
+document.getElementById('modal-beer').classList.add('open');
+}
+function closeBeerModal(){document.getElementById('modal-beer').classList.remove('open');editBeerId=null;}
+function saveBeer(){
+const type=document.getElementById('beer-type').value;
+const volume=parseFloat(document.getElementById('beer-volume').value);
+if(!BEER_TYPES[type])return alert('Tipo inválido.');
+if(!volume||volume<=0)return alert('Informe o volume.');
+const calc=calcBeerValues();
+const time=document.getElementById('beer-time').value||'';
+const note=(document.getElementById('beer-note').value||'').trim().slice(0,40);
+const key=dk(today);
+const d=getDiet(key);
+if(editBeerId){
+const i=d.beers.findIndex(x=>x.id===editBeerId);
+if(i>=0)d.beers[i]={...d.beers[i],type,volume,kcal:calc.kcal,carb:calc.carb,time,note};
+}else{
+d.beers.push({id:uid(),type,volume,kcal:calc.kcal,carb:calc.carb,time,note});
+}
+d.beers.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+saveDiet(key,d);
+closeBeerModal();renderDiet();
+}
+function deleteBeer(beerId){
+if(!confirm('Excluir esta cerveja?'))return;
+const key=dk(today);
+const d=getDiet(key);
+d.beers=d.beers.filter(x=>x.id!==beerId);
+saveDiet(key,d);
+renderDiet();
+}
+function openGoalsModal(){
+document.getElementById('g-kcal').value=dietGoals.kcal;
+document.getElementById('g-deficit').value=dietGoals.deficit;
+document.getElementById('g-prot').value=dietGoals.prot;
+document.getElementById('g-carb').value=dietGoals.carb;
+document.getElementById('g-gord').value=dietGoals.gord;
+document.getElementById('g-water').value=dietGoals.water;
+document.getElementById('modal-goals').classList.add('open');
+}
+function closeGoalsModal(){document.getElementById('modal-goals').classList.remove('open');}
+function saveGoals(){
+const k=parseFloat(document.getElementById('g-kcal').value);
+const def=parseFloat(document.getElementById('g-deficit').value);
+const p=parseFloat(document.getElementById('g-prot').value);
+const c=parseFloat(document.getElementById('g-carb').value);
+const g=parseFloat(document.getElementById('g-gord').value);
+const w=parseFloat(document.getElementById('g-water').value);
+if(isNaN(k)||isNaN(p)||isNaN(c)||isNaN(g)||isNaN(w)||isNaN(def))return alert('Preencha todos os campos com números válidos.');
+if(k<800||k>6000||p<0||c<0||g<0||w<0||w>10000)return alert('Valores fora dos limites razoáveis.');
+dietGoals={kcal:k,prot:p,carb:c,gord:g,water:w,deficit:def};
+try{localStorage.setItem('dietGoals',JSON.stringify(dietGoals));}catch(e){}
+if(window.syncNow)window.syncNow();
+closeGoalsModal();renderDiet();
+}
+function addWater(ml){
+const key=dk(today);
+const d=getDiet(key);
+d.water=Math.max(0,(d.water||0)+ml);
+saveDiet(key,d);
+renderDiet();
+}
+let kcalWorkoutDate=null;
+function openKcalWorkoutModal(dateKey){
+if(!isValidDateKey(dateKey))return;
+kcalWorkoutDate=dateKey;
+const sp=getDayKcalSpent(dateKey);
+const d=new Date(dateKey+'T00:00:00');
+document.getElementById('kcal-workout-hint').textContent='Treino de '+d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()+'. Deixe em branco para usar a estimativa.';
+const manual=workoutKcal[dateKey]||{};
+document.getElementById('kw-musc').value=manual.musc!=null?manual.musc:'';
+document.getElementById('kw-run').value=manual.run!=null?manual.run:'';
+document.getElementById('kw-musc-est').textContent='Estimado: '+sp.muscEst+' kcal';
+document.getElementById('kw-run-est').textContent='Estimado: '+sp.runEst+' kcal';
+const updateTotal=()=>{
+const m=parseFloat(document.getElementById('kw-musc').value);
+const r=parseFloat(document.getElementById('kw-run').value);
+const mt=isNaN(m)?sp.muscEst:m;
+const rt=isNaN(r)?sp.runEst:r;
+document.getElementById('kw-total').textContent=(mt+rt)+' kcal';
+};
+document.getElementById('kw-musc').oninput=updateTotal;
+document.getElementById('kw-run').oninput=updateTotal;
+updateTotal();
+const btns=document.getElementById('kw-btns');
+const hasManual=manual.musc!=null||manual.run!=null;
+if(hasManual){btns.innerHTML='<button class="btn-del" onclick="resetKcalWorkout()">Resetar</button><button class="btn-cancel" onclick="closeKcalWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveKcalWorkout()">Salvar</button>';}
+else{btns.innerHTML='<button class="btn-cancel" onclick="closeKcalWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveKcalWorkout()">Salvar</button>';}
+document.getElementById('modal-kcal-workout').classList.add('open');
+}
+function closeKcalWorkoutModal(){document.getElementById('modal-kcal-workout').classList.remove('open');kcalWorkoutDate=null;}
+function saveKcalWorkout(){
+if(!kcalWorkoutDate)return;
+const m=document.getElementById('kw-musc').value;
+const r=document.getElementById('kw-run').value;
+const entry={};
+if(m!=='')entry.musc=parseFloat(m);
+if(r!=='')entry.run=parseFloat(r);
+if(Object.keys(entry).length===0){delete workoutKcal[kcalWorkoutDate];}
+else{workoutKcal[kcalWorkoutDate]=entry;}
+try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){return alert('Erro ao salvar: '+e.message);}
+closeKcalWorkoutModal();renderPlan();
+if(switchTab&&document.getElementById('sec-dieta').classList.contains('active'))renderDiet();
+if(window.syncNow)window.syncNow();
+}
+function resetKcalWorkout(){
+if(!kcalWorkoutDate)return;
+if(!confirm('Voltar para os valores estimados?'))return;
+delete workoutKcal[kcalWorkoutDate];
+try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){}
+closeKcalWorkoutModal();renderPlan();
+if(window.syncNow)window.syncNow();
+}
+let emagChart=null;
+function renderEmagDashboard(){
+const c=document.getElementById('emag-dashboard');
+if(!c)return;
+const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const peso=getLatestPeso();
+const target=76;
+const start=83.5;
+const totalLoss=Math.max(0,start-target);
+const currentLoss=Math.max(0,start-peso);
+const goalPct=Math.min(100,Math.round((currentLoss/totalLoss)*100));
+let weeklyDeficit=0;let weeklyCount=0;
+for(let i=0;i<7;i++){
+const d=new Date(tDate);d.setDate(d.getDate()-i);
+const key=dk(d);
+const dietDay=getDiet(key);
+if(dietDay.meals.length===0&&dietDay.beers.length===0)continue;
+const bal=calcBalance(key);
+weeklyDeficit+=bal.deficit;
+weeklyCount++;
+}
+const avgDeficit=weeklyCount>0?Math.round(weeklyDeficit/weeklyCount):0;
+const projectedLossWeek=weeklyCount>0?(weeklyDeficit/7700).toFixed(2):'0.00';
+const remaining=Math.max(0,peso-target);
+let estimateWeeks='—';
+let estimateDate='—';
+if(avgDeficit>50&&remaining>0){
+const kgPerWeek=(avgDeficit*7)/7700;
+if(kgPerWeek>0){
+const weeks=Math.ceil(remaining/kgPerWeek);
+estimateWeeks=weeks;
+const target_date=new Date(tDate);target_date.setDate(target_date.getDate()+weeks*7);
+estimateDate=target_date.getDate()+'/'+(target_date.getMonth()+1)+'/'+target_date.getFullYear();
+}
+}
+const raceDays=Math.ceil((RACE_DATE-tDate)/(24*60*60*1000));
+let h='';
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-target"></i>Rumo à meta — ${target}kg</div><div class="goal-progress"><span>Início: <b>${start}kg</b></span><span>Atual: <b>${peso.toFixed(1)}kg</b></span><span>Meta: <b>${target}kg</b></span></div><div class="goal-bar"><div class="goal-bar-fill" style="width:${goalPct}%"></div></div><div style="text-align:center;font-size:11px;color:#64748B;margin-top:4px">${goalPct}% concluído · faltam ${remaining.toFixed(1)}kg</div></div>`;
+if(weeklyCount>0){
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-scale"></i>Últimos 7 dias</div><div class="dash-stat-row"><span>Déficit médio diário</span><b style="color:${avgDeficit>0?'#15803D':'#B91C1C'}">${avgDeficit>0?'-':''}${Math.abs(avgDeficit)} kcal</b></div><div class="dash-stat-row"><span>Total da semana</span><b style="color:${weeklyDeficit>0?'#15803D':'#B91C1C'}">${weeklyDeficit>0?'-':''}${Math.abs(weeklyDeficit).toFixed(0)} kcal</b></div><div class="dash-stat-row"><span>Perda projetada</span><b>${projectedLossWeek} kg</b></div><div class="dash-stat-row"><span>Dias registrados</span><b>${weeklyCount} de 7</b></div></div>`;
+}else{
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-info-circle"></i>Aguardando dados</div><div style="font-size:12px;color:#64748B;line-height:1.5">Registre suas refeições na aba <b>Dieta</b> para começar a ver o dashboard de emagrecimento.</div></div>`;
+}
+if(estimateWeeks!=='—'){
+const goodTiming=estimateWeeks*7<=raceDays;
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-flag"></i>Projeção até a meta</div><div class="dash-stat-row"><span>Ritmo atual</span><b>${(remaining/estimateWeeks).toFixed(2)} kg/sem</b></div><div class="dash-stat-row"><span>Chegada estimada</span><b>${estimateDate}</b></div><div class="dash-stat-row"><span>Em semanas</span><b>${estimateWeeks} semanas</b></div><div class="dash-note ${goodTiming?'success':'warning'}">${goodTiming?'✅ Você vai chegar antes da prova ('+raceDays+' dias)':'⚠️ Vai chegar depois da prova ('+raceDays+' dias). Considere ajustar o déficit.'}</div></div>`;
+}
+const basal=getLatestBasal();
+let activityAvg=0,activityCount=0;
+for(let i=0;i<7;i++){
+const d=new Date(tDate);d.setDate(d.getDate()-i);
+const k=dk(d);
+const sp=getDayKcalSpent(k);
+if(sp.total>0){activityAvg+=sp.total;activityCount++;}
+}
+const avgActivity=activityCount>0?Math.round(activityAvg/activityCount):0;
+const tdee=basal+avgActivity;
+const targetConsume=tdee-dietGoals.deficit;
+let actualConsumeAvg=0,consumeCount=0;
+for(let i=0;i<7;i++){
+const d=new Date(tDate);d.setDate(d.getDate()-i);
+const k=dk(d);
+const m=sumDietMacros(k);
+if(m.kcal>0){actualConsumeAvg+=m.kcal;consumeCount++;}
+}
+const avgConsume=consumeCount>0?Math.round(actualConsumeAvg/consumeCount):0;
+const diff=avgConsume-targetConsume;
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-calculator"></i>Seus números base</div><div class="dash-stat-row"><span>TMB (balança Xiaomi)</span><b>${basal} kcal/d</b></div><div class="dash-stat-row"><span>Atividade média (7d)</span><b>+${avgActivity} kcal/d</b></div><div class="dash-stat-row"><span>TDEE estimado</span><b>${tdee} kcal/d</b></div><div class="dash-stat-row" style="padding-top:8px;border-top:1px dashed #E2E8F0;margin-top:4px"><span>Meta de consumo</span><b style="color:#0F172A">${targetConsume} kcal/d</b></div><div class="dash-stat-row"><span>Consumo médio real</span><b style="color:${avgConsume>0?(diff>50?'#B91C1C':diff<-50?'#15803D':'#0F172A'):'#94A3B8'}">${avgConsume>0?avgConsume+' kcal/d':'—'}</b></div>${avgConsume>0?`<div class="dash-note ${Math.abs(diff)<=50?'success':diff>0?'warning':''}">${Math.abs(diff)<=50?'💡 Você está no alvo (margem ±50 kcal)':diff>0?'⚠️ Você está '+diff+' kcal acima da meta diária':'✅ Você está '+Math.abs(diff)+' kcal abaixo da meta — déficit ainda maior'}</div>`:''}</div>`;
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-chart-line"></i>Déficit diário — 14 dias</div><div class="dash-chart-wrap"><canvas id="emagChart"></canvas></div></div>`;
+c.innerHTML=h;
+const ctx=document.getElementById('emagChart');
+if(ctx){
+const labels=[],data=[],colors=[];
+for(let i=13;i>=0;i--){
+const d=new Date(tDate);d.setDate(d.getDate()-i);
+const k=dk(d);
+labels.push(d.getDate()+'/'+(d.getMonth()+1));
+const dietDay=getDiet(k);
+if(dietDay.meals.length===0&&dietDay.beers.length===0){data.push(null);colors.push('rgba(0,0,0,0)');}
+else{const b=calcBalance(k);data.push(b.deficit);colors.push(b.deficit>=dietGoals.deficit?'#16A34A':b.deficit>0?'#F59E0B':'#DC2626');}
+}
+if(emagChart)emagChart.destroy();
+emagChart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.parsed.y>0?'-':'+')+Math.abs(c.parsed.y)+' kcal'}}},scales:{x:{ticks:{font:{size:9},color:'#94A3B8',maxRotation:0}},y:{grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',callback:v=>v+'k'}}}}});
+}
+}
+function renderDiet(){
+const c=document.getElementById('dieta-content');
+if(!c)return;
+const key=dk(today);
+const bal=calcBalance(key);
+const macros=sumDietMacros(key);
+const macrosFood=sumDietMacrosFood(key);
+const beers=sumDietBeers(key);
+const d=getDiet(key);
+const sup=getSupplements(key);
+const dosesSem=countBeerDosesThisWeek();
+const offSem=countOffMealsThisWeek();
+let h='';
+h+=`<details class="dash-card" style="padding:10px 14px;margin-bottom:12px"><summary style="font-size:12px;font-weight:600;color:#0F172A;cursor:pointer;display:flex;align-items:center;gap:6px;list-style:none"><i class="ti ti-clipboard-list" style="color:#64748B"></i>Plano nutricional — Clínica VILE<span style="font-size:10px;color:#94A3B8;font-weight:400;margin-left:auto">12/05/2026 ⌄</span></summary><div style="margin-top:10px;font-size:11px;color:#475569;line-height:1.6"><div style="margin-bottom:8px"><b>Objetivo:</b> redução de gordura · manutenção muscular · performance de corrida</div><div style="margin-bottom:8px"><b>Suplementação:</b><br>· Creatina 7g/dia (junto a carbo)<br>· Leucina 5g pré-treino</div><div style="margin-bottom:8px"><b>Regras gerais:</b><br>· Água ≥ 2.800 ml/dia<br>· Álcool: 1 dose / 2x por semana (1 dose = 600 ml cerveja)<br>· Doce: 30g/dia (pré ou pós-treino)<br>· 2 refeições "off" por semana<br>· Azeite: 1 colher sobremesa (almoço/jantar)<br>· Evitar: cavalinha, hibisco, mate, chá verde</div><div style="margin-bottom:6px"><b>Estrutura diária:</b></div><div style="background:#F8F9FA;padding:8px 10px;border-radius:6px;margin-bottom:4px"><b>☕ Café:</b> sem treino → 1 iogurte proteico · com treino → 1 porção de frutas</div><div style="background:#F8F9FA;padding:8px 10px;border-radius:6px;margin-bottom:4px"><b>💊 Pós-treino:</b> com musc → 1 dose whey · sem musc → ½ dose</div><div style="background:#F8F9FA;padding:8px 10px;border-radius:6px;margin-bottom:4px"><b>🍛 Almoço:</b> folhosos à vontade · 120g vegetais · 80g arroz/batata/mandioca (ou 100g massa/quinoa) · 120g feijão/leguminosa · 100g proteína (frango/lombo/suíno) ou 2 ovos</div><div style="background:#F8F9FA;padding:8px 10px;border-radius:6px;margin-bottom:4px"><b>🥑 Lanche:</b> 1 porção fruta · 15g oleaginosas · 1 fatia pão de forma + 30g cottage</div><div style="background:#F8F9FA;padding:8px 10px;border-radius:6px;margin-bottom:4px"><b>🍲 Jantar:</b> folhosos à vontade · 120g vegetais · 50g arroz/batata (ou 70g massa/quinoa) · 80g feijão · 100g proteína</div><div style="background:#F8F9FA;padding:8px 10px;border-radius:6px"><b>🌙 Ceia (opcional):</b> 1 iogurte zero/light · OU 30g queijo · OU 200ml leite desnatado + canela</div></div></details>`;
+const deficitOk=bal.deficit>=dietGoals.deficit;
+const deficitOverConsume=bal.deficit<0;
+const balCls=deficitOverConsume?'over':'';
+h+=`<div class="balance-card ${balCls}"><div class="dash-card-hdr"><i class="ti ti-scale"></i>Balanço energético — hoje</div><div class="balance-row"><div class="balance-col"><div class="balance-col-val" style="color:#16A34A">${bal.totalIn}</div><div class="balance-col-lbl">Entrada</div></div><div style="font-size:18px;color:#94A3B8">−</div><div class="balance-col"><div class="balance-col-val" style="color:#DC2626">${bal.totalOut}</div><div class="balance-col-lbl">Saída</div></div><div style="font-size:18px;color:#94A3B8">=</div><div class="balance-col"><div class="balance-result-val">${bal.deficit>0?'-':''}${Math.abs(bal.deficit)}</div><div class="balance-col-lbl">Déficit</div></div></div><div class="balance-meta">${deficitOverConsume?'⚠️ Você consumiu mais do que gastou hoje':deficitOk?'✅ Acima da meta de '+dietGoals.deficit+' kcal de déficit':'Meta: -'+dietGoals.deficit+' kcal · falta '+(dietGoals.deficit-bal.deficit)+' kcal'}</div></div>`;
+const pctK=Math.min(100,Math.round((macros.kcal/dietGoals.kcal)*100));
+const pctP=Math.min(100,Math.round((macros.prot/dietGoals.prot)*100));
+const pctC=Math.min(100,Math.round((macros.carb/dietGoals.carb)*100));
+const pctG=Math.min(100,Math.round((macros.gord/dietGoals.gord)*100));
+h+=`<div class="macros-card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-chart-bar"></i>Macros</div><button class="goals-btn" onclick="openGoalsModal()"><i class="ti ti-target"></i>Metas</button></div><div class="macros-row"><div class="macro-col"><div class="macro-val">${macros.kcal}</div><div class="macro-goal">/${dietGoals.kcal}</div><div class="macro-lbl">Kcal</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctK}%;background:#16A34A"></div></div></div><div class="macro-col"><div class="macro-val">${macros.prot.toFixed(0)}g</div><div class="macro-goal">/${dietGoals.prot}g</div><div class="macro-lbl">Prot</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctP}%;background:#2563EB"></div></div></div><div class="macro-col"><div class="macro-val">${macros.carb.toFixed(0)}g</div><div class="macro-goal">/${dietGoals.carb}g</div><div class="macro-lbl">Carb</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctC}%;background:#F59E0B"></div></div></div><div class="macro-col"><div class="macro-val">${macros.gord.toFixed(0)}g</div><div class="macro-goal">/${dietGoals.gord}g</div><div class="macro-lbl">Gord</div><div class="macro-bar"><div class="macro-bar-fill" style="width:${pctG}%;background:#DC2626"></div></div></div></div>${beers.count>0?`<div style="font-size:11px;color:#92400E;margin-top:10px;padding-top:8px;border-top:1px dashed #FDE68A"><b>🍺 Inclui ${beers.count} cerveja(s):</b> +${beers.kcal} kcal e +${beers.carb.toFixed(0)}g carbo. Sem a cerveja: ${macros.kcal-beers.kcal} kcal · ${(macros.carb-beers.carb).toFixed(0)}g carbo.</div>`:''}</div>`;
+const waterPct=Math.min(100,Math.round((d.water/dietGoals.water)*100));
+const glasses=Math.floor(d.water/250);
+const totalGlassesGoal=Math.ceil(dietGoals.water/250);
+let glassRow='';
+for(let i=0;i<totalGlassesGoal;i++)glassRow+=`<span class="water-glass ${i<glasses?'filled':'empty'}">💧</span>`;
+h+=`<div class="hydration-card"><div class="water-info"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-droplet"></i>Hidratação</div><div><span class="water-amount">${(d.water/1000).toFixed(2)}L</span> <span class="water-goal-txt">de ${(dietGoals.water/1000).toFixed(1)}L</span></div></div><div class="water-glasses">${glassRow}</div><div class="water-actions"><button class="water-btn" onclick="addWater(250)">+ Copo 250ml</button><button class="water-btn" onclick="addWater(500)">+ Garrafa 500ml</button><button class="water-btn" onclick="addWater(-250)" style="color:#DC2626">- 250ml</button></div></div>`;
+const dosePct=Math.min(100,Math.round((dosesSem.doses/MAX_DOSES_SEMANA)*100));
+const offPct=Math.min(100,Math.round((offSem/MAX_OFF_SEMANA)*100));
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-pill"></i>Suplementos & extras (hoje)</div><div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.creatina?'checked':''} onchange="toggleSupplement('creatina')" style="width:18px;height:18px;accent-color:#16A34A">💊 Creatina 7g (com carbo)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.leucina?'checked':''} onchange="toggleSupplement('leucina')" style="width:18px;height:18px;accent-color:#16A34A">💪 Leucina 5g (pré-treino)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.doce?'checked':''} onchange="toggleSupplement('doce')" style="width:18px;height:18px;accent-color:#F59E0B">🍬 Doce 30g (pré/pós-treino)</label></div><div style="padding-top:8px;border-top:1px dashed #E2E8F0"><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:6px">Limites semanais</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:12px"><span>🍺 Doses de cerveja</span><b style="color:${dosePct>100?'#DC2626':dosePct>75?'#F59E0B':'#16A34A'}">${dosesSem.doses} / ${MAX_DOSES_SEMANA}</b></div><div class="macro-bar"><div class="macro-bar-fill" style="width:${dosePct}%;background:${dosePct>100?'#DC2626':dosePct>75?'#F59E0B':'#16A34A'}"></div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;margin-bottom:4px;font-size:12px"><span>🍕 Refeições "off"</span><b style="color:${offPct>100?'#DC2626':offPct>75?'#F59E0B':'#16A34A'}">${offSem} / ${MAX_OFF_SEMANA}</b></div><div class="macro-bar"><div class="macro-bar-fill" style="width:${offPct}%;background:${offPct>100?'#DC2626':offPct>75?'#F59E0B':'#16A34A'}"></div></div></div></div>`;
+h+=`<div class="kcal-spent-card"><div class="dash-card-hdr"><i class="ti ti-flame"></i>Gasto calórico de hoje</div><div class="kcal-spent-row"><span>Basal (TMB)</span><b>${bal.basal} kcal</b></div><div class="kcal-spent-row"><span>🏋️ Musculação${bal.spent.muscIsManual?'':' (estimado)'}</span><b>${bal.spent.musc} kcal</b></div><div class="kcal-spent-row"><span>🏃 Corrida${bal.spent.runIsManual?'':' (estimado)'}</span><b>${bal.spent.run} kcal</b></div><div class="kcal-spent-row kcal-spent-total"><span>Total</span><b>${bal.totalOut} kcal</b></div><div class="kcal-spent-note">ℹ️ Auto-calculado da aba Treino. Edite o gasto real nos cards de treino.</div></div>`;
+h+=`<div class="section-title"><i class="ti ti-bolt"></i>Quick-add do plano</div><div style="margin-bottom:14px"><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Café da manhã</div><div style="margin-bottom:6px"><span class="fav-chip" style="background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF" onclick="quickAddPlanMeal('cafe_sem')"><i class="ti ti-plus"></i>Iogurte proteico</span><span class="fav-chip" style="background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF" onclick="quickAddPlanMeal('cafe_com')"><i class="ti ti-plus"></i>Porção de frutas</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Pós-treino</div><div style="margin-bottom:6px"><span class="fav-chip" style="background:#F0FDF4;border-color:#86EFAC;color:#15803D" onclick="quickAddPlanMeal('pos_musc')"><i class="ti ti-plus"></i>Whey 1 dose</span><span class="fav-chip" style="background:#F0FDF4;border-color:#86EFAC;color:#15803D" onclick="quickAddPlanMeal('pos_sem')"><i class="ti ti-plus"></i>Whey ½ dose</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Refeições principais</div><div style="margin-bottom:6px"><span class="fav-chip" onclick="quickAddPlanMeal('almoco_completo')"><i class="ti ti-plus"></i>Almoço completo · 680kcal</span><span class="fav-chip" onclick="quickAddPlanMeal('lanche_completo')"><i class="ti ti-plus"></i>Lanche · 340kcal</span><span class="fav-chip" onclick="quickAddPlanMeal('jantar_completo')"><i class="ti ti-plus"></i>Jantar · 540kcal</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Ceia (opcional)</div><div style="margin-bottom:6px"><span class="fav-chip" onclick="quickAddPlanMeal('ceia_iogurte')"><i class="ti ti-plus"></i>Iogurte zero</span><span class="fav-chip" onclick="quickAddPlanMeal('ceia_queijo')"><i class="ti ti-plus"></i>Queijo 30g</span><span class="fav-chip" onclick="quickAddPlanMeal('ceia_leite')"><i class="ti ti-plus"></i>Leite + canela</span></div><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin-bottom:4px">Doce</div><div><span class="fav-chip" style="background:#FFFBEB;border-color:#FDE68A;color:#92400E" onclick="quickAddPlanMeal('doce_30g')"><i class="ti ti-plus"></i>Doce 30g</span></div></div>`;
+h+=`<div class="section-title"><i class="ti ti-tools-kitchen-2"></i>Refeições de hoje <button class="goals-btn" style="margin-left:auto" onclick="openMealModal()"><i class="ti ti-plus"></i>Adicionar</button></div>`;
+if(d.meals.length===0){
+h+=`<div class="diet-empty">Nenhuma refeição registrada hoje</div>`;
+}else{
+d.meals.forEach(m=>{
+h+=`<div class="meal-card"><div class="meal-card-hdr"><div style="flex:1;min-width:0"><div class="meal-card-title">${escapeHtml(m.name||'Refeição')}</div>${m.time?`<div class="meal-card-time">${escapeHtml(m.time)}</div>`:''}</div><div class="meal-card-kcal">${m.kcal||0} kcal</div></div>${m.items?`<div class="meal-card-items">${escapeHtml(m.items)}</div>`:''}<div class="meal-card-macros">${m.prot?`<span>P: ${m.prot}g</span>`:''}${m.carb?`<span>C: ${m.carb}g</span>`:''}${m.gord?`<span>G: ${m.gord}g</span>`:''}</div><div class="meal-card-actions"><button onclick="openMealModal('${m.id}')"><i class="ti ti-pencil"></i>Editar</button><button onclick="deleteMeal('${m.id}')"><i class="ti ti-trash"></i>Excluir</button></div></div>`;
+});
+}
+if(beers.count>0){
+h+=`<div class="section-title"><i class="ti ti-beer"></i>Bebidas alcoólicas <button class="goals-btn" style="margin-left:auto" onclick="openBeerModal()"><i class="ti ti-plus"></i>Adicionar</button></div>`;
+h+=`<div class="beer-card"><div class="beer-summary"><span>${beers.count} cerveja${beers.count>1?'s':''}</span><span>${beers.kcal} kcal · ${beers.carb.toFixed(0)}g carbo</span></div>`;
+d.beers.forEach(b=>{
+const bt=BEER_TYPES[b.type]||{label:'Cerveja'};
+h+=`<div class="beer-item"><div class="beer-item-info"><div>${escapeHtml(bt.label)} ${b.volume}ml</div>${b.time||b.note?`<div class="beer-item-time">${b.time?escapeHtml(b.time):''}${b.time&&b.note?' · ':''}${b.note?escapeHtml(b.note):''}</div>`:''}</div><span class="beer-item-kcal">${b.kcal} kcal</span><button class="beer-item-del" onclick="deleteBeer('${b.id}')"><i class="ti ti-trash"></i></button></div>`;
+});
+const balNoBeer=bal.totalIn-beers.kcal;
+const deficitNoBeer=bal.totalOut-balNoBeer;
+h+=`<div class="beer-no-impact">💡 <b>Sem as cervejas hoje:</b> ${balNoBeer} kcal de entrada e déficit de -${deficitNoBeer} kcal.</div></div>`;
+}else{
+h+=`<button class="add-btn" onclick="openBeerModal()"><i class="ti ti-beer"></i>Registrar cerveja</button>`;
+}
+if(dietFavorites.length>0){
+h+=`<div class="section-title"><i class="ti ti-star"></i>Favoritos <span style="font-size:10px;color:#94A3B8;font-weight:400;margin-left:6px">(clique para adicionar)</span></div>`;
+h+=`<div style="margin-bottom:14px">`;
+dietFavorites.forEach((f,i)=>{
+h+=`<span class="fav-chip" onclick="addFavoriteAsMeal(${i})"><i class="ti ti-plus"></i>${escapeHtml(f.name)} · ${f.kcal}kcal</span>`;
+});
+h+=`</div>`;
+h+=`<details style="margin-bottom:10px"><summary style="font-size:11px;color:#64748B;cursor:pointer">Gerenciar favoritos</summary><div style="margin-top:8px;padding:8px 12px;background:#F8F9FA;border-radius:8px">`;
+dietFavorites.forEach((f,i)=>{
+h+=`<div class="fav-row"><div class="fav-info"><div class="fav-name">${escapeHtml(f.name)}</div><div class="fav-macros">${f.kcal}kcal · P:${f.prot||0}g · C:${f.carb||0}g · G:${f.gord||0}g</div></div><button class="fav-del" onclick="removeFavorite(${i})"><i class="ti ti-trash"></i></button></div>`;
+});
+h+=`</div></details>`;
+}
+c.innerHTML=h;
+}
 function renderCountdown(){
 const el=document.getElementById('race-countdown');
 if(!el)return;
@@ -1301,7 +1899,8 @@ at.classList.add('active');
 at.querySelector('i').style.color='#000';
 if(name==='calendario')renderCal();
 if(name==='treino')renderPlan();
-if(name==='medicoes'){renderMedTabs();renderMedChart();}
+if(name==='dieta')renderDiet();
+if(name==='medicoes'){renderEmagDashboard();renderMedTabs();renderMedChart();}
 if(name==='tarefas')renderTasks();
 }
 const h=now.getHours();
@@ -1315,6 +1914,10 @@ try{
 const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{};
 const clR=localStorage.getItem('cardioLog');cardioLog=clR?JSON.parse(clR)||{}:{};
 try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
+try{const dR=localStorage.getItem('diet');diet=dR?JSON.parse(dR)||{}:{};}catch(e){diet={};}
+try{const gR=localStorage.getItem('dietGoals');if(gR){const p=JSON.parse(gR);if(p)Object.assign(dietGoals,p);}}catch(e){}
+try{const fR=localStorage.getItem('dietFavorites');dietFavorites=fR?JSON.parse(fR)||[]:[];}catch(e){dietFavorites=[];}
+try{const wkR=localStorage.getItem('workoutKcal');workoutKcal=wkR?JSON.parse(wkR)||{}:{};}catch(e){workoutKcal={};}
 const wkR=localStorage.getItem('workoutTemplate');if(wkR&&wkR!=='null'){const p=JSON.parse(wkR);if(p)wkTmpl=p;}
 const mdR=localStorage.getItem('medData');if(mdR){const p=JSON.parse(mdR);if(Array.isArray(p))medData=p;}
 const evR=localStorage.getItem('events');events=evR?JSON.parse(evR)||[]:[];
@@ -1324,7 +1927,8 @@ const act=document.querySelector('.sec.active');
 if(act){
 const id=act.id;
 if(id==='sec-treino')renderPlan();
-else if(id==='sec-medicoes'){renderMedTabs();renderMedChart();}
+else if(id==='sec-dieta')renderDiet();
+else if(id==='sec-medicoes'){renderEmagDashboard();renderMedTabs();renderMedChart();}
 else if(id==='sec-tarefas')renderTasks();
 }
 }catch(e){console.error('Refresh err:',e);}
@@ -1349,7 +1953,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
