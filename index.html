@@ -369,7 +369,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 <div class="sec" id="sec-treino">
 <div class="treino-tip" style="display:flex;align-items:center;justify-content:space-between"><span><strong>META:</strong> 10km &lt; 55min (pace 5:30/km) · Maratona de Munique · 11/Out/2026</span><button class="info-btn" onclick="openInfoModal()" title="Visão geral do plano"><i class="ti ti-info-circle"></i></button></div>
-<button class="add-btn" style="margin-bottom:14px" onclick="editWorkoutWeek()"><i class="ti ti-edit"></i>Editar treino semanal</button>
 <div id="treino-content"></div>
 </div>
 <div class="sec" id="sec-dieta">
@@ -400,15 +399,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha os campos disponíveis na sua balança. IMC, Gordura (kg) e Músculo (kg) são calculados automaticamente.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="m-peso" step="0.1" placeholder="Ex: 82.5"></div><div class="modal-field"><label>% Gordura</label><input type="number" id="m-gordura" step="0.1" placeholder="Ex: 22.0"></div><div class="modal-field"><label>% Músculo</label><input type="number" id="m-musculo" step="0.1" placeholder="Ex: 38.0"></div><div class="modal-field"><label>% Proteína</label><input type="number" id="m-proteina" step="0.1" placeholder="Ex: 17.5"></div><div class="modal-field"><label>Visceral Fat Rating</label><input type="number" id="m-visceral" step="1" placeholder="Ex: 8"></div><div class="modal-field"><label>Body Age (anos)</label><input type="number" id="m-bodyAge" step="1" placeholder="Ex: 34"></div><div class="modal-field" style="grid-column:1/-1"><label>Basal (kcal)</label><input type="number" id="m-basal" step="1" placeholder="Ex: 1850"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-task"><div class="modal"><h3 id="modal-task-title">Nova tarefa</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Tarefa</label><input type="text" id="task-text" placeholder="O que precisa ser feito?"></div><div class="modal-grid"><div class="modal-field"><label>Prioridade</label><select id="task-priority"><option value="high">🔴 Alta</option><option value="medium">🔵 Média</option><option value="low">🟢 Baixa</option></select></div><div class="modal-field"><label>Prazo</label><input type="date" id="task-due"></div></div></div><div class="modal-btns" id="task-btns"><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-weight"><div class="modal"><h3 id="modal-weight-title">Registrar carga</h3><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
-<div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
+<div class="modal-bg" id="modal-weight"><div class="modal"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><input type="text" id="modal-weight-title" maxlength="80" style="flex:1;font-size:15px;font-weight:500;color:#000;border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent" placeholder="Nome do exercício" onfocus="this.style.background='#F8F9FA';this.style.borderColor='#CBD5E1'" onblur="saveExerciseName(this);this.style.background='transparent';this.style.borderColor='transparent'"><i class="ti ti-pencil" style="color:#94A3B8;font-size:14px"></i></div><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
+<div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Estrutura semanal</div><table class="info-table"><thead><tr><th>Dia</th><th>Treino</th></tr></thead><tbody><tr><td><b>Seg</b></td><td>Peito + Tríceps + Z2 30min</td></tr><tr><td><b>Ter</b></td><td>Costas + Bíceps + Tempo Run Z3</td></tr><tr><td><b>Qua</b></td><td>Pernas + Core (sem corrida)</td></tr><tr><td><b>Qui</b></td><td>Ombros + Trapézio + Intervalado Z4</td></tr><tr><td><b>Sex</b></td><td>Z2 Leve + Mobilidade</td></tr><tr><td><b>Sáb</b></td><td>Long Run Z2 + Sauna</td></tr><tr><td><b>Dom</b></td><td>Descanso</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
 <div class="modal-bg" id="modal-meal-builder"><div class="modal" style="max-width:400px"><h3>Adicionar refeição</h3><p class="modal-hint">Monte a refeição combinando os itens do plano. Os valores são auto-calculados.</p><div class="modal-field" style="margin-bottom:10px"><label>Refeição</label><select id="mb-type"><option value="cafe">☕ Café da manhã</option><option value="pos_treino">💊 Pós-treino</option><option value="almoco">🍛 Almoço</option><option value="lanche">🥑 Lanche da tarde</option><option value="jantar">🍲 Jantar</option><option value="ceia">🌙 Ceia</option><option value="extra">✏️ Extra / livre</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Hora</label><input type="time" id="mb-time"></div><div id="mb-items" style="margin-bottom:10px"></div><div class="modal-field" style="margin-bottom:10px"><label>Observações (opcional)</label><input type="text" id="mb-note" maxlength="120" placeholder="Ex: troquei frango por peixe"></div><div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:#15803D;text-transform:uppercase;letter-spacing:.04em;font-weight:600">Total estimado</span><b id="mb-total" style="font-size:16px;color:#15803D">0 kcal</b></div><div style="font-size:10px;color:#15803D;margin-top:4px" id="mb-macros">P: 0g · C: 0g · G: 0g</div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMealBuilderModal()">Cancelar</button><button class="btn-save" onclick="saveMealBuilder()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-extras"><div class="modal"><h3>Registrar extras</h3><p class="modal-hint">Registre cerveja ou refeição "off" (fora do plano).</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ex-type"><option value="beer">🍺 Cerveja</option><option value="off">🍕 Refeição off (fora do plano)</option></select></div><div id="ex-beer-fields"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de cerveja</label><select id="ex-beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" id="ex-beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="ex-beer-calc">— kcal · — carbo</span></div></div><div id="ex-off-fields" style="display:none"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de refeição</label><select id="ex-off-type" onchange="updateOffPreset()"><option value="">— escolha um preset —</option><option value="pizza">🍕 Pizza (média/2 fatias)</option><option value="japones">🍣 Japonês (combinado)</option><option value="mcdonalds">🍔 McDonald's (Big Mac + fritas)</option><option value="hamburguer">🍔 Hambúrguer artesanal</option><option value="churrasco">🥩 Churrasco/rodízio</option><option value="custom">✏️ Personalizado</option></select></div><div class="modal-grid"><div class="modal-field"><label>Calorias</label><input type="number" id="ex-off-kcal" step="10" placeholder="600"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="ex-off-carb" step="1" placeholder="60"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="ex-off-prot" step="1" placeholder="30"></div><div class="modal-field"><label>Gordura (g)</label><input type="number" id="ex-off-gord" step="1" placeholder="25"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ex-off-desc" maxlength="80" placeholder="Pizza calabresa"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Hora (opcional)</label><input type="time" id="ex-time"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeExtrasModal()">Cancelar</button><button class="btn-save" onclick="saveExtras()">Salvar</button></div></div></div>
 <div class="tooltip-modal" id="tooltip-gasto" onclick="if(event.target===this)closeTooltipGasto()"><div class="tm-box"><div class="tm-title"><i class="ti ti-flame" style="color:#DC2626"></i>Detalhamento do gasto</div><div id="tooltip-gasto-content"></div><button class="tm-close" onclick="closeTooltipGasto()">Fechar</button></div></div>
 <div class="modal-bg" id="modal-meal"><div class="modal"><h3 id="modal-meal-title">Nova refeição</h3><p class="modal-hint">Registre o que comeu. Macros são opcionais.</p><div class="modal-field" style="margin-bottom:10px"><label>Nome</label><input type="text" id="meal-name" maxlength="60" placeholder="Ex: Café da manhã, Almoço"></div><div class="modal-grid"><div class="modal-field"><label>Hora</label><input type="time" id="meal-time"></div><div class="modal-field"><label>Calorias (kcal)</label><input type="number" id="meal-kcal" step="1" placeholder="420"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="meal-prot" step="0.1" placeholder="32"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="meal-carb" step="0.1" placeholder="55"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Gordura (g)</label><input type="number" id="meal-gord" step="0.1" placeholder="8"></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="meal-items" maxlength="200" placeholder="Aveia 50g, Banana, Whey 30g"></div><div class="modal-field" style="margin-bottom:14px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="meal-fav" style="width:auto"><label for="meal-fav" style="margin:0;font-size:12px;cursor:pointer">Salvar como favorito</label></div><div class="modal-btns" id="meal-btns"></div></div></div>
 <div class="modal-bg" id="modal-beer"><div class="modal"><h3 id="modal-beer-title">Registrar cerveja</h3><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" id="beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="beer-calc">— kcal · — carbo</span></div><div class="modal-grid"><div class="modal-field"><label>Hora (opcional)</label><input type="time" id="beer-time"></div><div class="modal-field"><label>Marca / local (opc)</label><input type="text" id="beer-note" maxlength="40" placeholder="Augustiner"></div></div><div class="modal-btns" id="beer-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="number" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="number" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="number" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="number" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto real (relógio) ou deixe em branco para usar a estimativa do app.</p><div class="modal-field" style="margin-bottom:10px"><label>Musculação (kcal)</label><input type="number" id="kw-musc" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8" id="kw-musc-est"></span></div><div class="modal-field" style="margin-bottom:10px"><label>Corrida (kcal)</label><input type="number" id="kw-run" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8" id="kw-run-est"></span></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Total:</b> <span id="kw-total">— kcal</span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
+<div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto total do dia (relógio) ou deixe em branco para usar a estimativa.</p><div class="modal-field" style="margin-bottom:10px"><label>Total kcal do dia</label><input type="number" id="kw-total-input" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8;margin-top:4px;display:block" id="kw-est"></span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
 <div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="number" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><input type="time" id="r-z1" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><input type="time" id="r-z2" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><input type="time" id="r-z3" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><input type="time" id="r-z4" step="1" value="00:00:00"></div><div class="modal-field" style="grid-column:1/-1"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><input type="time" id="r-z5" step="1" value="00:00:00"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Tempo total (calculado)</label><input type="text" id="r-total" readonly style="background:#F1F5F9;color:#334155;font-weight:600"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
@@ -532,6 +531,17 @@ return{phase:wk.phase,weekNum:wk.num,day:wk.template[dayIdx],dayName:['Seg','Ter
 }
 let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
 let cardioLog=JSON.parse(localStorage.getItem('cardioLog')||'{}');
+let exerciseRenames={};try{const _r=localStorage.getItem('exerciseRenames');exerciseRenames=_r?JSON.parse(_r)||{}:{};}catch(e){exerciseRenames={};}
+function getExerciseDisplay(exKey,defaultName){return exerciseRenames[exKey]||defaultName;}
+function saveExerciseName(input){
+const newName=(input.value||'').trim().slice(0,80);
+if(!currentExKey||!newName||newName===currentExName)return;
+exerciseRenames[currentExKey]=newName;
+currentExName=newName;
+try{localStorage.setItem('exerciseRenames',JSON.stringify(exerciseRenames));}catch(e){}
+renderPlan();
+if(window.syncNow)window.syncNow();
+}
 let diet={};try{const _d=localStorage.getItem('diet');diet=_d?JSON.parse(_d)||{}:{};}catch(e){diet={};}
 const DEFAULT_GOALS={kcal:2200,prot:160,carb:250,gord:70,water:2800,deficit:500};
 let dietGoals=Object.assign({},DEFAULT_GOALS);try{const _g=localStorage.getItem('dietGoals');if(_g){const p=JSON.parse(_g);if(p)Object.assign(dietGoals,p);}}catch(e){}
@@ -624,9 +634,10 @@ const manual=workoutKcal[dateKey]||{};
 let runEst=0;
 Object.values(cardioLog).forEach(runs=>{const r=runs.find(x=>x.date===dateKey);if(r)runEst+=estimateRunKcal(r,weight);});
 const muscEst=estimateMuscKcalForDay(dateKey);
+if(manual.total!=null){return{musc:0,run:0,total:manual.total,isManual:true,muscIsManual:true,runIsManual:true,muscEst,runEst};}
 const musc=manual.musc!=null?manual.musc:muscEst;
 const run=manual.run!=null?manual.run:runEst;
-return{musc,run,total:musc+run,muscIsManual:manual.musc!=null,runIsManual:manual.run!=null,muscEst,runEst};
+return{musc,run,total:musc+run,isManual:false,muscIsManual:manual.musc!=null,runIsManual:manual.run!=null,muscEst,runEst};
 }
 function getDiet(dateKey){
 if(!diet[dateKey])return{meals:[],water:0,beers:[],supplements:{}};
@@ -688,6 +699,24 @@ if(!isValidDateKey(dayKey))return;
 if(!confirm('Desmarcar este treino como cumprido?'))return;
 delete workoutOverrides[dayKey];
 try{localStorage.setItem('workoutOverrides',JSON.stringify(workoutOverrides));}catch(e){return alert('Erro ao salvar: '+e.message);}
+renderPlan();renderCal();
+if(window.syncNow)window.syncNow();
+}
+function markOverrideDone(dayKey){
+if(!isValidDateKey(dayKey))return;
+const ov=workoutOverrides[dayKey];
+if(!ov)return;
+ov.done=true;
+try{localStorage.setItem('workoutOverrides',JSON.stringify(workoutOverrides));}catch(e){return alert('Erro: '+e.message);}
+renderPlan();renderCal();
+if(window.syncNow)window.syncNow();
+}
+function unmarkOverrideDone(dayKey){
+if(!isValidDateKey(dayKey))return;
+const ov=workoutOverrides[dayKey];
+if(!ov)return;
+delete ov.done;
+try{localStorage.setItem('workoutOverrides',JSON.stringify(workoutOverrides));}catch(e){return alert('Erro: '+e.message);}
 renderPlan();renderCal();
 if(window.syncNow)window.syncNow();
 }
@@ -784,13 +813,16 @@ const dayKey=dk(dayDate);
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const canAlter=dayDate<=tDate||Math.floor((dayDate-tDate)/(24*60*60*1000))<=7;
 const isPast=dayDate<tDate;
-const isExpanded=!isPast||expandedPastDays.has(dayKey);
 const ov=getWorkoutOverride(dayKey);
 const isCumprido=ov&&ov.type==='cumprido';
+const isOverrideDone=ov&&!isCumprido&&ov.done;
+const isCompleted=isCumprido||isOverrideDone;
+const shouldDefaultCollapse=isPast||isCompleted;
+const isExpanded=!shouldDefaultCollapse||expandedPastDays.has(dayKey);
 const isRestDay=d.t==='Descanso';
 const status=getDayStatus(dayKey,d);
-const chevron=isPast?`<i class="ti ${isExpanded?'ti-chevron-up':'ti-chevron-down'}" style="color:#94A3B8;font-size:16px;margin-left:6px"></i>`:'';
-const hdrClick=isPast?` onclick="togglePastDay('${dayKey}')" style="cursor:pointer;user-select:none"`:'';
+const chevron=shouldDefaultCollapse?`<i class="ti ${isExpanded?'ti-chevron-up':'ti-chevron-down'}" style="color:#94A3B8;font-size:16px;margin-left:6px"></i>`:'';
+const hdrClick=shouldDefaultCollapse?` onclick="togglePastDay('${dayKey}')" style="cursor:pointer;user-select:none"`:'';
 const dayLabel=(ov&&!isCumprido)?(OVERRIDE_TYPES[ov.type].label+(ov.title?' — '+escapeHtml(ov.title):'')):escapeHtml(d.t);
 let pill='';
 if(!isExpanded&&status){
@@ -802,13 +834,20 @@ if(isCumprido){
 h+=`<div class="cumprido-banner"><span class="cb-label"><i class="ti ti-check"></i>Treino cumprido</span><button class="cb-undo" onclick="unmarkCumprido('${dayKey}')">Desmarcar</button></div>`;
 }else if(ov){
 const ot=OVERRIDE_TYPES[ov.type];
-h+=`<div class="override-card" style="background:${ot.bg};border-color:${ot.border}"><div class="ov-header"><span class="ov-label" style="color:${ot.color}">${ot.label}</span><button class="ov-edit" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
+h+=`<div class="override-card" style="background:${ot.bg};border-color:${ot.border}"><div class="ov-header"><span class="ov-label" style="color:${ot.color}">${ot.label}${isOverrideDone?' · ✓ concluído':''}</span><button class="ov-edit" onclick="openOverrideModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
 if(ov.title)h+=`<div class="ov-title">${escapeHtml(ov.title)}</div>`;
 const metaParts=[];
 if(ov.duration)metaParts.push(escapeHtml(ov.duration));
 if(ov.note)metaParts.push(escapeHtml(ov.note));
 if(metaParts.length)h+=`<div class="ov-meta">${metaParts.join(' · ')}</div>`;
-h+=`<div class="ov-original"><b>Plano original:</b> ${escapeHtml(d.t)} (${d.ex.length} exercícios)</div></div></div>`;
+h+=`<div class="ov-original"><b>Plano original:</b> ${escapeHtml(d.t)} (${d.ex.length} exercícios)</div></div>`;
+if(canAlter&&!isRestDay){
+const sp=getDayKcalSpent(dayKey);
+h+=`<div class="kcal-inline-card"><span>🔥 Kcal: <b>${sp.total}</b> <span style="font-size:10px;color:#9A3412">${sp.isManual?'(manual)':'(estimado)'}</span></span><button class="kcal-inline-btn" onclick="openKcalWorkoutModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
+if(isOverrideDone){h+=`<button class="alterar-btn" onclick="unmarkOverrideDone('${dayKey}')"><i class="ti ti-arrow-back-up"></i>Desmarcar concluído</button>`;}
+else{h+=`<button class="cumprido-btn" onclick="markOverrideDone('${dayKey}')"><i class="ti ti-check"></i>Concluído</button>`;}
+}
+h+=`</div>`;
 return;
 }
 h+=`<div class="card" style="padding:6px 12px">`;
@@ -829,14 +868,14 @@ const exKey=getExKey(e);
 const last=getLastWeight(exKey);
 const lastTxt=last?`${last.weight}kg`:'+ peso';
 const cls=last?'weight-current':'weight-empty';
-h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displayE}</span><button class="weight-btn" onclick="openWeightModal('${exKey.replace(/'/g,"\\'")}','${e.replace(/'/g,"\\'")}')"><i class="ti ti-barbell"></i><span class="${cls}">${lastTxt}</span></button></div>`;
+const displayName=getExerciseDisplay(exKey,displayE);
+h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displayName}</span><button class="weight-btn" onclick="openWeightModal('${exKey.replace(/'/g,"\\'")}','${e.replace(/'/g,"\\'")}')"><i class="ti ti-barbell"></i><span class="${cls}">${lastTxt}</span></button></div>`;
 }
 });
 h+=`</div>`;
 if(!isRestDay&&canAlter){
 const sp=getDayKcalSpent(dayKey);
-const isManual=sp.muscIsManual||sp.runIsManual;
-h+=`<div class="kcal-inline-card"><span>🔥 Kcal: <b>${sp.total}</b> <span style="font-size:10px;color:#9A3412">(M ${sp.musc} · C ${sp.run}${isManual?'':' · estimado'})</span></span><button class="kcal-inline-btn" onclick="openKcalWorkoutModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
+h+=`<div class="kcal-inline-card"><span>🔥 Kcal: <b>${sp.total}</b> <span style="font-size:10px;color:#9A3412">${sp.isManual?'(manual)':'(estimado)'}</span></span><button class="kcal-inline-btn" onclick="openKcalWorkoutModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
 }
 if(canAlter&&!isCumprido){
 if(!isRestDay)h+=`<button class="cumprido-btn" onclick="markCumprido('${dayKey}')"><i class="ti ti-check"></i>Cumprido</button>`;
@@ -868,7 +907,7 @@ document.getElementById('weight-save-btn').style.display='block';
 }
 function openWeightModal(exKey,exName){
 currentExKey=exKey;currentExName=exName;editWeightIdx=null;
-document.getElementById('modal-weight-title').textContent=exName;
+document.getElementById('modal-weight-title').value=getExerciseDisplay(exKey,exName);
 document.getElementById('modal-weight-hint').textContent='Registre o peso usado neste exercício para acompanhar sua evolução.';
 document.getElementById('w-data').value=new Date().toISOString().split('T')[0];
 document.getElementById('w-peso').value='';
@@ -1518,7 +1557,16 @@ function openTooltipGasto(){
 const key=dk(today);
 const bal=calcBalance(key);
 const c=document.getElementById('tooltip-gasto-content');
-c.innerHTML=`<div class="kcal-spent-row"><span>Basal (TMB)</span><b>${bal.basal} kcal</b></div><div class="kcal-spent-row"><span>🏋️ Musculação${bal.spent.muscIsManual?'':' (estimado)'}</span><b>${bal.spent.musc} kcal</b></div><div class="kcal-spent-row"><span>🏃 Corrida${bal.spent.runIsManual?'':' (estimado)'}</span><b>${bal.spent.run} kcal</b></div><div class="kcal-spent-row kcal-spent-total"><span>Total</span><b>${bal.totalOut} kcal</b></div><div class="kcal-spent-note">ℹ️ Auto-calculado da aba Treino. Edite o gasto real nos cards de treino.</div>`;
+let body='';
+body+=`<div class="kcal-spent-row"><span>Basal (TMB)</span><b>${bal.basal} kcal</b></div>`;
+if(bal.spent.isManual){
+body+=`<div class="kcal-spent-row"><span>🔥 Treino (manual)</span><b>${bal.spent.total} kcal</b></div>`;
+}else{
+body+=`<div class="kcal-spent-row"><span>🏋️ Musculação (estimado)</span><b>${bal.spent.musc} kcal</b></div>`;
+body+=`<div class="kcal-spent-row"><span>🏃 Corrida (estimado)</span><b>${bal.spent.run} kcal</b></div>`;
+}
+body+=`<div class="kcal-spent-row kcal-spent-total"><span>Total</span><b>${bal.totalOut} kcal</b></div><div class="kcal-spent-note">ℹ️ Auto-calculado da aba Treino. Edite o gasto real nos cards de treino.</div>`;
+c.innerHTML=body;
 document.getElementById('tooltip-gasto').classList.add('open');
 }
 function closeTooltipGasto(){document.getElementById('tooltip-gasto').classList.remove('open');}
@@ -1606,11 +1654,11 @@ const opts=MEAL_BUILDER_OPTIONS[type]||[];
 const c=document.getElementById('mb-items');
 let h='';
 opts.forEach((grp,gi)=>{
-h+=`<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">${escapeHtml(grp.group)}</div>`;
+h+=`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(grp.group)}</div>`;
 grp.items.forEach((item,ii)=>{
 const k='g'+gi+'i'+ii;
-h+=`<label style="display:flex;align-items:center;gap:6px;padding:4px 0;cursor:pointer;font-size:12px"><input type="checkbox" data-key="${k}" onchange="updateMealBuilderTotal()" style="width:16px;height:16px;accent-color:#16A34A"><span style="flex:1">${escapeHtml(item.name)}</span><span style="font-size:10px;color:#94A3B8">${item.kcal}kcal</span></label>`;
-mealBuilderItems[k]={item,checked:false};
+h+=`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px"><span style="flex:1;min-width:0">${escapeHtml(item.name)}</span><span style="font-size:10px;color:#94A3B8;min-width:55px;text-align:right">${item.kcal}kcal</span><input type="number" data-key="${k}" oninput="updateMealBuilderTotal()" min="0" step="0.5" placeholder="0" style="width:55px;padding:4px 6px;border:1px solid #CBD5E1;border-radius:4px;font-size:12px;text-align:center"></div>`;
+mealBuilderItems[k]={item,qty:0};
 });
 h+=`</div>`;
 });
@@ -1618,17 +1666,18 @@ c.innerHTML=h;
 updateMealBuilderTotal();
 }
 function updateMealBuilderTotal(){
-const inputs=document.querySelectorAll('#mb-items input[type=checkbox]');
+const inputs=document.querySelectorAll('#mb-items input[type=number]');
 let kcal=0,prot=0,carb=0,gord=0;
 inputs.forEach(inp=>{
 const k=inp.getAttribute('data-key');
-if(mealBuilderItems[k])mealBuilderItems[k].checked=inp.checked;
-if(inp.checked&&mealBuilderItems[k]){
+const qty=parseFloat(inp.value)||0;
+if(mealBuilderItems[k])mealBuilderItems[k].qty=qty;
+if(qty>0&&mealBuilderItems[k]){
 const i=mealBuilderItems[k].item;
-kcal+=i.kcal;prot+=i.prot;carb+=i.carb;gord+=i.gord;
+kcal+=i.kcal*qty;prot+=i.prot*qty;carb+=i.carb*qty;gord+=i.gord*qty;
 }
 });
-document.getElementById('mb-total').textContent=kcal+' kcal';
+document.getElementById('mb-total').textContent=Math.round(kcal)+' kcal';
 document.getElementById('mb-macros').textContent=`P: ${prot.toFixed(0)}g · C: ${carb.toFixed(0)}g · G: ${gord.toFixed(0)}g`;
 }
 function closeMealBuilderModal(){document.getElementById('modal-meal-builder').classList.remove('open');}
@@ -1639,12 +1688,18 @@ const note=(document.getElementById('mb-note').value||'').trim().slice(0,120);
 let kcal=0,prot=0,carb=0,gord=0;
 const items=[];
 Object.values(mealBuilderItems).forEach(v=>{
-if(v.checked){kcal+=v.item.kcal;prot+=v.item.prot;carb+=v.item.carb;gord+=v.item.gord;items.push(v.item.name);}
+if(v.qty>0){
+kcal+=v.item.kcal*v.qty;
+prot+=v.item.prot*v.qty;
+carb+=v.item.carb*v.qty;
+gord+=v.item.gord*v.qty;
+items.push(v.qty===1?v.item.name:(v.qty+'× '+v.item.name));
+}
 });
-if(items.length===0)return alert('Selecione ao menos um item.');
+if(items.length===0)return alert('Informe a quantidade de ao menos um item.');
 const key=dk(today);
 const d=getDiet(key);
-d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal,prot:+prot.toFixed(1),carb:+carb.toFixed(1),gord:+gord.toFixed(1),items:items.join(' · ')+(note?' · '+note:''),type});
+d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal:Math.round(kcal),prot:+prot.toFixed(1),carb:+carb.toFixed(1),gord:+gord.toFixed(1),items:items.join(' · ')+(note?' · '+note:''),type});
 d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
 saveDiet(key,d);
 closeMealBuilderModal();renderDiet();
@@ -1773,22 +1828,11 @@ const sp=getDayKcalSpent(dateKey);
 const d=new Date(dateKey+'T00:00:00');
 document.getElementById('kcal-workout-hint').textContent='Treino de '+d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()+'. Deixe em branco para usar a estimativa.';
 const manual=workoutKcal[dateKey]||{};
-document.getElementById('kw-musc').value=manual.musc!=null?manual.musc:'';
-document.getElementById('kw-run').value=manual.run!=null?manual.run:'';
-document.getElementById('kw-musc-est').textContent='Estimado: '+sp.muscEst+' kcal';
-document.getElementById('kw-run-est').textContent='Estimado: '+sp.runEst+' kcal';
-const updateTotal=()=>{
-const m=parseFloat(document.getElementById('kw-musc').value);
-const r=parseFloat(document.getElementById('kw-run').value);
-const mt=isNaN(m)?sp.muscEst:m;
-const rt=isNaN(r)?sp.runEst:r;
-document.getElementById('kw-total').textContent=(mt+rt)+' kcal';
-};
-document.getElementById('kw-musc').oninput=updateTotal;
-document.getElementById('kw-run').oninput=updateTotal;
-updateTotal();
+const totalManual=manual.total!=null?manual.total:(manual.musc!=null||manual.run!=null?((manual.musc||sp.muscEst)+(manual.run||sp.runEst)):null);
+document.getElementById('kw-total-input').value=totalManual!=null?totalManual:'';
+document.getElementById('kw-est').textContent='Estimado: '+(sp.muscEst+sp.runEst)+' kcal';
 const btns=document.getElementById('kw-btns');
-const hasManual=manual.musc!=null||manual.run!=null;
+const hasManual=manual.total!=null||manual.musc!=null||manual.run!=null;
 if(hasManual){btns.innerHTML='<button class="btn-del" onclick="resetKcalWorkout()">Resetar</button><button class="btn-cancel" onclick="closeKcalWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveKcalWorkout()">Salvar</button>';}
 else{btns.innerHTML='<button class="btn-cancel" onclick="closeKcalWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveKcalWorkout()">Salvar</button>';}
 document.getElementById('modal-kcal-workout').classList.add('open');
@@ -1796,13 +1840,9 @@ document.getElementById('modal-kcal-workout').classList.add('open');
 function closeKcalWorkoutModal(){document.getElementById('modal-kcal-workout').classList.remove('open');kcalWorkoutDate=null;}
 function saveKcalWorkout(){
 if(!kcalWorkoutDate)return;
-const m=document.getElementById('kw-musc').value;
-const r=document.getElementById('kw-run').value;
-const entry={};
-if(m!=='')entry.musc=parseFloat(m);
-if(r!=='')entry.run=parseFloat(r);
-if(Object.keys(entry).length===0){delete workoutKcal[kcalWorkoutDate];}
-else{workoutKcal[kcalWorkoutDate]=entry;}
+const t=document.getElementById('kw-total-input').value;
+if(t===''){delete workoutKcal[kcalWorkoutDate];}
+else{workoutKcal[kcalWorkoutDate]={total:parseFloat(t)};}
 try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){return alert('Erro ao salvar: '+e.message);}
 closeKcalWorkoutModal();renderPlan();
 if(switchTab&&document.getElementById('sec-dieta').classList.contains('active'))renderDiet();
@@ -2147,6 +2187,7 @@ window.refreshDataFromStorage=function(){
 try{
 const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{};
 const clR=localStorage.getItem('cardioLog');cardioLog=clR?JSON.parse(clR)||{}:{};
+try{const erR=localStorage.getItem('exerciseRenames');exerciseRenames=erR?JSON.parse(erR)||{}:{};}catch(e){exerciseRenames={};}
 try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
 try{const dR=localStorage.getItem('diet');diet=dR?JSON.parse(dR)||{}:{};}catch(e){diet={};}
 try{const gR=localStorage.getItem('dietGoals');if(gR){const p=JSON.parse(gR);if(p)Object.assign(dietGoals,p);}}catch(e){}
@@ -2187,7 +2228,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
