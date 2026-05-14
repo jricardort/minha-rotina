@@ -847,11 +847,12 @@ const we=new Date(ws);we.setDate(we.getDate()+6);
 const cur=today>=ws&&today<=we;
 h+=`<div class="treino-week"><span class="phase-badge" style="background:${wk.color};color:${wk.text}">${wk.phase}</span><div class="treino-week-hdr"><span class="treino-week-title">Semana ${wk.num}${cur?' (ATUAL)':''}</span><span class="treino-week-dates">${ws.getDate()}/${ws.getMonth()+1} - ${we.getDate()}/${we.getMonth()+1}/${we.getFullYear()}</span></div>`;
 const dayNames=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
-wk.template.forEach((d,idx)=>{
+wk.template.forEach((d_orig,idx)=>{
 const dn=dayNames[idx];
 const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
 const dayDate=new Date(ws);dayDate.setDate(dayDate.getDate()+idx);
 const dayKey=dk(dayDate);
+const d=SPECIAL_WORKOUTS[dayKey]||d_orig;
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const canAlter=dayDate<=tDate||Math.floor((dayDate-tDate)/(24*60*60*1000))<=7;
 const isPast=dayDate<tDate;
