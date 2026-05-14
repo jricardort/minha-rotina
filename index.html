@@ -779,12 +779,41 @@ return null;
 }
 const BPM_ZONES={Z1:'<131bpm',Z2:'132-143bpm',Z3:'144-156bpm',Z4:'157-168bpm',Z5:'>169bpm'};
 const PACE_ZONES={Z1:'7:00-7:30/km',Z2:'6:00-6:20/km',Z3:'5:25-5:40/km',Z4:'5:00-5:15/km',Z5:'4:30-4:50/km'};
+function getBpmRange(n){
+const zKey='z'+n;
+if(userZones&&userZones[zKey]&&userZones.fcmax){
+const z=userZones[zKey];
+if(n==='1'||n===1)return'<'+(z.max+1)+'bpm';
+if(n==='5'||n===5)return'>'+(z.min-1)+'bpm';
+return z.min+'-'+z.max+'bpm';
+}
+return BPM_ZONES['Z'+n];
+}
 function addBpmToZones(text){
-return text.replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+BPM_ZONES['Z'+n]+' · '+PACE_ZONES['Z'+n]+')');
+return text.replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+getBpmRange(n)+' · '+PACE_ZONES['Z'+n]+')');
 }
 const SPECIAL_WORKOUTS={
-'2026-05-15':{t:'🩺 Teste de FCmáx + Zonas',ex:['Aquecimento 10min Z1 leve (pace 7:00/km)','TESTE: 4 minutos no MÁXIMO esforço possível (anote FC pico no relógio)','Recuperação 3min andando ou trotando','TESTE: 2km no máximo esforço cronometrado (anote FC média)','Volta para casa 10min Z1','📊 Após o teste, calcular FCmáx = média dos picos. Z1: <80%, Z2: 80-87%, Z3: 87-93%, Z4: 93-97%, Z5: >97%']}
+'2026-05-18':{t:'🩺 Teste de FCmáx + Cálculo de Zonas',isZoneTest:true,ex:[
+{step:'Aquecimento 10min em Z1 leve (trote)'},
+{step:'TESTE 1 — 4min no MÁXIMO esforço possível',input:{id:'fc1',label:'FC pico (bpm)',placeholder:'Ex: 190'}},
+{step:'Recuperação 3min (caminhada ou trote leve)'},
+{step:'TESTE 2 — 2km no MÁXIMO esforço (cronometrado)',input:{id:'fc2',label:'FC pico (bpm)',placeholder:'Ex: 193'}},
+{step:'Volta para casa 10min em Z1'}
+]}
 };
+let userZones={};try{const _uz=localStorage.getItem('userZones');userZones=_uz?JSON.parse(_uz)||{}:{};}catch(e){userZones={};}
+function computeZones(fcmax){return{z1:{min:0,max:Math.round(fcmax*0.80)-1},z2:{min:Math.round(fcmax*0.80),max:Math.round(fcmax*0.87)-1},z3:{min:Math.round(fcmax*0.87),max:Math.round(fcmax*0.93)-1},z4:{min:Math.round(fcmax*0.93),max:Math.round(fcmax*0.97)-1},z5:{min:Math.round(fcmax*0.97),max:fcmax}};}
+function saveZoneTestInput(field,value){
+const num=parseInt(value);
+if(isNaN(num)||num<=0){delete userZones[field];}
+else{userZones[field]=num;}
+const max=Math.max(userZones.fc1||0,userZones.fc2||0);
+if(max>0){userZones.fcmax=max;Object.assign(userZones,computeZones(max));}
+else{delete userZones.fcmax;['z1','z2','z3','z4','z5'].forEach(k=>delete userZones[k]);}
+try{localStorage.setItem('userZones',JSON.stringify(userZones));}catch(e){}
+renderPlan();
+if(window.syncNow)window.syncNow();
+}
 function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Tempo Run|Intervalado|Shakeout|Educativos|strides|Sauna|Descanso|Alongamento|Recuperação|Core|Prancha|Abdominal|Oblíquos/i.test(e);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
 function getLastRun(exKey){const arr=(cardioLog[exKey]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));return arr[0]||null;}
@@ -865,6 +894,15 @@ return;
 }
 h+=`<div class="card" style="padding:6px 12px">`;
 d.ex.forEach(e=>{
+if(typeof e==='object'&&e.step){
+h+=`<div class="ex-row" style="flex-direction:column;align-items:flex-start;padding:8px 0"><span class="ex-name" style="color:#000;font-size:12px;line-height:1.4">${escapeHtml(e.step)}</span>`;
+if(e.input){
+const val=userZones[e.input.id]||'';
+h+=`<div style="display:flex;align-items:center;gap:8px;width:100%;margin-top:6px"><label style="font-size:11px;color:#64748B;min-width:90px">${escapeHtml(e.input.label)}</label><input type="number" value="${val}" placeholder="${escapeHtml(e.input.placeholder||'')}" oninput="saveZoneTestInput('${e.input.id}',this.value)" min="60" max="230" style="flex:1;max-width:100px;border:1px solid #CBD5E1;border-radius:5px;padding:5px 8px;font-size:13px"></div>`;
+}
+h+=`</div>`;
+return;
+}
 const displayE=addBpmToZones(e);
 const isRun=isRunning(e);
 const isCard=isCardio(e);
@@ -886,6 +924,10 @@ h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displa
 }
 });
 h+=`</div>`;
+if(d.isZoneTest&&userZones.fcmax){
+const z=userZones;
+h+=`<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:12px;margin-top:8px"><div style="font-size:11px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">📊 Suas zonas calculadas</div><div style="font-size:14px;color:#0F172A;margin-bottom:8px">FCmáx: <b style="font-size:18px;color:#15803D">${z.fcmax} bpm</b></div><div style="display:flex;flex-direction:column;gap:4px;font-size:12px"><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#3B82F6"></span> <b>Z1</b> (&lt;80%)</span><span><b>&lt;${z.z1.max+1} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#22C55E"></span> <b>Z2</b> (80-87%)</span><span><b>${z.z2.min}-${z.z2.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#F59E0B"></span> <b>Z3</b> (87-93%)</span><span><b>${z.z3.min}-${z.z3.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#EF4444"></span> <b>Z4</b> (93-97%)</span><span><b>${z.z4.min}-${z.z4.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#7C3AED"></span> <b>Z5</b> (&gt;97%)</span><span><b>&gt;${z.z5.min-1} bpm</b></span></div></div><div style="font-size:10px;color:#15803D;margin-top:8px;font-style:italic">✓ Zonas aplicadas automaticamente em todo o plano</div></div>`;
+}
 if(!isRestDay&&canAlter){
 const sp=getDayKcalSpent(dayKey);
 h+=`<div class="kcal-inline-card"><span>🔥 Kcal: <b>${sp.total}</b> <span style="font-size:10px;color:#9A3412">${sp.isManual?'(manual)':'(estimado)'}</span></span><button class="kcal-inline-btn" onclick="openKcalWorkoutModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
@@ -2326,6 +2368,7 @@ try{
 const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{};
 const clR=localStorage.getItem('cardioLog');cardioLog=clR?JSON.parse(clR)||{}:{};
 try{const erR=localStorage.getItem('exerciseRenames');exerciseRenames=erR?JSON.parse(erR)||{}:{};}catch(e){exerciseRenames={};}
+try{const uzR=localStorage.getItem('userZones');userZones=uzR?JSON.parse(uzR)||{}:{};}catch(e){userZones={};}
 try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
 try{const dR=localStorage.getItem('diet');diet=dR?JSON.parse(dR)||{}:{};}catch(e){diet={};}
 try{const gR=localStorage.getItem('dietGoals');if(gR){const p=JSON.parse(gR);if(p)Object.assign(dietGoals,p);}}catch(e){}
@@ -2366,7 +2409,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasCheck'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasCheck','userZones'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
