@@ -2175,7 +2175,7 @@ if(name==='hoje')renderDiet();else renderDietHistorico();
 }
 function renderDietHistorico(){
 const c=document.getElementById('dieta-historico');
-const keys=Object.keys(diet).filter(k=>{const d=diet[k];return d&&((d.meals&&d.meals.length)||(d.beers&&d.beers.length)||(d.water>0));}).sort((a,b)=>b.localeCompare(a));
+const keys=Object.keys(diet).filter(k=>{const d=diet[k];return d&&((d.meals&&d.meals.length)||(d.beers&&d.beers.length)||(d.water&&d.water>0));}).sort((a,b)=>b.localeCompare(a));
 let h='';
 if(keys.length===0){h='<div class="diet-empty">Nenhum histórico ainda. Registre refeições na aba Hoje.</div>';c.innerHTML=h;return;}
 keys.forEach(key=>{
@@ -2185,8 +2185,10 @@ const lbl=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][dateObj.getDay()]+', '+da
 const macros=sumDietMacros(key);
 const beers=sumDietBeers(key);
 const isToday=key===dk(today);
-h+=`<details ${isToday?'open':''} style="background:#fff;border:1px solid #CBD5E1;border-radius:8px;margin-bottom:8px;overflow:hidden"><summary style="padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px"><span><b>${escapeHtml(lbl)}</b>${isToday?' <span style="font-size:10px;background:#DBEAFE;color:#1E40AF;padding:1px 6px;border-radius:99px;margin-left:4px">hoje</span>':''}</span><span style="font-size:11px;color:#64748B">${macros.kcal} kcal · ${d.meals.length} ref${beers.count>0?' · '+beers.count+'🍺':''}</span></summary><div style="padding:0 12px 10px">`;
-if(d.meals.length===0&&d.beers.length===0){h+='<div class="diet-empty" style="margin:8px 0">Sem refeições neste dia</div>';}
+const waterL=(d.water/1000).toFixed(2);
+h+=`<details ${isToday?'open':''} style="background:#fff;border:1px solid #CBD5E1;border-radius:8px;margin-bottom:8px;overflow:hidden"><summary style="padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px"><span><b>${escapeHtml(lbl)}</b>${isToday?' <span style="font-size:10px;background:#DBEAFE;color:#1E40AF;padding:1px 6px;border-radius:99px;margin-left:4px">hoje</span>':''}</span><span style="font-size:11px;color:#64748B">${macros.kcal} kcal · ${d.meals.length} ref${beers.count>0?' · '+beers.count+'🍺':''} · 💧 ${waterL}L</span></summary><div style="padding:0 12px 10px">`;
+h+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;margin-bottom:8px;font-size:12px"><span style="color:#1E40AF"><b>💧 Hidratação:</b> ${waterL}L (${d.water}ml)</span><button onclick="editHistWater('${key}')" style="background:#fff;border:1px solid #BFDBFE;border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer;color:#1E40AF;font-weight:500"><i class="ti ti-pencil"></i> Editar</button></div>`;
+if(d.meals.length===0&&d.beers.length===0&&d.water===0){h+='<div class="diet-empty" style="margin:8px 0">Sem refeições neste dia</div>';}
 d.meals.forEach(m=>{
 h+=`<div class="meal-card" style="margin-bottom:6px"><div class="meal-card-hdr"><div style="flex:1;min-width:0"><div class="meal-card-title">${escapeHtml(m.name||'Refeição')}</div>${m.time?`<div class="meal-card-time">${escapeHtml(m.time)}</div>`:''}</div><div class="meal-card-kcal">${m.kcal||0} kcal</div></div>${m.items?`<div class="meal-card-items">${escapeHtml(m.items)}</div>`:''}<div class="meal-card-macros">${m.prot?`<span>P: ${m.prot}g</span>`:''}${m.carb?`<span>C: ${m.carb}g</span>`:''}${m.gord?`<span>G: ${m.gord}g</span>`:''}</div><div class="meal-card-actions"><button onclick="editHistMeal('${key}','${m.id}')"><i class="ti ti-pencil"></i>Editar</button><button onclick="deleteHistMeal('${key}','${m.id}')"><i class="ti ti-trash"></i>Excluir</button></div></div>`;
 });
@@ -2221,6 +2223,15 @@ function deleteHistBeer(dateKey,beerId){
 if(!confirm('Excluir esta cerveja?'))return;
 const d=getDiet(dateKey);
 d.beers=d.beers.filter(x=>x.id!==beerId);
+saveDiet(dateKey,d);renderDietHistorico();
+}
+function editHistWater(dateKey){
+const d=getDiet(dateKey);
+const newVal=prompt('Água bebida em ml (ex: 2500 para 2.5L):',d.water);
+if(newVal===null)return;
+const ml=parseFloat(newVal);
+if(isNaN(ml)||ml<0)return alert('Valor inválido');
+d.water=Math.round(ml);
 saveDiet(dateKey,d);renderDietHistorico();
 }
 function editHistBeer(dateKey,beerId){
