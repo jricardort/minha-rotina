@@ -2192,7 +2192,7 @@ h+=`<div class="meal-card" style="margin-bottom:6px"><div class="meal-card-hdr">
 });
 d.beers.forEach(b=>{
 const bt=BEER_TYPES[b.type]||{label:'Cerveja'};
-h+=`<div class="beer-item" style="padding:8px 10px;background:#FEF3C7;border-radius:6px;margin-bottom:4px"><div class="beer-item-info"><div>🍺 ${escapeHtml(bt.label)} ${b.volume}ml${b.time?' · '+escapeHtml(b.time):''}</div></div><span class="beer-item-kcal">${b.kcal} kcal</span><button class="beer-item-del" onclick="deleteHistBeer('${key}','${b.id}')"><i class="ti ti-trash"></i></button></div>`;
+h+=`<div class="beer-item" style="padding:8px 10px;background:#FEF3C7;border-radius:6px;margin-bottom:4px"><div class="beer-item-info"><div>🍺 ${escapeHtml(bt.label)} ${b.volume}ml${b.time?' · '+escapeHtml(b.time):''}</div></div><span class="beer-item-kcal">${b.kcal} kcal</span><button class="beer-item-del" onclick="editHistBeer('${key}','${b.id}')" style="color:#2563EB;margin-right:4px"><i class="ti ti-pencil"></i></button><button class="beer-item-del" onclick="deleteHistBeer('${key}','${b.id}')"><i class="ti ti-trash"></i></button></div>`;
 });
 h+=`</div></details>`;
 });
@@ -2221,6 +2221,20 @@ function deleteHistBeer(dateKey,beerId){
 if(!confirm('Excluir esta cerveja?'))return;
 const d=getDiet(dateKey);
 d.beers=d.beers.filter(x=>x.id!==beerId);
+saveDiet(dateKey,d);renderDietHistorico();
+}
+function editHistBeer(dateKey,beerId){
+const d=getDiet(dateKey);
+const b=d.beers.find(x=>x.id===beerId);
+if(!b)return;
+const bt=BEER_TYPES[b.type]||BEER_TYPES.pilsner;
+const newVol=prompt('Volume em ml ('+escapeHtml(bt.label)+'):',b.volume);
+if(newVol===null)return;
+const vol=parseFloat(newVol);
+if(isNaN(vol)||vol<=0)return alert('Volume inválido');
+b.volume=vol;
+b.kcal=Math.round(bt.kcalPer100ml*(vol/100));
+b.carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
 saveDiet(dateKey,d);renderDietHistorico();
 }
 function renderCompras(){
