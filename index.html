@@ -2291,47 +2291,72 @@ b.kcal=Math.round(bt.kcalPer100ml*(vol/100));
 b.carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
 saveDiet(dateKey,d);renderDietHistorico();
 }
+const DEFAULT_COMPRAS=[
+'🥬 Alface, rúcula, agrião (mix 3 maços)','🍅 Tomate cereja (200g)','🥒 Pepino (2 un)','🧅 Cebola (3 un)','🧄 Alho (1 cabeça)',
+'🥦 Brócolis (300g)','🥦 Couve-flor (300g)','🥒 Abobrinha (300g)','🥕 Cenoura (250g)','🍆 Berinjela (250g)',
+'🌾 Arroz integral (500g)','🍠 Batata-doce (1kg)','🌿 Mandioca (500g)','🍝 Massa integral (400g)','🌾 Quinoa (250g)',
+'🫘 Feijão preto (500g seco)','🫘 Feijão carioca (500g seco)','🫘 Lentilha (300g)','🫘 Grão de bico (300g)','🟢 Ervilha congelada (500g)',
+'🍗 Frango peito sem pele (1kg)','🥩 Filé mignon suíno (500g)','🥓 Lombo suíno (400g)','🥚 Ovos (1 dúzia)','🐟 Atum em água (3 latas)',
+'🍌 Banana (1 penca)','🍎 Maçã (5 un)','🍈 Mamão papaia (1 un)','🍓 Morangos (200g)','🥝 Kiwi (5 un)','🍈 Melão (1/2 un)','🍐 Pera (3 un)',
+'🥛 Iogurte natural / proteico (4-5 potes)','🥛 Iogurte zero (5 un)','🧀 Cottage (1 pote 200g)','🧀 Queijo branco (200g)','🥛 Leite desnatado (1L)',
+'🌰 Castanha do Pará (50g)','🥜 Amêndoas (100g)','🌰 Nozes (100g)',
+'🍞 Pão integral fatiado (1 forma)','🥣 Aveia em flocos (250g)',
+'💊 Whey protein (~150g/semana)','💊 Creatina (~50g/semana)','💊 Leucina (~25g/semana)','🍬 Doce 30g para pré/pós-treino',
+'🫒 Azeite extra virgem (1 garrafa)','🧂 Sal, pimenta, ervas (manjericão, alecrim)','🍋 Limão (3-4 un)','🌿 Canela em pó (ceia)'
+];
+function getComprasList(){
+let list=null;try{const raw=localStorage.getItem('comprasList');if(raw)list=JSON.parse(raw);}catch(e){}
+if(!Array.isArray(list)){list=DEFAULT_COMPRAS.map(name=>({id:uid(),name,done:false}));try{localStorage.setItem('comprasList',JSON.stringify(list));}catch(e){}}
+return list;
+}
+function saveComprasList(list){try{localStorage.setItem('comprasList',JSON.stringify(list));}catch(e){}if(window.syncNow)window.syncNow();}
 function renderCompras(){
 const c=document.getElementById('compras-content');
-const list=[
-{cat:'🥬 Folhas & vegetais (à vontade)',items:['Alface, rúcula, agrião (mix de 3 maços)','Tomate cereja (200g)','Pepino (2 unidades)','Cebola (3 unidades)','Alho (1 cabeça)']},
-{cat:'🥦 Vegetais cozidos (~840g/semana)',items:['Brócolis (300g)','Couve-flor (300g)','Abobrinha (300g)','Cenoura (250g)','Berinjela (250g)']},
-{cat:'🌾 Carboidratos (escolha 1-2)',items:['Arroz integral (500g)','Batata-doce (1kg)','Mandioca (500g)','Massa integral (400g)','Quinoa (250g)']},
-{cat:'🫘 Leguminosas (~7 porções 120g)',items:['Feijão preto (500g seco)','Feijão carioca (500g seco)','Lentilha (300g)','Grão de bico (300g)','Ervilha congelada (500g)']},
-{cat:'🥩 Proteínas (~700g + ovos)',items:['Frango peito sem pele (1kg)','Filé mignon suíno (500g)','Lombo suíno (400g)','Ovos (1 dúzia)','Atum em água (3 latas)']},
-{cat:'🍓 Frutas (7-10 unidades)',items:['Banana (1 penca)','Maçã (5 unidades)','Mamão papaia (1 unidade)','Morangos (200g)','Kiwi (5 unidades)','Melão (1/2 unidade)','Pera (3 unidades)']},
-{cat:'🥛 Laticínios & ceia',items:['Iogurte natural / proteico (4-5 potes)','Iogurte zero (5 unidades)','Cottage 30g× (1 pote 200g)','Queijo branco (200g)','Leite desnatado (1L)']},
-{cat:'🥜 Oleaginosas (~105g/semana)',items:['Castanha do Pará (50g)','Amêndoas (100g)','Nozes (100g)']},
-{cat:'🍞 Pães & cereais',items:['Pão integral fatiado (1 forma)','Aveia em flocos (250g)']},
-{cat:'💊 Suplementos',items:['Whey protein (~150g por semana)','Creatina (~50g por semana)','Leucina (~25g por semana)','Doce 30g para pré/pós-treino']},
-{cat:'🫒 Temperos & outros',items:['Azeite extra virgem (1 garrafa)','Sal, pimenta, ervas frescas (manjericão, alecrim, salsa)','Limão (3-4 unidades)','Canela em pó (para ceia)']}
-];
-let h='<div class="treino-tip"><strong>Lista de compras semanal</strong> baseada na dieta da nutricionista (12.05.2026). Quantidades referenciais para 1 pessoa, 7 dias.</div>';
-let comprasCheck={};try{comprasCheck=JSON.parse(localStorage.getItem('comprasCheck')||'{}');}catch(e){}
-list.forEach((grp,gi)=>{
-h+=`<div class="dash-card"><div class="dash-card-hdr">${escapeHtml(grp.cat)}</div>`;
-grp.items.forEach((item,ii)=>{
-const k='c'+gi+'i'+ii;
-const checked=!!comprasCheck[k];
-h+=`<label style="display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer;font-size:13px;color:#334155;${checked?'text-decoration:line-through;color:#94A3B8':''}"><input type="checkbox" ${checked?'checked':''} onchange="toggleCompra('${k}',this.checked)" style="width:18px;height:18px;accent-color:#16A34A">${escapeHtml(item)}</label>`;
+const list=getComprasList();
+const total=list.length;const done=list.filter(x=>x.done).length;
+let h='<div class="treino-tip"><strong>Lista de compras semanal</strong> · '+done+'/'+total+' itens · Quantidades referenciais para 1 pessoa, 7 dias.</div>';
+h+='<div class="dash-card" style="padding:6px 12px">';
+list.forEach(item=>{
+h+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F1F5F9"><input type="checkbox" ${item.done?'checked':''} onchange="toggleCompra('${item.id}',this.checked)" style="width:18px;height:18px;accent-color:#16A34A;flex-shrink:0"><span style="flex:1;font-size:13px;color:${item.done?'#94A3B8':'#334155'};${item.done?'text-decoration:line-through':''}">${escapeHtml(item.name)}</span><button onclick="editCompraItem('${item.id}')" style="background:#F8F9FA;border:1px solid #E2E8F0;border-radius:5px;padding:3px 7px;font-size:11px;cursor:pointer;color:#2563EB"><i class="ti ti-pencil"></i></button><button onclick="deleteCompraItem('${item.id}')" style="background:#F8F9FA;border:1px solid #E2E8F0;border-radius:5px;padding:3px 7px;font-size:11px;cursor:pointer;color:#DC2626"><i class="ti ti-trash"></i></button></div>`;
 });
-h+=`</div>`;
-});
-h+='<button class="add-btn" onclick="resetCompras()" style="margin-top:10px;color:#DC2626!important;border-color:#FCA5A5!important"><i class="ti ti-refresh"></i>Resetar lista (nova semana)</button>';
+h+='</div>';
+h+='<button class="add-btn" onclick="addCompraItem()" style="margin-top:8px"><i class="ti ti-plus"></i>Adicionar item</button>';
+h+='<button class="add-btn" onclick="resetCompras()" style="margin-top:6px;color:#DC2626!important;border-color:#FCA5A5!important"><i class="ti ti-refresh"></i>Desmarcar todos (nova semana)</button>';
 c.innerHTML=h;
 }
-function toggleCompra(k,checked){
-let cc={};try{cc=JSON.parse(localStorage.getItem('comprasCheck')||'{}');}catch(e){}
-if(checked)cc[k]=true;else delete cc[k];
-try{localStorage.setItem('comprasCheck',JSON.stringify(cc));}catch(e){}
-renderCompras();
-if(window.syncNow)window.syncNow();
+function toggleCompra(id,checked){
+const list=getComprasList();
+const i=list.findIndex(x=>x.id===id);
+if(i<0)return;
+list[i].done=!!checked;
+saveComprasList(list);renderCompras();
+}
+function addCompraItem(){
+const name=prompt('Nome do item:');
+if(!name||!name.trim())return;
+const list=getComprasList();
+list.push({id:uid(),name:name.trim().slice(0,80),done:false});
+saveComprasList(list);renderCompras();
+}
+function editCompraItem(id){
+const list=getComprasList();
+const i=list.findIndex(x=>x.id===id);
+if(i<0)return;
+const newName=prompt('Editar item:',list[i].name);
+if(newName===null||!newName.trim())return;
+list[i].name=newName.trim().slice(0,80);
+saveComprasList(list);renderCompras();
+}
+function deleteCompraItem(id){
+if(!confirm('Excluir este item?'))return;
+const list=getComprasList();
+const filtered=list.filter(x=>x.id!==id);
+saveComprasList(filtered);renderCompras();
 }
 function resetCompras(){
-if(!confirm('Limpar todos os itens marcados (nova semana)?'))return;
-try{localStorage.setItem('comprasCheck','{}');}catch(e){}
-renderCompras();
-if(window.syncNow)window.syncNow();
+if(!confirm('Desmarcar todos os itens (nova semana)?'))return;
+const list=getComprasList().map(x=>({...x,done:false}));
+saveComprasList(list);renderCompras();
 }
 function switchMedSubtab(name){
 document.getElementById('subtab-evolucao').classList.toggle('active',name==='evolucao');
@@ -2410,7 +2435,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasCheck','userZones'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','userZones'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
