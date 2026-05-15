@@ -2321,7 +2321,9 @@ h+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bot
 });
 h+='</div>';
 h+='<button class="add-btn" onclick="addCompraItem()" style="margin-top:8px"><i class="ti ti-plus"></i>Adicionar item</button>';
-h+='<button class="add-btn" onclick="resetCompras()" style="margin-top:6px;color:#DC2626!important;border-color:#FCA5A5!important"><i class="ti ti-refresh"></i>Desmarcar todos (nova semana)</button>';
+const checkedCount=list.filter(x=>x.done).length;
+h+=`<button class="btn-save" onclick="confirmCompra()" style="width:100%;padding:12px;margin-top:8px;font-weight:600"${checkedCount===0?' disabled style="opacity:.5;cursor:not-allowed"':''}><i class="ti ti-shopping-cart-check"></i> Confirmar compra (${checkedCount} ${checkedCount===1?'item':'itens'})</button>`;
+h+='<button class="add-btn" onclick="resetCompras()" style="margin-top:6px;color:#DC2626!important;border-color:#FCA5A5!important"><i class="ti ti-refresh"></i>Desmarcar todos</button>';
 c.innerHTML=h;
 }
 function toggleCompra(id,checked){
@@ -2354,9 +2356,22 @@ const filtered=list.filter(x=>x.id!==id);
 saveComprasList(filtered);renderCompras();
 }
 function resetCompras(){
-if(!confirm('Desmarcar todos os itens (nova semana)?'))return;
+if(!confirm('Desmarcar todos os itens?'))return;
 const list=getComprasList().map(x=>({...x,done:false}));
 saveComprasList(list);renderCompras();
+}
+function confirmCompra(){
+const list=getComprasList();
+const bought=list.filter(x=>x.done);
+if(bought.length===0)return alert('Nenhum item marcado.');
+const unchecked=list.filter(x=>!x.done).length;
+if(!confirm('Confirmar compra de '+bought.length+' '+(bought.length===1?'item':'itens')+'?'+(unchecked>0?'\n\nOs '+unchecked+' itens não marcados serão removidos da lista.':'')))return;
+let hist=[];try{const raw=localStorage.getItem('comprasHistorico');if(raw)hist=JSON.parse(raw)||[];}catch(e){hist=[];}
+const todayKey=dk(today);
+bought.forEach(item=>{hist.push({id:uid(),name:item.name,purchasedAt:todayKey});});
+try{localStorage.setItem('comprasHistorico',JSON.stringify(hist));}catch(e){return alert('Erro ao salvar histórico: '+e.message);}
+saveComprasList([]);renderCompras();
+alert('✓ '+bought.length+' '+(bought.length===1?'item adicionado':'itens adicionados')+' ao histórico de compras.');
 }
 function switchMedSubtab(name){
 document.getElementById('subtab-evolucao').classList.toggle('active',name==='evolucao');
@@ -2435,7 +2450,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','userZones'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
