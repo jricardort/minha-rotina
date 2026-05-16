@@ -793,6 +793,7 @@ function addBpmToZones(text){
 return text.replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+getBpmRange(n)+' · '+PACE_ZONES['Z'+n]+')');
 }
 const SPECIAL_WORKOUTS={
+'2026-05-16':{t:'Peito + Tríceps',ex:['Supino Reto Barra 4x8-10','Supino Inclinado Halteres 4x10','Crucifixo Inclinado 3x12','Crossover Cabos 3x15','Tríceps Pulley Corda 4x12','Tríceps Testa Barra W 3x10','Tríceps Francês Unilateral 3x12']},
 '2026-05-18':{t:'🩺 Teste de FCmáx + Cálculo de Zonas',isZoneTest:true,ex:[
 {step:'Aquecimento 10min em Z1 leve (trote)'},
 {step:'TESTE 1 — 4min no MÁXIMO esforço possível',input:{id:'fc1',label:'FC pico (bpm)',placeholder:'Ex: 190'}},
