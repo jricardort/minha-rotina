@@ -684,7 +684,9 @@ const totalIn=macros.kcal;
 return{basal,spent,totalOut,totalIn,deficit:totalOut-totalIn};
 }
 let expandedPastDays=new Set();
+let expandedPastWeeks=new Set();
 function togglePastDay(k){if(!k)return;if(expandedPastDays.has(k))expandedPastDays.delete(k);else expandedPastDays.add(k);renderPlan();}
+function togglePastWeek(wkNum,isOpen){if(isOpen)expandedPastWeeks.add(wkNum);else expandedPastWeeks.delete(wkNum);}
 let workoutOverrides={};
 try{const _raw=localStorage.getItem('workoutOverrides');workoutOverrides=_raw?JSON.parse(_raw)||{}:{};}catch(e){workoutOverrides={};console.warn('Override data corrupted, resetting');}
 const OVERRIDE_TYPES={
@@ -790,8 +792,10 @@ return z.min+'-'+z.max+'bpm';
 return BPM_ZONES['Z'+n];
 }
 function addBpmToZones(text){
-return text.replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+getBpmRange(n)+' · '+PACE_ZONES['Z'+n]+')');
+return String(text).replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+getBpmRange(n)+' · '+PACE_ZONES['Z'+n]+')');
 }
+function exToString(e){return (typeof e==='object'&&e!==null)?(e.step||e.t||''):String(e||'');}
+function exContains(e,s){return exToString(e).includes(s);}
 const SPECIAL_WORKOUTS={
 '2026-05-16':{t:'Peito + Tríceps',ex:['Supino Reto Barra 4x8-10','Supino Inclinado Halteres 4x10','Crucifixo Inclinado 3x12','Crossover Cabos 3x15','Tríceps Pulley Corda 4x12','Tríceps Testa Barra W 3x10','Tríceps Francês Unilateral 3x12']},
 '2026-05-18':{t:'🩺 Teste de FCmáx + Cálculo de Zonas',isZoneTest:true,ex:[
@@ -848,7 +852,7 @@ const we=new Date(ws);we.setDate(we.getDate()+6);
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const cur=today>=ws&&today<=we;
 const isPastWeek=we<tDate;
-if(isPastWeek){h+=`<details style="margin-bottom:14px;border:1px solid #E2E8F0;border-radius:8px;background:#F8F9FA"><summary style="padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#64748B"><span><span class="phase-badge" style="background:${wk.color};color:${wk.text};margin-right:6px">${wk.phase}</span><b>Semana ${wk.num}</b> (concluída)</span><span>${ws.getDate()}/${ws.getMonth()+1} - ${we.getDate()}/${we.getMonth()+1}</span></summary><div style="padding:8px 10px">`;}
+if(isPastWeek){const openAttr=expandedPastWeeks.has(wk.num)?' open':'';h+=`<details${openAttr} ontoggle="togglePastWeek(${wk.num},this.open)" style="margin-bottom:14px;border:1px solid #E2E8F0;border-radius:8px;background:#F8F9FA"><summary style="padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#64748B"><span><span class="phase-badge" style="background:${wk.color};color:${wk.text};margin-right:6px">${wk.phase}</span><b>Semana ${wk.num}</b> (concluída)</span><span>${ws.getDate()}/${ws.getMonth()+1} - ${we.getDate()}/${we.getMonth()+1}</span></summary><div style="padding:8px 10px">`;}
 h+=`<div class="treino-week"><span class="phase-badge" style="background:${wk.color};color:${wk.text}">${wk.phase}</span><div class="treino-week-hdr"><span class="treino-week-title">Semana ${wk.num}${cur?' (ATUAL)':''}</span><span class="treino-week-dates">${ws.getDate()}/${ws.getMonth()+1} - ${we.getDate()}/${we.getMonth()+1}/${we.getFullYear()}</span></div>`;
 const dayNames=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
 wk.template.forEach((d_orig,idx)=>{
@@ -2170,8 +2174,9 @@ if(isCumpridoDay){
 h+='<div class="cumprido-banner"><span class="cb-label"><i class="ti ti-check"></i>Treino cumprido</span><button class="cb-undo" onclick="unmarkCumprido(\''+key+'\')">Desmarcar</button></div>';
 h+='<div class="card" style="padding:8px 14px"><div class="treino-day-hdr"><span class="treino-day-badge '+badge+'">'+dn+'</span><span class="treino-day-title">'+escapeHtml(w.day.t)+'</span></div>';
 w.day.ex.forEach(e=>{
-const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includes('Fartlek')||e.includes('PROVA');
-h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+escapeHtml(addBpmToZones(e))+'</span></div>';
+const s=exToString(e);
+const isR=exContains(e,'Corrida')||exContains(e,'km')||exContains(e,'Tiros')||exContains(e,'Fartlek')||exContains(e,'PROVA');
+h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+escapeHtml(addBpmToZones(s))+'</span></div>';
 });
 h+='</div>';
 }else if(ovDay){
@@ -2182,12 +2187,13 @@ const metaParts=[];
 if(ovDay.duration)metaParts.push(escapeHtml(ovDay.duration));
 if(ovDay.note)metaParts.push(escapeHtml(ovDay.note));
 if(metaParts.length)h+='<div class="ov-meta">'+metaParts.join(' · ')+'</div>';
-h+='<div class="ov-original"><b>Plano original:</b> '+escapeHtml(w.day.t)+' — '+w.day.ex.map(e=>escapeHtml(addBpmToZones(e))).join(', ')+'</div></div>';
+h+='<div class="ov-original"><b>Plano original:</b> '+escapeHtml(w.day.t)+' — '+w.day.ex.map(e=>escapeHtml(addBpmToZones(exToString(e)))).join(', ')+'</div></div>';
 }else{
 h+='<div class="card" style="padding:8px 14px"><div class="treino-day-hdr"><span class="treino-day-badge '+badge+'">'+dn+'</span><span class="treino-day-title">'+escapeHtml(w.day.t)+'</span></div>';
 w.day.ex.forEach(e=>{
-const isR=e.includes('Corrida')||e.includes('km')||e.includes('Tiros')||e.includes('Fartlek')||e.includes('PROVA');
-h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+escapeHtml(addBpmToZones(e))+'</span></div>';
+const s=exToString(e);
+const isR=exContains(e,'Corrida')||exContains(e,'km')||exContains(e,'Tiros')||exContains(e,'Fartlek')||exContains(e,'PROVA');
+h+='<div class="ex-row" style="border-color:#F1F5F9"><span class="ex-name" style="color:'+(isR?'#16A34A':'#000')+';font-size:13px">'+escapeHtml(addBpmToZones(s))+'</span></div>';
 });
 h+='</div>';
 if(canAlterDay){
