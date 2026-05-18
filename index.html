@@ -348,7 +348,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <body>
 <div class="wrap">
 <div class="offline-banner" id="offline-banner"><div class="ob-icon"><i class="ti ti-cloud-off"></i></div><div class="ob-content"><div class="ob-title">⚠️ Modo Offline</div><div class="ob-text">Suas alterações estão sendo salvas <strong>apenas neste dispositivo</strong>. Faça login para sincronizar com a nuvem e acessar de qualquer aparelho — caso contrário, os dados podem se perder ao limpar o cache do navegador.</div><button class="ob-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i>Entrar com Google</button></div></div>
-<div class="header"><div style="flex:1;min-width:0"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div><div class="auth-wrap"><button class="auth-btn" id="auth-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i> Entrar</button><span class="sync-status" id="sync-status"></span></div></div>
+<div class="header"><div style="flex:1;min-width:0"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div><div class="auth-wrap"><button class="auth-btn" id="auth-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i> Entrar</button><span class="sync-status" id="sync-status"></span><button id="restore-btn" onclick="restoreFromCloud()" style="display:none;font-size:9px;background:#fff;border:1px solid #CBD5E1;border-radius:99px;padding:3px 8px;color:#475569;cursor:pointer;margin-top:2px">↻ Recuperar dados</button></div></div>
 <div class="nav">
 <button class="tab active" onclick="switchTab('calendario')" id="tab-calendario"><i class="ti ti-calendar-month"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('treino')" id="tab-treino"><i class="ti ti-barbell"></i><span class="tab-dot"></span></button>
@@ -2616,6 +2616,43 @@ async function loadFromCloud(uid){
   }
 }
 
+window.restoreFromCloud = async () => {
+  if (!currentUser) { alert('Você precisa estar logado para recuperar dados.'); return; }
+  if (!confirm('⚠️ ATENÇÃO\n\nIsso vai SUBSTITUIR seus dados locais pelos salvos na nuvem.\n\nÚtil para recuperar dados perdidos.\n\nContinuar?')) return;
+  try {
+    setStatus('Buscando da nuvem…');
+    const docRef = doc(db, 'users', currentUser.uid, 'data', 'main');
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) { alert('❌ Não há dados na nuvem.'); setStatus(''); return; }
+    const d = snap.data();
+    const counts = {};
+    KEYS.forEach(k => {
+      const v = d[k];
+      if (v === undefined || v === null) counts[k] = 0;
+      else if (Array.isArray(v)) counts[k] = v.length;
+      else if (typeof v === 'object') counts[k] = Object.keys(v).length;
+      else counts[k] = 1;
+    });
+    const summary = KEYS.map(k => k + ': ' + counts[k]).join('\n');
+    if (!confirm('Dados na nuvem:\n\n' + summary + '\n\nRestaurar?')) { setStatus(''); return; }
+    suppressSync = true;
+    KEYS.forEach(k => {
+      if (d[k] !== undefined && d[k] !== null) origSetItem(k, JSON.stringify(d[k]));
+    });
+    origSetItem(TS_LOCAL, String(d.localModified || 0));
+    origSetItem(TS_SYNC, String(Date.now()));
+    suppressSync = false;
+    if (window.refreshDataFromStorage) window.refreshDataFromStorage();
+    setStatus('Restaurado ✓');
+    setTimeout(() => setStatus(''), 3000);
+    alert('✅ Dados restaurados!');
+  } catch (e) {
+    console.error('Restore error:', e);
+    alert('Erro: ' + e.message);
+    setStatus('Erro');
+  }
+};
+
 window.handleAuthClick = async () => {
   if (currentUser) {
     if (confirm('Sair da conta? Seus dados continuam salvos na nuvem.')) {
@@ -2640,6 +2677,8 @@ onAuthStateChanged(auth, async (user) => {
   currentUser = user;
   const btn = document.getElementById('auth-btn');
   const banner = document.getElementById('offline-banner');
+  const restoreBtn = document.getElementById('restore-btn');
+  if (restoreBtn) restoreBtn.style.display = user ? 'inline-block' : 'none';
   if (!btn) return;
   if (user) {
     const name = (user.displayName || '').split(' ')[0] || 'Conectado';
