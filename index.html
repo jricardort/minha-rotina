@@ -488,17 +488,17 @@ p.push({phase:'Pré-plano + Transição',num:2,color:'#F1F5F9',text:'#475569',te
 {t:'Peito + Tríceps + Z2',ex:['Supino Reto Barra 4x8-10','Supino Inclinado Halteres 4x10','Crucifixo Inclinado 3x12','Tríceps Pulley Corda 4x12','Corrida Z2 30min']},
 {t:'Costas + Bíceps + Tempo',ex:['Stiff Halteres 4x8','Puxada Frente Aberta 4x10','Remada Curvada Barra 4x10','Rosca Direta Barra 4x10','Rosca Scott Halteres 3x12','Tempo Run Z3 25min']},
 {t:'Transição — Descanso ativo',ex:['Descanso ou caminhada leve 30min']},
-{t:'Transição — Pull leve',ex:['Puxada frente aberta 3x8 (leve)','Remada cavalinho 3x8 (leve)','Pulldown triangular 3x10 (leve)','Rosca direta 3x10 (leve)','Face pull corda 2x12']},
-{t:'Transição — Z2 fácil',ex:['Corrida Z2 30min (147-159 bpm · ~9:00/km)']},
-{t:'Transição — Z2 fácil',ex:['Corrida Z2 35min (147-159 bpm)']},
+{t:'Transição — Push leve',ex:['Supino reto halteres 3x8 (leve)','Supino inclinado halteres 3x8 (leve)','Pec deck 3x10 (leve)','Desenvolvimento halteres 3x8 (leve)','Tríceps pulley corda 2x12 (leve)']},
+{t:'Transição — Z2 fácil',ex:['Corrida Z2 30min']},
+{t:'Transição — Z2 fácil',ex:['Corrida Z2 35min']},
 {t:'Transição — Descanso total',ex:['Descanso total']}
 ]});
 // Base Aeróbica weeks 3-8 (May 25 - Jul 5)
 const baseLR=[5,6,6,7,8,6];
 const baseFri=[
-{t:'Z2 contínuo 30min',ex:['Corrida Z2 30min (147-159 bpm · ~9:00/km)']},
-{t:'Z2 contínuo 35min',ex:['Corrida Z2 35min (147-159 bpm)']},
-{t:'Z2 contínuo 40min',ex:['Corrida Z2 40min (147-159 bpm)']},
+{t:'Z2 contínuo 30min',ex:['Corrida Z2 30min']},
+{t:'Z2 contínuo 35min',ex:['Corrida Z2 35min']},
+{t:'Z2 contínuo 40min',ex:['Corrida Z2 40min']},
 {t:'Z2 + 4×1min Z3',ex:['Corrida Z2 35min com 4×1min Z3 ao final','Recuperação: 1min trote entre cada']},
 {t:'Z2 + 5×1min Z3',ex:['Corrida Z2 40min com 5×1min Z3 ao final','Recuperação: 1min trote entre cada']},
 {t:'Z2 contínuo 30min',ex:['Corrida Z2 30min (cutback)']}
@@ -511,18 +511,18 @@ p.push({phase:'Base — Semana '+(i+1)+(isCut?' 🟡 cutback':''),num:i+3,color:
 REST_DAY,
 {t:'Pull — Hipertrofia',ex:MUSC_PULL_HYP},
 baseFri[i],
-{t:'Long Run '+baseLR[i]+'km Z2',ex:['Long Run '+baseLR[i]+'km em Z2 puro (147-159 bpm)']},
+{t:'Long Run '+baseLR[i]+'km Z2',ex:['Long Run '+baseLR[i]+'km em Z2 puro']},
 REST_DAY
 ]});
 }
 // Build weeks 9-14 (Jul 6 - Aug 16)
 const buildLR=[8,9,7,10,11,8];
 const buildFri=[
-{t:'Tempo Z3 20min',ex:['Aquecimento 10min Z2','20min em Z3 (160-170 bpm · ~6:30/km)','Desaquecimento 5min Z1']},
-{t:'Tempo Z3 25min',ex:['Aquecimento 10min Z2','25min em Z3 (160-170 bpm)','Desaquecimento 5min Z1']},
-{t:'Intervalado Z4 — 5×800m',ex:['Aquecimento 10min Z2','5×800m em Z4 (171-177 bpm · 5:15-5:45/km)','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
+{t:'Tempo Z3 20min',ex:['Aquecimento 10min Z2','20min em Z3','Desaquecimento 5min Z1']},
+{t:'Tempo Z3 25min',ex:['Aquecimento 10min Z2','25min em Z3','Desaquecimento 5min Z1']},
+{t:'Intervalado Z4 — 5×800m',ex:['Aquecimento 10min Z2','5×800m em Z4','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
 {t:'Tempo Z3 30min',ex:['Aquecimento 10min Z2','30min em Z3','Desaquecimento 5min Z1']},
-{t:'Intervalado Z4 — 6×800m',ex:['Aquecimento 10min Z2','6×800m em Z4 (171-177 bpm)','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
+{t:'Intervalado Z4 — 6×800m',ex:['Aquecimento 10min Z2','6×800m em Z4','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
 {t:'Tempo Z3 curto',ex:['Aquecimento 10min Z2','20min em Z3 (cutback)','Desaquecimento 5min Z1']}
 ];
 for(let i=0;i<6;i++){
@@ -533,22 +533,22 @@ p.push({phase:'Build — Semana '+(i+1)+(isCut?' 🟡 cutback':''),num:i+9,color
 REST_DAY,
 {t:'Pull — Força',ex:MUSC_PULL_STR},
 buildFri[i],
-{t:'Long Run '+buildLR[i]+'km Z2',ex:['Long Run '+buildLR[i]+'km em Z2 (147-159 bpm)']},
+{t:'Long Run '+buildLR[i]+'km Z2',ex:['Long Run '+buildLR[i]+'km em Z2']},
 REST_DAY
 ]});
 }
 // Específico weeks 15-20 (Aug 17 - Sep 27)
 const espFri=[
-{t:'Pace 10K — 4×1km',ex:['Aquecimento 10min Z2','4×1km @ pace 5:30/km (Z4)','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
-{t:'Pace 10K — 5×1km',ex:['Aquecimento 10min Z2','5×1km @ pace 5:30/km (Z4)','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
+{t:'Pace 10K — 4×1km',ex:['Aquecimento 10min Z2','4×1km @ pace 5:30/km','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
+{t:'Pace 10K — 5×1km',ex:['Aquecimento 10min Z2','5×1km @ pace 5:30/km','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
 {t:'🎯 5K Time Trial',ex:['Aquecimento 15min (10min Z2 + 4 strides 20s)','5km ALL-OUT cronometrado (sustentável)','Desaquecimento 5-10min Z1','⚡ Marco diagnóstico — interpretar resultado']},
-{t:'Pace 10K — 6×1km KEY',ex:['Aquecimento 10min Z2','6×1km @ pace 5:30/km (Z4)','Recuperação: 90s trote entre (mais curta!)','Desaquecimento 5min Z1']},
-{t:'Cruise intervals — 3×10min',ex:['Aquecimento 10min Z2','3×10min em Z3-Z4 (160-177 bpm)','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
+{t:'Pace 10K — 6×1km KEY',ex:['Aquecimento 10min Z2','6×1km @ pace 5:30/km','Recuperação: 90s trote entre (mais curta!)','Desaquecimento 5min Z1']},
+{t:'Cruise intervals — 3×10min',ex:['Aquecimento 10min Z2','3×10min em Z3-Z4','Recuperação: 2min trote entre','Desaquecimento 5min Z1']},
 {t:'Pace 10K curto — 3×1km',ex:['Aquecimento 10min Z2','3×1km @ pace 5:30/km (cutback)','Recuperação: 2min trote entre','Desaquecimento 5min Z1']}
 ];
 const espSat=[
-{t:'Long Run 11km Z2',ex:['Long Run 11km em Z2 puro (147-159 bpm)']},
-{t:'Long Run 12km com pace',ex:['12km total','6km Z2 (147-159 bpm)','+ 4km @ pace 5:45/km','+ 2km Z1 (regenerativo)']},
+{t:'Long Run 11km Z2',ex:['Long Run 11km em Z2 puro']},
+{t:'Long Run 12km com pace',ex:['12km total','6km Z2','+ 4km @ pace 5:45/km','+ 2km Z1 (regenerativo)']},
 {t:'Long Run 9km cutback',ex:['9km em Z2 puro']},
 {t:'Long Run 13km KEY',ex:['13km — TREINO-CHAVE','6km Z2','+ 6km @ pace 5:45/km','+ 1km Z1','⚡ Sessão crítica do plano']},
 {t:'Long Run 10km com pace prova',ex:['10km total','4km Z2','+ 5km @ pace 5:30/km (pace de prova)','+ 1km Z1']},
@@ -574,12 +574,12 @@ p.push({phase:'Peak — Afinamento',num:21,color:'#FFFBEB',text:'#92400E',templa
 REST_DAY,
 {t:'Race pace sharp',ex:['Aquecimento 10min Z2','3×1km @ pace 5:30/km (Z4)','Recuperação: 90s trote entre','Desaquecimento 5min Z1']},
 REST_DAY,
-{t:'Z2 curto 25min',ex:['Corrida Z2 25min (147-159 bpm)']},
+{t:'Z2 curto 25min',ex:['Corrida Z2 25min']},
 REST_DAY
 ]});
 // Taper + Prova week 22 (Oct 5 - Oct 11)
 p.push({phase:'Taper + Prova',num:22,color:'#F5F3FF',text:'#6B21A8',template:[
-{t:'Z2 fácil 25min',ex:['Corrida Z2 25min (147-159 bpm)']},
+{t:'Z2 fácil 25min',ex:['Corrida Z2 25min']},
 REST_DAY,
 {t:'Race primer',ex:['Aquecimento 8min Z2','4×400m @ pace 5:15/km (Z4)','Recuperação: 90s trote entre','Desaquecimento 5min Z1']},
 REST_DAY,
@@ -873,9 +873,9 @@ const SPECIAL_WORKOUTS={
 {step:'Volta para casa 10min em Z1'}
 ]},
 '2026-05-20':{t:'Transição — Descanso ativo',ex:['Descanso ou caminhada leve 30min','Hidrate e descanse']},
-'2026-05-21':{t:'Transição — Pull leve',ex:['Puxada frente aberta 3x8 (leve)','Remada cavalinho 3x8 (leve)','Pulldown triangular 3x10 (leve)','Rosca direta 3x10 (leve)','Face pull corda 2x12','⚡ Não bata recordes — só ativar']},
-'2026-05-22':{t:'Transição — Z2 fácil 30min',ex:['Corrida Z2 30min (147-159 bpm · ~9:00/km)']},
-'2026-05-23':{t:'Transição — Z2 fácil 35min',ex:['Corrida Z2 35min (147-159 bpm)']},
+'2026-05-21':{t:'Transição — Push leve',ex:['Supino reto halteres 3x8 (leve)','Supino inclinado halteres 3x8 (leve)','Pec deck 3x10 (leve)','Desenvolvimento halteres 3x8 (leve)','Tríceps pulley corda 2x12 (leve)','⚡ Não bata recordes — só ativar (treinou pull ontem)']},
+'2026-05-22':{t:'Transição — Z2 fácil 30min',ex:['Corrida Z2 30min']},
+'2026-05-23':{t:'Transição — Z2 fácil 35min',ex:['Corrida Z2 35min']},
 '2026-05-24':{t:'Transição — Descanso total',ex:['Descanso total','Início do plano amanhã 🎯']}
 };
 let userZones={};try{const _uz=localStorage.getItem('userZones');userZones=_uz?JSON.parse(_uz)||{}:{};}catch(e){userZones={};}
@@ -2821,7 +2821,14 @@ window.restoreFromCloud = async () => {
       else counts[k] = 1;
     });
     const summary = KEYS.map(k => k + ': ' + counts[k]).join('\n');
-    if (!confirm('Dados na nuvem:\n\n' + summary + '\n\nRestaurar?')) { setStatus(''); return; }
+    let timestampInfo = '';
+    if (d.lastSync) {
+      try {
+        const dt = new Date(d.lastSync);
+        timestampInfo = '\n\n🕐 Última sincronização:\n' + dt.toLocaleString('pt-BR', {dateStyle:'short',timeStyle:'medium'});
+      } catch(e) { /* ignore */ }
+    }
+    if (!confirm('Dados na nuvem:' + timestampInfo + '\n\n' + summary + '\n\nRestaurar?')) { setStatus(''); return; }
     suppressSync = true;
     KEYS.forEach(k => {
       if (d[k] !== undefined && d[k] !== null) origSetItem(k, JSON.stringify(d[k]));
