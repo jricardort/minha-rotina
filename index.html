@@ -407,6 +407,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><input type="text" id="modal-weight-title" maxlength="80" style="flex:1;font-size:15px;font-weight:500;color:#000;border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent" placeholder="Nome do exercício" onfocus="this.style.background='#F8F9FA';this.style.borderColor='#CBD5E1'" onblur="saveExerciseName(this);this.style.background='transparent';this.style.borderColor='transparent'"><i class="ti ti-pencil" style="color:#94A3B8;font-size:14px"></i></div><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Estrutura semanal</div><table class="info-table"><thead><tr><th>Dia</th><th>Treino</th></tr></thead><tbody><tr><td><b>Seg</b></td><td>Peito + Tríceps + Z2 30min</td></tr><tr><td><b>Ter</b></td><td>Costas + Bíceps + Tempo Run Z3</td></tr><tr><td><b>Qua</b></td><td>Pernas + Core (sem corrida)</td></tr><tr><td><b>Qui</b></td><td>Ombros + Trapézio + Intervalado Z4</td></tr><tr><td><b>Sex</b></td><td>Z2 Leve + Mobilidade</td></tr><tr><td><b>Sáb</b></td><td>Long Run Z2 + Sauna</td></tr><tr><td><b>Dom</b></td><td>Descanso</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
+<div class="modal-bg" id="modal-compra"><div class="modal"><h3 id="mc-title">Adicionar item</h3><div class="modal-field" style="margin-bottom:10px"><label>Nome *</label><input type="text" id="mc-name" maxlength="80" placeholder="Ex: Frango grelhado"></div><div class="modal-grid"><div class="modal-field"><label>Categoria</label><select id="mc-category"><option value="proteina">🥩 Proteína</option><option value="leguminosa">🫘 Leguminosa</option><option value="cereal">🌾 Cereal</option><option value="fruta">🍎 Fruta</option><option value="vegetal">🥗 Vegetal</option><option value="laticinio">🥛 Laticínio</option><option value="gordura">🫒 Gordura</option><option value="suplemento">💊 Suplemento</option><option value="doce">🍬 Doce</option><option value="bebida">🥤 Bebida</option><option value="limpeza">🧽 Limpeza</option><option value="higiene">🧴 Higiene</option><option value="outros">📦 Outros</option></select></div><div id="mc-status-wrap" style="display:none"><div class="modal-field"><label>Status</label><select id="mc-status"><option value="sugerido">💭 Sugerido</option><option value="aceito">🛒 Aceito</option><option value="comprado">✅ Comprado</option></select></div></div></div><div class="modal-grid"><div class="modal-field"><label>Quantidade</label><input type="number" id="mc-quantity" step="0.1" placeholder="Ex: 1.5"></div><div class="modal-field"><label>Unidade</label><select id="mc-unit"><option value="">—</option><option value="kg">kg</option><option value="g">g</option><option value="un">un</option><option value="l">l</option><option value="ml">ml</option><option value="pacote">pacote</option><option value="caixa">caixa</option></select></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="mc-notes" maxlength="200" placeholder="Ex: marca X, sem sal"></div><div class="modal-btns" id="mc-btns"></div></div></div>
 <div class="modal-bg" id="modal-meal-builder"><div class="modal" style="max-width:400px"><h3>Adicionar refeição</h3><p class="modal-hint">Monte a refeição combinando os itens do plano. Os valores são auto-calculados.</p><div class="modal-field" style="margin-bottom:10px"><label>Refeição</label><select id="mb-type"><option value="cafe">☕ Café da manhã</option><option value="pos_treino">💊 Pós-treino</option><option value="almoco">🍛 Almoço</option><option value="lanche">🥑 Lanche da tarde</option><option value="jantar">🍲 Jantar</option><option value="ceia">🌙 Ceia</option><option value="extra">✏️ Extra / livre</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Hora</label><input type="time" id="mb-time"></div><div id="mb-items" style="margin-bottom:10px"></div><div class="modal-field" style="margin-bottom:10px"><label>Observações (opcional)</label><input type="text" id="mb-note" maxlength="120" placeholder="Ex: troquei frango por peixe"></div><div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:#15803D;text-transform:uppercase;letter-spacing:.04em;font-weight:600">Total estimado</span><b id="mb-total" style="font-size:16px;color:#15803D">0 kcal</b></div><div style="font-size:10px;color:#15803D;margin-top:4px" id="mb-macros">P: 0g · C: 0g · G: 0g</div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMealBuilderModal()">Cancelar</button><button class="btn-save" onclick="saveMealBuilder()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-extras"><div class="modal"><h3>Registrar extras</h3><p class="modal-hint">Registre cerveja ou refeição "off" (fora do plano).</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ex-type"><option value="beer">🍺 Cerveja</option><option value="off">🍕 Refeição off (fora do plano)</option></select></div><div id="ex-beer-fields"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de cerveja</label><select id="ex-beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" id="ex-beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="ex-beer-calc">— kcal · — carbo</span></div></div><div id="ex-off-fields" style="display:none"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de refeição</label><select id="ex-off-type" onchange="updateOffPreset()"><option value="">— escolha um preset —</option><option value="pizza">🍕 Pizza (média/2 fatias)</option><option value="japones">🍣 Japonês (combinado)</option><option value="mcdonalds">🍔 McDonald's (Big Mac + fritas)</option><option value="hamburguer">🍔 Hambúrguer artesanal</option><option value="churrasco">🥩 Churrasco/rodízio</option><option value="custom">✏️ Personalizado</option></select></div><div class="modal-grid"><div class="modal-field"><label>Calorias</label><input type="number" id="ex-off-kcal" step="10" placeholder="600"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="ex-off-carb" step="1" placeholder="60"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="ex-off-prot" step="1" placeholder="30"></div><div class="modal-field"><label>Gordura (g)</label><input type="number" id="ex-off-gord" step="1" placeholder="25"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ex-off-desc" maxlength="80" placeholder="Pizza calabresa"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Hora (opcional)</label><input type="time" id="ex-time"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeExtrasModal()">Cancelar</button><button class="btn-save" onclick="saveExtras()">Salvar</button></div></div></div>
 <div class="tooltip-modal" id="tooltip-gasto" onclick="if(event.target===this)closeTooltipGasto()"><div class="tm-box"><div class="tm-title"><i class="ti ti-flame" style="color:#DC2626"></i>Detalhamento do gasto</div><div id="tooltip-gasto-content"></div><button class="tm-close" onclick="closeTooltipGasto()">Fechar</button></div></div>
@@ -2385,50 +2386,167 @@ const DEFAULT_COMPRAS=[
 '💊 Whey protein (~150g/semana)','💊 Creatina (~50g/semana)','💊 Leucina (~25g/semana)','🍬 Doce 30g para pré/pós-treino',
 '🫒 Azeite extra virgem (1 garrafa)','🧂 Sal, pimenta, ervas (manjericão, alecrim)','🍋 Limão (3-4 un)','🌿 Canela em pó (ceia)'
 ];
+const COMPRA_CATEGORIES={
+proteina:{label:'Proteína',icon:'🥩',order:1},
+leguminosa:{label:'Leguminosa',icon:'🫘',order:2},
+cereal:{label:'Cereal',icon:'🌾',order:3},
+fruta:{label:'Fruta',icon:'🍎',order:4},
+vegetal:{label:'Vegetal',icon:'🥗',order:5},
+laticinio:{label:'Laticínio',icon:'🥛',order:6},
+gordura:{label:'Gordura',icon:'🫒',order:7},
+suplemento:{label:'Suplemento',icon:'💊',order:8},
+doce:{label:'Doce',icon:'🍬',order:9},
+bebida:{label:'Bebida',icon:'🥤',order:10},
+limpeza:{label:'Limpeza',icon:'🧽',order:11},
+higiene:{label:'Higiene',icon:'🧴',order:12},
+outros:{label:'Outros',icon:'📦',order:13}
+};
+const COMPRA_STATUS={
+sugerido:{label:'Sugerido',color:'#94A3B8',bg:'#F1F5F9',next:'aceito'},
+aceito:{label:'Aceito',color:'#2563EB',bg:'#DBEAFE',next:'comprado'},
+comprado:{label:'Comprado',color:'#F59E0B',bg:'#FEF3C7',next:'aceito'},
+confirmado:{label:'Confirmado',color:'#16A34A',bg:'#DCFCE7',next:null}
+};
+const COMPRA_UNITS=['kg','g','un','l','ml','pacote','caixa'];
+function detectCompraCategory(name){
+const n=String(name||'').toLowerCase();
+if(/🥩|🐔|🍗|🥚|frango|carne|peixe|atum|ovo|salmão|sardinha|file|pernil/.test(n))return 'proteina';
+if(/🫘|feijão|lentilha|grão de bico|ervilha/.test(n))return 'leguminosa';
+if(/🌾|🍞|🍚|arroz|aveia|massa|quinoa|pão|granola|farinha|tapioca|batata-doce|batata doce|mandioca/.test(n))return 'cereal';
+if(/🍎|🍌|🍇|🍓|🥝|🍊|🥑|🍒|🍐|🍑|🍉|🥭|maçã|banana|uva|morango|kiwi|laranja|abacate|cereja|pera|pêssego|melancia|manga|mamão|melão|abacaxi|tangerina|frut/.test(n))return 'fruta';
+if(/🥦|🥬|🥒|🥕|🍅|🍆|🌽|🥗|brócolis|couve|pepino|cenoura|tomate|berinjela|milho|alface|rúcula|agrião|abobrinha|cebola|alho|pimentão|vagem|espinafre/.test(n))return 'vegetal';
+if(/🥛|🧀|leite|iogurte|queijo|cottage|requeijão|nata|manteiga/.test(n))return 'laticinio';
+if(/🫒|azeite|óleo/.test(n))return 'gordura';
+if(/💊|whey|creatina|leucina|bcaa|vitamina|magnésio|ômega/.test(n))return 'suplemento';
+if(/🍬|🍫|🍰|🍪|doce|chocolate|biscoito|bolacha|mel/.test(n))return 'doce';
+if(/🥤|🍷|🍺|água|suco|refrigerante|cerveja|vinho|café|chá/.test(n))return 'bebida';
+if(/🧽|sabão|detergente|amaciante|limpeza/.test(n))return 'limpeza';
+if(/🧴|🪥|shampoo|sabonete|creme dental|escova|desodorante/.test(n))return 'higiene';
+return 'outros';
+}
+function migrateCompraItem(item){
+if(!item||typeof item!=='object')return null;
+const now=Date.now();
+const status=item.status||(item.done?'aceito':'sugerido');
+return{
+id:item.id||uid(),
+name:item.name||'',
+category:item.category||detectCompraCategory(item.name),
+quantity:item.quantity!=null?item.quantity:null,
+unit:item.unit||null,
+status:status,
+notes:item.notes||null,
+createdAt:item.createdAt||now,
+acceptedAt:item.acceptedAt||(status==='aceito'||status==='comprado'||status==='confirmado'?now:null),
+purchasedAt:item.purchasedAt||(status==='comprado'||status==='confirmado'?now:null),
+confirmedAt:item.confirmedAt||(status==='confirmado'?now:null),
+price:item.price!=null?item.price:null
+};
+}
 function getComprasList(){
 let list=null;try{const raw=localStorage.getItem('comprasList');if(raw)list=JSON.parse(raw);}catch(e){}
-if(!Array.isArray(list)){list=DEFAULT_COMPRAS.map(name=>({id:uid(),name,done:false}));try{localStorage.setItem('comprasList',JSON.stringify(list));}catch(e){}}
+if(!Array.isArray(list)){list=DEFAULT_COMPRAS.map(name=>migrateCompraItem({name,done:false}));try{localStorage.setItem('comprasList',JSON.stringify(list));}catch(e){}}
+else{let needsSave=false;list=list.map(it=>{const m=migrateCompraItem(it);if(!it.status||!it.category)needsSave=true;return m;}).filter(x=>x);if(needsSave){try{localStorage.setItem('comprasList',JSON.stringify(list));}catch(e){}}}
 return list;
 }
 function saveComprasList(list){try{localStorage.setItem('comprasList',JSON.stringify(list));}catch(e){}if(window.syncNow)window.syncNow();}
+let comprasFilter='ativa';
+let comprasCatFilter='all';
 function renderCompras(){
 const c=document.getElementById('compras-content');
-const list=getComprasList();
-const total=list.length;const done=list.filter(x=>x.done).length;
-let h='<div class="treino-tip"><strong>Lista de compras semanal</strong> · '+done+'/'+total+' itens · Quantidades referenciais para 1 pessoa, 7 dias.</div>';
-h+='<div class="dash-card" style="padding:6px 12px">';
-list.forEach(item=>{
-h+=`<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F1F5F9"><input type="checkbox" ${item.done?'checked':''} onchange="toggleCompra('${item.id}',this.checked)" style="width:18px;height:18px;accent-color:#16A34A;flex-shrink:0"><span style="flex:1;font-size:13px;color:${item.done?'#94A3B8':'#334155'};${item.done?'text-decoration:line-through':''}">${escapeHtml(item.name)}</span><button onclick="editCompraItem('${item.id}')" style="background:#F8F9FA;border:1px solid #E2E8F0;border-radius:5px;padding:3px 7px;font-size:11px;cursor:pointer;color:#2563EB"><i class="ti ti-pencil"></i></button><button onclick="deleteCompraItem('${item.id}')" style="background:#F8F9FA;border:1px solid #E2E8F0;border-radius:5px;padding:3px 7px;font-size:11px;cursor:pointer;color:#DC2626"><i class="ti ti-trash"></i></button></div>`;
+const all=getComprasList();
+let filtered=all.slice();
+if(comprasFilter==='ativa')filtered=filtered.filter(x=>x.status==='aceito'||x.status==='comprado');
+else if(comprasFilter!=='all')filtered=filtered.filter(x=>x.status===comprasFilter);
+if(comprasCatFilter!=='all')filtered=filtered.filter(x=>x.category===comprasCatFilter);
+const counts={sugerido:0,aceito:0,comprado:0,confirmado:0};
+all.forEach(x=>{if(counts[x.status]!=null)counts[x.status]++;});
+let h='';
+h+=`<div class="subtabs"><button class="subtab ${comprasFilter==='ativa'?'active':''}" onclick="setComprasFilter('ativa')">🛒 Ativa <span style="opacity:.6">(${counts.aceito+counts.comprado})</span></button><button class="subtab ${comprasFilter==='sugerido'?'active':''}" onclick="setComprasFilter('sugerido')">💭 Sugerido <span style="opacity:.6">(${counts.sugerido})</span></button><button class="subtab ${comprasFilter==='all'?'active':''}" onclick="setComprasFilter('all')">📋 Todos <span style="opacity:.6">(${all.length})</span></button></div>`;
+const cats=Object.keys(COMPRA_CATEGORIES);
+const usedCats=new Set(all.map(x=>x.category));
+let catOpts='<option value="all">Todas as categorias</option>';
+cats.filter(k=>usedCats.has(k)).forEach(k=>{catOpts+='<option value="'+k+'"'+(comprasCatFilter===k?' selected':'')+'>'+COMPRA_CATEGORIES[k].icon+' '+COMPRA_CATEGORIES[k].label+'</option>';});
+h+='<div style="margin-bottom:12px"><select onchange="setComprasCat(this.value)" style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:6px;font-size:13px;background:#fff">'+catOpts+'</select></div>';
+if(filtered.length===0){h+='<div class="diet-empty">Nenhum item encontrado neste filtro.</div>';}
+else{
+const grouped={};
+filtered.forEach(it=>{if(!grouped[it.category])grouped[it.category]=[];grouped[it.category].push(it);});
+const sortedCats=Object.keys(grouped).sort((a,b)=>(COMPRA_CATEGORIES[a]?.order||99)-(COMPRA_CATEGORIES[b]?.order||99));
+sortedCats.forEach(cat=>{
+const catInfo=COMPRA_CATEGORIES[cat]||{label:cat,icon:'📦'};
+h+=`<div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.04em;padding:4px 0;margin-bottom:6px">${catInfo.icon} ${catInfo.label} <span style="color:#94A3B8;font-weight:400">(${grouped[cat].length})</span></div><div class="dash-card" style="padding:4px 12px">`;
+grouped[cat].forEach(item=>{
+const st=COMPRA_STATUS[item.status]||COMPRA_STATUS.sugerido;
+const qty=item.quantity!=null?(item.quantity+(item.unit?' '+item.unit:'')):'';
+h+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F1F5F9"><div style="flex:1;cursor:pointer" onclick="advanceCompraStatus('${item.id}')"><div style="font-size:13px;color:${item.status==='comprado'?'#94A3B8':'#0F172A'};${item.status==='comprado'?'text-decoration:line-through':''}">${escapeHtml(item.name)}</div>${qty||item.notes?`<div style="font-size:11px;color:#94A3B8;margin-top:2px">${qty?escapeHtml(qty):''}${qty&&item.notes?' · ':''}${item.notes?escapeHtml(item.notes):''}</div>`:''}</div><span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:${st.bg};color:${st.color};white-space:nowrap" onclick="advanceCompraStatus('${item.id}')">${st.label}</span><button onclick="openCompraEdit('${item.id}')" style="background:#F8F9FA;border:1px solid #E2E8F0;border-radius:5px;padding:3px 7px;font-size:11px;cursor:pointer;color:#2563EB"><i class="ti ti-pencil"></i></button><button onclick="deleteCompraItem('${item.id}')" style="background:#F8F9FA;border:1px solid #E2E8F0;border-radius:5px;padding:3px 7px;font-size:11px;cursor:pointer;color:#DC2626"><i class="ti ti-trash"></i></button></div>`;
 });
-h+='</div>';
-h+='<button class="add-btn" onclick="addCompraItem()" style="margin-top:8px"><i class="ti ti-plus"></i>Adicionar item</button>';
-const checkedCount=list.filter(x=>x.done).length;
-h+=`<button class="btn-save" onclick="confirmCompra()" style="width:100%;padding:12px;margin-top:8px;font-weight:600"${checkedCount===0?' disabled style="opacity:.5;cursor:not-allowed"':''}><i class="ti ti-shopping-cart-check"></i> Confirmar compra (${checkedCount} ${checkedCount===1?'item':'itens'})</button>`;
-h+='<button class="add-btn" onclick="resetCompras()" style="margin-top:6px;color:#DC2626!important;border-color:#FCA5A5!important"><i class="ti ti-refresh"></i>Desmarcar todos</button>';
+h+='</div></div>';
+});
+}
+h+='<button class="add-btn" onclick="openCompraEdit()" style="margin-top:8px"><i class="ti ti-plus"></i>Adicionar item</button>';
+if(counts.comprado>0){
+h+=`<button class="btn-save" onclick="confirmCompra()" style="width:100%;padding:12px;margin-top:8px;font-weight:600"><i class="ti ti-shopping-cart-check"></i> Confirmar ${counts.comprado} ${counts.comprado===1?'item comprado':'itens comprados'}</button>`;
+}
 c.innerHTML=h;
 }
-function toggleCompra(id,checked){
+function setComprasFilter(f){comprasFilter=f;renderCompras();}
+function setComprasCat(c){comprasCatFilter=c;renderCompras();}
+function advanceCompraStatus(id){
 const list=getComprasList();
 const i=list.findIndex(x=>x.id===id);
 if(i<0)return;
-list[i].done=!!checked;
+const cur=list[i].status||'sugerido';
+const next=COMPRA_STATUS[cur]?.next;
+if(!next)return;
+list[i].status=next;
+const now=Date.now();
+if(next==='aceito'&&!list[i].acceptedAt)list[i].acceptedAt=now;
+if(next==='comprado'&&!list[i].purchasedAt)list[i].purchasedAt=now;
 saveComprasList(list);renderCompras();
 }
-function addCompraItem(){
-const name=prompt('Nome do item:');
-if(!name||!name.trim())return;
+let editingCompraId=null;
+function openCompraEdit(id){
+editingCompraId=id||null;
 const list=getComprasList();
-list.push({id:uid(),name:name.trim().slice(0,80),done:false});
-saveComprasList(list);renderCompras();
+const item=id?list.find(x=>x.id===id):null;
+document.getElementById('mc-title').textContent=item?'Editar item':'Adicionar item';
+document.getElementById('mc-name').value=item?item.name:'';
+document.getElementById('mc-category').value=item?item.category:'outros';
+document.getElementById('mc-quantity').value=item&&item.quantity!=null?item.quantity:'';
+document.getElementById('mc-unit').value=item?item.unit||'':'';
+document.getElementById('mc-status').value=item?item.status:'sugerido';
+document.getElementById('mc-notes').value=item?item.notes||'':'';
+document.getElementById('mc-status-wrap').style.display=item?'block':'none';
+const btns=document.getElementById('mc-btns');
+if(item){btns.innerHTML='<button class="btn-del" onclick="deleteCompraItem(\''+item.id+'\');closeCompraEdit()">Excluir</button><button class="btn-cancel" onclick="closeCompraEdit()">Cancelar</button><button class="btn-save" onclick="saveCompraEdit()">Salvar</button>';}
+else{btns.innerHTML='<button class="btn-cancel" onclick="closeCompraEdit()">Cancelar</button><button class="btn-save" onclick="saveCompraEdit()">Salvar</button>';}
+document.getElementById('modal-compra').classList.add('open');
 }
-function editCompraItem(id){
+function closeCompraEdit(){document.getElementById('modal-compra').classList.remove('open');editingCompraId=null;}
+function saveCompraEdit(){
+const name=document.getElementById('mc-name').value.trim().slice(0,80);
+if(!name)return alert('Informe o nome do item.');
+const category=document.getElementById('mc-category').value;
+const qtyRaw=document.getElementById('mc-quantity').value;
+const quantity=qtyRaw===''?null:parseFloat(qtyRaw);
+const unit=document.getElementById('mc-unit').value||null;
+const status=document.getElementById('mc-status').value||'sugerido';
+const notes=(document.getElementById('mc-notes').value||'').trim().slice(0,200)||null;
 const list=getComprasList();
-const i=list.findIndex(x=>x.id===id);
-if(i<0)return;
-const newName=prompt('Editar item:',list[i].name);
-if(newName===null||!newName.trim())return;
-list[i].name=newName.trim().slice(0,80);
-saveComprasList(list);renderCompras();
+if(editingCompraId){
+const i=list.findIndex(x=>x.id===editingCompraId);
+if(i>=0){
+const old=list[i];
+const now=Date.now();
+list[i]={...old,name,category,quantity,unit,status,notes};
+if(status==='aceito'&&!list[i].acceptedAt)list[i].acceptedAt=now;
+if(status==='comprado'&&!list[i].purchasedAt)list[i].purchasedAt=now;
+}
+}else{
+list.push(migrateCompraItem({id:uid(),name,category,quantity,unit,status,notes,createdAt:Date.now()}));
+}
+saveComprasList(list);closeCompraEdit();renderCompras();
 }
 function deleteCompraItem(id){
 if(!confirm('Excluir este item?'))return;
@@ -2436,23 +2554,19 @@ const list=getComprasList();
 const filtered=list.filter(x=>x.id!==id);
 saveComprasList(filtered);renderCompras();
 }
-function resetCompras(){
-if(!confirm('Desmarcar todos os itens?'))return;
-const list=getComprasList().map(x=>({...x,done:false}));
-saveComprasList(list);renderCompras();
-}
 function confirmCompra(){
 const list=getComprasList();
-const bought=list.filter(x=>x.done);
-if(bought.length===0)return alert('Nenhum item marcado.');
-const unchecked=list.filter(x=>!x.done).length;
-if(!confirm('Confirmar compra de '+bought.length+' '+(bought.length===1?'item':'itens')+'?'+(unchecked>0?'\n\nOs '+unchecked+' itens não marcados serão removidos da lista.':'')))return;
+const bought=list.filter(x=>x.status==='comprado');
+if(bought.length===0)return alert('Nenhum item marcado como comprado.');
+if(!confirm('Confirmar compra de '+bought.length+' '+(bought.length===1?'item':'itens')+'?\n\nVai pro histórico e sai da lista.'))return;
 let hist=[];try{const raw=localStorage.getItem('comprasHistorico');if(raw)hist=JSON.parse(raw)||[];}catch(e){hist=[];}
+const now=Date.now();
 const todayKey=dk(today);
-bought.forEach(item=>{hist.push({id:uid(),name:item.name,purchasedAt:todayKey});});
-try{localStorage.setItem('comprasHistorico',JSON.stringify(hist));}catch(e){return alert('Erro ao salvar histórico: '+e.message);}
-saveComprasList([]);renderCompras();
-alert('✓ '+bought.length+' '+(bought.length===1?'item adicionado':'itens adicionados')+' ao histórico de compras.');
+bought.forEach(item=>{hist.push({...item,status:'confirmado',confirmedAt:now,purchasedAt:item.purchasedAt||now,purchasedDate:todayKey});});
+try{localStorage.setItem('comprasHistorico',JSON.stringify(hist));}catch(e){return alert('Erro ao salvar: '+e.message);}
+const remaining=list.filter(x=>x.status!=='comprado');
+saveComprasList(remaining);renderCompras();
+alert('✓ '+bought.length+' '+(bought.length===1?'item registrado':'itens registrados')+' no histórico.');
 }
 function switchMedSubtab(name){
 document.getElementById('subtab-evolucao').classList.toggle('active',name==='evolucao');
