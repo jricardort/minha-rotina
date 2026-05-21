@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#0F172A}
 .wrap{max-width:400px;margin:0 auto;min-height:100vh;padding-bottom:40px}
-.header{padding:18px 16px 10px;border-bottom:1px solid #CBD5E1;background:#fff;position:sticky;top:54px;z-index:18;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.header{padding:18px 16px 10px;border-bottom:1px solid #CBD5E1;background:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .auth-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
 .auth-btn{background:#F1F5F9;border:1px solid #CBD5E1;border-radius:99px;padding:6px 12px;font-size:12px;color:#334155;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500;white-space:nowrap}
 .auth-btn:hover{background:#E2E8F0}
@@ -21,7 +21,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .auth-btn.logged-in i{color:#16A34A!important}
 .sync-status{font-size:10px;color:#64748B;text-align:right;padding:0 4px;min-height:12px;cursor:default}
 .sync-status.action{color:#2563EB;cursor:pointer;text-decoration:underline}
-.offline-banner{display:none;background:linear-gradient(135deg,#FEF3C7 0%,#FDE68A 100%);border-bottom:2px solid #F59E0B;padding:14px 16px;color:#78350F;align-items:flex-start;gap:12px;position:sticky;top:0;z-index:25}
+.offline-banner{display:none;background:linear-gradient(135deg,#FEF3C7 0%,#FDE68A 100%);border-bottom:2px solid #F59E0B;padding:14px 16px;color:#78350F;align-items:flex-start;gap:12px}
 .offline-banner.show{display:flex}
 .offline-banner .ob-icon{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:#F59E0B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
 .offline-banner .ob-content{flex:1;min-width:0}
@@ -31,8 +31,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .offline-banner .ob-btn:hover{background:#78350F}
 .greeting{font-size:19px;font-weight:500;color:#000}
 .subdate{font-size:12px;color:#64748B;margin-top:2px}
-.nav{display:flex;background:#DBEAFE;border-bottom:1px solid #BFDBFE;position:sticky;top:0;z-index:30}
-.tab{flex:1;padding:10px 0 8px;background:0;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nav{display:flex;flex-direction:column;background:#DBEAFE;border-bottom:1px solid #BFDBFE;position:sticky;top:0;z-index:30}
+.nav-top{padding:6px 12px;text-align:center;font-size:11px;color:#1E40AF;font-weight:500;border-bottom:1px solid #BFDBFE}
+.nav-tabs{display:flex}
+.nav-bottom{padding:6px 12px;display:flex;justify-content:center;align-items:center;gap:8px;border-top:1px solid #BFDBFE;min-height:30px}
+.tab{flex:1;padding:8px 0 6px;background:0;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
 .tab i{font-size:22px;color:#93C5FD}
 .tab-dot{width:4px;height:4px;border-radius:50%;background:0}
 .tab.active i{color:#1E3A8A!important}
@@ -350,6 +353,8 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="wrap">
 <div class="offline-banner" id="offline-banner"><div class="ob-icon"><i class="ti ti-cloud-off"></i></div><div class="ob-content"><div class="ob-title">⚠️ Modo Offline</div><div class="ob-text">Suas alterações estão sendo salvas <strong>apenas neste dispositivo</strong>. Faça login para sincronizar com a nuvem e acessar de qualquer aparelho — caso contrário, os dados podem se perder ao limpar o cache do navegador.</div><button class="ob-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i>Entrar com Google</button></div></div>
 <div class="nav">
+<div class="nav-top" id="subdate"></div>
+<div class="nav-tabs">
 <button class="tab active" onclick="switchTab('calendario')" id="tab-calendario"><i class="ti ti-calendar-month"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('treino')" id="tab-treino"><i class="ti ti-barbell"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('dieta')" id="tab-dieta"><i class="ti ti-salad"></i><span class="tab-dot"></span></button>
@@ -357,8 +362,10 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <button class="tab" onclick="switchTab('compras')" id="tab-compras"><i class="ti ti-shopping-cart"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('tarefas')" id="tab-tarefas"><i class="ti ti-checklist"></i><span class="tab-dot"></span></button>
 </div>
-<div class="header"><div style="flex:1;min-width:0"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div><div class="auth-wrap"><button class="auth-btn" id="auth-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i> Entrar</button><span class="sync-status" id="sync-status"></span><button id="restore-btn" onclick="restoreFromCloud()" style="display:none;font-size:9px;background:#fff;border:1px solid #CBD5E1;border-radius:99px;padding:3px 8px;color:#475569;cursor:pointer;margin-top:2px">↻ Recuperar dados</button></div></div>
+<div class="nav-bottom"><button class="auth-btn" id="auth-btn" onclick="handleAuthClick()" style="font-size:11px;padding:4px 10px"><i class="ti ti-cloud"></i> Entrar</button><span class="sync-status" id="sync-status" style="font-size:10px"></span><button id="restore-btn" onclick="restoreFromCloud()" style="display:none;font-size:10px;background:#fff;border:1px solid #BFDBFE;border-radius:99px;padding:3px 8px;color:#1E40AF;cursor:pointer">↻ Recuperar</button></div>
+</div>
 <div class="sec active" id="sec-calendario">
+<div class="greeting" id="greeting" style="padding:16px 16px 8px;font-size:20px;font-weight:500;color:#0F172A"></div>
 <div class="race-countdown" id="race-countdown"></div>
 <div class="cal-hdr">
 <button class="cal-nav" onclick="changeMonth(-1)"><i class="ti ti-chevron-left"></i></button>
@@ -408,6 +415,7 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><input type="text" id="modal-weight-title" maxlength="80" style="flex:1;font-size:15px;font-weight:500;color:#000;border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent" placeholder="Nome do exercício" onfocus="this.style.background='#F8F9FA';this.style.borderColor='#CBD5E1'" onblur="saveExerciseName(this);this.style.background='transparent';this.style.borderColor='transparent'"><i class="ti ti-pencil" style="color:#94A3B8;font-size:14px"></i></div><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Estrutura semanal (4 corridas + 3 musc + 1 descanso)</div><table class="info-table"><thead><tr><th>Dia</th><th>Treino</th></tr></thead><tbody><tr><td><b>Seg</b></td><td>Pernas (musc)</td></tr><tr><td><b>Ter</b></td><td>Push + Z2 leve 20-25min</td></tr><tr><td><b>Qua</b></td><td>Z2 recovery 25-30min</td></tr><tr><td><b>Qui</b></td><td>Pull (musc)</td></tr><tr><td><b>Sex</b></td><td>Quality run (Z3/Z4 — varia por fase)</td></tr><tr><td><b>Sáb</b></td><td>Long Run Z2</td></tr><tr><td><b>Dom</b></td><td>Descanso total</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
+<div class="modal-bg" id="modal-add-exercise"><div class="modal"><h3 id="ae-title">Adicionar exercício</h3><p class="modal-hint">Escolha o tipo de exercício e preencha os campos.</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ae-type" onchange="renderAddExerciseFields()"><option value="">— escolha —</option><option value="musc">🏋️ Musculação</option><option value="corrida">🏃 Corrida</option><option value="alongamento">🧘 Alongamento</option><option value="mobilidade">💆 Mobilidade</option><option value="core">🔥 Core / Abdominal</option><option value="sauna">🧖 Sauna</option><option value="livre">✏️ Personalizado</option></select></div><div id="ae-fields"></div><div class="modal-btns" id="ae-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeAddExerciseModal()">Cancelar</button><button class="btn-save" onclick="saveAddExercise()">Adicionar</button></div></div></div>
 <div class="modal-bg" id="modal-compra"><div class="modal"><h3 id="mc-title">Adicionar item</h3><div class="modal-field" style="margin-bottom:10px"><label>Nome *</label><input type="text" id="mc-name" maxlength="80" placeholder="Ex: Frango grelhado"></div><div class="modal-grid"><div class="modal-field"><label>Categoria</label><select id="mc-category"><option value="proteina">🥩 Proteína</option><option value="leguminosa">🫘 Leguminosa</option><option value="cereal">🌾 Cereal</option><option value="fruta">🍎 Fruta</option><option value="vegetal">🥗 Vegetal</option><option value="laticinio">🥛 Laticínio</option><option value="gordura">🫒 Gordura</option><option value="suplemento">💊 Suplemento</option><option value="doce">🍬 Doce</option><option value="bebida">🥤 Bebida</option><option value="limpeza">🧽 Limpeza</option><option value="higiene">🧴 Higiene</option><option value="outros">📦 Outros</option></select></div><div id="mc-status-wrap" style="display:none"><div class="modal-field"><label>Status</label><select id="mc-status"><option value="sugerido">💭 Sugerido</option><option value="aceito">🛒 Aceito</option><option value="comprado">✅ Comprado</option></select></div></div></div><div class="modal-grid"><div class="modal-field"><label>Quantidade</label><input type="number" id="mc-quantity" step="0.1" placeholder="Ex: 1.5"></div><div class="modal-field"><label>Unidade</label><select id="mc-unit"><option value="">—</option><option value="kg">kg</option><option value="g">g</option><option value="un">un</option><option value="l">l</option><option value="ml">ml</option><option value="pacote">pacote</option><option value="caixa">caixa</option></select></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="mc-notes" maxlength="200" placeholder="Ex: marca X, sem sal"></div><div class="modal-btns" id="mc-btns"></div></div></div>
 <div class="modal-bg" id="modal-meal-builder"><div class="modal" style="max-width:400px"><h3>Adicionar refeição</h3><p class="modal-hint">Monte a refeição combinando os itens do plano. Os valores são auto-calculados.</p><div class="modal-field" style="margin-bottom:10px"><label>Refeição</label><select id="mb-type"><option value="cafe">☕ Café da manhã</option><option value="pos_treino">💊 Pós-treino</option><option value="almoco">🍛 Almoço</option><option value="lanche">🥑 Lanche da tarde</option><option value="jantar">🍲 Jantar</option><option value="ceia">🌙 Ceia</option><option value="extra">✏️ Extra / livre</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Hora</label><input type="time" id="mb-time"></div><div id="mb-items" style="margin-bottom:10px"></div><div class="modal-field" style="margin-bottom:10px"><label>Observações (opcional)</label><input type="text" id="mb-note" maxlength="120" placeholder="Ex: troquei frango por peixe"></div><div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:#15803D;text-transform:uppercase;letter-spacing:.04em;font-weight:600">Total estimado</span><b id="mb-total" style="font-size:16px;color:#15803D">0 kcal</b></div><div style="font-size:10px;color:#15803D;margin-top:4px" id="mb-macros">P: 0g · C: 0g · G: 0g</div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMealBuilderModal()">Cancelar</button><button class="btn-save" onclick="saveMealBuilder()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-extras"><div class="modal"><h3>Registrar extras</h3><p class="modal-hint">Registre cerveja ou refeição "off" (fora do plano).</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ex-type"><option value="beer">🍺 Cerveja</option><option value="off">🍕 Refeição off (fora do plano)</option></select></div><div id="ex-beer-fields"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de bebida</label><select id="ex-beer-type"><option value="pilsner">🍺 Pilsen / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option><option value="vinho_tinto">🍷 Vinho tinto seco</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" id="ex-beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="ex-beer-calc">— kcal · — carbo</span></div></div><div id="ex-off-fields" style="display:none"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de refeição</label><select id="ex-off-type" onchange="updateOffPreset()"><option value="">— escolha um preset —</option><option value="pizza">🍕 Pizza (média/2 fatias)</option><option value="japones">🍣 Japonês (combinado)</option><option value="mcdonalds">🍔 McDonald's (Big Mac + fritas)</option><option value="hamburguer">🍔 Hambúrguer artesanal</option><option value="churrasco">🥩 Churrasco/rodízio</option><option value="custom">✏️ Personalizado</option></select></div><div class="modal-grid"><div class="modal-field"><label>Calorias</label><input type="number" id="ex-off-kcal" step="10" placeholder="600"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="ex-off-carb" step="1" placeholder="60"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="ex-off-prot" step="1" placeholder="30"></div><div class="modal-field"><label>Gordura (g)</label><input type="number" id="ex-off-gord" step="1" placeholder="25"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ex-off-desc" maxlength="80" placeholder="Pizza calabresa"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Hora (opcional)</label><input type="time" id="ex-time"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeExtrasModal()">Cancelar</button><button class="btn-save" onclick="saveExtras()">Salvar</button></div></div></div>
@@ -624,6 +632,93 @@ const DEFAULT_GOALS={kcal:2200,prot:160,carb:250,gord:70,water:2800,deficit:500}
 let dietGoals=Object.assign({},DEFAULT_GOALS);try{const _g=localStorage.getItem('dietGoals');if(_g){const p=JSON.parse(_g);if(p)Object.assign(dietGoals,p);}}catch(e){}
 let dietFavorites=[];try{const _f=localStorage.getItem('dietFavorites');dietFavorites=_f?JSON.parse(_f)||[]:[];}catch(e){dietFavorites=[];}
 let workoutKcal={};try{const _w=localStorage.getItem('workoutKcal');workoutKcal=_w?JSON.parse(_w)||{}:{};}catch(e){workoutKcal={};}
+let dayExtraExercises={};try{const _de=localStorage.getItem('dayExtraExercises');dayExtraExercises=_de?JSON.parse(_de)||{}:{};}catch(e){dayExtraExercises={};}
+let addExerciseDay=null;
+function openAddExerciseModal(dayKey){
+addExerciseDay=dayKey;
+document.getElementById('ae-title').textContent='Adicionar — '+dayKey.split('-').reverse().slice(0,2).join('/');
+document.getElementById('ae-type').value='';
+document.getElementById('ae-fields').innerHTML='';
+document.getElementById('modal-add-exercise').classList.add('open');
+}
+function closeAddExerciseModal(){document.getElementById('modal-add-exercise').classList.remove('open');addExerciseDay=null;}
+function renderAddExerciseFields(){
+const type=document.getElementById('ae-type').value;
+const c=document.getElementById('ae-fields');
+let h='';
+if(type==='musc'){
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Nome do exercício</label><input type="text" id="ae-name" maxlength="60" placeholder="Ex: Supino reto halteres"></div>';
+h+='<div class="modal-grid"><div class="modal-field"><label>Séries</label><input type="number" id="ae-sets" min="1" max="20" placeholder="4"></div><div class="modal-field"><label>Reps</label><input type="text" id="ae-reps" maxlength="20" placeholder="10 ou 8-12"></div></div>';
+}else if(type==='corrida'){
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Tipo de corrida</label><select id="ae-runtype"><option value="Z1">Z1 — regenerativo</option><option value="Z2" selected>Z2 — fácil</option><option value="Z3">Z3 — tempo</option><option value="Z4">Z4 — intervalado</option><option value="Z5">Z5 — tiros curtos</option><option value="Fartlek">Fartlek</option><option value="Long Run">Long Run</option></select></div>';
+h+='<div class="modal-grid"><div class="modal-field"><label>Duração (min)</label><input type="number" id="ae-duration" min="1" max="300" placeholder="30"></div><div class="modal-field"><label>Distância (km · opcional)</label><input type="number" id="ae-distance" step="0.1" placeholder="5.0"></div></div>';
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Detalhes (opcional)</label><input type="text" id="ae-detail" maxlength="120" placeholder="Ex: 5×800m R:90s"></div>';
+}else if(type==='alongamento'||type==='mobilidade'){
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Nome / foco</label><input type="text" id="ae-name" maxlength="60" placeholder="Ex: Alongamento quadril"></div>';
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Duração (min)</label><input type="number" id="ae-duration" min="1" max="120" placeholder="15"></div>';
+}else if(type==='core'){
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Nome do exercício</label><input type="text" id="ae-name" maxlength="60" placeholder="Ex: Prancha"></div>';
+h+='<div class="modal-grid"><div class="modal-field"><label>Séries</label><input type="number" id="ae-sets" min="1" max="20" placeholder="3"></div><div class="modal-field"><label>Tempo / reps</label><input type="text" id="ae-reps" maxlength="20" placeholder="45s ou 15 reps"></div></div>';
+}else if(type==='sauna'){
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Tempo (min)</label><input type="number" id="ae-duration" min="1" max="60" placeholder="15"></div>';
+}else if(type==='livre'){
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ae-name" maxlength="120" placeholder="Ex: Yoga 30min"></div>';
+}
+c.innerHTML=h;
+}
+function saveAddExercise(){
+if(!addExerciseDay)return;
+const type=document.getElementById('ae-type').value;
+if(!type)return alert('Selecione o tipo de exercício.');
+let label='';
+if(type==='musc'){
+const n=(document.getElementById('ae-name').value||'').trim();
+const s=document.getElementById('ae-sets').value;
+const r=document.getElementById('ae-reps').value;
+if(!n)return alert('Informe o nome do exercício.');
+label=n+(s&&r?' '+s+'x'+r:'');
+}else if(type==='corrida'){
+const rt=document.getElementById('ae-runtype').value;
+const dur=document.getElementById('ae-duration').value;
+const dist=document.getElementById('ae-distance').value;
+const det=(document.getElementById('ae-detail').value||'').trim();
+if(!dur&&!dist&&!det)return alert('Informe duração, distância ou detalhes.');
+label='Corrida '+rt+(dur?' '+dur+'min':'')+(dist?' · '+dist+'km':'')+(det?' · '+det:'');
+}else if(type==='alongamento'||type==='mobilidade'){
+const n=(document.getElementById('ae-name').value||'').trim();
+const d=document.getElementById('ae-duration').value;
+if(!n)return alert('Informe o nome.');
+label=n+(d?' '+d+'min':'');
+}else if(type==='core'){
+const n=(document.getElementById('ae-name').value||'').trim();
+const s=document.getElementById('ae-sets').value;
+const r=document.getElementById('ae-reps').value;
+if(!n)return alert('Informe o nome do exercício.');
+label=n+(s&&r?' '+s+'x'+r:'');
+}else if(type==='sauna'){
+const d=document.getElementById('ae-duration').value;
+if(!d)return alert('Informe o tempo.');
+label='Sauna '+d+'min';
+}else if(type==='livre'){
+const n=(document.getElementById('ae-name').value||'').trim();
+if(!n)return alert('Informe a descrição.');
+label=n;
+}
+if(!dayExtraExercises[addExerciseDay])dayExtraExercises[addExerciseDay]=[];
+dayExtraExercises[addExerciseDay].push({id:uid(),type,label,addedAt:Date.now()});
+try{localStorage.setItem('dayExtraExercises',JSON.stringify(dayExtraExercises));}catch(e){return alert('Erro: '+e.message);}
+closeAddExerciseModal();renderPlan();
+if(window.syncNow)window.syncNow();
+}
+function deleteExtraExercise(dayKey,exId){
+if(!confirm('Remover este exercício?'))return;
+if(!dayExtraExercises[dayKey])return;
+dayExtraExercises[dayKey]=dayExtraExercises[dayKey].filter(x=>x.id!==exId);
+if(dayExtraExercises[dayKey].length===0)delete dayExtraExercises[dayKey];
+try{localStorage.setItem('dayExtraExercises',JSON.stringify(dayExtraExercises));}catch(e){}
+renderPlan();
+if(window.syncNow)window.syncNow();
+}
 const BEER_TYPES={
 pilsner:{label:'Pilsen / Helles',kcalPer100ml:40,carbPer100ml:3.0},
 weissbier:{label:'Weißbier',kcalPer100ml:50,carbPer100ml:4.6},
@@ -680,7 +775,7 @@ return count;
 function getSupplements(dateKey){
 const d=diet[dateKey]||{};
 const s=d.supplements||{};
-return{creatina:!!s.creatina,leucina:!!s.leucina,doce:!!s.doce};
+return{creatina:!!s.creatina,leucina:!!s.leucina,whey:!!s.whey,whey_meio:!!s.whey_meio,doce_pre:!!s.doce_pre||!!s.doce,doce_pos:!!s.doce_pos};
 }
 function toggleSupplement(field){
 const key=dk(today);
@@ -1007,6 +1102,15 @@ h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displa
 }
 });
 h+=`</div>`;
+const extras=dayExtraExercises[dayKey]||[];
+if(extras.length>0){
+h+=`<div style="margin-top:6px;padding:6px 12px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:6px"><div style="font-size:10px;font-weight:600;color:#92400E;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">+ Exercícios extras</div>`;
+extras.forEach(ex=>{
+h+=`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px;color:#78350F"><span style="flex:1">${escapeHtml(ex.label)}</span><button onclick="deleteExtraExercise('${dayKey}','${ex.id}')" style="background:0;border:0;cursor:pointer;color:#DC2626;font-size:14px;padding:0">×</button></div>`;
+});
+h+=`</div>`;
+}
+if(canAlter)h+=`<button class="alterar-btn" onclick="openAddExerciseModal('${dayKey}')" style="background:#EFF6FF!important;border-color:#BFDBFE!important;color:#1E40AF!important;margin-top:6px"><i class="ti ti-plus" style="color:#1E40AF!important"></i>Adicionar exercício</button>`;
 if(d.isZoneTest&&userZones.fcmax){
 const z=userZones;
 h+=`<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:12px;margin-top:8px"><div style="font-size:11px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">📊 Suas zonas calculadas</div><div style="font-size:14px;color:#0F172A;margin-bottom:8px">FCmáx: <b style="font-size:18px;color:#15803D">${z.fcmax} bpm</b></div><div style="display:flex;flex-direction:column;gap:4px;font-size:12px"><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#3B82F6"></span> <b>Z1</b> (&lt;80%)</span><span><b>&lt;${z.z1.max+1} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#22C55E"></span> <b>Z2</b> (80-87%)</span><span><b>${z.z2.min}-${z.z2.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#F59E0B"></span> <b>Z3</b> (87-93%)</span><span><b>${z.z3.min}-${z.z3.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#EF4444"></span> <b>Z4</b> (93-97%)</span><span><b>${z.z4.min}-${z.z4.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#7C3AED"></span> <b>Z5</b> (&gt;97%)</span><span><b>&gt;${z.z5.min-1} bpm</b></span></div></div><div style="font-size:10px;color:#15803D;margin-top:8px;font-style:italic">✓ Zonas aplicadas automaticamente em todo o plano</div></div>`;
@@ -1783,18 +1887,19 @@ closeExtrasModal();renderDiet();
 let mealBuilderItems={};
 function openMealBuilderModal(){
 mealBuilderItems={};
+mealBuilderSelected=[];
 document.getElementById('mb-type').value='cafe';
 document.getElementById('mb-time').value=new Date().toTimeString().slice(0,5);
 document.getElementById('mb-note').value='';
-document.getElementById('mb-type').onchange=renderMealBuilder;
+document.getElementById('mb-type').onchange=resetMealBuilder;
 renderMealBuilder();
 document.getElementById('modal-meal-builder').classList.add('open');
 }
 let mealBuilderSelected=[];
+function resetMealBuilder(){mealBuilderSelected=[];renderMealBuilder();}
 function renderMealBuilder(){
 const type=document.getElementById('mb-type').value;
 mealBuilderItems={};
-mealBuilderSelected=[];
 const opts=MEAL_BUILDER_OPTIONS[type]||[];
 const c=document.getElementById('mb-items');
 let h='';
@@ -1808,7 +1913,9 @@ optsHtml+='<option value="'+k+'">'+escapeHtml(item.name)+'</option>';
 });
 const unitLabel=firstIsWeight?'g':'qtd';
 const step=firstIsWeight?'5':'0.5';
-h+=`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(grp.group)}</div><div style="display:flex;gap:6px;align-items:center"><select id="mb-sel-${gi}" onchange="onMealCatSelect(${gi})" style="flex:1;min-width:0;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;font-size:14px">${optsHtml}</select><input type="number" id="mb-qty-${gi}" min="0" step="${step}" placeholder="—" disabled style="width:60px;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;text-align:center;background:#F8F9FA"><span style="font-size:10px;color:#64748B;min-width:18px">${unitLabel}</span><button onclick="addMealBuilderItem(${gi})" id="mb-add-${gi}" disabled style="background:#0F172A;color:#fff;border:0;border-radius:5px;width:32px;height:32px;cursor:pointer;font-size:14px;opacity:.4">✓</button></div></div>`;
+const countInCat=mealBuilderSelected.filter(x=>x.gi===gi).length;
+const countBadge=countInCat>0?` <span style="background:#16A34A;color:#fff;font-size:9px;padding:1px 6px;border-radius:99px;font-weight:600">${countInCat}</span>`:'';
+h+=`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(grp.group)}${countBadge}</div><div style="display:flex;gap:6px;align-items:center"><select id="mb-sel-${gi}" onchange="onMealCatSelect(${gi})" style="flex:1;min-width:0;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;font-size:14px">${optsHtml}</select><input type="number" id="mb-qty-${gi}" min="0" step="${step}" placeholder="—" disabled style="width:60px;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;text-align:center;background:#F8F9FA"><span style="font-size:10px;color:#64748B;min-width:18px">${unitLabel}</span><button onclick="addMealBuilderItem(${gi})" id="mb-add-${gi}" disabled style="background:#0F172A;color:#fff;border:0;border-radius:5px;width:32px;height:32px;cursor:pointer;font-size:14px;opacity:.4">✓</button></div>${countInCat>0?'<div style="font-size:10px;color:#16A34A;margin-top:3px">↑ pode adicionar outro alimento dessa categoria</div>':''}</div>`;
 });
 h+='<div id="mb-selected" style="margin-top:8px"></div>';
 c.innerHTML=h;
@@ -1854,15 +1961,14 @@ carb=+((obj.item.carb||0)*val).toFixed(1);
 gord=+((obj.item.gord||0)*val).toFixed(1);
 label=val===1?obj.item.name:(val+'× '+obj.item.name);
 }
-mealBuilderSelected.push({label,kcal,prot,carb,gord});
-sel.value='';
-qtyInp.value='';
-qtyInp.disabled=true;
-qtyInp.style.background='#F8F9FA';
-document.getElementById('mb-add-'+gi).disabled=true;
-document.getElementById('mb-add-'+gi).style.opacity='.4';
-renderMealBuilderSelected();
-updateMealBuilderTotal();
+mealBuilderSelected.push({label,kcal,prot,carb,gord,gi});
+const type=document.getElementById('mb-type').value;
+const time=document.getElementById('mb-time').value;
+const note=document.getElementById('mb-note').value;
+renderMealBuilder();
+document.getElementById('mb-type').value=type;
+document.getElementById('mb-time').value=time;
+document.getElementById('mb-note').value=note;
 }
 function removeMealBuilderSelected(idx){
 mealBuilderSelected.splice(idx,1);
@@ -2171,7 +2277,7 @@ const totalGlassesGoal=Math.ceil(dietGoals.water/250);
 let glassRow='';
 for(let i=0;i<totalGlassesGoal;i++)glassRow+=`<span class="water-glass ${i<glasses?'filled':'empty'}">💧</span>`;
 h+=`<div class="hydration-card"><div class="water-info"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-droplet"></i>Hidratação</div><div><span class="water-amount">${(d.water/1000).toFixed(2)}L</span> <span class="water-goal-txt">de ${(dietGoals.water/1000).toFixed(1)}L</span></div></div><div class="water-row">${glassRow}</div><div class="water-actions"><button class="water-btn" onclick="addWater(250)">+ 250ml</button><button class="water-btn" onclick="addWater(500)">+ 500ml</button><button class="water-btn" onclick="addWater(-250)" style="color:#DC2626">- 250ml</button></div></div>`;
-h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-pill"></i>Suplementos (hoje)</div><div style="display:flex;flex-direction:column;gap:6px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.creatina?'checked':''} onchange="toggleSupplement('creatina')" style="width:18px;height:18px;accent-color:#16A34A">💊 Creatina 7g (com carbo)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.leucina?'checked':''} onchange="toggleSupplement('leucina')" style="width:18px;height:18px;accent-color:#16A34A">💪 Leucina 5g (pré-treino)</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#334155"><input type="checkbox" ${sup.doce?'checked':''} onchange="toggleSupplement('doce')" style="width:18px;height:18px;accent-color:#F59E0B">🍬 Doce 30g (pré/pós-treino)</label></div></div>`;
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-pill"></i>Suplementos (hoje)</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 10px"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.whey?'checked':''} onchange="toggleSupplement('whey')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">🥤 Whey 1 dose</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.creatina?'checked':''} onchange="toggleSupplement('creatina')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">💊 Creatina 7g</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.whey_meio?'checked':''} onchange="toggleSupplement('whey_meio')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">🥤 Whey ½ dose</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.leucina?'checked':''} onchange="toggleSupplement('leucina')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">💪 Leucina 5g</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.doce_pre?'checked':''} onchange="toggleSupplement('doce_pre')" style="width:16px;height:16px;accent-color:#F59E0B;flex-shrink:0">🍬 Doce Pré</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.doce_pos?'checked':''} onchange="toggleSupplement('doce_pos')" style="width:16px;height:16px;accent-color:#F59E0B;flex-shrink:0">🍬 Doce Pós</label></div></div>`;
 const doseColor=dosesSem.doses>MAX_DOSES_SEMANA?'over':dosesSem.doses>MAX_DOSES_SEMANA*0.75?'warn':'';
 const offColor=offSem>MAX_OFF_SEMANA?'over':offSem>MAX_OFF_SEMANA*0.75?'warn':'';
 h+=`<div class="weekly-limits-card"><div style="display:flex;justify-content:space-between;align-items:center"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-calendar-stats"></i>Limites semanais</div><button class="goals-btn" onclick="openExtrasModal()" title="Adicionar extra"><i class="ti ti-plus"></i>Adicionar</button></div><div class="limits-row"><div class="limits-col"><div class="lc-icon">🍺</div><div class="lc-val ${doseColor}">${dosesSem.doses} / ${MAX_DOSES_SEMANA}</div><div class="lc-lbl">Doses de cerveja</div></div><div class="limits-col"><div class="lc-icon">🍕</div><div class="lc-val ${offColor}">${offSem} / ${MAX_OFF_SEMANA}</div><div class="lc-lbl">Refeições off</div></div></div></div>`;
@@ -2707,7 +2813,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones','dayExtraExercises'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
