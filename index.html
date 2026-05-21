@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#0F172A}
 .wrap{max-width:400px;margin:0 auto;min-height:100vh;padding-bottom:40px}
-.header{padding:18px 16px 10px;border-bottom:1px solid #CBD5E1;background:#fff;position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.header{padding:18px 16px 10px;border-bottom:1px solid #CBD5E1;background:#fff;position:sticky;top:54px;z-index:18;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .auth-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
 .auth-btn{background:#F1F5F9;border:1px solid #CBD5E1;border-radius:99px;padding:6px 12px;font-size:12px;color:#334155;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:500;white-space:nowrap}
 .auth-btn:hover{background:#E2E8F0}
@@ -31,12 +31,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .offline-banner .ob-btn:hover{background:#78350F}
 .greeting{font-size:19px;font-weight:500;color:#000}
 .subdate{font-size:12px;color:#64748B;margin-top:2px}
-.nav{display:flex;background:#F8F9FA;border-bottom:1px solid #CBD5E1;position:sticky;top:62px;z-index:15}
+.nav{display:flex;background:#DBEAFE;border-bottom:1px solid #BFDBFE;position:sticky;top:0;z-index:30}
 .tab{flex:1;padding:10px 0 8px;background:0;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
-.tab i{font-size:20px;color:#94A3B8}
+.tab i{font-size:22px;color:#93C5FD}
 .tab-dot{width:4px;height:4px;border-radius:50%;background:0}
-.tab.active i{color:#000!important}
-.tab.active .tab-dot{background:#000}
+.tab.active i{color:#1E3A8A!important}
+.tab.active .tab-dot{background:#1E3A8A}
 .sec{display:none;padding:16px}
 .sec.active{display:block}
 .card{background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px 16px;margin-bottom:12px}
@@ -112,7 +112,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .modal-hint{font-size:12px;color:#64748B;margin-bottom:14px;line-height:1.5}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .modal-field label{font-size:11px;color:#64748B;display:block;margin-bottom:4px}
-.modal-field input,.modal-field select,.modal-field textarea{width:100%;min-width:0;max-width:100%;border:1px solid #CBD5E1;border-radius:6px;padding:8px 10px;font-size:14px;color:#000;background:#fff;font-family:inherit;box-sizing:border-box}
+.modal-field input,.modal-field select,.modal-field textarea{width:100%;min-width:0;max-width:100%;border:1px solid #CBD5E1;border-radius:6px;padding:8px 10px;font-size:16px;color:#000;background:#fff;font-family:inherit;box-sizing:border-box}
+input[type=number],input[type=text],input[type=date],input[type=time],input[type=email],input[type=password],select,textarea{font-size:16px}
 .modal-field input[type=date],.modal-field input[type=time]{-webkit-appearance:none;appearance:none}
 .modal-grid>.modal-field{min-width:0}
 .modal-field textarea{resize:vertical;min-height:60px}
@@ -348,7 +349,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <body>
 <div class="wrap">
 <div class="offline-banner" id="offline-banner"><div class="ob-icon"><i class="ti ti-cloud-off"></i></div><div class="ob-content"><div class="ob-title">⚠️ Modo Offline</div><div class="ob-text">Suas alterações estão sendo salvas <strong>apenas neste dispositivo</strong>. Faça login para sincronizar com a nuvem e acessar de qualquer aparelho — caso contrário, os dados podem se perder ao limpar o cache do navegador.</div><button class="ob-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i>Entrar com Google</button></div></div>
-<div class="header"><div style="flex:1;min-width:0"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div><div class="auth-wrap"><button class="auth-btn" id="auth-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i> Entrar</button><span class="sync-status" id="sync-status"></span><button id="restore-btn" onclick="restoreFromCloud()" style="display:none;font-size:9px;background:#fff;border:1px solid #CBD5E1;border-radius:99px;padding:3px 8px;color:#475569;cursor:pointer;margin-top:2px">↻ Recuperar dados</button></div></div>
 <div class="nav">
 <button class="tab active" onclick="switchTab('calendario')" id="tab-calendario"><i class="ti ti-calendar-month"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('treino')" id="tab-treino"><i class="ti ti-barbell"></i><span class="tab-dot"></span></button>
@@ -357,6 +357,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <button class="tab" onclick="switchTab('compras')" id="tab-compras"><i class="ti ti-shopping-cart"></i><span class="tab-dot"></span></button>
 <button class="tab" onclick="switchTab('tarefas')" id="tab-tarefas"><i class="ti ti-checklist"></i><span class="tab-dot"></span></button>
 </div>
+<div class="header"><div style="flex:1;min-width:0"><div class="greeting" id="greeting"></div><div class="subdate" id="subdate"></div></div><div class="auth-wrap"><button class="auth-btn" id="auth-btn" onclick="handleAuthClick()"><i class="ti ti-cloud"></i> Entrar</button><span class="sync-status" id="sync-status"></span><button id="restore-btn" onclick="restoreFromCloud()" style="display:none;font-size:9px;background:#fff;border:1px solid #CBD5E1;border-radius:99px;padding:3px 8px;color:#475569;cursor:pointer;margin-top:2px">↻ Recuperar dados</button></div></div>
 <div class="sec active" id="sec-calendario">
 <div class="race-countdown" id="race-countdown"></div>
 <div class="cal-hdr">
@@ -1659,7 +1660,7 @@ pos_treino:[
 ],
 almoco:[
 {group:'Vegetais folhosos (à vontade ~50g)',items:[{name:'Alface',kcal:8,prot:0.6,carb:1.5,gord:0.1},{name:'Rúcula',kcal:12,prot:1.2,carb:1.8,gord:0.3},{name:'Agrião',kcal:9,prot:1,carb:1.2,gord:0.1},{name:'Mix folhas',kcal:15,prot:1.2,carb:2,gord:0.2}]},
-{group:'Vegetais cozidos (g)',items:[{name:'Brócolis cozido',kcalP100:35,protP100:2.4,carbP100:7,gordP100:0.4,defaultG:120},{name:'Couve-flor cozida',kcalP100:25,protP100:1.9,carbP100:5,gordP100:0.3,defaultG:120},{name:'Abobrinha cozida',kcalP100:17,protP100:1.2,carbP100:3,gordP100:0.4,defaultG:120},{name:'Cenoura cozida',kcalP100:35,protP100:0.8,carbP100:8,gordP100:0.2,defaultG:120},{name:'Berinjela refogada',kcalP100:50,protP100:1,carbP100:6,gordP100:3,defaultG:120},{name:'Couve refogada',kcalP100:45,protP100:2.5,carbP100:5,gordP100:1.5,defaultG:120},{name:'Espinafre refogado',kcalP100:40,protP100:3.5,carbP100:4,gordP100:1.5,defaultG:120},{name:'Vagem cozida',kcalP100:35,protP100:1.8,carbP100:8,gordP100:0.2,defaultG:120},{name:'Abóbora cozida',kcalP100:30,protP100:1,carbP100:7,gordP100:0.1,defaultG:120}]},
+{group:'Vegetais cozidos (g)',items:[{name:'Brócolis cozido',kcalP100:35,protP100:2.4,carbP100:7,gordP100:0.4,defaultG:120},{name:'Couve-flor cozida',kcalP100:25,protP100:1.9,carbP100:5,gordP100:0.3,defaultG:120},{name:'Abobrinha cozida',kcalP100:17,protP100:1.2,carbP100:3,gordP100:0.4,defaultG:120},{name:'Cenoura cozida',kcalP100:35,protP100:0.8,carbP100:8,gordP100:0.2,defaultG:120},{name:'Berinjela refogada',kcalP100:50,protP100:1,carbP100:6,gordP100:3,defaultG:120},{name:'Couve refogada',kcalP100:45,protP100:2.5,carbP100:5,gordP100:1.5,defaultG:120},{name:'Espinafre refogado',kcalP100:40,protP100:3.5,carbP100:4,gordP100:1.5,defaultG:120},{name:'Vagem cozida',kcalP100:35,protP100:1.8,carbP100:8,gordP100:0.2,defaultG:120},{name:'Abóbora cozida',kcalP100:30,protP100:1,carbP100:7,gordP100:0.1,defaultG:120},{name:'Mix de legumes',kcalP100:41,protP100:2.4,carbP100:5,gordP100:0.1,defaultG:120}]},
 {group:'Carbo (g)',items:[{name:'Arroz integral cozido',kcalP100:110,protP100:2.5,carbP100:23,gordP100:0.9,defaultG:80},{name:'Arroz branco cozido',kcalP100:130,protP100:2.7,carbP100:28,gordP100:0.3,defaultG:80},{name:'Batata cozida',kcalP100:87,protP100:1.9,carbP100:20,gordP100:0.1,defaultG:80},{name:'Batata doce cozida',kcalP100:90,protP100:1.6,carbP100:21,gordP100:0.1,defaultG:80},{name:'Mandioca cozida',kcalP100:125,protP100:0.6,carbP100:30,gordP100:0.3,defaultG:80},{name:'Massa cozida',kcalP100:130,protP100:5,carbP100:26,gordP100:1,defaultG:100},{name:'Quinoa cozida',kcalP100:120,protP100:4.4,carbP100:21,gordP100:1.9,defaultG:100}]},
 {group:'Leguminosa (g)',items:[{name:'Feijão preto cozido',kcalP100:76,protP100:5.5,carbP100:14,gordP100:0.5,defaultG:120},{name:'Feijão carioca cozido',kcalP100:80,protP100:5,carbP100:14,gordP100:0.5,defaultG:120},{name:'Ervilha cozida',kcalP100:84,protP100:5.4,carbP100:14,gordP100:0.4,defaultG:120},{name:'Grão de bico cozido',kcalP100:164,protP100:9,carbP100:27,gordP100:2.6,defaultG:120},{name:'Lentilha cozida',kcalP100:116,protP100:9,carbP100:20,gordP100:0.4,defaultG:120}]},
 {group:'Proteína (g)',items:[{name:'Frango grelhado peito',kcalP100:165,protP100:31,carbP100:0,gordP100:3.6,defaultG:100},{name:'Filé mignon suíno grelhado',kcalP100:150,protP100:27,carbP100:0,gordP100:4,defaultG:100},{name:'Lombo suíno grelhado',kcalP100:145,protP100:26,carbP100:0,gordP100:4,defaultG:100},{name:'Carne moída magra cozida',kcalP100:215,protP100:27,carbP100:0,gordP100:11,defaultG:100},{name:'Atum em água',kcalP100:116,protP100:26,carbP100:0,gordP100:1,defaultG:100},{name:'Salmão grelhado',kcalP100:200,protP100:25,carbP100:0,gordP100:11,defaultG:100},{name:'Tilápia grelhada',kcalP100:130,protP100:26,carbP100:0,gordP100:2.7,defaultG:100}]},
@@ -1672,13 +1673,13 @@ lanche:[
 {group:'Pão + queijo/cottage',items:[{name:'1 fatia pão integral + 30g cottage',kcal:95,prot:6.3,carb:13.2,gord:2.4},{name:'1 fatia pão integral + 30g queijo light',kcal:125,prot:9,carb:13,gord:5},{name:'Cottage só (30g)',kcal:30,prot:3.3,carb:1.2,gord:1.4},{name:'Cottage (100g)',kcal:100,prot:11,carb:4,gord:4.5}]}
 ],
 jantar:[
-{group:'Vegetais folhosos',items:[{name:'Alface',kcal:8,prot:0.6,carb:1.5,gord:0.1},{name:'Rúcula',kcal:12,prot:1.2,carb:1.8,gord:0.3},{name:'Mix folhas',kcal:15,prot:1.2,carb:2,gord:0.2}]},
-{group:'Vegetais cozidos (g)',items:[{name:'Brócolis cozido',kcalP100:35,protP100:2.4,carbP100:7,gordP100:0.4,defaultG:120},{name:'Couve-flor cozida',kcalP100:25,protP100:1.9,carbP100:5,gordP100:0.3,defaultG:120},{name:'Abobrinha cozida',kcalP100:17,protP100:1.2,carbP100:3,gordP100:0.4,defaultG:120},{name:'Couve refogada',kcalP100:45,protP100:2.5,carbP100:5,gordP100:1.5,defaultG:120}]},
-{group:'Carbo (g · porção menor)',items:[{name:'Arroz integral cozido',kcalP100:110,protP100:2.5,carbP100:23,gordP100:0.9,defaultG:50},{name:'Arroz branco cozido',kcalP100:130,protP100:2.7,carbP100:28,gordP100:0.3,defaultG:50},{name:'Batata cozida',kcalP100:87,protP100:1.9,carbP100:20,gordP100:0.1,defaultG:50},{name:'Massa cozida',kcalP100:130,protP100:5,carbP100:26,gordP100:1,defaultG:70},{name:'Quinoa cozida',kcalP100:120,protP100:4.4,carbP100:21,gordP100:1.9,defaultG:70}]},
-{group:'Leguminosa (g)',items:[{name:'Feijão preto cozido',kcalP100:76,protP100:5.5,carbP100:14,gordP100:0.5,defaultG:80},{name:'Feijão carioca cozido',kcalP100:80,protP100:5,carbP100:14,gordP100:0.5,defaultG:80},{name:'Lentilha cozida',kcalP100:116,protP100:9,carbP100:20,gordP100:0.4,defaultG:80}]},
-{group:'Proteína (g)',items:[{name:'Frango grelhado',kcalP100:165,protP100:31,carbP100:0,gordP100:3.6,defaultG:100},{name:'Filé mignon suíno',kcalP100:150,protP100:27,carbP100:0,gordP100:4,defaultG:100},{name:'Tilápia grelhada',kcalP100:130,protP100:26,carbP100:0,gordP100:2.7,defaultG:100},{name:'Atum em água',kcalP100:116,protP100:26,carbP100:0,gordP100:1,defaultG:100}]},
-{group:'Proteína — ovos (un)',items:[{name:'2 ovos cozidos',kcal:156,prot:13,carb:1,gord:11}]},
-{group:'Tempero',items:[{name:'Azeite extra virgem 1 col sobremesa',kcal:60,prot:0,carb:0,gord:7}]}
+{group:'Vegetais folhosos (à vontade ~50g)',items:[{name:'Alface',kcal:8,prot:0.6,carb:1.5,gord:0.1},{name:'Rúcula',kcal:12,prot:1.2,carb:1.8,gord:0.3},{name:'Agrião',kcal:9,prot:1,carb:1.2,gord:0.1},{name:'Mix folhas',kcal:15,prot:1.2,carb:2,gord:0.2}]},
+{group:'Vegetais cozidos (g)',items:[{name:'Brócolis cozido',kcalP100:35,protP100:2.4,carbP100:7,gordP100:0.4,defaultG:120},{name:'Couve-flor cozida',kcalP100:25,protP100:1.9,carbP100:5,gordP100:0.3,defaultG:120},{name:'Abobrinha cozida',kcalP100:17,protP100:1.2,carbP100:3,gordP100:0.4,defaultG:120},{name:'Cenoura cozida',kcalP100:35,protP100:0.8,carbP100:8,gordP100:0.2,defaultG:120},{name:'Berinjela refogada',kcalP100:50,protP100:1,carbP100:6,gordP100:3,defaultG:120},{name:'Couve refogada',kcalP100:45,protP100:2.5,carbP100:5,gordP100:1.5,defaultG:120},{name:'Espinafre refogado',kcalP100:40,protP100:3.5,carbP100:4,gordP100:1.5,defaultG:120},{name:'Vagem cozida',kcalP100:35,protP100:1.8,carbP100:8,gordP100:0.2,defaultG:120},{name:'Abóbora cozida',kcalP100:30,protP100:1,carbP100:7,gordP100:0.1,defaultG:120},{name:'Mix de legumes',kcalP100:41,protP100:2.4,carbP100:5,gordP100:0.1,defaultG:120}]},
+{group:'Carbo (g · porção menor)',items:[{name:'Arroz integral cozido',kcalP100:110,protP100:2.5,carbP100:23,gordP100:0.9,defaultG:50},{name:'Arroz branco cozido',kcalP100:130,protP100:2.7,carbP100:28,gordP100:0.3,defaultG:50},{name:'Batata cozida',kcalP100:87,protP100:1.9,carbP100:20,gordP100:0.1,defaultG:50},{name:'Batata doce cozida',kcalP100:90,protP100:1.6,carbP100:21,gordP100:0.1,defaultG:50},{name:'Mandioca cozida',kcalP100:125,protP100:0.6,carbP100:30,gordP100:0.3,defaultG:50},{name:'Massa cozida',kcalP100:130,protP100:5,carbP100:26,gordP100:1,defaultG:70},{name:'Quinoa cozida',kcalP100:120,protP100:4.4,carbP100:21,gordP100:1.9,defaultG:70}]},
+{group:'Leguminosa (g · porção menor)',items:[{name:'Feijão preto cozido',kcalP100:76,protP100:5.5,carbP100:14,gordP100:0.5,defaultG:80},{name:'Feijão carioca cozido',kcalP100:80,protP100:5,carbP100:14,gordP100:0.5,defaultG:80},{name:'Ervilha cozida',kcalP100:84,protP100:5.4,carbP100:14,gordP100:0.4,defaultG:80},{name:'Grão de bico cozido',kcalP100:164,protP100:9,carbP100:27,gordP100:2.6,defaultG:80},{name:'Lentilha cozida',kcalP100:116,protP100:9,carbP100:20,gordP100:0.4,defaultG:80}]},
+{group:'Proteína (g)',items:[{name:'Frango grelhado peito',kcalP100:165,protP100:31,carbP100:0,gordP100:3.6,defaultG:100},{name:'Filé mignon suíno grelhado',kcalP100:150,protP100:27,carbP100:0,gordP100:4,defaultG:100},{name:'Lombo suíno grelhado',kcalP100:145,protP100:26,carbP100:0,gordP100:4,defaultG:100},{name:'Carne moída magra cozida',kcalP100:215,protP100:27,carbP100:0,gordP100:11,defaultG:100},{name:'Atum em água',kcalP100:116,protP100:26,carbP100:0,gordP100:1,defaultG:100},{name:'Salmão grelhado',kcalP100:200,protP100:25,carbP100:0,gordP100:11,defaultG:100},{name:'Tilápia grelhada',kcalP100:130,protP100:26,carbP100:0,gordP100:2.7,defaultG:100}]},
+{group:'Proteína — ovos (un)',items:[{name:'2 ovos cozidos',kcal:156,prot:13,carb:1,gord:11},{name:'2 ovos mexidos com azeite',kcal:210,prot:13,carb:1,gord:18}]},
+{group:'Tempero',items:[{name:'Azeite extra virgem 1 col sobremesa (~7ml)',kcal:60,prot:0,carb:0,gord:7},{name:'Azeite extra virgem 1 col sopa (~14ml)',kcal:120,prot:0,carb:0,gord:14},{name:'Manteiga (10g)',kcal:75,prot:0,carb:0,gord:8}]}
 ],
 ceia:[
 {group:'Escolha 1',items:[{name:'Iogurte zero/light (170g)',kcal:60,prot:5,carb:8,gord:0},{name:'Iogurte natural desnatado (170g)',kcal:80,prot:11,carb:8,gord:0.3},{name:'Queijo minas frescal light 30g',kcal:60,prot:6,carb:1,gord:4},{name:'Queijo mussarela light 30g',kcal:60,prot:6,carb:1,gord:4},{name:'Ricota 30g',kcal:50,prot:4,carb:1,gord:3},{name:'Leite desnatado 200ml + canela',kcal:70,prot:7,carb:10,gord:0.5}]}
@@ -1789,58 +1790,99 @@ document.getElementById('mb-type').onchange=renderMealBuilder;
 renderMealBuilder();
 document.getElementById('modal-meal-builder').classList.add('open');
 }
+let mealBuilderSelected=[];
 function renderMealBuilder(){
 const type=document.getElementById('mb-type').value;
 mealBuilderItems={};
+mealBuilderSelected=[];
 const opts=MEAL_BUILDER_OPTIONS[type]||[];
 const c=document.getElementById('mb-items');
 let h='';
 opts.forEach((grp,gi)=>{
-h+=`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(grp.group)}</div>`;
+const firstIsWeight=grp.items[0]&&grp.items[0].kcalP100!=null;
+let optsHtml='<option value="">— escolha —</option>';
 grp.items.forEach((item,ii)=>{
 const k='g'+gi+'i'+ii;
-const isWeighted=item.kcalP100!=null;
-if(isWeighted){
-h+=`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px"><span style="flex:1;min-width:0">${escapeHtml(item.name)}</span><input type="number" data-key="${k}" oninput="updateMealBuilderTotal()" min="0" step="5" placeholder="${item.defaultG||100}" style="width:60px;padding:4px 6px;border:1px solid #CBD5E1;border-radius:4px;font-size:12px;text-align:center"><span style="font-size:10px;color:#64748B">g</span><span class="mb-kcal-disp" data-key="${k}" style="font-size:10px;color:#94A3B8;min-width:55px;text-align:right">— kcal</span></div>`;
-mealBuilderItems[k]={item,type:'weight',grams:0};
-}else{
-h+=`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px"><span style="flex:1;min-width:0">${escapeHtml(item.name)}</span><span style="font-size:10px;color:#94A3B8;min-width:55px;text-align:right">${item.kcal}kcal</span><input type="number" data-key="${k}" oninput="updateMealBuilderTotal()" min="0" step="0.5" placeholder="0" style="width:55px;padding:4px 6px;border:1px solid #CBD5E1;border-radius:4px;font-size:12px;text-align:center"></div>`;
-mealBuilderItems[k]={item,type:'qty',qty:0};
-}
+mealBuilderItems[k]={item,gi,ii};
+optsHtml+='<option value="'+k+'">'+escapeHtml(item.name)+'</option>';
 });
-h+=`</div>`;
+const unitLabel=firstIsWeight?'g':'qtd';
+const step=firstIsWeight?'5':'0.5';
+h+=`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(grp.group)}</div><div style="display:flex;gap:6px;align-items:center"><select id="mb-sel-${gi}" onchange="onMealCatSelect(${gi})" style="flex:1;min-width:0;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;font-size:14px">${optsHtml}</select><input type="number" id="mb-qty-${gi}" min="0" step="${step}" placeholder="—" disabled style="width:60px;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;text-align:center;background:#F8F9FA"><span style="font-size:10px;color:#64748B;min-width:18px">${unitLabel}</span><button onclick="addMealBuilderItem(${gi})" id="mb-add-${gi}" disabled style="background:#0F172A;color:#fff;border:0;border-radius:5px;width:32px;height:32px;cursor:pointer;font-size:14px;opacity:.4">✓</button></div></div>`;
 });
+h+='<div id="mb-selected" style="margin-top:8px"></div>';
 c.innerHTML=h;
+renderMealBuilderSelected();
 updateMealBuilderTotal();
+}
+function onMealCatSelect(gi){
+const sel=document.getElementById('mb-sel-'+gi);
+const qtyInp=document.getElementById('mb-qty-'+gi);
+const addBtn=document.getElementById('mb-add-'+gi);
+const k=sel.value;
+if(!k){qtyInp.disabled=true;qtyInp.value='';qtyInp.style.background='#F8F9FA';addBtn.disabled=true;addBtn.style.opacity='.4';return;}
+const obj=mealBuilderItems[k];
+const isWeight=obj.item.kcalP100!=null;
+qtyInp.disabled=false;
+qtyInp.style.background='#fff';
+qtyInp.value=isWeight?(obj.item.defaultG||100):1;
+addBtn.disabled=false;
+addBtn.style.opacity='1';
+qtyInp.focus();
+qtyInp.select();
+}
+function addMealBuilderItem(gi){
+const sel=document.getElementById('mb-sel-'+gi);
+const qtyInp=document.getElementById('mb-qty-'+gi);
+const k=sel.value;
+const val=parseFloat(qtyInp.value)||0;
+if(!k||val<=0)return alert('Selecione um alimento e informe a quantidade.');
+const obj=mealBuilderItems[k];
+const isWeight=obj.item.kcalP100!=null;
+let kcal=0,prot=0,carb=0,gord=0,label='';
+if(isWeight){
+const f=val/100;
+kcal=Math.round((obj.item.kcalP100||0)*f);
+prot=+((obj.item.protP100||0)*f).toFixed(1);
+carb=+((obj.item.carbP100||0)*f).toFixed(1);
+gord=+((obj.item.gordP100||0)*f).toFixed(1);
+label=obj.item.name+' '+val+'g';
+}else{
+kcal=Math.round((obj.item.kcal||0)*val);
+prot=+((obj.item.prot||0)*val).toFixed(1);
+carb=+((obj.item.carb||0)*val).toFixed(1);
+gord=+((obj.item.gord||0)*val).toFixed(1);
+label=val===1?obj.item.name:(val+'× '+obj.item.name);
+}
+mealBuilderSelected.push({label,kcal,prot,carb,gord});
+sel.value='';
+qtyInp.value='';
+qtyInp.disabled=true;
+qtyInp.style.background='#F8F9FA';
+document.getElementById('mb-add-'+gi).disabled=true;
+document.getElementById('mb-add-'+gi).style.opacity='.4';
+renderMealBuilderSelected();
+updateMealBuilderTotal();
+}
+function removeMealBuilderSelected(idx){
+mealBuilderSelected.splice(idx,1);
+renderMealBuilderSelected();
+updateMealBuilderTotal();
+}
+function renderMealBuilderSelected(){
+const c=document.getElementById('mb-selected');
+if(!c)return;
+if(mealBuilderSelected.length===0){c.innerHTML='';return;}
+let h='<div style="font-size:10px;font-weight:600;color:#15803D;text-transform:uppercase;letter-spacing:.04em;margin:10px 0 6px">Itens adicionados</div><div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:6px 8px">';
+mealBuilderSelected.forEach((it,idx)=>{
+h+=`<div style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:12px"><span style="flex:1">${escapeHtml(it.label)}</span><span style="font-size:11px;color:#15803D;font-weight:600">${it.kcal} kcal</span><button onclick="removeMealBuilderSelected(${idx})" style="background:#fff;border:1px solid #FCA5A5;color:#DC2626;border-radius:4px;width:22px;height:22px;cursor:pointer;font-size:12px;padding:0">×</button></div>`;
+});
+h+='</div>';
+c.innerHTML=h;
 }
 function updateMealBuilderTotal(){
 let kcal=0,prot=0,carb=0,gord=0;
-Object.keys(mealBuilderItems).forEach(k=>{
-const obj=mealBuilderItems[k];
-const inp=document.querySelector('#mb-items input[type=number][data-key="'+k+'"]');
-const val=parseFloat(inp?.value)||0;
-if(obj.type==='weight'){
-obj.grams=val;
-const disp=document.querySelector('#mb-items .mb-kcal-disp[data-key="'+k+'"]');
-if(val>0){
-const f=val/100;
-const ikcal=Math.round((obj.item.kcalP100||0)*f);
-kcal+=ikcal;
-prot+=(obj.item.protP100||0)*f;
-carb+=(obj.item.carbP100||0)*f;
-gord+=(obj.item.gordP100||0)*f;
-if(disp)disp.textContent=ikcal+' kcal';
-}else if(disp){disp.textContent='— kcal';}
-}else{
-obj.qty=val;
-if(val>0){
-kcal+=(obj.item.kcal||0)*val;
-prot+=(obj.item.prot||0)*val;
-carb+=(obj.item.carb||0)*val;
-gord+=(obj.item.gord||0)*val;
-}
-}
-});
+mealBuilderSelected.forEach(it=>{kcal+=it.kcal;prot+=it.prot;carb+=it.carb;gord+=it.gord;});
 document.getElementById('mb-total').textContent=Math.round(kcal)+' kcal';
 document.getElementById('mb-macros').textContent=`P: ${prot.toFixed(0)}g · C: ${carb.toFixed(0)}g · G: ${gord.toFixed(0)}g`;
 }
@@ -1851,23 +1893,8 @@ const time=document.getElementById('mb-time').value||new Date().toTimeString().s
 const note=(document.getElementById('mb-note').value||'').trim().slice(0,120);
 let kcal=0,prot=0,carb=0,gord=0;
 const items=[];
-Object.values(mealBuilderItems).forEach(v=>{
-if(v.type==='weight'&&v.grams>0){
-const f=v.grams/100;
-kcal+=(v.item.kcalP100||0)*f;
-prot+=(v.item.protP100||0)*f;
-carb+=(v.item.carbP100||0)*f;
-gord+=(v.item.gordP100||0)*f;
-items.push(v.item.name+' '+v.grams+'g');
-}else if(v.type==='qty'&&v.qty>0){
-kcal+=(v.item.kcal||0)*v.qty;
-prot+=(v.item.prot||0)*v.qty;
-carb+=(v.item.carb||0)*v.qty;
-gord+=(v.item.gord||0)*v.qty;
-items.push(v.qty===1?v.item.name:(v.qty+'× '+v.item.name));
-}
-});
-if(items.length===0)return alert('Informe a quantidade ou gramatura de ao menos um item.');
+mealBuilderSelected.forEach(it=>{kcal+=it.kcal;prot+=it.prot;carb+=it.carb;gord+=it.gord;items.push(it.label);});
+if(items.length===0)return alert('Adicione ao menos um item.');
 const key=dk(today);
 const d=getDiet(key);
 d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal:Math.round(kcal),prot:+prot.toFixed(1),carb:+carb.toFixed(1),gord:+gord.toFixed(1),items:items.join(' · ')+(note?' · '+note:''),type});
