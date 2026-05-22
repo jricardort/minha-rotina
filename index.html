@@ -162,6 +162,9 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 .zone-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .zone-grid .modal-field label{display:flex;align-items:center;gap:4px}
 .zone-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.zone-time-picker{display:flex;align-items:center;gap:3px;width:100%}
+.zone-time-picker select{flex:1;min-width:0;padding:6px 2px;border:1px solid #CBD5E1;border-radius:4px;font-size:16px;text-align:center;background:#fff;font-family:inherit;-webkit-appearance:none;appearance:none}
+.zone-time-picker span{font-size:10px;color:#64748B;font-weight:500}
 .override-card{border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid}
 .override-card .ov-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
 .override-card .ov-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:4px}
@@ -425,7 +428,7 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="number" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="number" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="number" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="number" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto total do dia (relógio) ou deixe em branco para usar a estimativa.</p><div class="modal-field" style="margin-bottom:10px"><label>Total kcal do dia</label><input type="number" id="kw-total-input" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8;margin-top:4px;display:block" id="kw-est"></span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
-<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="number" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><input type="time" id="r-z1" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><input type="time" id="r-z2" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><input type="time" id="r-z3" step="1" value="00:00:00"></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><input type="time" id="r-z4" step="1" value="00:00:00"></div><div class="modal-field" style="grid-column:1/-1"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><input type="time" id="r-z5" step="1" value="00:00:00"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Tempo total (calculado)</label><input type="text" id="r-total" readonly style="background:#F1F5F9;color:#334155;font-weight:600"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="number" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="zone-time-picker" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="zone-time-picker" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="zone-time-picker" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="zone-time-picker" data-zone="z4"></div></div><div class="modal-field" style="grid-column:1/-1"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="zone-time-picker" data-zone="z5"></div></div></div><div class="modal-field" style="margin-bottom:10px"><label>Tempo total (calculado)</label><input type="text" id="r-total" readonly style="background:#F1F5F9;color:#334155;font-weight:600"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -628,6 +631,26 @@ renderPlan();
 if(window.syncNow)window.syncNow();
 }
 let diet={};try{const _d=localStorage.getItem('diet');diet=_d?JSON.parse(_d)||{}:{};}catch(e){diet={};}
+(function migrateIogurte(){
+let changed=false;
+Object.keys(diet).forEach(dk=>{
+const d=diet[dk];if(!d||!Array.isArray(d.meals))return;
+d.meals.forEach(m=>{
+if(!m.items||m._yogurtMigrated)return;
+if(/iogurte proteico/i.test(m.items)){
+const oldKcal=110,oldProt=17,oldCarb=5,oldGord=1;
+const newKcal=228,newProt=37.1,newCarb=18.6,newGord=0.7;
+m.kcal=Math.max(0,(m.kcal||0)-oldKcal+newKcal);
+m.prot=+Math.max(0,(m.prot||0)-oldProt+newProt).toFixed(1);
+m.carb=+Math.max(0,(m.carb||0)-oldCarb+newCarb).toFixed(1);
+m.gord=+Math.max(0,(m.gord||0)-oldGord+newGord).toFixed(1);
+m._yogurtMigrated=true;
+changed=true;
+}
+});
+});
+if(changed){try{localStorage.setItem('diet',JSON.stringify(diet));}catch(e){}console.log('Migrado: dados de iogurte proteico atualizados');}
+})();
 const DEFAULT_GOALS={kcal:2200,prot:160,carb:250,gord:70,water:2800,deficit:500};
 let dietGoals=Object.assign({},DEFAULT_GOALS);try{const _g=localStorage.getItem('dietGoals');if(_g){const p=JSON.parse(_g);if(p)Object.assign(dietGoals,p);}}catch(e){}
 let dietFavorites=[];try{const _f=localStorage.getItem('dietFavorites');dietFavorites=_f?JSON.parse(_f)||[]:[];}catch(e){dietFavorites=[];}
@@ -730,7 +753,7 @@ vinho_tinto:{label:'Vinho tinto seco',kcalPer100ml:83,carbPer100ml:2.7}
 };
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 const PLAN_PRESETS={
-cafe_sem:{name:'Café — Iogurte proteico',kcal:110,prot:17,carb:5,gord:1,items:'1 iogurte proteico (sem exercício)'},
+cafe_sem:{name:'Café — Iogurte proteico',kcal:228,prot:37.1,carb:18.6,gord:0.7,items:'1 garrafinha iogurte proteico 350ml'},
 cafe_com:{name:'Café — Banana nanica 1un',kcal:60,prot:0.8,carb:15,gord:0.2,items:'1 banana nanica (com exercício)'},
 pos_musc:{name:'Pós-treino — Whey 1 dose',kcal:120,prot:24,carb:3,gord:1,items:'1 dose whey (~30g)'},
 pos_sem:{name:'Pós-treino — Whey ½ dose',kcal:60,prot:12,carb:1.5,gord:0.5,items:'½ dose whey (~15g)'},
@@ -1317,14 +1340,43 @@ document.getElementById('rv-'+z+'-row').style.display=parseTime(v)>0?'flex':'non
 document.getElementById('rv-note').textContent=entry.note||'—';
 document.getElementById('rv-note-row').style.display=entry.note?'flex':'none';
 }
+function buildZoneTimePickers(){
+document.querySelectorAll('.zone-time-picker').forEach(el=>{
+if(el.dataset.built==='1')return;
+const z=el.getAttribute('data-zone');
+let hh='<select id="r-'+z+'-hh">';for(let i=0;i<=5;i++)hh+='<option value="'+i+'">'+String(i).padStart(2,'0')+'</option>';hh+='</select>';
+let mm='<select id="r-'+z+'-mm">';for(let i=0;i<=59;i++)mm+='<option value="'+i+'">'+String(i).padStart(2,'0')+'</option>';mm+='</select>';
+let ss='<select id="r-'+z+'-ss">';for(let i=0;i<=59;i++)ss+='<option value="'+i+'">'+String(i).padStart(2,'0')+'</option>';ss+='</select>';
+el.innerHTML=hh+'<span>h</span>'+mm+'<span>m</span>'+ss+'<span>s</span>';
+el.dataset.built='1';
+['hh','mm','ss'].forEach(p=>{document.getElementById('r-'+z+'-'+p).onchange=updateRunTotal;});
+});
+}
+function getZoneTime(z){
+const hh=parseInt(document.getElementById('r-'+z+'-hh')?.value)||0;
+const mm=parseInt(document.getElementById('r-'+z+'-mm')?.value)||0;
+const ss=parseInt(document.getElementById('r-'+z+'-ss')?.value)||0;
+return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');
+}
+function setZoneTime(z,timeStr){
+const parts=(timeStr||'00:00:00').split(':').map(p=>parseInt(p)||0);
+const hh=parts.length>=3?parts[0]:0;
+const mm=parts.length>=3?parts[1]:(parts.length===2?parts[0]:0);
+const ss=parts.length>=3?parts[2]:(parts.length===2?parts[1]:0);
+const hSel=document.getElementById('r-'+z+'-hh');if(hSel)hSel.value=String(Math.min(5,hh));
+const mSel=document.getElementById('r-'+z+'-mm');if(mSel)mSel.value=String(Math.min(59,mm));
+const sSel=document.getElementById('r-'+z+'-ss');if(sSel)sSel.value=String(Math.min(59,ss));
+}
+function resetZoneTimes(){['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,'00:00:00'));}
 function showRunEditMode(){
 document.getElementById('run-view-mode').style.display='none';
 document.getElementById('run-edit-mode').style.display='block';
 document.getElementById('run-save-btn').style.display='block';
+buildZoneTimePickers();
 }
 function updateRunTotal(){
 let total=0;
-['z1','z2','z3','z4','z5'].forEach(z=>{total+=parseTime(document.getElementById('r-'+z).value);});
+['z1','z2','z3','z4','z5'].forEach(z=>{total+=parseTime(getZoneTime(z));});
 document.getElementById('r-total').value=formatTime(total);
 }
 function openRunModal(exKey,exName){
@@ -1332,49 +1384,46 @@ currentRunKey=exKey;currentRunName=exName;editRunIdx=null;
 document.getElementById('modal-run-title').textContent=exName;
 document.getElementById('r-data').value=new Date().toISOString().split('T')[0];
 document.getElementById('r-km').value='';
-['z1','z2','z3','z4','z5'].forEach(z=>{document.getElementById('r-'+z).value='00:00:00';});
 document.getElementById('r-total').value='00:00:00';
 document.getElementById('r-note').value='';
+buildZoneTimePickers();
+resetZoneTimes();
 const last=getLastRun(exKey);
 if(last){showRunViewMode(last);}else{showRunEditMode();}
 renderRunHistory();
 document.getElementById('modal-run').classList.add('open');
-['z1','z2','z3','z4','z5'].forEach(z=>{
-const el=document.getElementById('r-'+z);
-el.oninput=updateRunTotal;el.onchange=updateRunTotal;
-});
 }
 function enterRunEditMode(){
 const last=getLastRun(currentRunKey);
+showRunEditMode();
 if(last){
 editRunIdx=(cardioLog[currentRunKey]||[]).findIndex(w=>w.date===last.date);
 document.getElementById('r-data').value=last.date;
 document.getElementById('r-km').value=last.km||'';
-['z1','z2','z3','z4','z5'].forEach(z=>{document.getElementById('r-'+z).value=last[z]||'00:00:00';});
+['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,last[z]||'00:00:00'));
 document.getElementById('r-total').value=last.total||'00:00:00';
 document.getElementById('r-note').value=last.note||'';
 }
-showRunEditMode();
 }
 function newRunEntry(){
 editRunIdx=null;
+showRunEditMode();
 document.getElementById('r-data').value=new Date().toISOString().split('T')[0];
 document.getElementById('r-km').value='';
-['z1','z2','z3','z4','z5'].forEach(z=>{document.getElementById('r-'+z).value='00:00:00';});
+resetZoneTimes();
 document.getElementById('r-total').value='00:00:00';
 document.getElementById('r-note').value='';
-showRunEditMode();
 }
 function closeRunModal(){document.getElementById('modal-run').classList.remove('open');currentRunKey=null;editRunIdx=null;}
 function saveRun(){
 const data=document.getElementById('r-data').value;
 if(!data)return alert('Informe a data.');
 const km=document.getElementById('r-km').value?parseFloat(document.getElementById('r-km').value):null;
-const z1=document.getElementById('r-z1').value||'00:00:00';
-const z2=document.getElementById('r-z2').value||'00:00:00';
-const z3=document.getElementById('r-z3').value||'00:00:00';
-const z4=document.getElementById('r-z4').value||'00:00:00';
-const z5=document.getElementById('r-z5').value||'00:00:00';
+const z1=getZoneTime('z1');
+const z2=getZoneTime('z2');
+const z3=getZoneTime('z3');
+const z4=getZoneTime('z4');
+const z5=getZoneTime('z5');
 const totalSec=parseTime(z1)+parseTime(z2)+parseTime(z3)+parseTime(z4)+parseTime(z5);
 if(totalSec===0&&!km)return alert('Informe pelo menos um tempo de zona ou a distância.');
 const total=formatTime(totalSec);
@@ -1397,12 +1446,12 @@ if(window.syncNow)window.syncNow();
 function editRun(i){
 const r=cardioLog[currentRunKey][i];
 editRunIdx=i;
+showRunEditMode();
 document.getElementById('r-data').value=r.date;
 document.getElementById('r-km').value=r.km||'';
-['z1','z2','z3','z4','z5'].forEach(z=>{document.getElementById('r-'+z).value=r[z]||'00:00:00';});
+['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,r[z]||'00:00:00'));
 document.getElementById('r-total').value=r.total||'00:00:00';
 document.getElementById('r-note').value=r.note||'';
-showRunEditMode();
 }
 function deleteRun(i){
 if(!confirm('Excluir este registro?'))return;
@@ -1754,7 +1803,7 @@ renderDiet();
 }
 const MEAL_BUILDER_OPTIONS={
 cafe:[
-{group:'Iogurtes',items:[{name:'Iogurte proteico (1un ~170g)',kcal:110,prot:17,carb:5,gord:1},{name:'Iogurte natural desnatado (170g)',kcal:80,prot:11,carb:8,gord:0.3},{name:'Iogurte zero açúcar (1un 170g)',kcal:60,prot:5,carb:8,gord:0}]},
+{group:'Iogurtes',items:[{name:'Iogurte proteico (garrafinha 350ml)',kcal:228,prot:37.1,carb:18.6,gord:0.7},{name:'Iogurte proteico (½ garrafinha 175ml)',kcal:114,prot:18.5,carb:9.3,gord:0.4},{name:'Iogurte natural desnatado (170g)',kcal:80,prot:11,carb:8,gord:0.3},{name:'Iogurte zero açúcar (1un 170g)',kcal:60,prot:5,carb:8,gord:0}]},
 {group:'Frutas — por unidade',items:[{name:'Banana nanica (1un ~65g)',kcal:60,prot:0.8,carb:15,gord:0.2},{name:'Banana prata (1un ~55g)',kcal:50,prot:0.7,carb:13,gord:0.2},{name:'Maçã fuji (1un peq 90g)',kcal:50,prot:0.3,carb:13,gord:0.2},{name:'Mamão papaia (½un 135g)',kcal:50,prot:1,carb:13,gord:0.2},{name:'Mamão formosa (1 fatia 170g)',kcal:65,prot:1.3,carb:17,gord:0.3},{name:'Kiwi (2un 130g)',kcal:80,prot:1.4,carb:19,gord:0.7},{name:'Manga Tommy (1un 140g)',kcal:90,prot:1,carb:22,gord:0.6},{name:'Morango (10un 200g)',kcal:65,prot:1.5,carb:15,gord:0.6},{name:'Abacaxi (2 fatias 150g)',kcal:75,prot:0.8,carb:19,gord:0.2},{name:'Laranja lima (1un 140g)',kcal:65,prot:1.3,carb:16,gord:0.2},{name:'Tangerina poncã (1un 135g)',kcal:70,prot:1.2,carb:17,gord:0.4},{name:'Uva (15un 120g)',kcal:80,prot:0.8,carb:21,gord:0.2}]},
 {group:'Pão (1 fatia 25g)',items:[{name:'Pão de forma integral (1 fatia)',kcal:65,prot:3,carb:12,gord:1},{name:'Pão de forma branco (1 fatia)',kcal:70,prot:2,carb:13,gord:1},{name:'Pão francês (1un 50g)',kcal:140,prot:4,carb:28,gord:1.5}]}
 ],
@@ -2634,6 +2683,7 @@ const cats=Object.keys(COMPRA_CATEGORIES);
 const usedCats=new Set(all.map(x=>x.category));
 let catOpts='<option value="all">Todas as categorias</option>';
 cats.filter(k=>usedCats.has(k)).forEach(k=>{catOpts+='<option value="'+k+'"'+(comprasCatFilter===k?' selected':'')+'>'+COMPRA_CATEGORIES[k].icon+' '+COMPRA_CATEGORIES[k].label+'</option>';});
+h+='<button class="add-btn" onclick="openCompraEdit()" style="margin-bottom:10px;margin-top:0"><i class="ti ti-plus"></i>Adicionar item</button>';
 h+='<div style="margin-bottom:12px"><select onchange="setComprasCat(this.value)" style="width:100%;padding:8px 10px;border:1px solid #CBD5E1;border-radius:6px;font-size:13px;background:#fff">'+catOpts+'</select></div>';
 if(filtered.length===0){h+='<div class="diet-empty">Nenhum item encontrado neste filtro.</div>';}
 else{
@@ -2651,7 +2701,6 @@ h+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bot
 h+='</div></div>';
 });
 }
-h+='<button class="add-btn" onclick="openCompraEdit()" style="margin-top:8px"><i class="ti ti-plus"></i>Adicionar item</button>';
 if(counts.comprado>0){
 h+=`<button class="btn-save" onclick="confirmCompra()" style="width:100%;padding:12px;margin-top:8px;font-weight:600"><i class="ti ti-shopping-cart-check"></i> Confirmar ${counts.comprado} ${counts.comprado===1?'item comprado':'itens comprados'}</button>`;
 }
