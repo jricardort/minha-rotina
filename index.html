@@ -638,23 +638,29 @@ renderPlan();
 if(window.syncNow)window.syncNow();
 }
 let diet={};try{const _d=localStorage.getItem('diet');diet=_d?JSON.parse(_d)||{}:{};}catch(e){diet={};}
-(function addChurrascoPizza20260523(){
+function applyChurrascoPizzaMigration(){
 const key='2026-05-23';
-const flagKey='_addedChurrascoPizza_20260523';
-if(localStorage.getItem(flagKey))return;
 if(!diet[key])diet[key]={meals:[],beers:[],water:0};
 const d=diet[key];
 if(!Array.isArray(d.meals))d.meals=[];
 if(!Array.isArray(d.beers))d.beers=[];
+const hasChurrasco=d.meals.some(m=>m.items&&/Churrasco/i.test(m.items));
+const hasPizza=d.meals.some(m=>m.items&&/pizza margherita/i.test(m.items));
+const beersFromChurrasco=d.beers.filter(b=>b.note==='Churrasco').length;
 const _uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-d.meals.push({id:_uid(),name:'🍛 Almoço — Churrasco',time:'13:00',kcal:900,prot:70,carb:5,gord:60,items:'Churrasco variado (picanha, fraldinha, linguiça, pão de alho, vinagrete)',type:'almoco'});
-for(let i=0;i<8;i++){d.beers.push({id:_uid(),type:'pilsner',volume:500,kcal:200,carb:15,time:'13:30',note:'Churrasco'});}
-d.meals.push({id:_uid(),name:'🍲 Jantar — Pizza',time:'20:00',kcal:750,prot:30,carb:90,gord:24,items:'3 fatias de pizza margherita',type:'jantar'});
+let changed=false;
+if(!hasChurrasco){d.meals.push({id:_uid(),name:'🍛 Almoço — Churrasco',time:'13:00',kcal:900,prot:70,carb:5,gord:60,items:'Churrasco variado (picanha, fraldinha, linguiça, pão de alho, vinagrete)',type:'almoco'});changed=true;}
+const beersNeeded=8-beersFromChurrasco;
+if(beersNeeded>0){for(let i=0;i<beersNeeded;i++){d.beers.push({id:_uid(),type:'pilsner',volume:500,kcal:200,carb:15,time:'13:30',note:'Churrasco'});}changed=true;}
+if(!hasPizza){d.meals.push({id:_uid(),name:'🍲 Jantar — Pizza',time:'20:00',kcal:750,prot:30,carb:90,gord:24,items:'3 fatias de pizza margherita',type:'jantar'});changed=true;}
+if(changed){
 d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-try{localStorage.setItem('diet',JSON.stringify(diet));localStorage.setItem(flagKey,'1');}catch(e){}
+try{localStorage.setItem('diet',JSON.stringify(diet));}catch(e){}
 if(window.syncNow)setTimeout(()=>window.syncNow(),500);
-console.log('✓ Adicionado: churrasco + 8 cervejas + pizza margherita em 23/05/2026');
-})();
+console.log('✓ Aplicado: churrasco + cervejas + pizza em 23/05/2026');
+}
+}
+applyChurrascoPizzaMigration();
 (function migrateIogurte(){
 let changed=false;
 Object.keys(diet).forEach(dk=>{
@@ -3037,6 +3043,7 @@ try{const erR=localStorage.getItem('exerciseRenames');exerciseRenames=erR?JSON.p
 try{const uzR=localStorage.getItem('userZones');userZones=uzR?JSON.parse(uzR)||{}:{};}catch(e){userZones={};}
 try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
 try{const dR=localStorage.getItem('diet');diet=dR?JSON.parse(dR)||{}:{};}catch(e){diet={};}
+if(typeof applyChurrascoPizzaMigration==='function')applyChurrascoPizzaMigration();
 try{const gR=localStorage.getItem('dietGoals');if(gR){const p=JSON.parse(gR);if(p)Object.assign(dietGoals,p);}}catch(e){}
 try{const fR=localStorage.getItem('dietFavorites');dietFavorites=fR?JSON.parse(fR)||[]:[];}catch(e){dietFavorites=[];}
 try{const wkR=localStorage.getItem('workoutKcal');workoutKcal=wkR?JSON.parse(wkR)||{}:{};}catch(e){workoutKcal={};}
