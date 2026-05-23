@@ -423,7 +423,8 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><input type="text" id="modal-weight-title" maxlength="80" style="flex:1;font-size:15px;font-weight:500;color:#000;border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent" placeholder="Nome do exercício" onfocus="this.style.background='#F8F9FA';this.style.borderColor='#CBD5E1'" onblur="saveExerciseName(this);this.style.background='transparent';this.style.borderColor='transparent'"><i class="ti ti-pencil" style="color:#94A3B8;font-size:14px"></i></div><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="text" inputmode="decimal" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Estrutura semanal (4 corridas + 3 musc + 1 descanso)</div><table class="info-table"><thead><tr><th>Dia</th><th>Treino</th></tr></thead><tbody><tr><td><b>Seg</b></td><td>Pernas (musc)</td></tr><tr><td><b>Ter</b></td><td>Push + Z2 leve 20-25min</td></tr><tr><td><b>Qua</b></td><td>Z2 recovery 25-30min</td></tr><tr><td><b>Qui</b></td><td>Pull (musc)</td></tr><tr><td><b>Sex</b></td><td>Quality run (Z3/Z4 — varia por fase)</td></tr><tr><td><b>Sáb</b></td><td>Long Run Z2</td></tr><tr><td><b>Dom</b></td><td>Descanso total</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
-<div class="modal-bg" id="modal-foods"><div class="modal" style="max-width:420px"><h3>Meus alimentos</h3><p class="modal-hint">Lista de alimentos disponíveis para usar nas refeições.</p><div class="modal-field" style="margin-bottom:10px"><label>Filtrar refeição</label><select id="mf-filter" onchange="renderFoodsList()"><option value="all">Todas</option><option value="cafe">☕ Café</option><option value="pos_treino">💊 Pós-treino</option><option value="almoco">🍛 Almoço</option><option value="lanche">🥑 Lanche</option><option value="jantar">🍲 Jantar</option><option value="ceia">🌙 Ceia</option><option value="extra">✏️ Extra</option></select></div><div id="mf-list" style="max-height:55vh;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeFoodsModal()" style="flex:1">Fechar</button></div></div></div>
+<div class="modal-bg" id="modal-foods"><div class="modal" style="max-width:420px"><h3>Meus alimentos</h3><p class="modal-hint">Cadastre alimentos personalizados ou ajuste os da base.</p><div class="modal-grid" style="margin-bottom:10px"><div class="modal-field"><label>Categoria</label><select id="mf-filter" onchange="renderFoodsList()"></select></div><div class="modal-field"><label>Origem</label><select id="mf-source" onchange="renderFoodsList()"><option value="all">Todos</option><option value="user">Meus</option><option value="base">Base</option><option value="overridden">Editados</option></select></div></div><button class="add-btn" onclick="openFoodEdit()" style="margin-bottom:10px"><i class="ti ti-plus"></i>Novo alimento</button><div id="mf-list" style="max-height:50vh;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeFoodsModal()" style="flex:1">Fechar</button></div></div></div>
+<div class="modal-bg" id="modal-food-edit"><div class="modal" style="max-width:400px"><h3 id="mfe-title">Novo alimento</h3><p class="modal-hint" id="mfe-hint">Preencha os valores nutricionais. A foto da tabela é opcional, fica como referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Nome</label><input type="text" id="mfe-name" maxlength="80" placeholder="Ex: Iogurte Vigor proteico"></div><div class="modal-grid"><div class="modal-field"><label>Categoria</label><select id="mfe-category"></select></div><div class="modal-field"><label>Unidade</label><select id="mfe-unit" onchange="updateFoodUnitHint()"><option value="100g">Por 100g</option><option value="un">Por unidade</option></select></div></div><div style="font-size:11px;color:#64748B;margin-bottom:8px" id="mfe-unit-hint">Valores por 100g do alimento.</div><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="text" inputmode="decimal" id="mfe-kcal" placeholder="0"></div><div class="modal-field"><label>Proteína (g)</label><input type="text" inputmode="decimal" id="mfe-prot" placeholder="0"></div></div><div class="modal-grid"><div class="modal-field"><label>Carbo (g)</label><input type="text" inputmode="decimal" id="mfe-carb" placeholder="0"></div><div class="modal-field"><label>Gordura (g)</label><input type="text" inputmode="decimal" id="mfe-gord" placeholder="0"></div></div><div class="modal-field" style="margin-bottom:10px"><label>📷 Foto da tabela (opcional)</label><input type="file" accept="image/*" capture="environment" id="mfe-photo" onchange="onFoodPhotoChange(this)" style="font-size:13px"><img id="mfe-photo-preview" style="max-width:100%;margin-top:6px;display:none;border-radius:6px;border:1px solid #E2E8F0"><button type="button" id="mfe-photo-remove" onclick="removeFoodPhoto()" style="display:none;background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;border-radius:5px;padding:4px 10px;font-size:11px;cursor:pointer;margin-top:6px">Remover foto</button></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opc)</label><input type="text" id="mfe-notes" maxlength="200" placeholder="Marca, observações"></div><div class="modal-btns" id="mfe-btns"></div></div></div>
 <div class="modal-bg" id="modal-add-exercise"><div class="modal"><h3 id="ae-title">Adicionar exercício</h3><p class="modal-hint">Escolha o tipo de exercício e preencha os campos.</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ae-type" onchange="renderAddExerciseFields()"><option value="">— escolha —</option><option value="musc">🏋️ Musculação</option><option value="corrida">🏃 Corrida</option><option value="alongamento">🧘 Alongamento</option><option value="mobilidade">💆 Mobilidade</option><option value="core">🔥 Core / Abdominal</option><option value="sauna">🧖 Sauna</option><option value="livre">✏️ Personalizado</option></select></div><div id="ae-fields"></div><div class="modal-btns" id="ae-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeAddExerciseModal()">Cancelar</button><button class="btn-save" onclick="saveAddExercise()">Adicionar</button></div></div></div>
 <div class="modal-bg" id="modal-compra"><div class="modal"><h3 id="mc-title">Adicionar item</h3><div class="modal-field" style="margin-bottom:10px"><label>Nome *</label><input type="text" id="mc-name" maxlength="80" placeholder="Ex: Frango grelhado"></div><div class="modal-grid"><div class="modal-field"><label>Categoria</label><select id="mc-category"><option value="proteina">🥩 Proteína</option><option value="leguminosa">🫘 Leguminosa</option><option value="cereal">🌾 Cereal</option><option value="fruta">🍎 Fruta</option><option value="vegetal">🥗 Vegetal</option><option value="laticinio">🥛 Laticínio</option><option value="gordura">🫒 Gordura</option><option value="suplemento">💊 Suplemento</option><option value="doce">🍬 Doce</option><option value="bebida">🥤 Bebida</option><option value="limpeza">🧽 Limpeza</option><option value="higiene">🧴 Higiene</option><option value="outros">📦 Outros</option></select></div><div id="mc-status-wrap" style="display:none"><div class="modal-field"><label>Status</label><select id="mc-status"><option value="sugerido">💭 Sugerido</option><option value="aceito">🛒 Aceito</option><option value="comprado">✅ Comprado</option></select></div></div></div><div class="modal-grid"><div class="modal-field"><label>Quantidade</label><input type="text" inputmode="decimal" id="mc-quantity" step="0.1" placeholder="Ex: 1.5"></div><div class="modal-field"><label>Unidade</label><select id="mc-unit"><option value="">—</option><option value="kg">kg</option><option value="g">g</option><option value="un">un</option><option value="l">l</option><option value="ml">ml</option><option value="pacote">pacote</option><option value="caixa">caixa</option></select></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="mc-notes" maxlength="200" placeholder="Ex: marca X, sem sal"></div><div class="modal-btns" id="mc-btns"></div></div></div>
 <div class="modal-bg" id="modal-meal-builder"><div class="modal" style="max-width:400px"><h3>Adicionar refeição</h3><p class="modal-hint">Monte a refeição combinando os itens do plano. Os valores são auto-calculados.</p><div class="modal-field" style="margin-bottom:10px"><label>Refeição</label><select id="mb-type"><option value="cafe">☕ Café da manhã</option><option value="pos_treino">💊 Pós-treino</option><option value="almoco">🍛 Almoço</option><option value="lanche">🥑 Lanche da tarde</option><option value="jantar">🍲 Jantar</option><option value="ceia">🌙 Ceia</option><option value="extra">✏️ Extra / livre</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Hora</label><input type="time" id="mb-time"></div><div id="mb-items" style="margin-bottom:10px"></div><div class="modal-field" style="margin-bottom:10px"><label>Observações (opcional)</label><input type="text" id="mb-note" maxlength="120" placeholder="Ex: troquei frango por peixe"></div><div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:#15803D;text-transform:uppercase;letter-spacing:.04em;font-weight:600">Total estimado</span><b id="mb-total" style="font-size:16px;color:#15803D">0 kcal</b></div><div style="font-size:10px;color:#15803D;margin-top:4px" id="mb-macros">P: 0g · C: 0g · G: 0g</div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMealBuilderModal()">Cancelar</button><button class="btn-save" onclick="saveMealBuilder()">Salvar</button></div></div></div>
@@ -664,30 +665,186 @@ let workoutKcal={};try{const _w=localStorage.getItem('workoutKcal');workoutKcal=
 let dayExtraExercises={};try{const _de=localStorage.getItem('dayExtraExercises');dayExtraExercises=_de?JSON.parse(_de)||{}:{};}catch(e){dayExtraExercises={};}
 let userFoods=[];try{const _uf=localStorage.getItem('userFoods');userFoods=_uf?JSON.parse(_uf)||[]:[];}catch(e){userFoods=[];}
 let foodOverrides={};try{const _fo=localStorage.getItem('foodOverrides');foodOverrides=_fo?JSON.parse(_fo)||{}:{};}catch(e){foodOverrides={};}
-function openFoodsModal(){document.getElementById('modal-foods').classList.add('open');renderFoodsList();}
+function getAllFoodCategories(){
+const set=new Set();
+Object.values(MEAL_BUILDER_OPTIONS).forEach(meal=>meal.forEach(grp=>set.add(grp.group)));
+return Array.from(set).sort();
+}
+function populateCategorySelect(selectId,includeAll){
+const sel=document.getElementById(selectId);
+if(!sel)return;
+const cur=sel.value;
+let h=includeAll?'<option value="all">Todas</option>':'';
+getAllFoodCategories().forEach(cat=>{h+='<option value="'+escapeHtml(cat)+'">'+escapeHtml(cat)+'</option>';});
+sel.innerHTML=h;
+if(cur)sel.value=cur;
+}
+function openFoodsModal(){
+populateCategorySelect('mf-filter',true);
+document.getElementById('modal-foods').classList.add('open');
+renderFoodsList();
+}
 function closeFoodsModal(){document.getElementById('modal-foods').classList.remove('open');}
 function renderFoodsList(){
-const mealF=document.getElementById('mf-filter').value;
+const catF=document.getElementById('mf-filter').value;
+const srcF=document.getElementById('mf-source').value;
 const c=document.getElementById('mf-list');
 const items=[];
-const mealsToCheck=mealF==='all'?Object.keys(MEAL_BUILDER_OPTIONS):[mealF];
-mealsToCheck.forEach(mt=>{
-const groups=MEAL_BUILDER_OPTIONS[mt]||[];
-groups.forEach(grp=>{
+const seen=new Set();
+if(srcF==='all'||srcF==='user'){
+userFoods.forEach(f=>{
+const cat=f.category||f.mealType||'Outros';
+if(catF!=='all'&&cat!==catF)return;
+items.push({source:'user',id:f.id,name:f.name,category:cat,kcalP100:f.kcalP100,protP100:f.protP100,carbP100:f.carbP100,gordP100:f.gordP100,kcal:f.kcal,prot:f.prot,carb:f.carb,gord:f.gord,photo:f.photo});
+});
+}
+if(srcF==='all'||srcF==='base'||srcF==='overridden'){
+Object.keys(MEAL_BUILDER_OPTIONS).forEach(mt=>{
+(MEAL_BUILDER_OPTIONS[mt]||[]).forEach(grp=>{
+if(catF!=='all'&&grp.group!==catF)return;
 grp.items.forEach(it=>{
-items.push({name:it.name,kcalP100:it.kcalP100,kcal:it.kcal,protP100:it.protP100,prot:it.prot,carbP100:it.carbP100,carb:it.carb,gordP100:it.gordP100,gord:it.gord,mealType:mt,group:grp.group});
+const dedupeKey=it.name+'::'+grp.group;
+if(seen.has(dedupeKey))return;
+seen.add(dedupeKey);
+const ov=foodOverrides[it.name];
+if(srcF==='overridden'&&!ov)return;
+const merged=Object.assign({},it,ov||{});
+items.push({source:'base',id:it.name,name:it.name,category:grp.group,kcalP100:merged.kcalP100,protP100:merged.protP100,carbP100:merged.carbP100,gordP100:merged.gordP100,kcal:merged.kcal,prot:merged.prot,carb:merged.carb,gord:merged.gord,hasOverride:!!ov,photo:merged.photo});
 });
 });
 });
+}
 if(items.length===0){c.innerHTML='<div class="diet-empty">Nenhum alimento.</div>';return;}
+const byCat={};
+items.forEach(it=>{if(!byCat[it.category])byCat[it.category]=[];byCat[it.category].push(it);});
 let h='';
-items.forEach(it=>{
+Object.keys(byCat).sort().forEach(cat=>{
+h+='<div style="font-size:10px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin:10px 0 6px">'+escapeHtml(cat)+'</div>';
+byCat[cat].forEach(it=>{
 const isWeight=it.kcalP100!=null;
-const kcalDisp=isWeight?(it.kcalP100+' kcal/100g'):((it.kcal||0)+' kcal/un');
-h+='<div style="padding:8px 10px;border:1px solid #E2E8F0;border-radius:6px;margin-bottom:6px"><div style="font-size:13px;font-weight:600;color:#0F172A">'+escapeHtml(it.name)+'</div><div style="font-size:11px;color:#64748B;margin-top:2px">'+escapeHtml(kcalDisp)+'</div></div>';
+const kcalDisp=isWeight?(formatBR(it.kcalP100)+' kcal/100g'):((it.kcal||0)+' kcal/un');
+const tag=it.source==='user'?'<span style="background:#DBEAFE;color:#1E40AF;font-size:9px;padding:1px 6px;border-radius:99px;font-weight:600;margin-left:6px">MEU</span>':(it.hasOverride?'<span style="background:#FEF3C7;color:#92400E;font-size:9px;padding:1px 6px;border-radius:99px;font-weight:600;margin-left:6px">EDIT</span>':'');
+const photoIcon=it.photo?'<span style="margin-left:4px">📷</span>':'';
+const idStr=it.source==='user'?('user:'+it.id):('base:'+it.id);
+let btns='<button onclick="openFoodEdit(\''+idStr.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')" style="background:#fff;border:1px solid #BFDBFE;border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#2563EB"><i class="ti ti-pencil"></i></button>';
+if(it.source==='user')btns+='<button onclick="deleteUserFood(\''+it.id+'\')" style="background:#fff;border:1px solid #FECACA;border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#DC2626;margin-left:4px"><i class="ti ti-trash"></i></button>';
+else if(it.hasOverride)btns+='<button onclick="resetFoodOverride(\''+it.id.replace(/'/g,"\\'")+'\')" title="Voltar ao padrão" style="background:#fff;border:1px solid #FDE68A;border-radius:5px;padding:4px 8px;font-size:11px;cursor:pointer;color:#F59E0B;margin-left:4px"><i class="ti ti-restore"></i></button>';
+h+='<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1px solid #E2E8F0;border-radius:6px;margin-bottom:6px"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:#0F172A">'+escapeHtml(it.name)+tag+photoIcon+'</div><div style="font-size:11px;color:#64748B;margin-top:2px">'+escapeHtml(kcalDisp)+'</div></div><div style="display:flex;flex-shrink:0">'+btns+'</div></div>';
+});
 });
 c.innerHTML=h;
 }
+let editingFoodId=null;
+let editingFoodSource=null;
+let currentFoodPhoto=null;
+function updateFoodUnitHint(){const u=document.getElementById('mfe-unit').value;document.getElementById('mfe-unit-hint').textContent=u==='100g'?'Valores por 100g do alimento.':'Valores por unidade/porção.';}
+function openFoodEdit(idStr){
+editingFoodId=null;editingFoodSource=null;currentFoodPhoto=null;
+populateCategorySelect('mfe-category',false);
+let item=null;
+let itemCategory=null;
+if(idStr&&idStr.startsWith('user:')){
+const id=idStr.slice(5);
+item=userFoods.find(f=>f.id===id);
+if(item){editingFoodSource='user';editingFoodId=id;itemCategory=item.category||null;}
+}else if(idStr&&idStr.startsWith('base:')){
+const name=idStr.slice(5);
+let baseItem=null;
+Object.keys(MEAL_BUILDER_OPTIONS).forEach(mt=>{
+(MEAL_BUILDER_OPTIONS[mt]||[]).forEach(grp=>{
+const f=grp.items.find(i=>i.name===name);
+if(f&&!baseItem){baseItem=f;itemCategory=grp.group;}
+});
+});
+if(baseItem){
+const ov=foodOverrides[name]||{};
+item=Object.assign({},baseItem,ov);
+editingFoodSource='base';editingFoodId=name;
+}
+}
+document.getElementById('mfe-title').textContent=item?(editingFoodSource==='base'?'Editar (base): '+item.name:'Editar '+item.name):'Novo alimento';
+document.getElementById('mfe-hint').textContent=editingFoodSource==='base'?'Você está sobrescrevendo valores da base. O nome e categoria ficam travados.':'Preencha os valores nutricionais. A foto da tabela é opcional, fica como referência.';
+document.getElementById('mfe-name').value=item?item.name:'';
+document.getElementById('mfe-name').disabled=editingFoodSource==='base';
+if(itemCategory)document.getElementById('mfe-category').value=itemCategory;
+document.getElementById('mfe-category').disabled=editingFoodSource==='base';
+const isWeight=item?(item.kcalP100!=null):true;
+document.getElementById('mfe-unit').value=isWeight?'100g':'un';
+document.getElementById('mfe-unit').disabled=editingFoodSource==='base';
+document.getElementById('mfe-kcal').value=item?(isWeight?(item.kcalP100!=null?formatBR(item.kcalP100):''):(item.kcal!=null?formatBR(item.kcal):'')):'';
+document.getElementById('mfe-prot').value=item?(isWeight?(item.protP100!=null?formatBR(item.protP100):''):(item.prot!=null?formatBR(item.prot):'')):'';
+document.getElementById('mfe-carb').value=item?(isWeight?(item.carbP100!=null?formatBR(item.carbP100):''):(item.carb!=null?formatBR(item.carb):'')):'';
+document.getElementById('mfe-gord').value=item?(isWeight?(item.gordP100!=null?formatBR(item.gordP100):''):(item.gord!=null?formatBR(item.gord):'')):'';
+document.getElementById('mfe-notes').value=item?(item.notes||''):'';
+document.getElementById('mfe-photo').value='';
+currentFoodPhoto=item?(item.photo||null):null;
+const prev=document.getElementById('mfe-photo-preview');
+const rmBtn=document.getElementById('mfe-photo-remove');
+if(currentFoodPhoto){prev.src=currentFoodPhoto;prev.style.display='block';rmBtn.style.display='inline-block';}
+else{prev.style.display='none';rmBtn.style.display='none';}
+updateFoodUnitHint();
+let btnHtml='<button class="btn-cancel" onclick="closeFoodEdit()">Cancelar</button>';
+if(editingFoodSource==='user')btnHtml='<button class="btn-del" onclick="deleteUserFood(\''+editingFoodId+'\');closeFoodEdit()">Excluir</button>'+btnHtml;
+btnHtml+='<button class="btn-save" onclick="saveFoodEdit()">Salvar</button>';
+document.getElementById('mfe-btns').innerHTML=btnHtml;
+document.getElementById('modal-food-edit').classList.add('open');
+}
+function closeFoodEdit(){document.getElementById('modal-food-edit').classList.remove('open');editingFoodId=null;editingFoodSource=null;currentFoodPhoto=null;}
+function onFoodPhotoChange(input){
+if(!input.files||!input.files[0])return;
+const file=input.files[0];
+const reader=new FileReader();
+reader.onload=function(e){
+const img=new Image();
+img.onload=function(){
+const canvas=document.createElement('canvas');
+let w=img.width,h=img.height;
+const maxDim=800;
+if(w>maxDim||h>maxDim){if(w>h){h=Math.round(h*maxDim/w);w=maxDim;}else{w=Math.round(w*maxDim/h);h=maxDim;}}
+canvas.width=w;canvas.height=h;
+canvas.getContext('2d').drawImage(img,0,0,w,h);
+currentFoodPhoto=canvas.toDataURL('image/jpeg',0.65);
+const prev=document.getElementById('mfe-photo-preview');
+prev.src=currentFoodPhoto;prev.style.display='block';
+document.getElementById('mfe-photo-remove').style.display='inline-block';
+};
+img.src=e.target.result;
+};
+reader.readAsDataURL(file);
+}
+function removeFoodPhoto(){currentFoodPhoto=null;document.getElementById('mfe-photo-preview').style.display='none';document.getElementById('mfe-photo-remove').style.display='none';document.getElementById('mfe-photo').value='';}
+function saveFoodEdit(){
+const name=(document.getElementById('mfe-name').value||'').trim().slice(0,80);
+if(!name)return alert('Informe o nome.');
+const category=document.getElementById('mfe-category').value;
+if(!category)return alert('Selecione a categoria.');
+const unit=document.getElementById('mfe-unit').value;
+const kcal=parseBR(document.getElementById('mfe-kcal').value)||0;
+const prot=parseBR(document.getElementById('mfe-prot').value)||0;
+const carb=parseBR(document.getElementById('mfe-carb').value)||0;
+const gord=parseBR(document.getElementById('mfe-gord').value)||0;
+const notes=(document.getElementById('mfe-notes').value||'').trim().slice(0,200);
+if(editingFoodSource==='base'){
+const ov={};
+if(unit==='100g'){ov.kcalP100=kcal;ov.protP100=prot;ov.carbP100=carb;ov.gordP100=gord;}
+else{ov.kcal=kcal;ov.prot=prot;ov.carb=carb;ov.gord=gord;}
+if(notes)ov.notes=notes;
+if(currentFoodPhoto)ov.photo=currentFoodPhoto;
+foodOverrides[editingFoodId]=ov;
+try{localStorage.setItem('foodOverrides',JSON.stringify(foodOverrides));}catch(e){return alert('Erro: '+e.message);}
+}else{
+const food={id:editingFoodId||uid(),name:name,category:category,notes:notes,photo:currentFoodPhoto,updatedAt:Date.now()};
+if(unit==='100g'){food.kcalP100=kcal;food.protP100=prot;food.carbP100=carb;food.gordP100=gord;food.defaultG=100;}
+else{food.kcal=kcal;food.prot=prot;food.carb=carb;food.gord=gord;}
+if(editingFoodId){const i=userFoods.findIndex(f=>f.id===editingFoodId);if(i>=0)userFoods[i]=Object.assign({},userFoods[i],food);}
+else{food.createdAt=Date.now();userFoods.push(food);}
+try{localStorage.setItem('userFoods',JSON.stringify(userFoods));}catch(e){return alert('Erro: '+e.message);}
+}
+closeFoodEdit();renderFoodsList();
+if(window.syncNow)window.syncNow();
+}
+function deleteUserFood(id){if(!confirm('Excluir este alimento?'))return;userFoods=userFoods.filter(f=>f.id!==id);try{localStorage.setItem('userFoods',JSON.stringify(userFoods));}catch(e){}renderFoodsList();if(window.syncNow)window.syncNow();}
+function resetFoodOverride(name){if(!confirm('Voltar para os valores originais?'))return;delete foodOverrides[name];try{localStorage.setItem('foodOverrides',JSON.stringify(foodOverrides));}catch(e){}renderFoodsList();if(window.syncNow)window.syncNow();}
 let addExerciseDay=null;
 function openAddExerciseModal(dayKey){
 addExerciseDay=dayKey;
