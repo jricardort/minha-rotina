@@ -418,22 +418,22 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <button class="add-btn" onclick="openTaskModal()"><i class="ti ti-plus"></i>Nova tarefa</button>
 </div>
 </div>
-<div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha os campos disponíveis na sua balança. IMC, Gordura (kg) e Músculo (kg) são calculados automaticamente.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" inputmode="decimal" id="m-peso" step="0.1" placeholder="Ex: 82.5"></div><div class="modal-field"><label>% Gordura</label><input type="number" inputmode="decimal" id="m-gordura" step="0.1" placeholder="Ex: 22.0"></div><div class="modal-field"><label>% Músculo</label><input type="number" inputmode="decimal" id="m-musculo" step="0.1" placeholder="Ex: 38.0"></div><div class="modal-field"><label>% Proteína</label><input type="number" inputmode="decimal" id="m-proteina" step="0.1" placeholder="Ex: 17.5"></div><div class="modal-field"><label>Visceral Fat Rating</label><input type="number" inputmode="decimal" id="m-visceral" step="1" placeholder="Ex: 8"></div><div class="modal-field"><label>Body Age (anos)</label><input type="number" inputmode="decimal" id="m-bodyAge" step="1" placeholder="Ex: 34"></div><div class="modal-field" style="grid-column:1/-1"><label>Basal (kcal)</label><input type="number" inputmode="decimal" id="m-basal" step="1" placeholder="Ex: 1850"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha os campos disponíveis na sua balança. IMC, Gordura (kg) e Músculo (kg) são calculados automaticamente.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="text" inputmode="decimal" id="m-peso" step="0.1" placeholder="Ex: 82.5"></div><div class="modal-field"><label>% Gordura</label><input type="text" inputmode="decimal" id="m-gordura" step="0.1" placeholder="Ex: 22.0"></div><div class="modal-field"><label>% Músculo</label><input type="text" inputmode="decimal" id="m-musculo" step="0.1" placeholder="Ex: 38.0"></div><div class="modal-field"><label>% Proteína</label><input type="text" inputmode="decimal" id="m-proteina" step="0.1" placeholder="Ex: 17.5"></div><div class="modal-field"><label>Visceral Fat Rating</label><input type="text" inputmode="decimal" id="m-visceral" step="1" placeholder="Ex: 8"></div><div class="modal-field"><label>Body Age (anos)</label><input type="text" inputmode="decimal" id="m-bodyAge" step="1" placeholder="Ex: 34"></div><div class="modal-field" style="grid-column:1/-1"><label>Basal (kcal)</label><input type="text" inputmode="decimal" id="m-basal" step="1" placeholder="Ex: 1850"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-task"><div class="modal"><h3 id="modal-task-title">Nova tarefa</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Tarefa</label><input type="text" id="task-text" placeholder="O que precisa ser feito?"></div><div class="modal-grid"><div class="modal-field"><label>Prioridade</label><select id="task-priority"><option value="high">🔴 Alta</option><option value="medium">🔵 Média</option><option value="low">🟢 Baixa</option></select></div><div class="modal-field"><label>Prazo</label><input type="date" id="task-due"></div></div></div><div class="modal-btns" id="task-btns"><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-weight"><div class="modal"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><input type="text" id="modal-weight-title" maxlength="80" style="flex:1;font-size:15px;font-weight:500;color:#000;border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent" placeholder="Nome do exercício" onfocus="this.style.background='#F8F9FA';this.style.borderColor='#CBD5E1'" onblur="saveExerciseName(this);this.style.background='transparent';this.style.borderColor='transparent'"><i class="ti ti-pencil" style="color:#94A3B8;font-size:14px"></i></div><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="number" inputmode="decimal" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-weight"><div class="modal"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><input type="text" id="modal-weight-title" maxlength="80" style="flex:1;font-size:15px;font-weight:500;color:#000;border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent" placeholder="Nome do exercício" onfocus="this.style.background='#F8F9FA';this.style.borderColor='#CBD5E1'" onblur="saveExerciseName(this);this.style.background='transparent';this.style.borderColor='transparent'"><i class="ti ti-pencil" style="color:#94A3B8;font-size:14px"></i></div><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="text" inputmode="decimal" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
 <div class="info-modal-overlay" id="modal-info" onclick="if(event.target===this)closeInfoModal()"><div class="info-modal"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><div class="info-modal-title">Visão Geral do Plano</div><button onclick="closeInfoModal()" style="background:0;border:0;cursor:pointer;font-size:20px;color:#64748B;line-height:1">×</button></div><p class="info-modal-sub">Plano periodizado de 22 semanas estruturado em 4 fases progressivas + taper, baseado nos princípios da periodização clássica para corrida de fundo. <strong>Meta:</strong> 10km em menos de 55 minutos (pace 5:30/km) na Maratona de Munique — 11/10/2026.</p><div class="info-section">Objetivos secundários</div><ul class="info-list"><li>Hipertrofia muscular — estímulo em 4 dias por semana</li><li>Emagrecimento gradual — meta 81kg → 76kg (altura 1,74m)</li><li>Recuperação ativa com sauna 2x por semana</li><li>Manutenção da saúde geral e prevenção de lesões</li></ul><div class="info-section">Estrutura das fases</div><table class="info-table"><thead><tr><th>Fase</th><th>Período</th><th>Sem.</th><th>Foco</th></tr></thead><tbody><tr><td>Base Aeróbica</td><td>11/05 → 05/07</td><td>8</td><td>Volume Z2 + Hipertrofia</td></tr><tr><td>Aumento de Volume</td><td>06/07 → 16/08</td><td>6</td><td>Tempo runs + Tiros</td></tr><tr><td>Intensidade</td><td>17/08 → 20/09</td><td>5</td><td>Intervalados + Ritmo</td></tr><tr><td>Pico de Performance</td><td>21/09 → 27/09</td><td>1</td><td>Pace específico 10K</td></tr><tr><td>Taper</td><td>28/09 → 11/10</td><td>2</td><td>Afunilamento → PROVA</td></tr></tbody></table><div class="info-section">Estrutura semanal (4 corridas + 3 musc + 1 descanso)</div><table class="info-table"><thead><tr><th>Dia</th><th>Treino</th></tr></thead><tbody><tr><td><b>Seg</b></td><td>Pernas (musc)</td></tr><tr><td><b>Ter</b></td><td>Push + Z2 leve 20-25min</td></tr><tr><td><b>Qua</b></td><td>Z2 recovery 25-30min</td></tr><tr><td><b>Qui</b></td><td>Pull (musc)</td></tr><tr><td><b>Sex</b></td><td>Quality run (Z3/Z4 — varia por fase)</td></tr><tr><td><b>Sáb</b></td><td>Long Run Z2</td></tr><tr><td><b>Dom</b></td><td>Descanso total</td></tr></tbody></table><div class="info-section">Zonas de Intensidade</div><div class="zone-row"><span class="zone-badge" style="background:#EFF6FF;color:#1D4ED8">Z1</span><span class="zone-desc"><strong>50–60% FCmáx</strong> — Recuperação ativa, regenerativo</span></div><div class="zone-row"><span class="zone-badge" style="background:#F0FDF4;color:#15803D">Z2</span><span class="zone-desc"><strong>60–70% FCmáx</strong> — Base aeróbica, queima de gordura, conversação fácil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FFFBEB;color:#B45309">Z3</span><span class="zone-desc"><strong>70–80% FCmáx</strong> — Tempo run, limiar aeróbico, conversa difícil</span></div><div class="zone-row"><span class="zone-badge" style="background:#FEF2F2;color:#DC2626">Z4</span><span class="zone-desc"><strong>80–90% FCmáx</strong> — Intervalado, limiar anaeróbico</span></div><div class="zone-row"><span class="zone-badge" style="background:#F5F3FF;color:#7C3AED">Z5</span><span class="zone-desc"><strong>90–100% FCmáx</strong> — Tiros curtos, VO2 máx</span></div></div></div>
 <div class="modal-bg" id="modal-add-exercise"><div class="modal"><h3 id="ae-title">Adicionar exercício</h3><p class="modal-hint">Escolha o tipo de exercício e preencha os campos.</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ae-type" onchange="renderAddExerciseFields()"><option value="">— escolha —</option><option value="musc">🏋️ Musculação</option><option value="corrida">🏃 Corrida</option><option value="alongamento">🧘 Alongamento</option><option value="mobilidade">💆 Mobilidade</option><option value="core">🔥 Core / Abdominal</option><option value="sauna">🧖 Sauna</option><option value="livre">✏️ Personalizado</option></select></div><div id="ae-fields"></div><div class="modal-btns" id="ae-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeAddExerciseModal()">Cancelar</button><button class="btn-save" onclick="saveAddExercise()">Adicionar</button></div></div></div>
-<div class="modal-bg" id="modal-compra"><div class="modal"><h3 id="mc-title">Adicionar item</h3><div class="modal-field" style="margin-bottom:10px"><label>Nome *</label><input type="text" id="mc-name" maxlength="80" placeholder="Ex: Frango grelhado"></div><div class="modal-grid"><div class="modal-field"><label>Categoria</label><select id="mc-category"><option value="proteina">🥩 Proteína</option><option value="leguminosa">🫘 Leguminosa</option><option value="cereal">🌾 Cereal</option><option value="fruta">🍎 Fruta</option><option value="vegetal">🥗 Vegetal</option><option value="laticinio">🥛 Laticínio</option><option value="gordura">🫒 Gordura</option><option value="suplemento">💊 Suplemento</option><option value="doce">🍬 Doce</option><option value="bebida">🥤 Bebida</option><option value="limpeza">🧽 Limpeza</option><option value="higiene">🧴 Higiene</option><option value="outros">📦 Outros</option></select></div><div id="mc-status-wrap" style="display:none"><div class="modal-field"><label>Status</label><select id="mc-status"><option value="sugerido">💭 Sugerido</option><option value="aceito">🛒 Aceito</option><option value="comprado">✅ Comprado</option></select></div></div></div><div class="modal-grid"><div class="modal-field"><label>Quantidade</label><input type="number" inputmode="decimal" id="mc-quantity" step="0.1" placeholder="Ex: 1.5"></div><div class="modal-field"><label>Unidade</label><select id="mc-unit"><option value="">—</option><option value="kg">kg</option><option value="g">g</option><option value="un">un</option><option value="l">l</option><option value="ml">ml</option><option value="pacote">pacote</option><option value="caixa">caixa</option></select></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="mc-notes" maxlength="200" placeholder="Ex: marca X, sem sal"></div><div class="modal-btns" id="mc-btns"></div></div></div>
+<div class="modal-bg" id="modal-compra"><div class="modal"><h3 id="mc-title">Adicionar item</h3><div class="modal-field" style="margin-bottom:10px"><label>Nome *</label><input type="text" id="mc-name" maxlength="80" placeholder="Ex: Frango grelhado"></div><div class="modal-grid"><div class="modal-field"><label>Categoria</label><select id="mc-category"><option value="proteina">🥩 Proteína</option><option value="leguminosa">🫘 Leguminosa</option><option value="cereal">🌾 Cereal</option><option value="fruta">🍎 Fruta</option><option value="vegetal">🥗 Vegetal</option><option value="laticinio">🥛 Laticínio</option><option value="gordura">🫒 Gordura</option><option value="suplemento">💊 Suplemento</option><option value="doce">🍬 Doce</option><option value="bebida">🥤 Bebida</option><option value="limpeza">🧽 Limpeza</option><option value="higiene">🧴 Higiene</option><option value="outros">📦 Outros</option></select></div><div id="mc-status-wrap" style="display:none"><div class="modal-field"><label>Status</label><select id="mc-status"><option value="sugerido">💭 Sugerido</option><option value="aceito">🛒 Aceito</option><option value="comprado">✅ Comprado</option></select></div></div></div><div class="modal-grid"><div class="modal-field"><label>Quantidade</label><input type="text" inputmode="decimal" id="mc-quantity" step="0.1" placeholder="Ex: 1.5"></div><div class="modal-field"><label>Unidade</label><select id="mc-unit"><option value="">—</option><option value="kg">kg</option><option value="g">g</option><option value="un">un</option><option value="l">l</option><option value="ml">ml</option><option value="pacote">pacote</option><option value="caixa">caixa</option></select></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="mc-notes" maxlength="200" placeholder="Ex: marca X, sem sal"></div><div class="modal-btns" id="mc-btns"></div></div></div>
 <div class="modal-bg" id="modal-meal-builder"><div class="modal" style="max-width:400px"><h3>Adicionar refeição</h3><p class="modal-hint">Monte a refeição combinando os itens do plano. Os valores são auto-calculados.</p><div class="modal-field" style="margin-bottom:10px"><label>Refeição</label><select id="mb-type"><option value="cafe">☕ Café da manhã</option><option value="pos_treino">💊 Pós-treino</option><option value="almoco">🍛 Almoço</option><option value="lanche">🥑 Lanche da tarde</option><option value="jantar">🍲 Jantar</option><option value="ceia">🌙 Ceia</option><option value="extra">✏️ Extra / livre</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Hora</label><input type="time" id="mb-time"></div><div id="mb-items" style="margin-bottom:10px"></div><div class="modal-field" style="margin-bottom:10px"><label>Observações (opcional)</label><input type="text" id="mb-note" maxlength="120" placeholder="Ex: troquei frango por peixe"></div><div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px;margin-bottom:14px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11px;color:#15803D;text-transform:uppercase;letter-spacing:.04em;font-weight:600">Total estimado</span><b id="mb-total" style="font-size:16px;color:#15803D">0 kcal</b></div><div style="font-size:10px;color:#15803D;margin-top:4px" id="mb-macros">P: 0g · C: 0g · G: 0g</div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMealBuilderModal()">Cancelar</button><button class="btn-save" onclick="saveMealBuilder()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-extras"><div class="modal"><h3>Registrar extras</h3><p class="modal-hint">Registre cerveja ou refeição "off" (fora do plano).</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ex-type"><option value="beer">🍺 Cerveja</option><option value="off">🍕 Refeição off (fora do plano)</option></select></div><div id="ex-beer-fields"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de bebida</label><select id="ex-beer-type"><option value="pilsner">🍺 Pilsen / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option><option value="vinho_tinto">🍷 Vinho tinto seco</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" inputmode="decimal" id="ex-beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="ex-beer-calc">— kcal · — carbo</span></div></div><div id="ex-off-fields" style="display:none"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de refeição</label><select id="ex-off-type" onchange="updateOffPreset()"><option value="">— escolha um preset —</option><option value="pizza">🍕 Pizza (média/2 fatias)</option><option value="japones">🍣 Japonês (combinado)</option><option value="mcdonalds">🍔 McDonald's (Big Mac + fritas)</option><option value="hamburguer">🍔 Hambúrguer artesanal</option><option value="churrasco">🥩 Churrasco/rodízio</option><option value="custom">✏️ Personalizado</option></select></div><div class="modal-grid"><div class="modal-field"><label>Calorias</label><input type="number" inputmode="decimal" id="ex-off-kcal" step="10" placeholder="600"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" inputmode="decimal" id="ex-off-carb" step="1" placeholder="60"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" inputmode="decimal" id="ex-off-prot" step="1" placeholder="30"></div><div class="modal-field"><label>Gordura (g)</label><input type="number" inputmode="decimal" id="ex-off-gord" step="1" placeholder="25"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ex-off-desc" maxlength="80" placeholder="Pizza calabresa"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Hora (opcional)</label><input type="time" id="ex-time"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeExtrasModal()">Cancelar</button><button class="btn-save" onclick="saveExtras()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-extras"><div class="modal"><h3>Registrar extras</h3><p class="modal-hint">Registre cerveja ou refeição "off" (fora do plano).</p><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="ex-type"><option value="beer">🍺 Cerveja</option><option value="off">🍕 Refeição off (fora do plano)</option></select></div><div id="ex-beer-fields"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de bebida</label><select id="ex-beer-type"><option value="pilsner">🍺 Pilsen / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option><option value="vinho_tinto">🍷 Vinho tinto seco</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="text" inputmode="decimal" id="ex-beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="ex-beer-calc">— kcal · — carbo</span></div></div><div id="ex-off-fields" style="display:none"><div class="modal-field" style="margin-bottom:10px"><label>Tipo de refeição</label><select id="ex-off-type" onchange="updateOffPreset()"><option value="">— escolha um preset —</option><option value="pizza">🍕 Pizza (média/2 fatias)</option><option value="japones">🍣 Japonês (combinado)</option><option value="mcdonalds">🍔 McDonald's (Big Mac + fritas)</option><option value="hamburguer">🍔 Hambúrguer artesanal</option><option value="churrasco">🥩 Churrasco/rodízio</option><option value="custom">✏️ Personalizado</option></select></div><div class="modal-grid"><div class="modal-field"><label>Calorias</label><input type="text" inputmode="decimal" id="ex-off-kcal" step="10" placeholder="600"></div><div class="modal-field"><label>Carbo (g)</label><input type="text" inputmode="decimal" id="ex-off-carb" step="1" placeholder="60"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="text" inputmode="decimal" id="ex-off-prot" step="1" placeholder="30"></div><div class="modal-field"><label>Gordura (g)</label><input type="text" inputmode="decimal" id="ex-off-gord" step="1" placeholder="25"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ex-off-desc" maxlength="80" placeholder="Pizza calabresa"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Hora (opcional)</label><input type="time" id="ex-time"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeExtrasModal()">Cancelar</button><button class="btn-save" onclick="saveExtras()">Salvar</button></div></div></div>
 <div class="tooltip-modal" id="tooltip-gasto" onclick="if(event.target===this)closeTooltipGasto()"><div class="tm-box"><div class="tm-title"><i class="ti ti-flame" style="color:#DC2626"></i>Detalhamento do gasto</div><div id="tooltip-gasto-content"></div><button class="tm-close" onclick="closeTooltipGasto()">Fechar</button></div></div>
-<div class="modal-bg" id="modal-meal"><div class="modal"><h3 id="modal-meal-title">Nova refeição</h3><p class="modal-hint">Registre o que comeu. Macros são opcionais.</p><div class="modal-field" style="margin-bottom:10px"><label>Nome</label><input type="text" id="meal-name" maxlength="60" placeholder="Ex: Café da manhã, Almoço"></div><div class="modal-grid"><div class="modal-field"><label>Hora</label><input type="time" id="meal-time"></div><div class="modal-field"><label>Calorias (kcal)</label><input type="number" inputmode="decimal" id="meal-kcal" step="1" placeholder="420"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" inputmode="decimal" id="meal-prot" step="0.1" placeholder="32"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" inputmode="decimal" id="meal-carb" step="0.1" placeholder="55"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Gordura (g)</label><input type="number" inputmode="decimal" id="meal-gord" step="0.1" placeholder="8"></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="meal-items" maxlength="200" placeholder="Aveia 50g, Banana, Whey 30g"></div><div class="modal-field" style="margin-bottom:14px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="meal-fav" style="width:auto"><label for="meal-fav" style="margin:0;font-size:12px;cursor:pointer">Salvar como favorito</label></div><div class="modal-btns" id="meal-btns"></div></div></div>
-<div class="modal-bg" id="modal-beer"><div class="modal"><h3 id="modal-beer-title">Registrar cerveja</h3><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="number" inputmode="decimal" id="beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="beer-calc">— kcal · — carbo</span></div><div class="modal-grid"><div class="modal-field"><label>Hora (opcional)</label><input type="time" id="beer-time"></div><div class="modal-field"><label>Marca / local (opc)</label><input type="text" id="beer-note" maxlength="40" placeholder="Augustiner"></div></div><div class="modal-btns" id="beer-btns" style="margin-top:14px"></div></div></div>
-<div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="number" inputmode="decimal" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="number" inputmode="decimal" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="number" inputmode="decimal" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="number" inputmode="decimal" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="number" inputmode="decimal" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="number" inputmode="decimal" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto total do dia (relógio) ou deixe em branco para usar a estimativa.</p><div class="modal-field" style="margin-bottom:10px"><label>Total kcal do dia</label><input type="number" inputmode="decimal" id="kw-total-input" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8;margin-top:4px;display:block" id="kw-est"></span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
+<div class="modal-bg" id="modal-meal"><div class="modal"><h3 id="modal-meal-title">Nova refeição</h3><p class="modal-hint">Registre o que comeu. Macros são opcionais.</p><div class="modal-field" style="margin-bottom:10px"><label>Nome</label><input type="text" id="meal-name" maxlength="60" placeholder="Ex: Café da manhã, Almoço"></div><div class="modal-grid"><div class="modal-field"><label>Hora</label><input type="time" id="meal-time"></div><div class="modal-field"><label>Calorias (kcal)</label><input type="text" inputmode="decimal" id="meal-kcal" step="1" placeholder="420"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="text" inputmode="decimal" id="meal-prot" step="0.1" placeholder="32"></div><div class="modal-field"><label>Carbo (g)</label><input type="text" inputmode="decimal" id="meal-carb" step="0.1" placeholder="55"></div></div><div class="modal-field" style="margin-bottom:10px"><label>Gordura (g)</label><input type="text" inputmode="decimal" id="meal-gord" step="0.1" placeholder="8"></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="meal-items" maxlength="200" placeholder="Aveia 50g, Banana, Whey 30g"></div><div class="modal-field" style="margin-bottom:14px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="meal-fav" style="width:auto"><label for="meal-fav" style="margin:0;font-size:12px;cursor:pointer">Salvar como favorito</label></div><div class="modal-btns" id="meal-btns"></div></div></div>
+<div class="modal-bg" id="modal-beer"><div class="modal"><h3 id="modal-beer-title">Registrar cerveja</h3><div class="modal-field" style="margin-bottom:10px"><label>Tipo</label><select id="beer-type"><option value="pilsner">🍺 Pilsner / Helles (5%)</option><option value="weissbier">🍺 Weißbier (5.5%)</option><option value="dunkel">🍺 Dunkel / Stout (5.5%)</option><option value="ipa">🍺 IPA artesanal (6.5%)</option><option value="oktoberfest">🍺 Märzen / Oktoberfest (6%)</option><option value="lager_br">🍺 Lager brasileira (4.5%)</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Volume (ml)</label><input type="text" inputmode="decimal" id="beer-volume" step="50" placeholder="500"></div><div style="background:#F8F9FA;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#475569"><b>Calculado:</b> <span id="beer-calc">— kcal · — carbo</span></div><div class="modal-grid"><div class="modal-field"><label>Hora (opcional)</label><input type="time" id="beer-time"></div><div class="modal-field"><label>Marca / local (opc)</label><input type="text" id="beer-note" maxlength="40" placeholder="Augustiner"></div></div><div class="modal-btns" id="beer-btns" style="margin-top:14px"></div></div></div>
+<div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="text" inputmode="decimal" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="text" inputmode="decimal" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="text" inputmode="decimal" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="text" inputmode="decimal" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="text" inputmode="decimal" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="text" inputmode="decimal" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto total do dia (relógio) ou deixe em branco para usar a estimativa.</p><div class="modal-field" style="margin-bottom:10px"><label>Total kcal do dia</label><input type="text" inputmode="decimal" id="kw-total-input" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8;margin-top:4px;display:block" id="kw-est"></span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
-<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="number" inputmode="decimal" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="time-input-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="time-input-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="time-input-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="time-input-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="time-input-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#15803D;font-weight:600">Tempo total</label><input type="text" id="r-total" readonly style="background:#F0FDF4;color:#15803D;font-weight:700;border-color:#86EFAC;text-align:center;font-size:16px"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="time-input-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="time-input-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="time-input-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="time-input-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="time-input-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#15803D;font-weight:600">Tempo total</label><input type="text" id="r-total" readonly style="background:#F0FDF4;color:#15803D;font-weight:700;border-color:#86EFAC;text-align:center;font-size:16px"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -646,9 +646,9 @@ if(/iogurte proteico/i.test(m.items)){
 const oldKcal=110,oldProt=17,oldCarb=5,oldGord=1;
 const newKcal=228,newProt=37.1,newCarb=18.6,newGord=0.7;
 m.kcal=Math.max(0,(m.kcal||0)-oldKcal+newKcal);
-m.prot=+Math.max(0,(m.prot||0)-oldProt+newProt).toFixed(1);
-m.carb=+Math.max(0,(m.carb||0)-oldCarb+newCarb).toFixed(1);
-m.gord=+Math.max(0,(m.gord||0)-oldGord+newGord).toFixed(1);
+m.prot=+Math.max(0,(m.prot||0)-oldProt+newProt).toFixed(1).replace('.',',');
+m.carb=+Math.max(0,(m.carb||0)-oldCarb+newCarb).toFixed(1).replace('.',',');
+m.gord=+Math.max(0,(m.gord||0)-oldGord+newGord).toFixed(1).replace('.',',');
 m._yogurtMigrated=true;
 changed=true;
 }
@@ -676,19 +676,19 @@ const c=document.getElementById('ae-fields');
 let h='';
 if(type==='musc'){
 h+='<div class="modal-field" style="margin-bottom:10px"><label>Nome do exercício</label><input type="text" id="ae-name" maxlength="60" placeholder="Ex: Supino reto halteres"></div>';
-h+='<div class="modal-grid"><div class="modal-field"><label>Séries</label><input type="number" inputmode="decimal" id="ae-sets" min="1" max="20" placeholder="4"></div><div class="modal-field"><label>Reps</label><input type="text" id="ae-reps" maxlength="20" placeholder="10 ou 8-12"></div></div>';
+h+='<div class="modal-grid"><div class="modal-field"><label>Séries</label><input type="text" inputmode="decimal" id="ae-sets" min="1" max="20" placeholder="4"></div><div class="modal-field"><label>Reps</label><input type="text" id="ae-reps" maxlength="20" placeholder="10 ou 8-12"></div></div>';
 }else if(type==='corrida'){
 h+='<div class="modal-field" style="margin-bottom:10px"><label>Tipo de corrida</label><select id="ae-runtype"><option value="Z1">Z1 — regenerativo</option><option value="Z2" selected>Z2 — fácil</option><option value="Z3">Z3 — tempo</option><option value="Z4">Z4 — intervalado</option><option value="Z5">Z5 — tiros curtos</option><option value="Fartlek">Fartlek</option><option value="Long Run">Long Run</option></select></div>';
-h+='<div class="modal-grid"><div class="modal-field"><label>Duração (min)</label><input type="number" inputmode="decimal" id="ae-duration" min="1" max="300" placeholder="30"></div><div class="modal-field"><label>Distância (km · opcional)</label><input type="number" inputmode="decimal" id="ae-distance" step="0.1" placeholder="5.0"></div></div>';
+h+='<div class="modal-grid"><div class="modal-field"><label>Duração (min)</label><input type="text" inputmode="decimal" id="ae-duration" min="1" max="300" placeholder="30"></div><div class="modal-field"><label>Distância (km · opcional)</label><input type="text" inputmode="decimal" id="ae-distance" step="0.1" placeholder="5.0"></div></div>';
 h+='<div class="modal-field" style="margin-bottom:10px"><label>Detalhes (opcional)</label><input type="text" id="ae-detail" maxlength="120" placeholder="Ex: 5×800m R:90s"></div>';
 }else if(type==='alongamento'||type==='mobilidade'){
 h+='<div class="modal-field" style="margin-bottom:10px"><label>Nome / foco</label><input type="text" id="ae-name" maxlength="60" placeholder="Ex: Alongamento quadril"></div>';
-h+='<div class="modal-field" style="margin-bottom:10px"><label>Duração (min)</label><input type="number" inputmode="decimal" id="ae-duration" min="1" max="120" placeholder="15"></div>';
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Duração (min)</label><input type="text" inputmode="decimal" id="ae-duration" min="1" max="120" placeholder="15"></div>';
 }else if(type==='core'){
 h+='<div class="modal-field" style="margin-bottom:10px"><label>Nome do exercício</label><input type="text" id="ae-name" maxlength="60" placeholder="Ex: Prancha"></div>';
-h+='<div class="modal-grid"><div class="modal-field"><label>Séries</label><input type="number" inputmode="decimal" id="ae-sets" min="1" max="20" placeholder="3"></div><div class="modal-field"><label>Tempo / reps</label><input type="text" id="ae-reps" maxlength="20" placeholder="45s ou 15 reps"></div></div>';
+h+='<div class="modal-grid"><div class="modal-field"><label>Séries</label><input type="text" inputmode="decimal" id="ae-sets" min="1" max="20" placeholder="3"></div><div class="modal-field"><label>Tempo / reps</label><input type="text" id="ae-reps" maxlength="20" placeholder="45s ou 15 reps"></div></div>';
 }else if(type==='sauna'){
-h+='<div class="modal-field" style="margin-bottom:10px"><label>Tempo (min)</label><input type="number" inputmode="decimal" id="ae-duration" min="1" max="60" placeholder="15"></div>';
+h+='<div class="modal-field" style="margin-bottom:10px"><label>Tempo (min)</label><input type="text" inputmode="decimal" id="ae-duration" min="1" max="60" placeholder="15"></div>';
 }else if(type==='livre'){
 h+='<div class="modal-field" style="margin-bottom:10px"><label>Descrição</label><input type="text" id="ae-name" maxlength="120" placeholder="Ex: Yoga 30min"></div>';
 }
@@ -788,7 +788,7 @@ const d=new Date(ws);d.setDate(d.getDate()+i);
 const dd=getDiet(dk(d));
 dd.beers.forEach(b=>{totalMl+=(Number(b.volume)||0);});
 }
-return{ml:totalMl,doses:+(totalMl/DOSE_CERVEJA_ML).toFixed(1)};
+return{ml:totalMl,doses:+(totalMl/DOSE_CERVEJA_ML).toFixed(1).replace('.',',')};
 }
 function countOffMealsThisWeek(){
 const ws=getWeekStart(today);
@@ -924,6 +924,9 @@ renderPlan();renderCal();
 if(window.syncNow)window.syncNow();
 }
 function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+/* Padrão brasileiro de números: vírgula como decimal. parseBR aceita "1,5" ou "1.234,56" ou "1.5" (legado). */
+function parseBR(v){if(v==null||v==='')return null;if(typeof v==='number')return v;let s=String(v).trim();if(s.includes(',')){s=s.replace(/\./g,'').replace(',','.');}const n=parseFloat(s);return isNaN(n)?null:n;}
+function formatBR(n,decimals){if(n==null||isNaN(n))return '';const num=Number(n);if(decimals!=null)return num.toFixed(decimals).replace('.',',');return String(num).replace('.',',');}
 function isValidOverrideType(t){return t&&Object.prototype.hasOwnProperty.call(OVERRIDE_TYPES,t);}
 function isValidDateKey(k){return typeof k==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(k);}
 function getWorkoutOverride(dateOrKey){
@@ -1104,7 +1107,7 @@ if(typeof e==='object'&&e.step){
 h+=`<div class="ex-row" style="flex-direction:column;align-items:flex-start;padding:8px 0"><span class="ex-name" style="color:#000;font-size:12px;line-height:1.4">${escapeHtml(e.step)}</span>`;
 if(e.input){
 const val=userZones[e.input.id]||'';
-h+=`<div style="display:flex;align-items:center;gap:8px;width:100%;margin-top:6px"><label style="font-size:11px;color:#64748B;min-width:90px">${escapeHtml(e.input.label)}</label><input type="number" inputmode="decimal" value="${val}" placeholder="${escapeHtml(e.input.placeholder||'')}" oninput="saveZoneTestInput('${e.input.id}',this.value)" min="60" max="230" style="flex:1;max-width:100px;border:1px solid #CBD5E1;border-radius:5px;padding:5px 8px;font-size:13px"></div>`;
+h+=`<div style="display:flex;align-items:center;gap:8px;width:100%;margin-top:6px"><label style="font-size:11px;color:#64748B;min-width:90px">${escapeHtml(e.input.label)}</label><input type="text" inputmode="decimal" value="${val}" placeholder="${escapeHtml(e.input.placeholder||'')}" oninput="saveZoneTestInput('${e.input.id}',this.value)" min="60" max="230" style="flex:1;max-width:100px;border:1px solid #CBD5E1;border-radius:5px;padding:5px 8px;font-size:13px"></div>`;
 }
 h+=`</div>`;
 return;
@@ -1186,7 +1189,7 @@ document.getElementById('w-reps').value='';
 document.getElementById('w-note').value='';
 const last=getLastWeight(exKey);
 if(last){
-document.getElementById('w-peso').placeholder='Último: '+last.weight+'kg';
+document.getElementById('w-peso').placeholder='Último: '+formatBR(last.weight)+'kg';
 showWeightViewMode(last);
 }else{
 showWeightEditMode();
@@ -1200,7 +1203,7 @@ const last=getLastWeight(currentExKey);
 if(last){
 editWeightIdx=(weightLog[currentExKey]||[]).findIndex(w=>w.date===last.date);
 document.getElementById('w-data').value=last.date;
-document.getElementById('w-peso').value=last.weight;
+document.getElementById('w-peso').value=last.weight!=null?formatBR(last.weight):'';
 document.getElementById('w-reps').value=last.reps||'';
 document.getElementById('w-note').value=last.note||'';
 }
@@ -1217,7 +1220,7 @@ showWeightEditMode();
 function closeWeightModal(){document.getElementById('modal-weight').classList.remove('open');if(weightChartInst){weightChartInst.destroy();weightChartInst=null;}currentExKey=null;editWeightIdx=null;}
 function saveWeight(){
 const data=document.getElementById('w-data').value;
-const peso=parseFloat(document.getElementById('w-peso').value);
+const peso=parseBR(document.getElementById('w-peso').value);
 const reps=document.getElementById('w-reps').value.trim();
 const note=document.getElementById('w-note').value.trim();
 if(!data||isNaN(peso))return alert('Informe data e peso.');
@@ -1240,7 +1243,7 @@ function editWeight(i){
 const w=weightLog[currentExKey][i];
 editWeightIdx=i;
 document.getElementById('w-data').value=w.date;
-document.getElementById('w-peso').value=w.weight;
+document.getElementById('w-peso').value=w.weight!=null?formatBR(w.weight):'';
 document.getElementById('w-reps').value=w.reps||'';
 document.getElementById('w-note').value=w.note||'';
 document.getElementById('w-peso').focus();
@@ -1400,7 +1403,7 @@ showRunEditMode();
 if(last){
 editRunIdx=(cardioLog[currentRunKey]||[]).findIndex(w=>w.date===last.date);
 document.getElementById('r-data').value=last.date;
-document.getElementById('r-km').value=last.km||'';
+document.getElementById('r-km').value=last.km!=null?formatBR(last.km):'';
 ['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,last[z]||'00:00:00'));
 document.getElementById('r-total').value=last.total||'00:00:00';
 document.getElementById('r-note').value=last.note||'';
@@ -1419,7 +1422,7 @@ function closeRunModal(){document.getElementById('modal-run').classList.remove('
 function saveRun(){
 const data=document.getElementById('r-data').value;
 if(!data)return alert('Informe a data.');
-const km=document.getElementById('r-km').value?parseFloat(document.getElementById('r-km').value):null;
+const km=document.getElementById('r-km').value?parseBR(document.getElementById('r-km').value):null;
 const z1=getZoneTime('z1');
 const z2=getZoneTime('z2');
 const z3=getZoneTime('z3');
@@ -1527,11 +1530,11 @@ const medMeta=[
 ];
 let medData=JSON.parse(localStorage.getItem('medData')||'[{"data":"2025-03-01","peso":83.5,"agua":53.2,"gordura":24.1,"musculo":36.8},{"data":"2025-04-01","peso":82.1,"agua":54.2,"gordura":23,"musculo":37.5},{"data":"2025-05-01","peso":81,"agua":55,"gordura":22,"musculo":38.2}]');
 let editMedIdx=null,currentMed='peso',chartInstance=null;
-function calcIMC(p){return p!=null?+(p/3.0276).toFixed(1):null;}
+function calcIMC(p){return p!=null?+(p/3.0276).toFixed(1).replace('.',','):null;}
 function getMedVal(e,k){
 if(k==='imc')return calcIMC(e.peso);
-if(k==='gorduraKg')return(e.peso!=null&&e.gordura!=null)?+(e.peso*e.gordura/100).toFixed(1):null;
-if(k==='musculoKg')return(e.peso!=null&&e.musculo!=null)?+(e.peso*e.musculo/100).toFixed(1):null;
+if(k==='gorduraKg')return(e.peso!=null&&e.gordura!=null)?+(e.peso*e.gordura/100).toFixed(1).replace('.',','):null;
+if(k==='musculoKg')return(e.peso!=null&&e.musculo!=null)?+(e.peso*e.musculo/100).toFixed(1).replace('.',','):null;
 return e[k]??null;
 }
 function getSeriesCarry(k){let l=null;return medData.map(e=>{const v=getMedVal(e,k);if(v!=null)l=v;return l;});}
@@ -1581,9 +1584,9 @@ if(e.peso!=null)vals.push('<span class="hist-val" style="color:#2563EB">'+e.peso
 const imc=calcIMC(e.peso);
 if(imc!=null)vals.push('<span class="hist-val" style="color:#7C3AED">IMC '+imc+'</span>');
 if(e.gordura!=null)vals.push('<span class="hist-val" style="color:#DC2626">'+e.gordura+'%gord</span>');
-if(e.peso!=null&&e.gordura!=null)vals.push('<span class="hist-val" style="color:#EF4444">'+(e.peso*e.gordura/100).toFixed(1)+'kg gord</span>');
+if(e.peso!=null&&e.gordura!=null)vals.push('<span class="hist-val" style="color:#EF4444">'+(e.peso*e.gordura/100).toFixed(1).replace('.',',')+'kg gord</span>');
 if(e.musculo!=null)vals.push('<span class="hist-val" style="color:#16A34A">'+e.musculo+'%musc</span>');
-if(e.peso!=null&&e.musculo!=null)vals.push('<span class="hist-val" style="color:#15803D">'+(e.peso*e.musculo/100).toFixed(1)+'kg musc</span>');
+if(e.peso!=null&&e.musculo!=null)vals.push('<span class="hist-val" style="color:#15803D">'+(e.peso*e.musculo/100).toFixed(1).replace('.',',')+'kg musc</span>');
 if(e.proteina!=null)vals.push('<span class="hist-val" style="color:#0891B2">'+e.proteina+'%prot</span>');
 if(e.visceral!=null)vals.push('<span class="hist-val" style="color:#EA580C">Visc '+e.visceral+'</span>');
 if(e.bodyAge!=null)vals.push('<span class="hist-val" style="color:#6B21A8">Age '+e.bodyAge+'</span>');
@@ -1599,7 +1602,7 @@ const fields=['peso','gordura','musculo','proteina','visceral','bodyAge','basal'
 if(editMedIdx!=null){
 const e=medData[editMedIdx];
 document.getElementById('m-data').value=e.data;
-fields.forEach(f=>{document.getElementById('m-'+f).value=e[f]!=null?e[f]:'';});
+fields.forEach(f=>{document.getElementById('m-'+f).value=e[f]!=null?formatBR(e[f]):'';});
 }else{
 document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
 fields.forEach(f=>{document.getElementById('m-'+f).value='';});
@@ -1614,7 +1617,7 @@ const data=document.getElementById('m-data').value;
 if(!data)return alert('Informe a data.');
 const flds=['peso','gordura','musculo','proteina','visceral','bodyAge','basal'];
 const vals={};
-flds.forEach(f=>{const v=document.getElementById('m-'+f).value;vals[f]=v!==''?parseFloat(v):null;});
+flds.forEach(f=>{const v=document.getElementById('m-'+f).value;vals[f]=v!==''?parseBR(v):null;});
 if(flds.every(f=>vals[f]==null))return alert('Preencha ao menos um campo.');
 const ex=medData.findIndex(e=>e.data===data);
 const entry={data,...vals};
@@ -1771,10 +1774,10 @@ function saveMeal(){
 const name=(document.getElementById('meal-name').value||'').trim().slice(0,60);
 if(!name)return alert('Informe o nome da refeição.');
 const time=document.getElementById('meal-time').value||'';
-const kcal=parseFloat(document.getElementById('meal-kcal').value)||0;
-const prot=parseFloat(document.getElementById('meal-prot').value)||0;
-const carb=parseFloat(document.getElementById('meal-carb').value)||0;
-const gord=parseFloat(document.getElementById('meal-gord').value)||0;
+const kcal=parseBR(document.getElementById('meal-kcal').value)||0;
+const prot=parseBR(document.getElementById('meal-prot').value)||0;
+const carb=parseBR(document.getElementById('meal-carb').value)||0;
+const gord=parseBR(document.getElementById('meal-gord').value)||0;
 const items=(document.getElementById('meal-items').value||'').trim().slice(0,200);
 const fav=document.getElementById('meal-fav').checked;
 const key=dk(today);
@@ -1888,11 +1891,11 @@ document.getElementById('ex-off-fields').style.display=t==='off'?'block':'none';
 }
 function calcExBeer(){
 const type=document.getElementById('ex-beer-type').value;
-const vol=parseFloat(document.getElementById('ex-beer-volume').value)||0;
+const vol=parseBR(document.getElementById('ex-beer-volume').value)||0;
 const bt=BEER_TYPES[type];
 if(!bt||!vol){document.getElementById('ex-beer-calc').textContent='— kcal · — carbo';return null;}
 const kcal=Math.round(bt.kcalPer100ml*(vol/100));
-const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
+const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1).replace('.',',');
 document.getElementById('ex-beer-calc').textContent=kcal+' kcal · '+carb+'g carbo';
 return{kcal,carb};
 }
@@ -1915,18 +1918,18 @@ const key=dk(today);
 const d=getDiet(key);
 if(t==='beer'){
 const type=document.getElementById('ex-beer-type').value;
-const volume=parseFloat(document.getElementById('ex-beer-volume').value);
+const volume=parseBR(document.getElementById('ex-beer-volume').value);
 if(!BEER_TYPES[type])return alert('Tipo inválido.');
 if(!volume||volume<=0)return alert('Informe o volume.');
 const calc=calcExBeer();
 d.beers.push({id:uid(),type,volume,kcal:calc.kcal,carb:calc.carb,time,note:''});
 d.beers.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
 }else{
-const kcal=parseFloat(document.getElementById('ex-off-kcal').value);
+const kcal=parseBR(document.getElementById('ex-off-kcal').value);
 if(isNaN(kcal)||kcal<=0)return alert('Informe as calorias.');
-const prot=parseFloat(document.getElementById('ex-off-prot').value)||0;
-const carb=parseFloat(document.getElementById('ex-off-carb').value)||0;
-const gord=parseFloat(document.getElementById('ex-off-gord').value)||0;
+const prot=parseBR(document.getElementById('ex-off-prot').value)||0;
+const carb=parseBR(document.getElementById('ex-off-carb').value)||0;
+const gord=parseBR(document.getElementById('ex-off-gord').value)||0;
 const desc=(document.getElementById('ex-off-desc').value||'').trim()||'Refeição off';
 d.meals.push({id:uid(),name:'🍕 OFF — '+desc,time:time||new Date().toTimeString().slice(0,5),kcal,prot,carb,gord,items:desc,type:'off'});
 d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
@@ -1965,7 +1968,7 @@ const unitLabel=firstIsWeight?'g':'qtd';
 const step=firstIsWeight?'5':'0.5';
 const countInCat=mealBuilderSelected.filter(x=>x.gi===gi).length;
 const countBadge=countInCat>0?` <span style="background:#16A34A;color:#fff;font-size:9px;padding:1px 6px;border-radius:99px;font-weight:600">${countInCat}</span>`:'';
-h+=`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(grp.group)}${countBadge}</div><div style="display:flex;gap:6px;align-items:center"><select id="mb-sel-${gi}" onchange="onMealCatSelect(${gi})" style="flex:1;min-width:0;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;font-size:14px">${optsHtml}</select><input type="number" inputmode="decimal" id="mb-qty-${gi}" min="0" step="${step}" placeholder="—" disabled style="width:60px;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;text-align:center;background:#F8F9FA"><span style="font-size:10px;color:#64748B;min-width:18px">${unitLabel}</span><button onclick="addMealBuilderItem(${gi})" id="mb-add-${gi}" disabled style="background:#0F172A;color:#fff;border:0;border-radius:5px;width:32px;height:32px;cursor:pointer;font-size:14px;opacity:.4">✓</button></div>${countInCat>0?'<div style="font-size:10px;color:#16A34A;margin-top:3px">↑ pode adicionar outro alimento dessa categoria</div>':''}</div>`;
+h+=`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(grp.group)}${countBadge}</div><div style="display:flex;gap:6px;align-items:center"><select id="mb-sel-${gi}" onchange="onMealCatSelect(${gi})" style="flex:1;min-width:0;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;font-size:14px">${optsHtml}</select><input type="text" inputmode="decimal" id="mb-qty-${gi}" min="0" step="${step}" placeholder="—" disabled style="width:60px;padding:6px 8px;border:1px solid #CBD5E1;border-radius:5px;text-align:center;background:#F8F9FA"><span style="font-size:10px;color:#64748B;min-width:18px">${unitLabel}</span><button onclick="addMealBuilderItem(${gi})" id="mb-add-${gi}" disabled style="background:#0F172A;color:#fff;border:0;border-radius:5px;width:32px;height:32px;cursor:pointer;font-size:14px;opacity:.4">✓</button></div>${countInCat>0?'<div style="font-size:10px;color:#16A34A;margin-top:3px">↑ pode adicionar outro alimento dessa categoria</div>':''}</div>`;
 });
 h+='<div id="mb-selected" style="margin-top:8px"></div>';
 c.innerHTML=h;
@@ -1992,7 +1995,7 @@ function addMealBuilderItem(gi){
 const sel=document.getElementById('mb-sel-'+gi);
 const qtyInp=document.getElementById('mb-qty-'+gi);
 const k=sel.value;
-const val=parseFloat(qtyInp.value)||0;
+const val=parseBR(qtyInp.value)||0;
 if(!k||val<=0)return alert('Selecione um alimento e informe a quantidade.');
 const obj=mealBuilderItems[k];
 const isWeight=obj.item.kcalP100!=null;
@@ -2000,15 +2003,15 @@ let kcal=0,prot=0,carb=0,gord=0,label='';
 if(isWeight){
 const f=val/100;
 kcal=Math.round((obj.item.kcalP100||0)*f);
-prot=+((obj.item.protP100||0)*f).toFixed(1);
-carb=+((obj.item.carbP100||0)*f).toFixed(1);
-gord=+((obj.item.gordP100||0)*f).toFixed(1);
+prot=+((obj.item.protP100||0)*f).toFixed(1).replace('.',',');
+carb=+((obj.item.carbP100||0)*f).toFixed(1).replace('.',',');
+gord=+((obj.item.gordP100||0)*f).toFixed(1).replace('.',',');
 label=obj.item.name+' '+val+'g';
 }else{
 kcal=Math.round((obj.item.kcal||0)*val);
-prot=+((obj.item.prot||0)*val).toFixed(1);
-carb=+((obj.item.carb||0)*val).toFixed(1);
-gord=+((obj.item.gord||0)*val).toFixed(1);
+prot=+((obj.item.prot||0)*val).toFixed(1).replace('.',',');
+carb=+((obj.item.carb||0)*val).toFixed(1).replace('.',',');
+gord=+((obj.item.gord||0)*val).toFixed(1).replace('.',',');
 label=val===1?obj.item.name:(val+'× '+obj.item.name);
 }
 mealBuilderSelected.push({label,kcal,prot,carb,gord,gi});
@@ -2053,7 +2056,7 @@ mealBuilderSelected.forEach(it=>{kcal+=it.kcal;prot+=it.prot;carb+=it.carb;gord+
 if(items.length===0)return alert('Adicione ao menos um item.');
 const key=dk(today);
 const d=getDiet(key);
-d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal:Math.round(kcal),prot:+prot.toFixed(1),carb:+carb.toFixed(1),gord:+gord.toFixed(1),items:items.join(' · ')+(note?' · '+note:''),type});
+d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal:Math.round(kcal),prot:+prot.toFixed(1).replace('.',','),carb:+carb.toFixed(1).replace('.',','),gord:+gord.toFixed(1).replace('.',','),items:items.join(' · ')+(note?' · '+note:''),type});
 d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
 saveDiet(key,d);
 closeMealBuilderModal();renderDiet();
@@ -2088,11 +2091,11 @@ renderDiet();
 let editBeerId=null;
 function calcBeerValues(){
 const type=document.getElementById('beer-type').value;
-const vol=parseFloat(document.getElementById('beer-volume').value)||0;
+const vol=parseBR(document.getElementById('beer-volume').value)||0;
 const bt=BEER_TYPES[type];
 if(!bt||!vol){document.getElementById('beer-calc').textContent='— kcal · — carbo';return null;}
 const kcal=Math.round(bt.kcalPer100ml*(vol/100));
-const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
+const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1).replace('.',',');
 document.getElementById('beer-calc').textContent=kcal+' kcal · '+carb+'g carbo';
 return{kcal,carb};
 }
@@ -2117,7 +2120,7 @@ document.getElementById('modal-beer').classList.add('open');
 function closeBeerModal(){document.getElementById('modal-beer').classList.remove('open');editBeerId=null;}
 function saveBeer(){
 const type=document.getElementById('beer-type').value;
-const volume=parseFloat(document.getElementById('beer-volume').value);
+const volume=parseBR(document.getElementById('beer-volume').value);
 if(!BEER_TYPES[type])return alert('Tipo inválido.');
 if(!volume||volume<=0)return alert('Informe o volume.');
 const calc=calcBeerValues();
@@ -2154,12 +2157,12 @@ document.getElementById('modal-goals').classList.add('open');
 }
 function closeGoalsModal(){document.getElementById('modal-goals').classList.remove('open');}
 function saveGoals(){
-const k=parseFloat(document.getElementById('g-kcal').value);
-const def=parseFloat(document.getElementById('g-deficit').value);
-const p=parseFloat(document.getElementById('g-prot').value);
-const c=parseFloat(document.getElementById('g-carb').value);
-const g=parseFloat(document.getElementById('g-gord').value);
-const w=parseFloat(document.getElementById('g-water').value);
+const k=parseBR(document.getElementById('g-kcal').value);
+const def=parseBR(document.getElementById('g-deficit').value);
+const p=parseBR(document.getElementById('g-prot').value);
+const c=parseBR(document.getElementById('g-carb').value);
+const g=parseBR(document.getElementById('g-gord').value);
+const w=parseBR(document.getElementById('g-water').value);
 if(isNaN(k)||isNaN(p)||isNaN(c)||isNaN(g)||isNaN(w)||isNaN(def))return alert('Preencha todos os campos com números válidos.');
 if(k<800||k>6000||p<0||c<0||g<0||w<0||w>10000)return alert('Valores fora dos limites razoáveis.');
 dietGoals={kcal:k,prot:p,carb:c,gord:g,water:w,deficit:def};
@@ -2196,7 +2199,7 @@ function saveKcalWorkout(){
 if(!kcalWorkoutDate)return;
 const t=document.getElementById('kw-total-input').value;
 if(t===''){delete workoutKcal[kcalWorkoutDate];}
-else{workoutKcal[kcalWorkoutDate]={total:parseFloat(t)};}
+else{workoutKcal[kcalWorkoutDate]={total:parseBR(t)};}
 try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){return alert('Erro ao salvar: '+e.message);}
 closeKcalWorkoutModal();renderPlan();
 if(switchTab&&document.getElementById('sec-dieta').classList.contains('active'))renderDiet();
@@ -2232,7 +2235,7 @@ weeklyDeficit+=bal.deficit;
 weeklyCount++;
 }
 const avgDeficit=weeklyCount>0?Math.round(weeklyDeficit/weeklyCount):0;
-const projectedLossWeek=weeklyCount>0?(weeklyDeficit/7700).toFixed(2):'0.00';
+const projectedLossWeek=weeklyCount>0?(weeklyDeficit/7700).toFixed(2).replace('.',','):'0.00';
 const remaining=Math.max(0,peso-target);
 let estimateWeeks='—';
 let estimateDate='—';
@@ -2247,7 +2250,7 @@ estimateDate=target_date.getDate()+'/'+(target_date.getMonth()+1)+'/'+target_dat
 }
 const raceDays=Math.ceil((RACE_DATE-tDate)/(24*60*60*1000));
 let h='';
-h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-target"></i>Rumo à meta — ${target}kg</div><div class="goal-progress"><span>Início: <b>${start}kg</b></span><span>Atual: <b>${peso.toFixed(1)}kg</b></span><span>Meta: <b>${target}kg</b></span></div><div class="goal-bar"><div class="goal-bar-fill" style="width:${goalPct}%"></div></div><div style="text-align:center;font-size:11px;color:#64748B;margin-top:4px">${goalPct}% concluído · faltam ${remaining.toFixed(1)}kg</div></div>`;
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-target"></i>Rumo à meta — ${target}kg</div><div class="goal-progress"><span>Início: <b>${start}kg</b></span><span>Atual: <b>${peso.toFixed(1).replace('.',',')}kg</b></span><span>Meta: <b>${target}kg</b></span></div><div class="goal-bar"><div class="goal-bar-fill" style="width:${goalPct}%"></div></div><div style="text-align:center;font-size:11px;color:#64748B;margin-top:4px">${goalPct}% concluído · faltam ${remaining.toFixed(1).replace('.',',')}kg</div></div>`;
 if(weeklyCount>0){
 h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-scale"></i>Últimos 7 dias</div><div class="dash-stat-row"><span>Déficit médio diário</span><b style="color:${avgDeficit>0?'#15803D':'#B91C1C'}">${avgDeficit>0?'-':''}${Math.abs(avgDeficit)} kcal</b></div><div class="dash-stat-row"><span>Total da semana</span><b style="color:${weeklyDeficit>0?'#15803D':'#B91C1C'}">${weeklyDeficit>0?'-':''}${Math.abs(weeklyDeficit).toFixed(0)} kcal</b></div><div class="dash-stat-row"><span>Perda projetada</span><b>${projectedLossWeek} kg</b></div><div class="dash-stat-row"><span>Dias registrados</span><b>${weeklyCount} de 7</b></div></div>`;
 }else{
@@ -2255,7 +2258,7 @@ h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-info-circl
 }
 if(estimateWeeks!=='—'){
 const goodTiming=estimateWeeks*7<=raceDays;
-h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-flag"></i>Projeção até a meta</div><div class="dash-stat-row"><span>Ritmo atual</span><b>${(remaining/estimateWeeks).toFixed(2)} kg/sem</b></div><div class="dash-stat-row"><span>Chegada estimada</span><b>${estimateDate}</b></div><div class="dash-stat-row"><span>Em semanas</span><b>${estimateWeeks} semanas</b></div><div class="dash-note ${goodTiming?'success':'warning'}">${goodTiming?'✅ Você vai chegar antes da prova ('+raceDays+' dias)':'⚠️ Vai chegar depois da prova ('+raceDays+' dias). Considere ajustar o déficit.'}</div></div>`;
+h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-flag"></i>Projeção até a meta</div><div class="dash-stat-row"><span>Ritmo atual</span><b>${(remaining/estimateWeeks).toFixed(2).replace('.',',')} kg/sem</b></div><div class="dash-stat-row"><span>Chegada estimada</span><b>${estimateDate}</b></div><div class="dash-stat-row"><span>Em semanas</span><b>${estimateWeeks} semanas</b></div><div class="dash-note ${goodTiming?'success':'warning'}">${goodTiming?'✅ Você vai chegar antes da prova ('+raceDays+' dias)':'⚠️ Vai chegar depois da prova ('+raceDays+' dias). Considere ajustar o déficit.'}</div></div>`;
 }
 const basal=getLatestBasal();
 let activityAvg=0,activityCount=0;
@@ -2326,7 +2329,7 @@ const glasses=Math.floor(d.water/250);
 const totalGlassesGoal=Math.ceil(dietGoals.water/250);
 let glassRow='';
 for(let i=0;i<totalGlassesGoal;i++)glassRow+=`<span class="water-glass ${i<glasses?'filled':'empty'}">💧</span>`;
-h+=`<div class="hydration-card"><div class="water-info"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-droplet"></i>Hidratação</div><div><span class="water-amount">${(d.water/1000).toFixed(2)}L</span> <span class="water-goal-txt">de ${(dietGoals.water/1000).toFixed(1)}L</span></div></div><div class="water-row">${glassRow}</div><div class="water-actions"><button class="water-btn" onclick="addWater(250)">+ 250ml</button><button class="water-btn" onclick="addWater(500)">+ 500ml</button><button class="water-btn" onclick="addWater(-250)" style="color:#DC2626">- 250ml</button></div></div>`;
+h+=`<div class="hydration-card"><div class="water-info"><div class="dash-card-hdr" style="margin:0"><i class="ti ti-droplet"></i>Hidratação</div><div><span class="water-amount">${(d.water/1000).toFixed(2).replace('.',',')}L</span> <span class="water-goal-txt">de ${(dietGoals.water/1000).toFixed(1).replace('.',',')}L</span></div></div><div class="water-row">${glassRow}</div><div class="water-actions"><button class="water-btn" onclick="addWater(250)">+ 250ml</button><button class="water-btn" onclick="addWater(500)">+ 500ml</button><button class="water-btn" onclick="addWater(-250)" style="color:#DC2626">- 250ml</button></div></div>`;
 h+=`<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-pill"></i>Suplementos (hoje)</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 10px"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.whey?'checked':''} onchange="toggleSupplement('whey')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">🥤 Whey 1 dose</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.creatina?'checked':''} onchange="toggleSupplement('creatina')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">💊 Creatina 7g</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.whey_meio?'checked':''} onchange="toggleSupplement('whey_meio')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">🥤 Whey ½ dose</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.leucina?'checked':''} onchange="toggleSupplement('leucina')" style="width:16px;height:16px;accent-color:#16A34A;flex-shrink:0">💪 Leucina 5g</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.doce_pre?'checked':''} onchange="toggleSupplement('doce_pre')" style="width:16px;height:16px;accent-color:#F59E0B;flex-shrink:0">🍬 Doce Pré</label><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#334155"><input type="checkbox" ${sup.doce_pos?'checked':''} onchange="toggleSupplement('doce_pos')" style="width:16px;height:16px;accent-color:#F59E0B;flex-shrink:0">🍬 Doce Pós</label></div></div>`;
 const doseColor=dosesSem.doses>MAX_DOSES_SEMANA?'over':dosesSem.doses>MAX_DOSES_SEMANA*0.75?'warn':'';
 const offColor=offSem>MAX_OFF_SEMANA?'over':offSem>MAX_OFF_SEMANA*0.75?'warn':'';
@@ -2527,7 +2530,7 @@ const lbl=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][dateObj.getDay()]+', '+da
 const macros=sumDietMacros(key);
 const beers=sumDietBeers(key);
 const isToday=key===dk(today);
-const waterL=(d.water/1000).toFixed(2);
+const waterL=(d.water/1000).toFixed(2).replace('.',',');
 h+=`<details ${isToday?'open':''} style="background:#fff;border:1px solid #CBD5E1;border-radius:8px;margin-bottom:8px;overflow:hidden"><summary style="padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px"><span><b>${escapeHtml(lbl)}</b>${isToday?' <span style="font-size:10px;background:#DBEAFE;color:#1E40AF;padding:1px 6px;border-radius:99px;margin-left:4px">hoje</span>':''}</span><span style="font-size:11px;color:#64748B">${macros.kcal} kcal · ${d.meals.length} ref${beers.count>0?' · '+beers.count+'🍺':''} · 💧 ${waterL}L</span></summary><div style="padding:0 12px 10px">`;
 h+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;margin-bottom:8px;font-size:12px"><span style="color:#1E40AF"><b>💧 Hidratação:</b> ${waterL}L (${d.water}ml)</span><button onclick="editHistWater('${key}')" style="background:#fff;border:1px solid #BFDBFE;border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer;color:#1E40AF;font-weight:500"><i class="ti ti-pencil"></i> Editar</button></div>`;
 if(d.meals.length===0&&d.beers.length===0&&d.water===0){h+='<div class="diet-empty" style="margin:8px 0">Sem refeições neste dia</div>';}
@@ -2548,11 +2551,11 @@ const m=d.meals.find(x=>x.id===mealId);
 if(!m)return;
 const newKcal=prompt('Calorias:',m.kcal||0);
 if(newKcal===null)return;
-const kcal=parseFloat(newKcal);if(isNaN(kcal))return alert('Valor inválido');
+const kcal=parseBR(newKcal);if(kcal==null||isNaN(kcal))return alert('Valor inválido');
 const newProt=prompt('Proteína (g):',m.prot||0);if(newProt===null)return;
 const newCarb=prompt('Carbo (g):',m.carb||0);if(newCarb===null)return;
 const newGord=prompt('Gordura (g):',m.gord||0);if(newGord===null)return;
-m.kcal=kcal;m.prot=parseFloat(newProt)||0;m.carb=parseFloat(newCarb)||0;m.gord=parseFloat(newGord)||0;
+m.kcal=kcal;m.prot=parseBR(newProt)||0;m.carb=parseBR(newCarb)||0;m.gord=parseBR(newGord)||0;
 saveDiet(dateKey,d);renderDietHistorico();
 }
 function deleteHistMeal(dateKey,mealId){
@@ -2571,7 +2574,7 @@ function editHistWater(dateKey){
 const d=getDiet(dateKey);
 const newVal=prompt('Água bebida em ml (ex: 2500 para 2.5L):',d.water);
 if(newVal===null)return;
-const ml=parseFloat(newVal);
+const ml=parseBR(newVal);
 if(isNaN(ml)||ml<0)return alert('Valor inválido');
 d.water=Math.round(ml);
 saveDiet(dateKey,d);renderDietHistorico();
@@ -2583,11 +2586,11 @@ if(!b)return;
 const bt=BEER_TYPES[b.type]||BEER_TYPES.pilsner;
 const newVol=prompt('Volume em ml ('+escapeHtml(bt.label)+'):',b.volume);
 if(newVol===null)return;
-const vol=parseFloat(newVol);
+const vol=parseBR(newVol);
 if(isNaN(vol)||vol<=0)return alert('Volume inválido');
 b.volume=vol;
 b.kcal=Math.round(bt.kcalPer100ml*(vol/100));
-b.carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
+b.carb=+(bt.carbPer100ml*(vol/100)).toFixed(1).replace('.',',');
 saveDiet(dateKey,d);renderDietHistorico();
 }
 const DEFAULT_COMPRAS=[
@@ -2746,7 +2749,7 @@ const name=document.getElementById('mc-name').value.trim().slice(0,80);
 if(!name)return alert('Informe o nome do item.');
 const category=document.getElementById('mc-category').value;
 const qtyRaw=document.getElementById('mc-quantity').value;
-const quantity=qtyRaw===''?null:parseFloat(qtyRaw);
+const quantity=qtyRaw===''?null:parseBR(qtyRaw);
 const unit=document.getElementById('mc-unit').value||null;
 const status=document.getElementById('mc-status').value||'sugerido';
 const notes=(document.getElementById('mc-notes').value||'').trim().slice(0,200)||null;
