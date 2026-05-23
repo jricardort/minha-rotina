@@ -648,9 +648,9 @@ if(/iogurte proteico/i.test(m.items)){
 const oldKcal=110,oldProt=17,oldCarb=5,oldGord=1;
 const newKcal=228,newProt=37.1,newCarb=18.6,newGord=0.7;
 m.kcal=Math.max(0,(m.kcal||0)-oldKcal+newKcal);
-m.prot=+Math.max(0,(m.prot||0)-oldProt+newProt).toFixed(1).replace('.',',');
-m.carb=+Math.max(0,(m.carb||0)-oldCarb+newCarb).toFixed(1).replace('.',',');
-m.gord=+Math.max(0,(m.gord||0)-oldGord+newGord).toFixed(1).replace('.',',');
+m.prot=+Math.max(0,(m.prot||0)-oldProt+newProt).toFixed(1);
+m.carb=+Math.max(0,(m.carb||0)-oldCarb+newCarb).toFixed(1);
+m.gord=+Math.max(0,(m.gord||0)-oldGord+newGord).toFixed(1);
 m._yogurtMigrated=true;
 changed=true;
 }
@@ -972,7 +972,7 @@ const d=new Date(ws);d.setDate(d.getDate()+i);
 const dd=getDiet(dk(d));
 dd.beers.forEach(b=>{totalMl+=(Number(b.volume)||0);});
 }
-return{ml:totalMl,doses:+(totalMl/DOSE_CERVEJA_ML).toFixed(1).replace('.',',')};
+return{ml:totalMl,doses:+(totalMl/DOSE_CERVEJA_ML).toFixed(1)};
 }
 function countOffMealsThisWeek(){
 const ws=getWeekStart(today);
@@ -1714,11 +1714,11 @@ const medMeta=[
 ];
 let medData=JSON.parse(localStorage.getItem('medData')||'[{"data":"2025-03-01","peso":83.5,"agua":53.2,"gordura":24.1,"musculo":36.8},{"data":"2025-04-01","peso":82.1,"agua":54.2,"gordura":23,"musculo":37.5},{"data":"2025-05-01","peso":81,"agua":55,"gordura":22,"musculo":38.2}]');
 let editMedIdx=null,currentMed='peso',chartInstance=null;
-function calcIMC(p){return p!=null?+(p/3.0276).toFixed(1).replace('.',','):null;}
+function calcIMC(p){return p!=null?+(p/3.0276).toFixed(1):null;}
 function getMedVal(e,k){
 if(k==='imc')return calcIMC(e.peso);
-if(k==='gorduraKg')return(e.peso!=null&&e.gordura!=null)?+(e.peso*e.gordura/100).toFixed(1).replace('.',','):null;
-if(k==='musculoKg')return(e.peso!=null&&e.musculo!=null)?+(e.peso*e.musculo/100).toFixed(1).replace('.',','):null;
+if(k==='gorduraKg')return(e.peso!=null&&e.gordura!=null)?+(e.peso*e.gordura/100).toFixed(1):null;
+if(k==='musculoKg')return(e.peso!=null&&e.musculo!=null)?+(e.peso*e.musculo/100).toFixed(1):null;
 return e[k]??null;
 }
 function getSeriesCarry(k){let l=null;return medData.map(e=>{const v=getMedVal(e,k);if(v!=null)l=v;return l;});}
@@ -1734,12 +1734,12 @@ const lineV=getSeriesCarry(currentMed),pointV=getPointsReal(currentMed);
 const lbls=medData.map(e=>{const d=new Date(e.data);return d.getDate()+'/'+(d.getMonth()+1);});
 const lastR=pointV.filter(v=>v!=null).pop();
 document.getElementById('med-title').textContent=meta.label;
-document.getElementById('med-current').textContent=lastR!=null?lastR.toFixed(meta.decimals)+(meta.unit?' '+meta.unit:''):'—';
+document.getElementById('med-current').textContent=lastR!=null?lastR.toFixed(meta.decimals).replace('.',',')+(meta.unit?' '+meta.unit:''):'—';
 document.getElementById('med-current').style.color=meta.color;
 document.getElementById('med-dates').innerHTML='<span>'+lbls[0]+'</span><span>'+lbls[lbls.length-1]+'</span>';
 if(chartInstance)chartInstance.destroy();
 const ctx=document.getElementById('medChart').getContext('2d');
-chartInstance=new Chart(ctx,{type:'line',data:{labels:lbls,datasets:[{data:lineV,borderColor:meta.color,backgroundColor:meta.color+'18',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},{data:pointV,borderColor:meta.color,backgroundColor:meta.color,borderWidth:0,pointRadius:pointV.map(v=>v!=null?4:0),pointHoverRadius:6,fill:false,spanGaps:false,showLine:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y!=null?c.parsed.y.toFixed(meta.decimals)+(meta.unit?' '+meta.unit:''):''}}},scales:{x:{display:false},y:{display:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',maxTicksLimit:4,callback:v=>v.toFixed(meta.decimals)}}}}});
+chartInstance=new Chart(ctx,{type:'line',data:{labels:lbls,datasets:[{data:lineV,borderColor:meta.color,backgroundColor:meta.color+'18',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},{data:pointV,borderColor:meta.color,backgroundColor:meta.color,borderWidth:0,pointRadius:pointV.map(v=>v!=null?4:0),pointHoverRadius:6,fill:false,spanGaps:false,showLine:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y!=null?c.parsed.y.toFixed(meta.decimals).replace('.',',')+(meta.unit?' '+meta.unit:''):''}}},scales:{x:{display:false},y:{display:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',maxTicksLimit:4,callback:v=>v.toFixed(meta.decimals)}}}}});
 renderMedSummary();renderMedHistory();
 }
 function renderMedSummary(){
@@ -1753,7 +1753,7 @@ if(val==null){h+='<div class="med-card" style="border-top:3px solid '+m.color+'"
 const diff=pval!=null?+(val-pval).toFixed(m.decimals):null;
 const cls=diff==null||diff===0?'':m.goodDown?diff<0?'delta-good':'delta-bad':diff>0?'delta-good':'delta-bad';
 const sign=diff!=null&&diff>0?'+':'';
-h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">'+val.toFixed(m.decimals)+'<span style="font-size:10px;color:#64748B"> '+m.unit+'</span></div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta '+cls+'">'+(diff!=null&&diff!==0?sign+diff.toFixed(m.decimals):'—')+'</div></div>';
+h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">'+val.toFixed(m.decimals).replace('.',',')+'<span style="font-size:10px;color:#64748B"> '+m.unit+'</span></div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta '+cls+'">'+(diff!=null&&diff!==0?sign+diff.toFixed(m.decimals).replace('.',','):'—')+'</div></div>';
 });
 document.getElementById('med-latest').innerHTML=h;
 }
@@ -2079,7 +2079,7 @@ const vol=parseBR(document.getElementById('ex-beer-volume').value)||0;
 const bt=BEER_TYPES[type];
 if(!bt||!vol){document.getElementById('ex-beer-calc').textContent='— kcal · — carbo';return null;}
 const kcal=Math.round(bt.kcalPer100ml*(vol/100));
-const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1).replace('.',',');
+const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
 document.getElementById('ex-beer-calc').textContent=kcal+' kcal · '+carb+'g carbo';
 return{kcal,carb};
 }
@@ -2196,15 +2196,15 @@ let kcal=0,prot=0,carb=0,gord=0,label='';
 if(isWeight){
 const f=val/100;
 kcal=Math.round((obj.item.kcalP100||0)*f);
-prot=+((obj.item.protP100||0)*f).toFixed(1).replace('.',',');
-carb=+((obj.item.carbP100||0)*f).toFixed(1).replace('.',',');
-gord=+((obj.item.gordP100||0)*f).toFixed(1).replace('.',',');
+prot=+((obj.item.protP100||0)*f).toFixed(1);
+carb=+((obj.item.carbP100||0)*f).toFixed(1);
+gord=+((obj.item.gordP100||0)*f).toFixed(1);
 label=obj.item.name+' '+val+'g';
 }else{
 kcal=Math.round((obj.item.kcal||0)*val);
-prot=+((obj.item.prot||0)*val).toFixed(1).replace('.',',');
-carb=+((obj.item.carb||0)*val).toFixed(1).replace('.',',');
-gord=+((obj.item.gord||0)*val).toFixed(1).replace('.',',');
+prot=+((obj.item.prot||0)*val).toFixed(1);
+carb=+((obj.item.carb||0)*val).toFixed(1);
+gord=+((obj.item.gord||0)*val).toFixed(1);
 label=val===1?obj.item.name:(val+'× '+obj.item.name);
 }
 mealBuilderSelected.push({label,kcal,prot,carb,gord,gi});
@@ -2249,7 +2249,7 @@ mealBuilderSelected.forEach(it=>{kcal+=it.kcal;prot+=it.prot;carb+=it.carb;gord+
 if(items.length===0)return alert('Adicione ao menos um item.');
 const key=dk(today);
 const d=getDiet(key);
-d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal:Math.round(kcal),prot:+prot.toFixed(1).replace('.',','),carb:+carb.toFixed(1).replace('.',','),gord:+gord.toFixed(1).replace('.',','),items:items.join(' · ')+(note?' · '+note:''),type});
+d.meals.push({id:uid(),name:MEAL_TYPE_LABELS[type]||'Refeição',time,kcal:Math.round(kcal),prot:+prot.toFixed(1),carb:+carb.toFixed(1),gord:+gord.toFixed(1),items:items.join(' · ')+(note?' · '+note:''),type});
 d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
 saveDiet(key,d);
 closeMealBuilderModal();renderDiet();
@@ -2288,7 +2288,7 @@ const vol=parseBR(document.getElementById('beer-volume').value)||0;
 const bt=BEER_TYPES[type];
 if(!bt||!vol){document.getElementById('beer-calc').textContent='— kcal · — carbo';return null;}
 const kcal=Math.round(bt.kcalPer100ml*(vol/100));
-const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1).replace('.',',');
+const carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
 document.getElementById('beer-calc').textContent=kcal+' kcal · '+carb+'g carbo';
 return{kcal,carb};
 }
@@ -2783,7 +2783,7 @@ const vol=parseBR(newVol);
 if(isNaN(vol)||vol<=0)return alert('Volume inválido');
 b.volume=vol;
 b.kcal=Math.round(bt.kcalPer100ml*(vol/100));
-b.carb=+(bt.carbPer100ml*(vol/100)).toFixed(1).replace('.',',');
+b.carb=+(bt.carbPer100ml*(vol/100)).toFixed(1);
 saveDiet(dateKey,d);renderDietHistorico();
 }
 const DEFAULT_COMPRAS=[
