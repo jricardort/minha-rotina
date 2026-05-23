@@ -638,6 +638,23 @@ renderPlan();
 if(window.syncNow)window.syncNow();
 }
 let diet={};try{const _d=localStorage.getItem('diet');diet=_d?JSON.parse(_d)||{}:{};}catch(e){diet={};}
+(function addChurrascoPizza20260523(){
+const key='2026-05-23';
+const flagKey='_addedChurrascoPizza_20260523';
+if(localStorage.getItem(flagKey))return;
+if(!diet[key])diet[key]={meals:[],beers:[],water:0};
+const d=diet[key];
+if(!Array.isArray(d.meals))d.meals=[];
+if(!Array.isArray(d.beers))d.beers=[];
+const _uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+d.meals.push({id:_uid(),name:'🍛 Almoço — Churrasco',time:'13:00',kcal:900,prot:70,carb:5,gord:60,items:'Churrasco variado (picanha, fraldinha, linguiça, pão de alho, vinagrete)',type:'almoco'});
+for(let i=0;i<8;i++){d.beers.push({id:_uid(),type:'pilsner',volume:500,kcal:200,carb:15,time:'13:30',note:'Churrasco'});}
+d.meals.push({id:_uid(),name:'🍲 Jantar — Pizza',time:'20:00',kcal:750,prot:30,carb:90,gord:24,items:'3 fatias de pizza margherita',type:'jantar'});
+d.meals.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+try{localStorage.setItem('diet',JSON.stringify(diet));localStorage.setItem(flagKey,'1');}catch(e){}
+if(window.syncNow)setTimeout(()=>window.syncNow(),500);
+console.log('✓ Adicionado: churrasco + 8 cervejas + pizza margherita em 23/05/2026');
+})();
 (function migrateIogurte(){
 let changed=false;
 Object.keys(diet).forEach(dk=>{
