@@ -2134,10 +2134,19 @@ document.getElementById('modal-meal-builder').classList.add('open');
 }
 let mealBuilderSelected=[];
 function resetMealBuilder(){mealBuilderSelected=[];renderMealBuilder();}
+function getMealOptionsForCategory(mealType){
+const base=MEAL_BUILDER_OPTIONS[mealType]||[];
+const withOverrides=base.map(grp=>{
+const matchingUser=userFoods.filter(f=>(f.category||'')===grp.group);
+const baseItems=grp.items.map(it=>{const ov=foodOverrides[it.name];return ov?Object.assign({},it,ov):it;});
+return{group:grp.group,items:baseItems.concat(matchingUser)};
+});
+return withOverrides;
+}
 function renderMealBuilder(){
 const type=document.getElementById('mb-type').value;
 mealBuilderItems={};
-const opts=MEAL_BUILDER_OPTIONS[type]||[];
+const opts=getMealOptionsForCategory(type);
 const c=document.getElementById('mb-items');
 let h='';
 opts.forEach((grp,gi)=>{
