@@ -1211,7 +1211,8 @@ const SPECIAL_WORKOUTS={
 '2026-05-21':{t:'Transição — Push leve',ex:['Supino reto halteres 3x8 (leve)','Supino inclinado halteres 3x8 (leve)','Pec deck 3x10 (leve)','Desenvolvimento halteres 3x8 (leve)','Tríceps pulley corda 2x12 (leve)','⚡ Não bata recordes — só ativar']},
 '2026-05-22':{t:'Transição — Z2 fácil 30min',ex:['Corrida Z2 30min']},
 '2026-05-23':{t:'Transição — Z2 fácil 35min',ex:['Corrida Z2 35min']},
-'2026-05-24':{t:'Transição — Descanso total',ex:['Descanso total','Início do plano amanhã 🎯']}
+'2026-05-24':{t:'Transição — Descanso total',ex:['Descanso total','Início do plano amanhã 🎯']},
+'2026-06-04':{t:'Peito + Costas',ex:['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Crucifixo inclinado halteres 3x12','Puxada frente aberta 4x10','Remada cavalinho 4x10','Pulldown triangular 3x12','Remada curvada barra 3x10']}
 };
 let userZones={};try{const _uz=localStorage.getItem('userZones');userZones=_uz?JSON.parse(_uz)||{}:{};}catch(e){userZones={};}
 function computeZones(fcmax){return{z1:{min:0,max:Math.round(fcmax*0.80)-1},z2:{min:Math.round(fcmax*0.80),max:Math.round(fcmax*0.87)-1},z3:{min:Math.round(fcmax*0.87),max:Math.round(fcmax*0.93)-1},z4:{min:Math.round(fcmax*0.93),max:Math.round(fcmax*0.97)-1},z5:{min:Math.round(fcmax*0.97),max:fcmax}};}
