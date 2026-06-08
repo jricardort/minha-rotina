@@ -386,7 +386,9 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 </div>
 <div class="sec" id="sec-treino">
 <div class="treino-tip" style="display:flex;align-items:center;justify-content:space-between"><span><strong>META:</strong> 10km &lt; 55min (pace 5:30/km) · Maratona de Munique · 11/Out/2026</span><button class="info-btn" onclick="openInfoModal()" title="Visão geral do plano"><i class="ti ti-info-circle"></i></button></div>
+<div class="subtabs"><button class="subtab active" id="subtab-treino-semanas" onclick="switchTreinoSubtab('semanas')"><i class="ti ti-calendar-week"></i>Semanas</button><button class="subtab" id="subtab-treino-hist" onclick="switchTreinoSubtab('hist')"><i class="ti ti-history"></i>Histórico</button></div>
 <div id="treino-content"></div>
+<div id="treino-historico" style="display:none"></div>
 </div>
 <div class="sec" id="sec-dieta">
 <div class="subtabs"><button class="subtab active" id="subtab-diet-hoje" onclick="switchDietSubtab('hoje')"><i class="ti ti-tools-kitchen-2"></i>Hoje</button><button class="subtab" id="subtab-diet-hist" onclick="switchDietSubtab('hist')"><i class="ti ti-history"></i>Histórico</button></div>
@@ -418,7 +420,7 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <button class="add-btn" onclick="openTaskModal()"><i class="ti ti-plus"></i>Nova tarefa</button>
 </div>
 </div>
-<div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha os campos disponíveis na sua balança. IMC, Gordura (kg) e Músculo (kg) são calculados automaticamente.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="text" inputmode="decimal" id="m-peso" step="0.1" placeholder="Ex: 82.5"></div><div class="modal-field"><label>% Gordura</label><input type="text" inputmode="decimal" id="m-gordura" step="0.1" placeholder="Ex: 22.0"></div><div class="modal-field"><label>% Músculo</label><input type="text" inputmode="decimal" id="m-musculo" step="0.1" placeholder="Ex: 38.0"></div><div class="modal-field"><label>% Proteína</label><input type="text" inputmode="decimal" id="m-proteina" step="0.1" placeholder="Ex: 17.5"></div><div class="modal-field"><label>Visceral Fat Rating</label><input type="text" inputmode="decimal" id="m-visceral" step="1" placeholder="Ex: 8"></div><div class="modal-field"><label>Body Age (anos)</label><input type="text" inputmode="decimal" id="m-bodyAge" step="1" placeholder="Ex: 34"></div><div class="modal-field" style="grid-column:1/-1"><label>Basal (kcal)</label><input type="text" inputmode="decimal" id="m-basal" step="1" placeholder="Ex: 1850"></div></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-med"><div class="modal"><h3 id="modal-med-title">Nova medição</h3><p class="modal-hint">Preencha os campos disponíveis na sua balança. IMC, Gordura (kg) e Músculo (kg) são calculados automaticamente.</p><div class="modal-grid"><div class="modal-field" style="grid-column:1/-1"><label>Data</label><input type="date" id="m-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="text" inputmode="decimal" id="m-peso" step="0.1" placeholder="Ex: 82.5"></div><div class="modal-field"><label>% Gordura</label><input type="text" inputmode="decimal" id="m-gordura" step="0.1" placeholder="Ex: 22.0"></div><div class="modal-field"><label>% Músculo</label><input type="text" inputmode="decimal" id="m-musculo" step="0.1" placeholder="Ex: 38.0"></div><div class="modal-field"><label>% Proteína</label><input type="text" inputmode="decimal" id="m-proteina" step="0.1" placeholder="Ex: 17.5"></div><div class="modal-field"><label>Visceral Fat Rating</label><input type="text" inputmode="decimal" id="m-visceral" step="1" placeholder="Ex: 8"></div><div class="modal-field"><label>Body Age (anos)</label><input type="text" inputmode="decimal" id="m-bodyAge" step="1" placeholder="Ex: 34"></div><div class="modal-field" style="grid-column:1/-1"><label>Basal (kcal)</label><input type="text" inputmode="decimal" id="m-basal" step="1" placeholder="Ex: 1850"></div></div><div class="modal-field" style="margin-bottom:14px;display:flex;align-items:center;gap:8px"><input type="checkbox" id="m-nutriSent" style="width:auto;height:16px;accent-color:#16A34A;cursor:pointer"><label for="m-nutriSent" style="margin:0;font-size:12px;cursor:pointer;color:#15803D;font-weight:500">✓ Enviado para a nutri</label></div><div class="modal-btns"><button class="btn-cancel" onclick="closeMedModal()">Cancelar</button><button class="btn-save" onclick="saveMed()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-task"><div class="modal"><h3 id="modal-task-title">Nova tarefa</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Tarefa</label><input type="text" id="task-text" placeholder="O que precisa ser feito?"></div><div class="modal-grid"><div class="modal-field"><label>Prioridade</label><select id="task-priority"><option value="high">🔴 Alta</option><option value="medium">🔵 Média</option><option value="low">🟢 Baixa</option></select></div><div class="modal-field"><label>Prazo</label><input type="date" id="task-due"></div></div></div><div class="modal-btns" id="task-btns"><button class="btn-cancel" onclick="closeTaskModal()">Cancelar</button><button class="btn-save" onclick="saveTask()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-event"><div class="modal"><h3 id="modal-event-title">Novo evento</h3><div style="margin-bottom:16px"><div class="modal-field" style="margin-bottom:10px"><label>Título</label><input type="text" id="ev-title" placeholder="Nome do evento"></div><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ev-date"></div><div class="modal-grid" style="margin-bottom:0"><div class="modal-field"><label>Início (opcional)</label><input type="time" id="ev-time"></div><div class="modal-field"><label>Término (opcional)</label><input type="time" id="ev-time-end"></div></div><div class="modal-grid" style="margin-top:10px;margin-bottom:0"><div class="modal-field"><label>Categoria</label><select id="ev-cat"><option value="treino">🏋️ Treino</option><option value="corrida">🏃 Corrida</option><option value="saude">🩺 Saúde</option><option value="trabalho">💼 Trabalho</option><option value="pessoal">🎉 Pessoal</option><option value="aniversario">🎂 Aniversário</option></select></div><div class="modal-field"><label>Repetir</label><select id="ev-recur"><option value="none">Não se repete</option><option value="weekly">Toda semana</option><option value="monthly">Todo mês</option><option value="yearly">Todo ano</option></select></div></div><div class="modal-field" style="margin-top:10px"><label>Descrição</label><textarea id="ev-desc" placeholder="Detalhes (opcional)"></textarea></div></div><div class="modal-btns" id="ev-btns"><button class="btn-cancel" onclick="closeEventModal()">Cancelar</button><button class="btn-save" onclick="saveEvent()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-weight"><div class="modal"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><input type="text" id="modal-weight-title" maxlength="80" style="flex:1;font-size:15px;font-weight:500;color:#000;border:1px solid transparent;border-radius:6px;padding:4px 6px;background:transparent" placeholder="Nome do exercício" onfocus="this.style.background='#F8F9FA';this.style.borderColor='#CBD5E1'" onblur="saveExerciseName(this);this.style.background='transparent';this.style.borderColor='transparent'"><i class="ti ti-pencil" style="color:#94A3B8;font-size:14px"></i></div><p class="modal-hint" id="modal-weight-hint">Anote o peso usado neste exercício.</p><div class="chart-wrap" id="weight-chart-wrap" style="display:none"><canvas id="weightChart"></canvas></div><div id="weight-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterWeightEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="v-data"></b></div><div class="view-row"><span>Peso</span><b id="v-peso"></b></div><div class="view-row" id="v-reps-row"><span>Reps</span><b id="v-reps"></b></div><div class="view-row" id="v-note-row"><span>Notas</span><b id="v-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newWeightEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="weight-edit-mode"><div class="modal-grid" style="margin-top:12px"><div class="modal-field"><label>Data</label><input type="date" id="w-data"></div><div class="modal-field"><label>Peso (kg)</label><input type="text" inputmode="decimal" id="w-peso" step="0.5" placeholder="Ex: 60"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Reps reais (opcional)</label><input type="text" id="w-reps" placeholder="Ex: 10,10,8,8"></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="w-note" placeholder="Ex: aumentar próximo"></div></div><p class="section-label" id="weight-hist-label" style="display:none">Histórico</p><div id="weight-history" style="max-height:180px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWeightModal()">Fechar</button><button class="btn-save" id="weight-save-btn" onclick="saveWeight()">Salvar</button></div></div></div>
@@ -680,6 +682,25 @@ changed=true;
 });
 });
 if(changed){try{localStorage.setItem('diet',JSON.stringify(diet));}catch(e){}console.log('Migrado: dados de iogurte proteico atualizados');}
+})();
+(function migrateJunho2026(){
+const _uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+function ensureDay(k){if(!diet[k])diet[k]={meals:[],beers:[],water:0};if(!Array.isArray(diet[k].meals))diet[k].meals=[];if(!Array.isArray(diet[k].beers))diet[k].beers=[];return diet[k];}
+let changed=false;
+// 03/06/2026 — 3,3L cerveja pilsner
+{const d=ensureDay('2026-06-03');
+if(!d.beers.some(b=>b._migJ0603)){d.beers.push({id:_uid(),type:'pilsner',volume:3300,kcal:1320,carb:99,time:'',note:'',_migJ0603:true});changed=true;}}
+// 04/06/2026 — 900ml cerveja + 1 dose tequila (40ml)
+{const d=ensureDay('2026-06-04');
+if(!d.beers.some(b=>b._migJ0604)){d.beers.push({id:_uid(),type:'pilsner',volume:900,kcal:360,carb:27,time:'',note:'',_migJ0604:true});d.beers.push({id:_uid(),type:'tequila',volume:40,kcal:88,carb:0,time:'',note:'',_migJ0604:true});changed=true;}}
+// 06/06/2026 — 1 Negroni (90ml) + 2,5L cerveja + pizza individual jantar
+{const d=ensureDay('2026-06-06');
+if(!d.beers.some(b=>b._migJ0606)){d.beers.push({id:_uid(),type:'negroni',volume:90,kcal:200,carb:8,time:'',note:'',_migJ0606:true});d.beers.push({id:_uid(),type:'pilsner',volume:2500,kcal:1000,carb:75,time:'',note:'',_migJ0606:true});changed=true;}
+if(!d.meals.some(m=>m._migJ0606pizza)){d.meals.push({id:_uid(),name:'🍕 Jantar — Pizza individual',time:'20:00',kcal:700,prot:25,carb:90,gord:25,items:'Pizza individual',type:'jantar',_migJ0606pizza:true});changed=true;}}
+// 07/06/2026 — Rot Bratwurst almoço
+{const d=ensureDay('2026-06-07');
+if(!d.meals.some(m=>m._migJ0607)){d.meals.push({id:_uid(),name:'🍛 Almoço — Rot Bratwurst',time:'12:30',kcal:370,prot:15,carb:5,gord:32,items:'Rot Bratwurst (salsichão alemão grelhado)',type:'almoco',_migJ0607:true});changed=true;}}
+if(changed){try{localStorage.setItem('diet',JSON.stringify(diet));}catch(e){}if(window.syncNow)setTimeout(()=>window.syncNow(),600);console.log('✓ Entradas jun/2026 aplicadas');}
 })();
 const DEFAULT_GOALS={kcal:2200,prot:160,carb:250,gord:70,water:2800,deficit:500};
 let dietGoals=Object.assign({},DEFAULT_GOALS);try{const _g=localStorage.getItem('dietGoals');if(_g){const p=JSON.parse(_g);if(p)Object.assign(dietGoals,p);}}catch(e){}
@@ -961,7 +982,9 @@ dunkel:{label:'Dunkel / Stout',kcalPer100ml:50,carbPer100ml:4.4},
 ipa:{label:'IPA artesanal',kcalPer100ml:50,carbPer100ml:4.3},
 oktoberfest:{label:'Märzen / Oktoberfest',kcalPer100ml:52,carbPer100ml:4.0},
 lager_br:{label:'Lager brasileira',kcalPer100ml:41,carbPer100ml:3.1},
-vinho_tinto:{label:'Vinho tinto seco',kcalPer100ml:83,carbPer100ml:2.7}
+vinho_tinto:{label:'Vinho tinto seco',kcalPer100ml:83,carbPer100ml:2.7},
+tequila:{label:'Tequila (shot)',kcalPer100ml:220,carbPer100ml:0},
+negroni:{label:'Negroni (drink)',kcalPer100ml:222,carbPer100ml:8.8}
 };
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 const PLAN_PRESETS={
@@ -1084,8 +1107,50 @@ return{basal,spent,totalOut,totalIn,deficit:totalOut-totalIn};
 }
 let expandedPastDays=new Set();
 let expandedPastWeeks=new Set();
+let treinoSubtab='semanas';
 function togglePastDay(k){if(!k)return;if(expandedPastDays.has(k))expandedPastDays.delete(k);else expandedPastDays.add(k);renderPlan();}
 function togglePastWeek(wkNum,isOpen){if(isOpen)expandedPastWeeks.add(wkNum);else expandedPastWeeks.delete(wkNum);}
+function switchTreinoSubtab(name){
+treinoSubtab=name;
+document.getElementById('subtab-treino-semanas').classList.toggle('active',name==='semanas');
+document.getElementById('subtab-treino-hist').classList.toggle('active',name==='hist');
+document.getElementById('treino-content').style.display=name==='semanas'?'block':'none';
+document.getElementById('treino-historico').style.display=name==='hist'?'block':'none';
+if(name==='semanas')renderPlan();else renderTreinoHistorico();
+}
+function renderTreinoHistorico(){
+const c=document.getElementById('treino-historico');
+let cw=Math.floor((today-START_DATE)/(7*24*60*60*1000));
+if(cw<=0){c.innerHTML='<div class="card" style="text-align:center;color:#64748B;font-size:13px;padding:20px">Nenhuma semana concluída ainda.</div>';return;}
+let h='<p class="section-label" style="margin-bottom:10px">Semanas anteriores</p>';
+for(let i=cw-1;i>=0;i--){
+const wk=plan[i];if(!wk)continue;
+const ws=new Date(START_DATE);ws.setDate(ws.getDate()+i*7);
+const we=new Date(ws);we.setDate(we.getDate()+6);
+const dayNames=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+h+=`<details style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;margin-bottom:10px;overflow:hidden"><summary style="padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:13px;gap:8px"><span style="display:flex;align-items:center;gap:6px"><span class="phase-badge" style="background:${wk.color};color:${wk.text}">${wk.phase}</span><b>Semana ${wk.num}</b></span><span style="font-size:11px;color:#64748B;flex-shrink:0">${ws.getDate()}/${ws.getMonth()+1} – ${we.getDate()}/${we.getMonth()+1}</span></summary><div style="padding:6px 10px 10px">`;
+dayNames.forEach((dn,idx)=>{
+const dayDate=new Date(ws);dayDate.setDate(dayDate.getDate()+idx);
+const dayKey=dk(dayDate);
+const d_orig=wk.template[idx];
+const d=SPECIAL_WORKOUTS[dayKey]||d_orig;
+const ov=getWorkoutOverride(dayKey);
+const isCumprido=ov&&ov.type==='cumprido';
+const isOverrideDone=ov&&!isCumprido&&ov.done;
+const isRestDay=d.t==='Descanso';
+const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
+let statusDot='';
+if(isCumprido)statusDot=`<span style="font-size:10px;background:#DCFCE7;color:#16A34A;padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:600">✓ cumprido</span>`;
+else if(isOverrideDone)statusDot=`<span style="font-size:10px;background:#F5F3FF;color:#7C3AED;padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:600">✓ alt.</span>`;
+else if(ov){const ot=OVERRIDE_TYPES[ov.type];statusDot=`<span style="font-size:10px;background:${ot.bg};color:${ot.color};padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:600">${ot.label}</span>`;}
+else if(isRestDay)statusDot=`<span style="font-size:10px;background:#F0FDF4;color:#16A34A;padding:1px 6px;border-radius:99px;margin-left:4px">descanso</span>`;
+const title=ov&&!isCumprido?(OVERRIDE_TYPES[ov.type].label+(ov.title?' — '+escapeHtml(ov.title):'')):escapeHtml(d.t);
+h+=`<div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid #F1F5F9"><span class="treino-day-badge ${badge}" style="min-width:30px;font-size:9px">${dn}</span><span style="font-size:12px;color:#334155;flex:1">${title}${statusDot}</span><span style="font-size:10px;color:#94A3B8">${dayDate.getDate()}/${dayDate.getMonth()+1}</span></div>`;
+});
+h+=`</div></details>`;
+}
+c.innerHTML=h;
+}
 let workoutOverrides={};
 try{const _raw=localStorage.getItem('workoutOverrides');workoutOverrides=_raw?JSON.parse(_raw)||{}:{};}catch(e){workoutOverrides={};console.warn('Override data corrupted, resetting');}
 const OVERRIDE_TYPES={
@@ -1764,7 +1829,9 @@ document.getElementById('med-current').style.color=meta.color;
 document.getElementById('med-dates').innerHTML='<span>'+lbls[0]+'</span><span>'+lbls[lbls.length-1]+'</span>';
 if(chartInstance)chartInstance.destroy();
 const ctx=document.getElementById('medChart').getContext('2d');
-chartInstance=new Chart(ctx,{type:'line',data:{labels:lbls,datasets:[{data:lineV,borderColor:meta.color,backgroundColor:meta.color+'18',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},{data:pointV,borderColor:meta.color,backgroundColor:meta.color,borderWidth:0,pointRadius:pointV.map(v=>v!=null?4:0),pointHoverRadius:6,fill:false,spanGaps:false,showLine:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y!=null?c.parsed.y.toFixed(meta.decimals).replace('.',',')+(meta.unit?' '+meta.unit:''):''}}},scales:{x:{display:false},y:{display:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',maxTicksLimit:4,callback:v=>v.toFixed(meta.decimals)}}}}});
+const nutriRadii=medData.map(e=>e.nutriSent?8:0);
+const nutriColors=medData.map(e=>e.nutriSent?'#16A34A':meta.color);
+chartInstance=new Chart(ctx,{type:'line',data:{labels:lbls,datasets:[{data:lineV,borderColor:meta.color,backgroundColor:meta.color+'18',borderWidth:2,pointRadius:0,fill:true,tension:0.3,spanGaps:true},{data:pointV,borderColor:meta.color,backgroundColor:meta.color,borderWidth:0,pointRadius:pointV.map((v,i)=>v!=null?(medData[i].nutriSent?8:4):0),pointHoverRadius:6,fill:false,spanGaps:false,showLine:false},{data:medData.map((e,i)=>{const v=getMedVal(e,currentMed);return(v!=null&&e.nutriSent)?v:null;}),borderColor:'#16A34A',backgroundColor:'#16A34A',borderWidth:2,pointRadius:medData.map(e=>e.nutriSent?8:0),pointStyle:'circle',fill:false,spanGaps:false,showLine:false,pointBorderColor:'#fff',pointBorderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y!=null?c.parsed.y.toFixed(meta.decimals).replace('.',',')+(meta.unit?' '+meta.unit:''):''}}},scales:{x:{display:false},y:{display:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',maxTicksLimit:4,callback:v=>v.toFixed(meta.decimals)}}}}});
 renderMedSummary();renderMedHistory();
 }
 function renderMedSummary(){
@@ -1800,7 +1867,8 @@ if(e.proteina!=null)vals.push('<span class="hist-val" style="color:#0891B2">'+e.
 if(e.visceral!=null)vals.push('<span class="hist-val" style="color:#EA580C">Visc '+e.visceral+'</span>');
 if(e.bodyAge!=null)vals.push('<span class="hist-val" style="color:#6B21A8">Age '+e.bodyAge+'</span>');
 if(e.basal!=null)vals.push('<span class="hist-val" style="color:#B45309">'+e.basal+'kcal</span>');
-h+='<div class="hist-row" style="align-items:flex-start"><span class="hist-date" style="min-width:52px;padding-top:2px">'+lbl+'</span><div class="hist-vals" style="flex-wrap:wrap;gap:4px 8px">'+vals.join('')+'</div><div class="hist-actions" style="flex-shrink:0"><button class="hist-btn edit-btn" onclick="editMed('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
+const nutriTick=e.nutriSent?'<span title="Enviado para a nutri" style="font-size:10px;background:#DCFCE7;color:#16A34A;padding:1px 6px;border-radius:99px;font-weight:600;white-space:nowrap;margin-left:2px">✓ nutri</span>':'';
+h+='<div class="hist-row" style="align-items:flex-start"><span class="hist-date" style="min-width:52px;padding-top:2px">'+lbl+'</span><div class="hist-vals" style="flex-wrap:wrap;gap:4px 8px">'+vals.join('')+nutriTick+'</div><div class="hist-actions" style="flex-shrink:0"><button class="hist-btn edit-btn" onclick="editMed('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteMed('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
 });
 document.getElementById('med-history').innerHTML=h||'<div style="font-size:13px;color:#94A3B8;padding:8px 0">Nenhum registro ainda.</div>';
 }
@@ -1812,9 +1880,11 @@ if(editMedIdx!=null){
 const e=medData[editMedIdx];
 document.getElementById('m-data').value=e.data;
 fields.forEach(f=>{document.getElementById('m-'+f).value=e[f]!=null?formatBR(e[f]):'';});
+document.getElementById('m-nutriSent').checked=!!e.nutriSent;
 }else{
 document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
 fields.forEach(f=>{document.getElementById('m-'+f).value='';});
+document.getElementById('m-nutriSent').checked=false;
 }
 document.getElementById('modal-med').classList.add('open');
 }
@@ -1828,10 +1898,12 @@ const flds=['peso','gordura','musculo','proteina','visceral','bodyAge','basal'];
 const vals={};
 flds.forEach(f=>{const v=document.getElementById('m-'+f).value;vals[f]=v!==''?parseBR(v):null;});
 if(flds.every(f=>vals[f]==null))return alert('Preencha ao menos um campo.');
+const nutriSent=document.getElementById('m-nutriSent').checked||false;
 const ex=medData.findIndex(e=>e.data===data);
-const entry={data,...vals};
+const entry={data,...vals,nutriSent:nutriSent||undefined};
+if(!nutriSent)delete entry.nutriSent;
 if(editMedIdx!=null){medData[editMedIdx]=entry;}
-else if(ex>=0){flds.forEach(f=>{if(vals[f]!=null)medData[ex][f]=vals[f];});}
+else if(ex>=0){flds.forEach(f=>{if(vals[f]!=null)medData[ex][f]=vals[f];});medData[ex].nutriSent=nutriSent||undefined;if(!nutriSent)delete medData[ex].nutriSent;}
 else{medData.push(entry);medData.sort((a,b)=>a.data.localeCompare(b.data));}
 localStorage.setItem('medData',JSON.stringify(medData));closeMedModal();renderMedChart();
 if(window.syncNow)window.syncNow();
@@ -3022,7 +3094,7 @@ const at=document.getElementById('tab-'+name);
 at.classList.add('active');
 at.querySelector('i').style.color='#000';
 if(name==='calendario'){selDate=new Date(today);calY=today.getFullYear();calM=today.getMonth();renderCal();}
-if(name==='treino')renderPlan();
+if(name==='treino'){if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();}
 if(name==='medicoes'){
 const active=document.getElementById('subtab-balanca')?.classList.contains('active')?'balanca':'evolucao';
 switchMedSubtab(active);
@@ -3057,7 +3129,7 @@ renderCal();
 const act=document.querySelector('.sec.active');
 if(act){
 const id=act.id;
-if(id==='sec-treino')renderPlan();
+if(id==='sec-treino'){if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();}
 else if(id==='sec-dieta')renderDiet();
 else if(id==='sec-medicoes'){renderEmagDashboard();renderMedTabs();renderMedChart();}
 else if(id==='sec-tarefas')renderTasks();
