@@ -1146,7 +1146,14 @@ else if(isOverrideDone)statusDot=`<span style="font-size:10px;background:#F5F3FF
 else if(ov){const ot=OVERRIDE_TYPES[ov.type];statusDot=`<span style="font-size:10px;background:${ot.bg};color:${ot.color};padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:600">${ot.label}</span>`;}
 else if(isRestDay)statusDot=`<span style="font-size:10px;background:#F0FDF4;color:#16A34A;padding:1px 6px;border-radius:99px;margin-left:4px">descanso</span>`;
 const title=ov&&!isCumprido?(OVERRIDE_TYPES[ov.type].label+(ov.title?' — '+escapeHtml(ov.title):'')):escapeHtml(d.t);
-h+=`<div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid #F1F5F9"><span class="treino-day-badge ${badge}" style="min-width:30px;font-size:9px">${dn}</span><span style="font-size:12px;color:#334155;flex:1">${title}${statusDot}</span><span style="font-size:10px;color:#94A3B8">${dayDate.getDate()}/${dayDate.getMonth()+1}</span></div>`;
+const showKcal=!isRestDay||ov;
+let kcalCell='';
+if(showKcal){
+const sp=getDayKcalSpent(dayKey);
+const kcalLbl=sp.total>0?`<span style="font-size:10px;color:#C2410C;white-space:nowrap;font-weight:600">${sp.total} kcal</span>`:`<span style="font-size:10px;color:#CBD5E1">— kcal</span>`;
+kcalCell=`<span style="display:inline-flex;align-items:center;gap:3px;flex-shrink:0">${kcalLbl}<button onclick="openKcalWorkoutModal('${dayKey}')" title="Editar kcal" style="background:0;border:1px solid #FED7AA;border-radius:4px;padding:1px 4px;cursor:pointer;color:#C2410C;display:inline-flex;align-items:center"><i class="ti ti-pencil" style="font-size:10px"></i></button></span>`;
+}
+h+=`<div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #F1F5F9"><span class="treino-day-badge ${badge}" style="min-width:30px;font-size:9px">${dn}</span><span style="font-size:12px;color:#334155;flex:1">${title}${statusDot}</span>${kcalCell}<span style="font-size:10px;color:#94A3B8;flex-shrink:0;min-width:30px;text-align:right">${dayDate.getDate()}/${dayDate.getMonth()+1}</span></div>`;
 });
 h+=`</div></details>`;
 }
@@ -2492,8 +2499,9 @@ const t=document.getElementById('kw-total-input').value;
 if(t===''){delete workoutKcal[kcalWorkoutDate];}
 else{workoutKcal[kcalWorkoutDate]={total:parseBR(t)};}
 try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){return alert('Erro ao salvar: '+e.message);}
-closeKcalWorkoutModal();renderPlan();
-if(switchTab&&document.getElementById('sec-dieta').classList.contains('active'))renderDiet();
+closeKcalWorkoutModal();
+if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();
+if(document.getElementById('sec-dieta').classList.contains('active'))renderDiet();
 if(window.syncNow)window.syncNow();
 }
 function resetKcalWorkout(){
@@ -2501,7 +2509,8 @@ if(!kcalWorkoutDate)return;
 if(!confirm('Voltar para os valores estimados?'))return;
 delete workoutKcal[kcalWorkoutDate];
 try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){}
-closeKcalWorkoutModal();renderPlan();
+closeKcalWorkoutModal();
+if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();
 if(window.syncNow)window.syncNow();
 }
 let emagChart=null;
