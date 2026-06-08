@@ -683,7 +683,7 @@ changed=true;
 });
 if(changed){try{localStorage.setItem('diet',JSON.stringify(diet));}catch(e){}console.log('Migrado: dados de iogurte proteico atualizados');}
 })();
-(function migrateJunho2026(){
+function migrateJunho2026(){
 const _uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 function ensureDay(k){if(!diet[k])diet[k]={meals:[],beers:[],water:0};if(!Array.isArray(diet[k].meals))diet[k].meals=[];if(!Array.isArray(diet[k].beers))diet[k].beers=[];return diet[k];}
 let changed=false;
@@ -701,7 +701,8 @@ if(!d.meals.some(m=>m._migJ0606pizza)){d.meals.push({id:_uid(),name:'🍕 Jantar
 {const d=ensureDay('2026-06-07');
 if(!d.meals.some(m=>m._migJ0607)){d.meals.push({id:_uid(),name:'🍛 Almoço — Rot Bratwurst',time:'12:30',kcal:370,prot:15,carb:5,gord:32,items:'Rot Bratwurst (salsichão alemão grelhado)',type:'almoco',_migJ0607:true});changed=true;}}
 if(changed){try{localStorage.setItem('diet',JSON.stringify(diet));}catch(e){}if(window.syncNow)setTimeout(()=>window.syncNow(),600);console.log('✓ Entradas jun/2026 aplicadas');}
-})();
+}
+migrateJunho2026();
 const DEFAULT_GOALS={kcal:2200,prot:160,carb:250,gord:70,water:2800,deficit:500};
 let dietGoals=Object.assign({},DEFAULT_GOALS);try{const _g=localStorage.getItem('dietGoals');if(_g){const p=JSON.parse(_g);if(p)Object.assign(dietGoals,p);}}catch(e){}
 let dietFavorites=[];try{const _f=localStorage.getItem('dietFavorites');dietFavorites=_f?JSON.parse(_f)||[]:[];}catch(e){dietFavorites=[];}
@@ -1365,7 +1366,7 @@ if(ov.duration)metaParts.push(escapeHtml(ov.duration));
 if(ov.note)metaParts.push(escapeHtml(ov.note));
 if(metaParts.length)h+=`<div class="ov-meta">${metaParts.join(' · ')}</div>`;
 h+=`<div class="ov-original"><b>Plano original:</b> ${escapeHtml(d.t)} (${d.ex.length} exercícios)</div></div>`;
-if(canAlter&&!isRestDay){
+if(canAlter){
 const sp=getDayKcalSpent(dayKey);
 h+=`<div class="kcal-inline-card"><span>🔥 Kcal: <b>${sp.total}</b> <span style="font-size:10px;color:#9A3412">${sp.isManual?'(manual)':'(estimado)'}</span></span><button class="kcal-inline-btn" onclick="openKcalWorkoutModal('${dayKey}')"><i class="ti ti-pencil"></i>Editar</button></div>`;
 if(isOverrideDone){h+=`<button class="alterar-btn" onclick="unmarkOverrideDone('${dayKey}')"><i class="ti ti-arrow-back-up"></i>Desmarcar concluído</button>`;}
@@ -3118,6 +3119,7 @@ try{const uzR=localStorage.getItem('userZones');userZones=uzR?JSON.parse(uzR)||{
 try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
 try{const dR=localStorage.getItem('diet');diet=dR?JSON.parse(dR)||{}:{};}catch(e){diet={};}
 if(typeof applyChurrascoPizzaMigration==='function')applyChurrascoPizzaMigration();
+if(typeof migrateJunho2026==='function')migrateJunho2026();
 try{const gR=localStorage.getItem('dietGoals');if(gR){const p=JSON.parse(gR);if(p)Object.assign(dietGoals,p);}}catch(e){}
 try{const fR=localStorage.getItem('dietFavorites');dietFavorites=fR?JSON.parse(fR)||[]:[];}catch(e){dietFavorites=[];}
 try{const wkR=localStorage.getItem('workoutKcal');workoutKcal=wkR?JSON.parse(wkR)||{}:{};}catch(e){workoutKcal={};}
