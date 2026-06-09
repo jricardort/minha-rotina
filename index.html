@@ -1414,7 +1414,7 @@ h+=`<div class="ex-row-run"><span class="ex-name" style="color:#16A34A">${displa
 if(isCoreEx(e)){
 const exKey=getExKey(e);
 const chkd=(coreLog[dayKey]||{})[exKey]||false;
-h+=`<div class="ex-row"><button class="core-chk${chkd?' done':''}" onclick="toggleCore('${dayKey}','${exKey.replace(/'/g,"\\'")}')"><i class="ti ti-${chkd?'square-check-filled':'square'}"></i></button><span class="ex-name" style="color:${chkd?'#16A34A':'#16A34A'}">${displayE}</span></div>`;
+h+=`<div class="ex-row"><button class="core-chk${chkd?' done':''}" onclick="toggleCore('${dayKey}','${exKey.replace(/'/g,"\\'")}',this)"><i class="ti ti-${chkd?'square-check-filled':'square'}"></i></button><span class="ex-name" style="color:#16A34A">${displayE}</span></div>`;
 }else{
 h+=`<div class="ex-row"><span class="ex-name" style="color:#16A34A">${displayE}</span></div>`;
 }
@@ -1680,14 +1680,15 @@ let total=0;
 ['z1','z2','z3','z4','z5'].forEach(z=>{total+=parseTime(getZoneTime(z));});
 document.getElementById('r-total').value=formatTime(total);
 }
-function toggleCore(dayKey,exKey){
+function toggleCore(dayKey,exKey,btn){
 if(!coreLog[dayKey])coreLog[dayKey]={};
 coreLog[dayKey][exKey]=!coreLog[dayKey][exKey];
 if(!coreLog[dayKey][exKey])delete coreLog[dayKey][exKey];
 if(!Object.keys(coreLog[dayKey]||{}).length)delete coreLog[dayKey];
+const chkd=(coreLog[dayKey]||{})[exKey]||false;
 try{localStorage.setItem('coreLog',JSON.stringify(coreLog));}catch(err){}
 if(window.syncNow)window.syncNow();
-renderPlan();
+if(btn){btn.classList.toggle('done',chkd);const ic=btn.querySelector('i');if(ic)ic.className='ti ti-'+(chkd?'square-check-filled':'square');}
 }
 function openRunModal(exKey,exName){
 currentRunKey=exKey;currentRunName=exName;editRunIdx=null;
