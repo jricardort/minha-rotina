@@ -1687,7 +1687,7 @@ if(!coreLog[dayKey][exKey])delete coreLog[dayKey][exKey];
 if(!Object.keys(coreLog[dayKey]||{}).length)delete coreLog[dayKey];
 try{localStorage.setItem('coreLog',JSON.stringify(coreLog));}catch(err){}
 if(window.syncNow)window.syncNow();
-renderTreino();
+renderPlan();
 }
 function openRunModal(exKey,exName){
 currentRunKey=exKey;currentRunName=exName;editRunIdx=null;
