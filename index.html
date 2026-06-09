@@ -141,6 +141,9 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 .weight-btn.done{background:#F0FDF4!important;border-color:#86EFAC!important;color:#16A34A!important}
 .weight-btn.done:hover{background:#DCFCE7!important}
 .weight-btn.done i{color:#16A34A!important}
+.core-chk{background:0;border:0;cursor:pointer;color:#CBD5E1;font-size:20px;padding:0;display:inline-flex;align-items:center;flex-shrink:0;margin-right:6px;line-height:1;transition:color .15s}
+.core-chk.done{color:#16A34A}
+.core-chk:hover:not(.done){color:#94A3B8}
 .weight-current{color:#1E40AF!important;font-weight:600}
 .weight-empty{color:#94A3B8!important;font-style:italic}
 .ex-row-weight{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #CBD5E1;gap:8px;flex-wrap:wrap}
@@ -631,6 +634,7 @@ return{phase:wk.phase,weekNum:wk.num,day:day,dayName:['Seg','Ter','Qua','Qui','S
 }
 let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
 let cardioLog=JSON.parse(localStorage.getItem('cardioLog')||'{}');
+let coreLog={};try{const _cl=localStorage.getItem('coreLog');coreLog=_cl?JSON.parse(_cl)||{}:{};}catch(e){coreLog={};}
 let exerciseRenames={};try{const _r=localStorage.getItem('exerciseRenames');exerciseRenames=_r?JSON.parse(_r)||{}:{};}catch(e){exerciseRenames={};}
 function getExerciseDisplay(exKey,defaultName){return exerciseRenames[exKey]||defaultName;}
 function saveExerciseName(input){
@@ -1305,6 +1309,7 @@ if(window.syncNow)window.syncNow();
 }
 function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Tempo Run|Intervalado|Shakeout|Educativos|strides|Sauna|Descanso|Alongamento|Recuperação|Core|Prancha|Abdominal|Oblíquos/i.test(e);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
+function isCoreEx(e){return /Prancha|Abdominal|Oblíquos/i.test(e);}
 function getLastRun(exKey){const arr=(cardioLog[exKey]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));return arr[0]||null;}
 function parseTime(t){if(!t)return 0;const p=t.split(':').map(n=>parseInt(n,10)||0);if(p.length===3)return p[0]*3600+p[1]*60+p[2];if(p.length===2)return p[0]*60+p[1];return 0;}
 function formatTime(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
@@ -1406,7 +1411,13 @@ const lastTxt=last?(last.km?last.km+'km · '+last.total:last.total):'+ registro'
 const cls=last?'run-current':'run-empty';
 h+=`<div class="ex-row-run"><span class="ex-name" style="color:#16A34A">${displayE}</span><button class="run-btn" onclick="openRunModal('${exKey.replace(/'/g,"\\'")}','${e.replace(/'/g,"\\'")}')"><i class="ti ti-run"></i><span class="${cls}">${lastTxt}</span></button></div>`;
 }else if(isCard){
+if(isCoreEx(e)){
+const exKey=getExKey(e);
+const chkd=(coreLog[dayKey]||{})[exKey]||false;
+h+=`<div class="ex-row"><button class="core-chk${chkd?' done':''}" onclick="toggleCore('${dayKey}','${exKey.replace(/'/g,"\\'")}')"><i class="ti ti-${chkd?'square-check-filled':'square'}"></i></button><span class="ex-name" style="color:${chkd?'#16A34A':'#16A34A'}">${displayE}</span></div>`;
+}else{
 h+=`<div class="ex-row"><span class="ex-name" style="color:#16A34A">${displayE}</span></div>`;
+}
 }else{
 const exKey=getExKey(e);
 const last=getLastWeight(exKey);
@@ -1668,6 +1679,15 @@ function updateRunTotal(){
 let total=0;
 ['z1','z2','z3','z4','z5'].forEach(z=>{total+=parseTime(getZoneTime(z));});
 document.getElementById('r-total').value=formatTime(total);
+}
+function toggleCore(dayKey,exKey){
+if(!coreLog[dayKey])coreLog[dayKey]={};
+coreLog[dayKey][exKey]=!coreLog[dayKey][exKey];
+if(!coreLog[dayKey][exKey])delete coreLog[dayKey][exKey];
+if(!Object.keys(coreLog[dayKey]||{}).length)delete coreLog[dayKey];
+try{localStorage.setItem('coreLog',JSON.stringify(coreLog));}catch(err){}
+if(window.syncNow)window.syncNow();
+renderTreino();
 }
 function openRunModal(exKey,exName){
 currentRunKey=exKey;currentRunName=exName;editRunIdx=null;
@@ -3175,6 +3195,7 @@ window.refreshDataFromStorage=function(){
 try{
 const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{};
 const clR=localStorage.getItem('cardioLog');cardioLog=clR?JSON.parse(clR)||{}:{};
+try{const corL=localStorage.getItem('coreLog');coreLog=corL?JSON.parse(corL)||{}:{};}catch(e){coreLog={};}
 try{const erR=localStorage.getItem('exerciseRenames');exerciseRenames=erR?JSON.parse(erR)||{}:{};}catch(e){exerciseRenames={};}
 try{const uzR=localStorage.getItem('userZones');userZones=uzR?JSON.parse(uzR)||{}:{};}catch(e){userZones={};}
 try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
@@ -3219,7 +3240,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones','dayExtraExercises','userFoods','foodOverrides'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','coreLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones','dayExtraExercises','userFoods','foodOverrides'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
