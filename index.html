@@ -487,14 +487,14 @@ const RACE_DATE=new Date(2026,9,11);
 function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function generatePlan(){
 const MUSC_LEGS_HYP=['Leg press 45° 4x10-12','Cadeira extensora 4x12-15','Cadeira flexora 4x12-15','Glúteo na máquina 3x12','Abdutora 3x12','Adutora 3x12','Panturrilha em pé 4x15','Panturrilha sentado 3x15'];
-const MUSC_PUSH_HYP=['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Desenvolvimento halteres 4x10','Elevação lateral halteres 3x12','Crucifixo inverso halteres 3x12','Tríceps pulley corda 3x12','Tríceps testa barra W 3x10'];
-const MUSC_PULL_HYP=['Puxada frente aberta 4x10','Remada cavalinho 4x10','Pulldown triangular 3x12','Remada curvada barra 4x10','Face pull corda 3x15','Rosca direta barra 3x12','Rosca scott halteres 3x10','Rosca martelo cabos 3x10'];
+const MUSC_PUSH_HYP=['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Desenvolvimento halteres 4x10','Elevação lateral halteres 3x12','Elevação frontal halteres 3x12','Tríceps pulley corda 3x12','Tríceps testa barra W 3x10'];
+const MUSC_PULL_HYP=['Puxada frente aberta 4x10','Puxada frente fechada 3x12','Remada cavalinho 4x10','Crucifixo inverso (fly reverse) 3x15','Rosca direta barra 3x12','Rosca scott halteres 3x10'];
 const MUSC_LEGS_STR=['Leg press 45° 5x6-8','Cadeira extensora 3x10','Cadeira flexora 4x10','Glúteo na máquina 3x10','Panturrilha em pé 4x12','Panturrilha sentado 3x15'];
 const MUSC_PUSH_STR=['Supino reto halteres 5x6-8','Supino inclinado halteres 4x8','Pec deck 3x10','Desenvolvimento halteres 4x8','Elevação lateral halteres 3x10','Tríceps pulley corda 3x10','Tríceps testa barra W 3x8'];
-const MUSC_PULL_STR=['Puxada frente aberta 5x6-8','Remada cavalinho 4x8','Pulldown triangular 3x10','Remada curvada barra 4x8','Face pull corda 3x12','Rosca direta barra 3x10','Rosca martelo cabos 3x10'];
+const MUSC_PULL_STR=['Puxada frente aberta 5x6-8','Puxada frente fechada 3x10','Remada cavalinho 4x8','Crucifixo inverso (fly reverse) 3x12','Rosca direta barra 3x10','Rosca scott halteres 3x10'];
 const MUSC_LEGS_MAINT=['Leg press 45° 3x8','Cadeira flexora 3x10','Glúteo na máquina 3x10','Panturrilha em pé 3x12'];
-const MUSC_UPPER_MAINT=['Supino reto halteres 3x8','Puxada frente aberta 3x8','Desenvolvimento halteres 3x8','Remada cavalinho 3x10','Face pull corda 2x12','Rosca direta barra 2x10','Tríceps pulley corda 2x10'];
-const MUSC_UPPER_LIGHT=['Supino reto halteres 2x10','Puxada frente aberta 2x10','Desenvolvimento halteres 2x10','Face pull corda 2x15'];
+const MUSC_UPPER_MAINT=['Supino reto halteres 3x8','Puxada frente aberta 3x8','Desenvolvimento halteres 3x8','Remada cavalinho 3x10','Crucifixo inverso (fly reverse) 2x12','Rosca direta barra 2x10','Tríceps pulley corda 2x10'];
+const MUSC_UPPER_LIGHT=['Supino reto halteres 2x10','Puxada frente aberta 2x10','Desenvolvimento halteres 2x10','Crucifixo inverso (fly reverse) 2x15'];
 const CORE_BLOCK=['Prancha 3x45s','Abdominal infra 3x15','Oblíquos 3x15 cada lado'];
 const REST_DAY={t:'Descanso',ex:['Descanso completo']};
 const p=[];
