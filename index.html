@@ -488,16 +488,16 @@ let calY=today.getFullYear(),calM=today.getMonth(),selDate=new Date(today);
 const START_DATE=new Date(2026,4,11);
 const RACE_DATE=new Date(2026,9,11);
 function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function generatePlan(){
+function generatePlan(v2){
 const MUSC_LEGS_HYP=['Leg press 45° 4x10-12','Cadeira extensora 4x12-15','Cadeira flexora 4x12-15','Glúteo na máquina 3x12','Abdutora 3x12','Adutora 3x12','Panturrilha em pé 4x15','Panturrilha sentado 3x15'];
-const MUSC_PUSH_HYP=['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Desenvolvimento halteres 4x10','Elevação lateral halteres 3x12','Elevação frontal halteres 3x12','Tríceps pulley corda 3x12','Tríceps testa barra W 3x10'];
-const MUSC_PULL_HYP=['Puxada frente aberta 4x10','Puxada frente fechada 3x12','Remada cavalinho 4x10','Crucifixo inverso (fly reverse) 3x15','Rosca direta barra 3x12','Rosca scott halteres 3x10'];
+const MUSC_PUSH_HYP=v2?['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Desenvolvimento halteres 4x10','Elevação lateral halteres 3x12','Elevação frontal halteres 3x12','Tríceps pulley corda 3x12','Tríceps testa barra W 3x10']:['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Desenvolvimento halteres 4x10','Elevação lateral halteres 3x12','Crucifixo inverso halteres 3x12','Tríceps pulley corda 3x12','Tríceps testa barra W 3x10'];
+const MUSC_PULL_HYP=v2?['Puxada frente aberta 4x10','Puxada frente fechada 3x12','Remada cavalinho 4x10','Crucifixo inverso (fly reverse) 3x15','Rosca direta barra 3x12','Rosca scott halteres 3x10']:['Puxada frente aberta 4x10','Remada cavalinho 4x10','Pulldown triangular 3x12','Remada curvada barra 4x10','Face pull corda 3x15','Rosca direta barra 3x12','Rosca scott halteres 3x10','Rosca martelo cabos 3x10'];
 const MUSC_LEGS_STR=['Leg press 45° 5x6-8','Cadeira extensora 3x10','Cadeira flexora 4x10','Glúteo na máquina 3x10','Panturrilha em pé 4x12','Panturrilha sentado 3x15'];
 const MUSC_PUSH_STR=['Supino reto halteres 5x6-8','Supino inclinado halteres 4x8','Pec deck 3x10','Desenvolvimento halteres 4x8','Elevação lateral halteres 3x10','Tríceps pulley corda 3x10','Tríceps testa barra W 3x8'];
-const MUSC_PULL_STR=['Puxada frente aberta 5x6-8','Puxada frente fechada 3x10','Remada cavalinho 4x8','Crucifixo inverso (fly reverse) 3x12','Rosca direta barra 3x10','Rosca scott halteres 3x10'];
+const MUSC_PULL_STR=v2?['Puxada frente aberta 5x6-8','Puxada frente fechada 3x10','Remada cavalinho 4x8','Crucifixo inverso (fly reverse) 3x12','Rosca direta barra 3x10','Rosca scott halteres 3x10']:['Puxada frente aberta 5x6-8','Remada cavalinho 4x8','Pulldown triangular 3x10','Remada curvada barra 4x8','Face pull corda 3x12','Rosca direta barra 3x10','Rosca martelo cabos 3x10'];
 const MUSC_LEGS_MAINT=['Leg press 45° 3x8','Cadeira flexora 3x10','Glúteo na máquina 3x10','Panturrilha em pé 3x12'];
-const MUSC_UPPER_MAINT=['Supino reto halteres 3x8','Puxada frente aberta 3x8','Desenvolvimento halteres 3x8','Remada cavalinho 3x10','Crucifixo inverso (fly reverse) 2x12','Rosca direta barra 2x10','Tríceps pulley corda 2x10'];
-const MUSC_UPPER_LIGHT=['Supino reto halteres 2x10','Puxada frente aberta 2x10','Desenvolvimento halteres 2x10','Crucifixo inverso (fly reverse) 2x15'];
+const MUSC_UPPER_MAINT=v2?['Supino reto halteres 3x8','Puxada frente aberta 3x8','Desenvolvimento halteres 3x8','Remada cavalinho 3x10','Crucifixo inverso (fly reverse) 2x12','Rosca direta barra 2x10','Tríceps pulley corda 2x10']:['Supino reto halteres 3x8','Puxada frente aberta 3x8','Desenvolvimento halteres 3x8','Remada cavalinho 3x10','Face pull corda 2x12','Rosca direta barra 2x10','Tríceps pulley corda 2x10'];
+const MUSC_UPPER_LIGHT=v2?['Supino reto halteres 2x10','Puxada frente aberta 2x10','Desenvolvimento halteres 2x10','Crucifixo inverso (fly reverse) 2x15']:['Supino reto halteres 2x10','Puxada frente aberta 2x10','Desenvolvimento halteres 2x10','Face pull corda 2x15'];
 const CORE_BLOCK=['Prancha 3x45s','Abdominal infra 3x15','Oblíquos 3x15 cada lado'];
 const REST_DAY={t:'Descanso',ex:['Descanso completo']};
 const p=[];
@@ -617,7 +617,11 @@ REST_DAY,
 ]});
 return p;
 }
-const plan=generatePlan();
+const planOld=generatePlan(false);
+const plan=generatePlan(true);
+// Plano v2 vale a partir de 11/06/2026; dias anteriores mantêm o plano original (pré-v2) para preservar o histórico exibido.
+const PLAN_V2_FROM='2026-06-11';
+function planForDayKey(dayKey){return dayKey<PLAN_V2_FROM?planOld:plan;}
 function getWorkoutForDate(d){
 const dt=new Date(d.getFullYear(),d.getMonth(),d.getDate());
 if(dt<START_DATE||dt>RACE_DATE)return null;
@@ -628,8 +632,9 @@ const dayIdx=dayOfWeek===0?6:dayOfWeek-1;
 if(weekIdx>=plan.length)return null;
 const wk=plan[weekIdx];
 const dayKey=dk(dt);
+const srcWk=planForDayKey(dayKey)[weekIdx];
 const special=SPECIAL_WORKOUTS[dayKey];
-const day=special||wk.template[dayIdx];
+const day=special||srcWk.template[dayIdx];
 return{phase:wk.phase,weekNum:wk.num,day:day,dayName:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'][dayIdx],isSpecial:!!special};
 }
 let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
@@ -1140,7 +1145,7 @@ h+=`<details style="background:#fff;border:1px solid #E2E8F0;border-radius:8px;m
 dayNames.forEach((dn,idx)=>{
 const dayDate=new Date(ws);dayDate.setDate(dayDate.getDate()+idx);
 const dayKey=dk(dayDate);
-const d_orig=wk.template[idx];
+const d_orig=planForDayKey(dayKey)[i].template[idx];
 const d=SPECIAL_WORKOUTS[dayKey]||d_orig;
 const ov=getWorkoutOverride(dayKey);
 const isCumprido=ov&&ov.type==='cumprido';
@@ -1344,11 +1349,12 @@ const isPastWeek=we<tDate;
 if(isPastWeek){const openAttr=expandedPastWeeks.has(wk.num)?' open':'';h+=`<details${openAttr} ontoggle="togglePastWeek(${wk.num},this.open)" style="margin-bottom:14px;border:1px solid #E2E8F0;border-radius:8px;background:#F8F9FA"><summary style="padding:10px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#64748B"><span><span class="phase-badge" style="background:${wk.color};color:${wk.text};margin-right:6px">${wk.phase}</span><b>Semana ${wk.num}</b> (concluída)</span><span>${ws.getDate()}/${ws.getMonth()+1} - ${we.getDate()}/${we.getMonth()+1}</span></summary><div style="padding:8px 10px">`;}
 h+=`<div class="treino-week"><span class="phase-badge" style="background:${wk.color};color:${wk.text}">${wk.phase}</span><div class="treino-week-hdr"><span class="treino-week-title">Semana ${wk.num}${cur?' (ATUAL)':''}</span><span class="treino-week-dates">${ws.getDate()}/${ws.getMonth()+1} - ${we.getDate()}/${we.getMonth()+1}/${we.getFullYear()}</span></div>`;
 const dayNames=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
-wk.template.forEach((d_orig,idx)=>{
+wk.template.forEach((dTpl,idx)=>{
 const dn=dayNames[idx];
 const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
 const dayDate=new Date(ws);dayDate.setDate(dayDate.getDate()+idx);
 const dayKey=dk(dayDate);
+const d_orig=planForDayKey(dayKey)[i].template[idx];
 const d=SPECIAL_WORKOUTS[dayKey]||d_orig;
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const canAlter=dayDate<=tDate||Math.floor((dayDate-tDate)/(24*60*60*1000))<=7;
