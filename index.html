@@ -488,6 +488,9 @@ let calY=today.getFullYear(),calM=today.getMonth(),selDate=new Date(today);
 const START_DATE=new Date(2026,4,11);
 const RACE_DATE=new Date(2026,9,11);
 function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+// Converte uma chave 'YYYY-MM-DD' em Date LOCAL (evita o deslocamento de fuso de new Date('YYYY-MM-DD'), que é interpretado como UTC).
+function dateFromKey(key){if(typeof key==='string'){const m=key.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);}return new Date(key);}
+function todayKey(){return dk(new Date());}
 function generatePlan(variant){
 const v2=variant!=='old',isNew=variant==='new';
 const MUSC_LEGS_HYP=['Leg press 45° 4x10-12','Cadeira extensora 4x12-15','Cadeira flexora 4x12-15','Glúteo na máquina 3x12','Abdutora 3x12','Adutora 3x12','Panturrilha em pé 4x15','Panturrilha sentado 3x15'];
@@ -1224,7 +1227,7 @@ if(window.syncNow)window.syncNow();
 }
 function escapeHtml(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 /* Padrão brasileiro de números: vírgula como decimal. parseBR aceita "1,5" ou "1.234,56" ou "1.5" (legado). */
-function parseBR(v){if(v==null||v==='')return null;if(typeof v==='number')return v;let s=String(v).trim();if(s.includes(',')){s=s.replace(/\./g,'').replace(',','.');}const n=parseFloat(s);return isNaN(n)?null:n;}
+function parseBR(v){if(v==null||v==='')return null;if(typeof v==='number')return isNaN(v)?null:v;let s=String(v).trim();if(s==='')return null;if(s.includes(',')){s=s.replace(/\./g,'').replace(',','.');}if(!/^-?\d+(\.\d+)?$/.test(s))return null;const n=parseFloat(s);return isNaN(n)?null:n;}
 function formatBR(n,decimals){if(n==null||isNaN(n))return '';const num=Number(n);if(decimals!=null)return num.toFixed(decimals).replace('.',',');return String(num).replace('.',',');}
 function isValidOverrideType(t){return t&&Object.prototype.hasOwnProperty.call(OVERRIDE_TYPES,t);}
 function isValidDateKey(k){return typeof k==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(k);}
@@ -1475,7 +1478,7 @@ function showWeightViewMode(entry){
 document.getElementById('weight-view-mode').style.display='block';
 document.getElementById('weight-edit-mode').style.display='none';
 document.getElementById('weight-save-btn').style.display='none';
-const d=new Date(entry.date);
+const d=dateFromKey(entry.date);
 document.getElementById('v-data').textContent=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
 document.getElementById('v-peso').textContent=entry.weight+' kg';
 document.getElementById('v-reps').textContent=entry.reps||'—';
@@ -1492,7 +1495,7 @@ function openWeightModal(exKey,exName){
 currentExKey=exKey;currentExName=exName;editWeightIdx=null;
 document.getElementById('modal-weight-title').value=getExerciseDisplay(exKey,exName);
 document.getElementById('modal-weight-hint').textContent='Registre o peso usado neste exercício para acompanhar sua evolução.';
-document.getElementById('w-data').value=new Date().toISOString().split('T')[0];
+document.getElementById('w-data').value=todayKey();
 document.getElementById('w-peso').value='';
 document.getElementById('w-reps').value='';
 document.getElementById('w-note').value='';
@@ -1520,7 +1523,7 @@ showWeightEditMode();
 }
 function newWeightEntry(){
 editWeightIdx=null;
-document.getElementById('w-data').value=new Date().toISOString().split('T')[0];
+document.getElementById('w-data').value=todayKey();
 document.getElementById('w-peso').value='';
 document.getElementById('w-reps').value='';
 document.getElementById('w-note').value='';
@@ -1564,6 +1567,7 @@ weightLog[currentExKey].splice(i,1);
 if(!weightLog[currentExKey].length)delete weightLog[currentExKey];
 localStorage.setItem('weightLog',JSON.stringify(weightLog));
 renderWeightHistory();renderWeightChart();renderPlan();
+if(window.syncNow)window.syncNow();
 }
 function renderWeightHistory(){
 const log=weightLog[currentExKey]||[];
@@ -1574,9 +1578,9 @@ label.style.display='block';
 let h='';
 [...log].reverse().forEach((w,ri)=>{
 const i=log.length-1-ri;
-const d=new Date(w.date);
+const d=dateFromKey(w.date);
 const dlbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
-h+='<div class="weight-hist-row"><span class="weight-hist-date">'+dlbl+'</span><div style="flex:1"><span class="weight-hist-val">'+w.weight+'kg</span>'+(w.reps?' <span style="font-size:11px;color:#64748B">('+w.reps+' reps)</span>':'')+(w.note?'<div class="weight-hist-note">'+w.note+'</div>':'')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editWeight('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteWeight('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
+h+='<div class="weight-hist-row"><span class="weight-hist-date">'+dlbl+'</span><div style="flex:1"><span class="weight-hist-val">'+w.weight+'kg</span>'+(w.reps?' <span style="font-size:11px;color:#64748B">('+escapeHtml(w.reps)+' reps)</span>':'')+(w.note?'<div class="weight-hist-note">'+escapeHtml(w.note)+'</div>':'')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editWeight('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteWeight('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
 });
 container.innerHTML=h;
 }
@@ -1585,7 +1589,7 @@ const log=(weightLog[currentExKey]||[]).slice().sort((a,b)=>a.date.localeCompare
 const wrap=document.getElementById('weight-chart-wrap');
 if(log.length<2){wrap.style.display='none';if(weightChartInst){weightChartInst.destroy();weightChartInst=null;}return;}
 wrap.style.display='block';
-const labels=log.map(w=>{const d=new Date(w.date);return d.getDate()+'/'+(d.getMonth()+1);});
+const labels=log.map(w=>{const d=dateFromKey(w.date);return d.getDate()+'/'+(d.getMonth()+1);});
 const data=log.map(w=>w.weight);
 if(weightChartInst)weightChartInst.destroy();
 const ctx=document.getElementById('weightChart').getContext('2d');
@@ -1645,7 +1649,7 @@ function showRunViewMode(entry){
 document.getElementById('run-view-mode').style.display='block';
 document.getElementById('run-edit-mode').style.display='none';
 document.getElementById('run-save-btn').style.display='none';
-const d=new Date(entry.date);
+const d=dateFromKey(entry.date);
 document.getElementById('rv-data').textContent=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
 document.getElementById('rv-km').textContent=entry.km?entry.km+' km':'—';
 document.getElementById('rv-km-row').style.display=entry.km?'flex':'none';
@@ -1706,7 +1710,7 @@ if(btn){btn.classList.toggle('done',chkd);const ic=btn.querySelector('i');if(ic)
 function openRunModal(exKey,exName){
 currentRunKey=exKey;currentRunName=exName;editRunIdx=null;
 document.getElementById('modal-run-title').textContent=exName;
-document.getElementById('r-data').value=new Date().toISOString().split('T')[0];
+document.getElementById('r-data').value=todayKey();
 document.getElementById('r-km').value='';
 document.getElementById('r-total').value='00:00:00';
 document.getElementById('r-note').value='';
@@ -1732,7 +1736,7 @@ document.getElementById('r-note').value=last.note||'';
 function newRunEntry(){
 editRunIdx=null;
 showRunEditMode();
-document.getElementById('r-data').value=new Date().toISOString().split('T')[0];
+document.getElementById('r-data').value=todayKey();
 document.getElementById('r-km').value='';
 resetZoneTimes();
 document.getElementById('r-total').value='00:00:00';
@@ -1783,6 +1787,7 @@ cardioLog[currentRunKey].splice(i,1);
 if(!cardioLog[currentRunKey].length)delete cardioLog[currentRunKey];
 localStorage.setItem('cardioLog',JSON.stringify(cardioLog));
 renderRunHistory();renderPlan();
+if(window.syncNow)window.syncNow();
 const last=getLastRun(currentRunKey);
 if(last)showRunViewMode(last);else showRunEditMode();
 }
@@ -1795,12 +1800,12 @@ label.style.display='block';
 let h='';
 [...log].reverse().forEach((r,ri)=>{
 const i=log.length-1-ri;
-const d=new Date(r.date);
+const d=dateFromKey(r.date);
 const dlbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
 const parts=[];
 if(r.km)parts.push(r.km+'km');
 if(r.total&&r.total!=='00:00:00')parts.push(r.total);
-h+='<div class="weight-hist-row" style="align-items:flex-start"><span class="weight-hist-date">'+dlbl+'</span><div style="flex:1"><span style="font-size:13px;font-weight:600;color:#C2410C">'+parts.join(' · ')+'</span>'+(r.note?'<div class="weight-hist-note">'+r.note+'</div>':'')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editRun('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteRun('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
+h+='<div class="weight-hist-row" style="align-items:flex-start"><span class="weight-hist-date">'+dlbl+'</span><div style="flex:1"><span style="font-size:13px;font-weight:600;color:#C2410C">'+parts.join(' · ')+'</span>'+(r.note?'<div class="weight-hist-note">'+escapeHtml(r.note)+'</div>':'')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editRun('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteRun('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
 });
 container.innerHTML=h;
 }
@@ -1914,7 +1919,7 @@ function selectMed(k){currentMed=k;renderMedTabs();renderMedChart();}
 function renderMedChart(){
 const meta=medMeta.find(m=>m.key===currentMed);
 const lineV=getSeriesCarry(currentMed),pointV=getPointsReal(currentMed);
-const lbls=medData.map(e=>{const d=new Date(e.data);return d.getDate()+'/'+(d.getMonth()+1);});
+const lbls=medData.map(e=>{const d=dateFromKey(e.data);return d.getDate()+'/'+(d.getMonth()+1);});
 const lastR=pointV.filter(v=>v!=null).pop();
 document.getElementById('med-title').textContent=meta.label;
 document.getElementById('med-current').textContent=lastR!=null?lastR.toFixed(meta.decimals).replace('.',',')+(meta.unit?' '+meta.unit:''):'—';
@@ -1946,7 +1951,7 @@ function renderMedHistory(){
 let h='';
 [...medData].reverse().forEach((e,ri)=>{
 const i=medData.length-1-ri;
-const d=new Date(e.data);
+const d=dateFromKey(e.data);
 const lbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
 const vals=[];
 if(e.peso!=null)vals.push('<span class="hist-val" style="color:#2563EB">'+e.peso+'kg</span>');
@@ -1974,14 +1979,14 @@ document.getElementById('m-data').value=e.data;
 fields.forEach(f=>{document.getElementById('m-'+f).value=e[f]!=null?formatBR(e[f]):'';});
 document.getElementById('m-nutriSent').checked=!!e.nutriSent;
 }else{
-document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
+document.getElementById('m-data').value=todayKey();
 fields.forEach(f=>{document.getElementById('m-'+f).value='';});
 document.getElementById('m-nutriSent').checked=false;
 }
 document.getElementById('modal-med').classList.add('open');
 }
 function editMed(i){openMedModal(i);}
-function deleteMed(i){if(!confirm('Excluir esta medição?'))return;medData.splice(i,1);localStorage.setItem('medData',JSON.stringify(medData));renderMedChart();}
+function deleteMed(i){if(!confirm('Excluir esta medição?'))return;medData.splice(i,1);localStorage.setItem('medData',JSON.stringify(medData));renderMedChart();if(window.syncNow)window.syncNow();}
 function closeMedModal(){document.getElementById('modal-med').classList.remove('open');editMedIdx=null;}
 function saveMed(){
 const data=document.getElementById('m-data').value;
@@ -2074,7 +2079,7 @@ h+='<p class="section-label" style="margin-top:'+(pri==='high'?'0':'16px')+'">'+
 byPri[pri].forEach(t=>{
 const idx=tasks.indexOf(t);
 const dueLabel=t.due?formatTaskDate(t.due):'';
-h+='<div class="todo-row"><span class="todo-dot" style="background:'+colors[pri]+'"></span><input type="checkbox" id="t'+idx+'" '+(t.done?'checked':'')+' onchange="toggleTask('+idx+')"><label for="t'+idx+'" class="'+(t.done?'done':'')+'">'+t.text+(dueLabel?' <span style="font-size:11px;color:#64748B">('+dueLabel+')</span>':'')+'</label><div class="ex-actions"><button class="icon-btn" onclick="editTask('+idx+')"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteTask('+idx+')"><i class="ti ti-trash"></i></button></div></div>';
+h+='<div class="todo-row"><span class="todo-dot" style="background:'+colors[pri]+'"></span><input type="checkbox" id="t'+idx+'" '+(t.done?'checked':'')+' onchange="toggleTask('+idx+')"><label for="t'+idx+'" class="'+(t.done?'done':'')+'">'+escapeHtml(t.text)+(dueLabel?' <span style="font-size:11px;color:#64748B">('+dueLabel+')</span>':'')+'</label><div class="ex-actions"><button class="icon-btn" onclick="editTask('+idx+')"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteTask('+idx+')"><i class="ti ti-trash"></i></button></div></div>';
 });
 h+='</div>';
 }
@@ -2831,7 +2836,7 @@ evsOnDay.forEach(e=>{
 const idx=events.indexOf(e);
 const timeRange=e.time?(e.timeEnd?e.time+' – '+e.timeEnd:e.time):'Sem horário';
 const recurLabel={weekly:'↻ semanal',monthly:'↻ mensal',yearly:'↻ anual'}[e.recur]||'';
-h+='<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #F1F5F9"><div style="width:3px;border-radius:99px;background:'+(EV_COLORS[e.cat]||'#94A3B8')+';align-self:stretch;min-height:36px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:11px;color:#64748B">'+timeRange+' · '+EV_LABELS[e.cat]+(recurLabel?' · <span style="color:#7C3AED;font-weight:500">'+recurLabel+'</span>':'')+'</div><div style="font-size:14px;font-weight:500;color:#000">'+e.title+'</div>'+(e.desc?'<div style="font-size:12px;color:#64748B;margin-top:1px">'+e.desc+'</div>':'')+'</div><div class="ex-actions"><button class="icon-btn" onclick="editEvent('+idx+')"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteEvent('+idx+')"><i class="ti ti-trash"></i></button></div></div>';
+h+='<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #F1F5F9"><div style="width:3px;border-radius:99px;background:'+(EV_COLORS[e.cat]||'#94A3B8')+';align-self:stretch;min-height:36px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:11px;color:#64748B">'+timeRange+' · '+EV_LABELS[e.cat]+(recurLabel?' · <span style="color:#7C3AED;font-weight:500">'+recurLabel+'</span>':'')+'</div><div style="font-size:14px;font-weight:500;color:#000">'+escapeHtml(e.title)+'</div>'+(e.desc?'<div style="font-size:12px;color:#64748B;margin-top:1px">'+escapeHtml(e.desc)+'</div>':'')+'</div><div class="ex-actions"><button class="icon-btn" onclick="editEvent('+idx+')"><i class="ti ti-pencil"></i></button><button class="icon-btn" onclick="deleteEvent('+idx+')"><i class="ti ti-trash"></i></button></div></div>';
 });
 h+='</div>';
 }
@@ -2884,7 +2889,7 @@ h+='<div class="cal-section"><i class="ti ti-checklist" style="color:#334155"></
 h+='<div class="card" style="padding:4px 16px">';
 tasksOnDay.forEach(t=>{
 const idx=tasks.indexOf(t);
-h+='<div class="todo-row"><span class="todo-dot" style="background:'+colors[t.priority]+'"></span><input type="checkbox" id="ct'+idx+'" '+(t.done?'checked':'')+' onchange="toggleTask('+idx+')"><label for="ct'+idx+'" class="'+(t.done?'done':'')+'">'+t.text+'</label></div>';
+h+='<div class="todo-row"><span class="todo-dot" style="background:'+colors[t.priority]+'"></span><input type="checkbox" id="ct'+idx+'" '+(t.done?'checked':'')+' onchange="toggleTask('+idx+')"><label for="ct'+idx+'" class="'+(t.done?'done':'')+'">'+escapeHtml(t.text)+'</label></div>';
 });
 h+='</div>';
 }
@@ -3261,6 +3266,7 @@ let syncTimer = null;
 let cloudUnsub = null;
 let suppressSync = false;
 let lastAppliedHash = {};
+let pendingCloudDoc = null;
 
 function stableStr(v){
   if (v === null || v === undefined) return JSON.stringify(v);
@@ -3360,6 +3366,19 @@ function applyCloudData(d){
   return changed;
 }
 
+// Verifica (somente leitura) se o documento da nuvem difere do que está no localStorage.
+function cloudDiffers(d){
+  return KEYS.some(k => {
+    if (d[k] === undefined || d[k] === null) return false;
+    const localRaw = localStorage.getItem(k);
+    let localHash = null;
+    if (localRaw !== null && localRaw !== 'null') {
+      try { localHash = stableStr(JSON.parse(localRaw)); } catch {}
+    }
+    return stableStr(d[k]) !== localHash;
+  });
+}
+
 async function loadFromCloud(uid){
   try {
     setStatus('Carregando da nuvem…');
@@ -3392,14 +3411,16 @@ async function loadFromCloud(uid){
       if (s.metadata.hasPendingWrites) return;
       const d = s.data();
       if (!d) return;
-      const changed = applyCloudData(d);
-      if (changed) {
-        setStatus('Atualizado em outro dispositivo — clique para aplicar', () => {
-          if (window.refreshDataFromStorage) window.refreshDataFromStorage();
-          setStatus('Atualizado ✓');
-          setTimeout(() => setStatus(''), 2000);
-        });
-      }
+      // Não grava no localStorage ainda: evitar divergência entre localStorage (novo) e memória/UI (antiga)
+      // — nessa janela uma edição local poderia sobrescrever o que veio de outro dispositivo. Aplica só no clique.
+      if (!cloudDiffers(d)) return;
+      pendingCloudDoc = d;
+      setStatus('Atualizado em outro dispositivo — clique para aplicar', () => {
+        if (pendingCloudDoc) { applyCloudData(pendingCloudDoc); pendingCloudDoc = null; }
+        if (window.refreshDataFromStorage) window.refreshDataFromStorage();
+        setStatus('Atualizado ✓');
+        setTimeout(() => setStatus(''), 2000);
+      });
     });
   } catch (e) {
     console.error('Erro load:', e);
