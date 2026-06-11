@@ -500,6 +500,9 @@ const MUSC_LEGS_MAINT=['Leg press 45° 3x8','Cadeira flexora 3x10','Glúteo na m
 const MUSC_UPPER_MAINT=v2?['Supino reto halteres 3x8','Puxada frente aberta 3x8','Desenvolvimento halteres 3x8','Remada cavalinho 3x10','Crucifixo inverso (fly reverse) 2x12','Rosca direta barra 2x10','Tríceps pulley corda 2x10']:['Supino reto halteres 3x8','Puxada frente aberta 3x8','Desenvolvimento halteres 3x8','Remada cavalinho 3x10','Face pull corda 2x12','Rosca direta barra 2x10','Tríceps pulley corda 2x10'];
 const MUSC_UPPER_LIGHT=v2?['Supino reto halteres 2x10','Puxada frente aberta 2x10','Desenvolvimento halteres 2x10','Crucifixo inverso (fly reverse) 2x15']:['Supino reto halteres 2x10','Puxada frente aberta 2x10','Desenvolvimento halteres 2x10','Face pull corda 2x15'];
 const CORE_BLOCK=['Prancha 3x45s','Abdominal infra 3x15','Oblíquos 3x15 cada lado'];
+// A partir do plano novo (>=12/06) o core sai da terça (Push/Z2) e vai para a quarta (Z2 recuperação).
+const coreTue=isNew?[]:CORE_BLOCK;
+const coreWed=isNew?CORE_BLOCK:[];
 const REST_DAY={t:'Descanso',ex:['Descanso completo']};
 const p=[];
 // Week 1 (May 11-17): Pré-plano — keep old base content for history
@@ -536,8 +539,8 @@ for(let i=0;i<6;i++){
 const isCut=(i===2||i===5);
 p.push({phase:'Base — Semana '+(i+1)+(isCut?' 🟡 cutback':''),num:i+3,color:'#EFF6FF',text:'#1E40AF',template:[
 {t:'Pernas — Hipertrofia',ex:MUSC_LEGS_HYP},
-{t:'Push + Z2 + Core',ex:[...MUSC_PUSH_HYP,'Corrida Z2 20min (regenerativa pós-musc)',...CORE_BLOCK]},
-{t:'Z2 recovery 25min',ex:['Corrida Z2 25min (recuperação ativa · ritmo leve)']},
+{t:isNew?'Push + Z2':'Push + Z2 + Core',ex:[...MUSC_PUSH_HYP,'Corrida Z2 20min (regenerativa pós-musc)',...coreTue]},
+{t:isNew?'Z2 recovery 25min + Core':'Z2 recovery 25min',ex:['Corrida Z2 25min (recuperação ativa · ritmo leve)',...coreWed]},
 {t:'Pull — Hipertrofia',ex:MUSC_PULL_HYP},
 baseFri[i],
 {t:'Long Run '+baseLR[i]+'km Z2',ex:['Long Run '+baseLR[i]+'km em Z2 puro']},
@@ -558,8 +561,8 @@ for(let i=0;i<6;i++){
 const isCut=(i===2||i===5);
 p.push({phase:'Build — Semana '+(i+1)+(isCut?' 🟡 cutback':''),num:i+9,color:'#F0FDF4',text:'#166534',template:[
 {t:'Pernas — Força',ex:MUSC_LEGS_STR},
-{t:'Push + Z2 + Core',ex:[...MUSC_PUSH_STR,'Corrida Z2 25min (regenerativa pós-musc)',...CORE_BLOCK]},
-{t:'Z2 recovery 30min',ex:['Corrida Z2 30min (recuperação ativa)']},
+{t:isNew?'Push + Z2':'Push + Z2 + Core',ex:[...MUSC_PUSH_STR,'Corrida Z2 25min (regenerativa pós-musc)',...coreTue]},
+{t:isNew?'Z2 recovery 30min + Core':'Z2 recovery 30min',ex:['Corrida Z2 30min (recuperação ativa)',...coreWed]},
 {t:'Pull — Força',ex:MUSC_PULL_STR},
 buildFri[i],
 {t:'Long Run '+buildLR[i]+'km Z2',ex:['Long Run '+buildLR[i]+'km em Z2']},
@@ -588,8 +591,8 @@ const isCut=(i===2||i===5);
 const isTT=(i===2);
 p.push({phase:'Específico — Semana '+(i+1)+(isCut?(isTT?' 🎯 TT':' 🟡 cutback'):''),num:i+15,color:'#FEF2F2',text:'#991B1B',template:[
 {t:'Pernas — Manutenção',ex:MUSC_LEGS_MAINT},
-{t:'Z2 + Core',ex:['Corrida Z2 30min',...CORE_BLOCK]},
-{t:'Z2 recovery 25min',ex:['Corrida Z2 25min (recuperação ativa entre dias-chave)']},
+{t:isNew?'Z2 30min':'Z2 + Core',ex:['Corrida Z2 30min',...coreTue]},
+{t:isNew?'Z2 recovery 25min + Core':'Z2 recovery 25min',ex:['Corrida Z2 25min (recuperação ativa entre dias-chave)',...coreWed]},
 {t:'Upper — Manutenção',ex:MUSC_UPPER_MAINT},
 espFri[i],
 espSat[i],
