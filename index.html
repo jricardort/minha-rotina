@@ -1747,8 +1747,18 @@ if(!Array.isArray(arr))return;
 arr.forEach((p,i)=>{const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');if(!mn||!sn||!p)return;const t=parseTime(p);mn.value=Math.floor(t/60);sn.value=t%60;});
 updateAvgPace();
 }
-function avgPaceFromSplits(arr){let sum=0,c=0;(arr||[]).forEach(p=>{if(p){sum+=parseTime(p);c++;}});return c?formatPace(Math.round(sum/c)):null;}
-function updateAvgPace(){const el=document.getElementById('r-avgpace');if(!el)return;el.textContent=avgPaceFromSplits(getRunSplits())||'—';}
+/* Pace médio = tempo total ÷ distância total (média ponderada pela distância).
+   O último km pode ser parcial: ex. 6,12 km -> km 7 pesa só 0,12. */
+function avgPaceFromSplits(arr,km){
+if(!arr)return null;
+const frac=km?+(km-Math.floor(km)).toFixed(3):0;
+const lastIdx=arr.length-1;
+let totSec=0,totDist=0;
+arr.forEach((p,i)=>{if(!p)return;const w=(frac>0&&i===lastIdx)?frac:1;totSec+=parseTime(p)*w;totDist+=w;});
+return totDist>0?formatPace(Math.round(totSec/totDist)):null;
+}
+function curKm(){const v=document.getElementById('r-km');return v&&v.value?parseBR(v.value):null;}
+function updateAvgPace(){const el=document.getElementById('r-avgpace');if(!el)return;el.textContent=avgPaceFromSplits(getRunSplits(),curKm())||'—';}
 function toggleCore(dayKey,exKey,btn){
 if(!coreLog[dayKey])coreLog[dayKey]={};
 coreLog[dayKey][exKey]=!coreLog[dayKey][exKey];
@@ -1816,7 +1826,7 @@ const note=document.getElementById('r-note').value.trim();
 if(!cardioLog[currentRunKey])cardioLog[currentRunKey]=[];
 const entry={date:data,km,z1,z2,z3,z4,z5,total,note};
 const splits=getRunSplits();
-if(data>=RUN_SPLITS_FROM&&splits.some(x=>x)){entry.splits=splits;entry.avgPace=avgPaceFromSplits(splits);}
+if(data>=RUN_SPLITS_FROM&&splits.some(x=>x)){entry.splits=splits;entry.avgPace=avgPaceFromSplits(splits,km);}
 if(editRunIdx!=null){cardioLog[currentRunKey][editRunIdx]=entry;editRunIdx=null;}
 else{
 const existIdx=cardioLog[currentRunKey].findIndex(w=>w.date===data);
