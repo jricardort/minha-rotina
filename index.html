@@ -181,8 +181,6 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 .time-input-group .ti-lbl{font-size:11px;color:#64748B;font-weight:500;letter-spacing:.5px}
 .split-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .split-lbl{font-size:12px;color:#475569;font-weight:600;min-width:46px}
-.time-input-group .pace-sel{flex:1;min-width:0;border:0;font-size:18px;text-align:center;background:transparent;font-family:inherit;font-weight:600;padding:2px;color:#0F172A;-webkit-appearance:none;appearance:none}
-.time-input-group .pace-sel:focus{outline:0;color:#1E40AF}
 .override-card{border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid}
 .override-card .ov-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
 .override-card .ov-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:4px}
@@ -1712,29 +1710,27 @@ let total=0;
 document.getElementById('r-total').value=formatTime(total);
 }
 /* Parciais por km (pace) — só para corridas a partir de RUN_SPLITS_FROM.
-   Picker: <select> min/seg, que o iOS renderiza como roda de scroll (minutos 0–59). */
+   Campos digitáveis min/seg (teclado numérico no iPhone). Nº de km = arredonda p/ cima. */
 const RUN_SPLITS_FROM='2026-06-12';
 function formatPace(s){return Math.floor(s/60)+':'+String(Math.round(s)%60).padStart(2,'0');}
-function paceSelectsHTML(base){
-let mo='<option value="">–</option>';for(let m=0;m<=59;m++)mo+='<option value="'+m+'">'+m+'</option>';
-let so='<option value="">–</option>';for(let s=0;s<=59;s++)so+='<option value="'+s+'">'+String(s).padStart(2,'0')+'</option>';
-return '<select class="pace-sel" id="'+base+'-min">'+mo+'</select><span class="ti-lbl">min</span><select class="pace-sel" id="'+base+'-sec">'+so+'</select><span class="ti-lbl">seg</span>';
+function paceInputsHTML(base){
+return '<input type="number" inputmode="numeric" id="'+base+'-min" min="0" max="59" placeholder="0"><span class="ti-lbl">min</span><input type="number" inputmode="numeric" id="'+base+'-sec" min="0" max="59" placeholder="0"><span class="ti-lbl">seg</span>';
 }
 function buildSplitFields(){
 const section=document.getElementById('r-splits-section'),cont=document.getElementById('r-splits');
 if(!section||!cont)return;
 const dateV=document.getElementById('r-data').value;
 const km=document.getElementById('r-km').value?parseBR(document.getElementById('r-km').value):null;
-const n=km?Math.floor(km):0;
+const n=km?Math.ceil(km):0;
 if(!dateV||dateV<RUN_SPLITS_FROM||n<1){section.style.display='none';cont.innerHTML='';updateAvgPace();return;}
 const prev=[],old=cont.querySelectorAll('.split-row').length;
 for(let i=0;i<old;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');prev[i]=mn?(mn.value+'|'+sn.value):null;}
 let h='';
-for(let i=0;i<n;i++){h+='<div class="split-row"><span class="split-lbl">km '+(i+1)+'</span><div class="time-input-group">'+paceSelectsHTML('r-split-'+i)+'</div></div>';}
+for(let i=0;i<n;i++){h+='<div class="split-row"><span class="split-lbl">km '+(i+1)+'</span><div class="time-input-group">'+paceInputsHTML('r-split-'+i)+'</div></div>';}
 cont.innerHTML=h;section.style.display='block';
 for(let i=0;i<n;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');
 if(prev[i]){const pp=prev[i].split('|');if(mn)mn.value=pp[0];if(sn)sn.value=pp[1];}
-if(mn)mn.onchange=updateAvgPace;if(sn)sn.onchange=updateAvgPace;}
+if(mn)mn.oninput=updateAvgPace;if(sn)sn.oninput=updateAvgPace;}
 updateAvgPace();
 }
 function getRunSplits(){
