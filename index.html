@@ -179,6 +179,10 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 .time-input-group input::-webkit-outer-spin-button,.time-input-group input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .time-input-group input[type=number]{-moz-appearance:textfield}
 .time-input-group .ti-lbl{font-size:11px;color:#64748B;font-weight:500;letter-spacing:.5px}
+.split-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.split-lbl{font-size:12px;color:#475569;font-weight:600;min-width:46px}
+.time-input-group .pace-sel{flex:1;min-width:0;border:0;font-size:18px;text-align:center;background:transparent;font-family:inherit;font-weight:600;padding:2px;color:#0F172A;-webkit-appearance:none;appearance:none}
+.time-input-group .pace-sel:focus{outline:0;color:#1E40AF}
 .override-card{border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid}
 .override-card .ov-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
 .override-card .ov-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:4px}
@@ -445,7 +449,7 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="text" inputmode="decimal" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="text" inputmode="decimal" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="text" inputmode="decimal" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="text" inputmode="decimal" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="text" inputmode="decimal" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="text" inputmode="decimal" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto total do dia (relógio) ou deixe em branco para usar a estimativa.</p><div class="modal-field" style="margin-bottom:10px"><label>Total kcal do dia</label><input type="text" inputmode="decimal" id="kw-total-input" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8;margin-top:4px;display:block" id="kw-est"></span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
-<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="time-input-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="time-input-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="time-input-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="time-input-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="time-input-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#15803D;font-weight:600">Tempo total</label><input type="text" id="r-total" readonly style="background:#F0FDF4;color:#15803D;font-weight:700;border-color:#86EFAC;text-align:center;font-size:16px"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div id="rv-splits-block" style="display:none"></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="time-input-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="time-input-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="time-input-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="time-input-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="time-input-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#15803D;font-weight:600">Tempo total</label><input type="text" id="r-total" readonly style="background:#F0FDF4;color:#15803D;font-weight:700;border-color:#86EFAC;text-align:center;font-size:16px"></div></div><div id="r-splits-section" style="display:none"><p class="section-label" style="margin:6px 0 8px">Parciais por km</p><div id="r-splits"></div><div class="view-row" style="border-top:1px dashed #CBD5E1;margin-top:6px;padding-top:8px"><span style="font-size:13px;color:#15803D;font-weight:600">Pace médio</span><b id="r-avgpace" style="color:#15803D">—</b></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -1663,6 +1667,14 @@ document.getElementById('rv-'+z+'-row').style.display=parseTime(v)>0?'flex':'non
 });
 document.getElementById('rv-note').textContent=entry.note||'—';
 document.getElementById('rv-note-row').style.display=entry.note?'flex':'none';
+const sb=document.getElementById('rv-splits-block');
+if(sb){
+if(entry.splits&&entry.splits.some(x=>x)){
+let sh='<div class="view-row" style="border-top:1px dashed #CBD5E1;margin-top:4px;padding-top:8px"><span>Pace médio</span><b>'+escapeHtml(entry.avgPace||'—')+'</b></div>';
+entry.splits.forEach((p,i)=>{if(p)sh+='<div class="view-row"><span>km '+(i+1)+'</span><b>'+escapeHtml(p)+'</b></div>';});
+sb.innerHTML=sh;sb.style.display='block';
+}else{sb.innerHTML='';sb.style.display='none';}
+}
 }
 /* NOTA: iOS Safari não mostra wheel de segundos em <input type="time" step="1">.
    Solução: 2 inputs numéricos (min/seg). Visual limpo, teclado numérico nativo, sem limite de minutos. */
@@ -1699,6 +1711,48 @@ let total=0;
 ['z1','z2','z3','z4','z5'].forEach(z=>{total+=parseTime(getZoneTime(z));});
 document.getElementById('r-total').value=formatTime(total);
 }
+/* Parciais por km (pace) — só para corridas a partir de RUN_SPLITS_FROM.
+   Picker: <select> min/seg, que o iOS renderiza como roda de scroll (minutos 0–59). */
+const RUN_SPLITS_FROM='2026-06-12';
+function formatPace(s){return Math.floor(s/60)+':'+String(Math.round(s)%60).padStart(2,'0');}
+function paceSelectsHTML(base){
+let mo='<option value="">–</option>';for(let m=0;m<=59;m++)mo+='<option value="'+m+'">'+m+'</option>';
+let so='<option value="">–</option>';for(let s=0;s<=59;s++)so+='<option value="'+s+'">'+String(s).padStart(2,'0')+'</option>';
+return '<select class="pace-sel" id="'+base+'-min">'+mo+'</select><span class="ti-lbl">min</span><select class="pace-sel" id="'+base+'-sec">'+so+'</select><span class="ti-lbl">seg</span>';
+}
+function buildSplitFields(){
+const section=document.getElementById('r-splits-section'),cont=document.getElementById('r-splits');
+if(!section||!cont)return;
+const dateV=document.getElementById('r-data').value;
+const km=document.getElementById('r-km').value?parseBR(document.getElementById('r-km').value):null;
+const n=km?Math.floor(km):0;
+if(!dateV||dateV<RUN_SPLITS_FROM||n<1){section.style.display='none';cont.innerHTML='';updateAvgPace();return;}
+const prev=[],old=cont.querySelectorAll('.split-row').length;
+for(let i=0;i<old;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');prev[i]=mn?(mn.value+'|'+sn.value):null;}
+let h='';
+for(let i=0;i<n;i++){h+='<div class="split-row"><span class="split-lbl">km '+(i+1)+'</span><div class="time-input-group">'+paceSelectsHTML('r-split-'+i)+'</div></div>';}
+cont.innerHTML=h;section.style.display='block';
+for(let i=0;i<n;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');
+if(prev[i]){const pp=prev[i].split('|');if(mn)mn.value=pp[0];if(sn)sn.value=pp[1];}
+if(mn)mn.onchange=updateAvgPace;if(sn)sn.onchange=updateAvgPace;}
+updateAvgPace();
+}
+function getRunSplits(){
+const cont=document.getElementById('r-splits');if(!cont)return[];
+const n=cont.querySelectorAll('.split-row').length,arr=[];
+for(let i=0;i<n;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');
+if(!mn){arr.push('');continue;}
+if(mn.value===''&&sn.value===''){arr.push('');continue;}
+arr.push(formatPace((parseInt(mn.value)||0)*60+(parseInt(sn.value)||0)));}
+return arr;
+}
+function setRunSplits(arr){
+if(!Array.isArray(arr))return;
+arr.forEach((p,i)=>{const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');if(!mn||!sn||!p)return;const t=parseTime(p);mn.value=Math.floor(t/60);sn.value=t%60;});
+updateAvgPace();
+}
+function avgPaceFromSplits(arr){let sum=0,c=0;(arr||[]).forEach(p=>{if(p){sum+=parseTime(p);c++;}});return c?formatPace(Math.round(sum/c)):null;}
+function updateAvgPace(){const el=document.getElementById('r-avgpace');if(!el)return;el.textContent=avgPaceFromSplits(getRunSplits())||'—';}
 function toggleCore(dayKey,exKey,btn){
 if(!coreLog[dayKey])coreLog[dayKey]={};
 coreLog[dayKey][exKey]=!coreLog[dayKey][exKey];
@@ -1718,6 +1772,9 @@ document.getElementById('r-total').value='00:00:00';
 document.getElementById('r-note').value='';
 buildZoneTimePickers();
 resetZoneTimes();
+document.getElementById('r-km').oninput=buildSplitFields;
+document.getElementById('r-data').onchange=buildSplitFields;
+buildSplitFields();
 const last=getLastRun(exKey);
 if(last){showRunViewMode(last);}else{showRunEditMode();}
 renderRunHistory();
@@ -1733,6 +1790,7 @@ document.getElementById('r-km').value=last.km!=null?formatBR(last.km):'';
 ['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,last[z]||'00:00:00'));
 document.getElementById('r-total').value=last.total||'00:00:00';
 document.getElementById('r-note').value=last.note||'';
+buildSplitFields();setRunSplits(last.splits);
 }
 }
 function newRunEntry(){
@@ -1743,6 +1801,7 @@ document.getElementById('r-km').value='';
 resetZoneTimes();
 document.getElementById('r-total').value='00:00:00';
 document.getElementById('r-note').value='';
+buildSplitFields();
 }
 function closeRunModal(){document.getElementById('modal-run').classList.remove('open');currentRunKey=null;editRunIdx=null;}
 function saveRun(){
@@ -1760,6 +1819,8 @@ const total=formatTime(totalSec);
 const note=document.getElementById('r-note').value.trim();
 if(!cardioLog[currentRunKey])cardioLog[currentRunKey]=[];
 const entry={date:data,km,z1,z2,z3,z4,z5,total,note};
+const splits=getRunSplits();
+if(data>=RUN_SPLITS_FROM&&splits.some(x=>x)){entry.splits=splits;entry.avgPace=avgPaceFromSplits(splits);}
 if(editRunIdx!=null){cardioLog[currentRunKey][editRunIdx]=entry;editRunIdx=null;}
 else{
 const existIdx=cardioLog[currentRunKey].findIndex(w=>w.date===data);
@@ -1782,6 +1843,7 @@ document.getElementById('r-km').value=r.km||'';
 ['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,r[z]||'00:00:00'));
 document.getElementById('r-total').value=r.total||'00:00:00';
 document.getElementById('r-note').value=r.note||'';
+buildSplitFields();setRunSplits(r.splits);
 }
 function deleteRun(i){
 if(!confirm('Excluir este registro?'))return;
@@ -1807,6 +1869,7 @@ const dlbl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
 const parts=[];
 if(r.km)parts.push(r.km+'km');
 if(r.total&&r.total!=='00:00:00')parts.push(r.total);
+if(r.avgPace)parts.push(r.avgPace+'/km');
 h+='<div class="weight-hist-row" style="align-items:flex-start"><span class="weight-hist-date">'+dlbl+'</span><div style="flex:1"><span style="font-size:13px;font-weight:600;color:#C2410C">'+parts.join(' · ')+'</span>'+(r.note?'<div class="weight-hist-note">'+escapeHtml(r.note)+'</div>':'')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editRun('+i+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteRun('+i+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
 });
 container.innerHTML=h;
