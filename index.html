@@ -94,7 +94,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .cal-detail-lbl{font-size:13px;font-weight:500;color:#334155;margin:16px 0 10px}
 .cal-section{font-size:11px;font-weight:600;color:#64748B;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 8px;display:flex;align-items:center;gap:6px}
 .cal-empty{font-size:13px;color:#64748B;text-align:center;padding:20px 0}
-.med-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .chart-wrap{width:100%;height:140px;position:relative;margin:8px 0 4px}
 .med-latest{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .med-card{background:#F8F9FA;border:1px solid #CBD5E1;border-radius:8px;padding:10px;text-align:center}
@@ -412,7 +411,6 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="subtabs"><button class="subtab active" id="subtab-evolucao" onclick="switchMedSubtab('evolucao')"><i class="ti ti-trending-up"></i>Evolução / Metas</button><button class="subtab" id="subtab-balanca" onclick="switchMedSubtab('balanca')"><i class="ti ti-scale"></i>Balança</button></div>
 <div id="sub-evolucao"><div id="emag-dashboard"></div></div>
 <div id="sub-balanca" style="display:none">
-<div class="med-tabs" id="med-tabs"></div>
 <div class="card">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><span id="med-title" style="font-size:13px;font-weight:500"></span><span id="med-current" style="font-size:20px;font-weight:500"></span></div>
 <div class="chart-wrap"><canvas id="medChart"></canvas></div>
@@ -1915,11 +1913,7 @@ return e[k]??null;
 }
 function getSeriesCarry(k){let l=null;return medData.map(e=>{const v=getMedVal(e,k);if(v!=null)l=v;return l;});}
 function getPointsReal(k){return medData.map(e=>{const v=getMedVal(e,k);return v!=null?v:null;});}
-function renderMedTabs(){
-const c=document.getElementById('med-tabs');c.innerHTML='';
-medMeta.forEach(m=>{const b=document.createElement('button');b.textContent=m.label;const a=currentMed===m.key;b.style.cssText='padding:6px 14px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;border:2px solid '+m.color+';background:'+(a?m.color:'#fff')+';color:'+(a?'#fff':m.color);b.onclick=()=>selectMed(m.key);c.appendChild(b);});
-}
-function selectMed(k){currentMed=k;renderMedTabs();renderMedChart();}
+function selectMed(k){currentMed=k;renderMedChart();}
 function renderMedChart(){
 const meta=medMeta.find(m=>m.key===currentMed);
 const lineV=getSeriesCarry(currentMed),pointV=getPointsReal(currentMed);
@@ -1943,11 +1937,11 @@ let h='';
 medMeta.forEach(m=>{
 const val=lastReal(m.key),pval=prevReal(m.key);
 const calcTag=!m.input?'<span style="font-size:9px;color:#94A3B8;margin-left:2px">calc</span>':'';
-if(val==null){h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">—</div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta">sem dados</div></div>';return;}
+if(val==null){h+='<div class="med-card" style="border-top:3px solid '+m.color+';cursor:pointer'+(m.key===currentMed?';box-shadow:0 0 0 2px '+m.color+';background:'+m.color+'0F':'')+'" onclick="selectMed(\''+m.key+'\')"><div class="med-card-val" style="color:'+m.color+'">—</div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta">sem dados</div></div>';return;}
 const diff=pval!=null?+(val-pval).toFixed(m.decimals):null;
 const cls=diff==null||diff===0?'':m.goodDown?diff<0?'delta-good':'delta-bad':diff>0?'delta-good':'delta-bad';
 const sign=diff!=null&&diff>0?'+':'';
-h+='<div class="med-card" style="border-top:3px solid '+m.color+'"><div class="med-card-val" style="color:'+m.color+'">'+val.toFixed(m.decimals).replace('.',',')+'<span style="font-size:10px;color:#64748B"> '+m.unit+'</span></div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta '+cls+'">'+(diff!=null&&diff!==0?sign+diff.toFixed(m.decimals).replace('.',','):'—')+'</div></div>';
+h+='<div class="med-card" style="border-top:3px solid '+m.color+';cursor:pointer'+(m.key===currentMed?';box-shadow:0 0 0 2px '+m.color+';background:'+m.color+'0F':'')+'" onclick="selectMed(\''+m.key+'\')"><div class="med-card-val" style="color:'+m.color+'">'+val.toFixed(m.decimals).replace('.',',')+'<span style="font-size:10px;color:#64748B"> '+m.unit+'</span></div><div class="med-card-lbl">'+m.label+calcTag+'</div><div class="med-card-delta '+cls+'">'+(diff!=null&&diff!==0?sign+diff.toFixed(m.decimals).replace('.',','):'—')+'</div></div>';
 });
 document.getElementById('med-latest').innerHTML=h;
 }
@@ -3187,7 +3181,7 @@ document.getElementById('subtab-balanca').classList.toggle('active',name==='bala
 document.getElementById('sub-evolucao').style.display=name==='evolucao'?'block':'none';
 document.getElementById('sub-balanca').style.display=name==='balanca'?'block':'none';
 if(name==='evolucao')renderEmagDashboard();
-else{renderMedTabs();renderMedChart();}
+else{renderMedChart();}
 }
 function switchTab(name){
 document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
@@ -3236,7 +3230,7 @@ if(act){
 const id=act.id;
 if(id==='sec-treino'){if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();}
 else if(id==='sec-dieta')renderDiet();
-else if(id==='sec-medicoes'){renderEmagDashboard();renderMedTabs();renderMedChart();}
+else if(id==='sec-medicoes'){renderEmagDashboard();renderMedChart();}
 else if(id==='sec-tarefas')renderTasks();
 }
 }catch(e){console.error('Refresh err:',e);}
