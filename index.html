@@ -7,7 +7,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Treino Munique">
 <title>Treino Munique 2026</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1E3A8A">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#fff;color:#0F172A}
@@ -647,8 +651,8 @@ const special=SPECIAL_WORKOUTS[dayKey];
 const day=special||srcWk.template[dayIdx];
 return{phase:wk.phase,weekNum:wk.num,day:day,dayName:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'][dayIdx],isSpecial:!!special};
 }
-let weightLog=JSON.parse(localStorage.getItem('weightLog')||'{}');
-let cardioLog=JSON.parse(localStorage.getItem('cardioLog')||'{}');
+let weightLog={};try{const _wl=localStorage.getItem('weightLog');weightLog=_wl?JSON.parse(_wl)||{}:{};}catch(e){weightLog={};}
+let cardioLog={};try{const _cd=localStorage.getItem('cardioLog');cardioLog=_cd?JSON.parse(_cd)||{}:{};}catch(e){cardioLog={};}
 let coreLog={};try{const _cl=localStorage.getItem('coreLog');coreLog=_cl?JSON.parse(_cl)||{}:{};}catch(e){coreLog={};}
 let exerciseRenames={};try{const _r=localStorage.getItem('exerciseRenames');exerciseRenames=_r?JSON.parse(_r)||{}:{};}catch(e){exerciseRenames={};}
 function getExerciseDisplay(exKey,defaultName){return exerciseRenames[exKey]||defaultName;}
@@ -1809,7 +1813,7 @@ h+='<div class="weight-hist-row" style="align-items:flex-start"><span class="wei
 });
 container.innerHTML=h;
 }
-let wkTmpl=JSON.parse(localStorage.getItem('workoutTemplate')||'null');
+let wkTmpl=null;try{const _wt=localStorage.getItem('workoutTemplate');if(_wt&&_wt!=='null'){const p=JSON.parse(_wt);if(p)wkTmpl=p;}}catch(e){wkTmpl=null;}
 if(!wkTmpl){
 wkTmpl=[
 {day:'Seg',ex:['Supino Reto 4x10','Crucifixo 3x15','Tríceps Corda 4x12','Corrida Z2 20min']},
@@ -1900,7 +1904,7 @@ const medMeta=[
 {key:'agua',label:'% Água',unit:'%',color:'#0EA5E9',decimals:1,input:true,goodDown:false},
 {key:'basal',label:'Basal',unit:'kcal',color:'#B45309',decimals:0,input:true,goodDown:false}
 ];
-let medData=JSON.parse(localStorage.getItem('medData')||'[{"data":"2025-03-01","peso":83.5,"agua":53.2,"gordura":24.1,"musculo":36.8},{"data":"2025-04-01","peso":82.1,"agua":54.2,"gordura":23,"musculo":37.5},{"data":"2025-05-01","peso":81,"agua":55,"gordura":22,"musculo":38.2}]');
+let medData=[{"data":"2025-03-01","peso":83.5,"agua":53.2,"gordura":24.1,"musculo":36.8},{"data":"2025-04-01","peso":82.1,"agua":54.2,"gordura":23,"musculo":37.5},{"data":"2025-05-01","peso":81,"agua":55,"gordura":22,"musculo":38.2}];try{const _md=localStorage.getItem('medData');if(_md){const p=JSON.parse(_md);if(Array.isArray(p))medData=p;}}catch(e){}
 let editMedIdx=null,currentMed='peso',chartInstance=null;
 function calcIMC(p){return p!=null?+(p/3.0276).toFixed(1):null;}
 function getMedVal(e,k){
@@ -2005,7 +2009,7 @@ else{medData.push(entry);medData.sort((a,b)=>a.data.localeCompare(b.data));}
 localStorage.setItem('medData',JSON.stringify(medData));closeMedModal();renderMedChart();
 if(window.syncNow)window.syncNow();
 }
-let events=JSON.parse(localStorage.getItem('events')||'[]');
+let events=[];try{const _ev=localStorage.getItem('events');events=_ev?JSON.parse(_ev)||[]:[];}catch(e){events=[];}
 let editEvIdx=null;
 const EV_COLORS={treino:'#16A34A',corrida:'#D97706',saude:'#2563EB',trabalho:'#334155',pessoal:'#DC2626',aniversario:'#EC4899'};
 const EV_LABELS={treino:'🏋️ Treino',corrida:'🏃 Corrida',saude:'🩺 Saúde',trabalho:'💼 Trabalho',pessoal:'🎉 Pessoal',aniversario:'🎂 Aniversário'};
@@ -2064,7 +2068,7 @@ else{events.push({title,date,time,timeEnd,desc,cat,recur});}
 localStorage.setItem('events',JSON.stringify(events));closeEventModal();renderCal();
 if(window.syncNow)window.syncNow();
 }
-let tasks=JSON.parse(localStorage.getItem('tasks')||'[{"text":"Entregar relatório Q2","priority":"high","due":"2025-05-10","done":false},{"text":"Revisar proposta do cliente","priority":"high","due":"2025-05-11","done":false},{"text":"Agendar call com fornecedor","priority":"medium","due":"","done":false},{"text":"Comprar suplementos","priority":"low","due":"","done":false}]');
+let tasks=[{"text":"Entregar relatório Q2","priority":"high","due":"2025-05-10","done":false},{"text":"Revisar proposta do cliente","priority":"high","due":"2025-05-11","done":false},{"text":"Agendar call com fornecedor","priority":"medium","due":"","done":false},{"text":"Comprar suplementos","priority":"low","due":"","done":false}];try{const _tk=localStorage.getItem('tasks');if(_tk){const p=JSON.parse(_tk);if(Array.isArray(p))tasks=p;}}catch(e){}
 let editTaskIdx=null;
 function renderTasks(){
 const c=document.getElementById('tasks-list');
@@ -3515,6 +3519,15 @@ onAuthStateChanged(auth, async (user) => {
     setStatus('');
   }
 });
+</script>
+<script>
+/* Registro do service worker (PWA: instalável + offline). Caminho relativo
+   para funcionar no subdiretório do GitHub Pages (/minha-rotina/). */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
