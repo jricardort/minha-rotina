@@ -2078,6 +2078,16 @@ localStorage.setItem('medData',JSON.stringify(medData));closeMedModal();renderMe
 if(window.syncNow)window.syncNow();
 }
 let events=[];try{const _ev=localStorage.getItem('events');events=_ev?JSON.parse(_ev)||[]:[];}catch(e){events=[];}
+// Lembrete (idempotente) pós-Munique para montar o macrociclo da meia de Berlim.
+function migrateBerlimReminder(){
+if(!Array.isArray(events))return;
+if(events.some(e=>e&&e.auto==='berlim-reminder'))return;
+events.push({title:'🏃 Montar plano de Berlim',date:'2026-10-13',time:'',timeEnd:'',desc:'Pós-Munique: hora de montar as ~25 semanas até a meia de Berlim. No chat com o Claude, escreva: "montar plano Berlim"',cat:'corrida',recur:'none',auto:'berlim-reminder'});
+try{localStorage.setItem('events',JSON.stringify(events));}catch(e){}
+if(window.syncNow)setTimeout(()=>window.syncNow(),600);
+console.log('✓ Evento "Montar plano de Berlim" adicionado (13/10/2026)');
+}
+migrateBerlimReminder();
 let editEvIdx=null;
 const EV_COLORS={treino:'#16A34A',corrida:'#D97706',saude:'#2563EB',trabalho:'#334155',pessoal:'#DC2626',aniversario:'#EC4899'};
 const EV_LABELS={treino:'🏋️ Treino',corrida:'🏃 Corrida',saude:'🩺 Saúde',trabalho:'💼 Trabalho',pessoal:'🎉 Pessoal',aniversario:'🎂 Aniversário'};
@@ -3361,6 +3371,7 @@ try{const wkR=localStorage.getItem('workoutKcal');workoutKcal=wkR?JSON.parse(wkR
 const wkR=localStorage.getItem('workoutTemplate');if(wkR&&wkR!=='null'){const p=JSON.parse(wkR);if(p)wkTmpl=p;}
 const mdR=localStorage.getItem('medData');if(mdR){const p=JSON.parse(mdR);if(Array.isArray(p))medData=p;}
 const evR=localStorage.getItem('events');events=evR?JSON.parse(evR)||[]:[];
+if(typeof migrateBerlimReminder==='function')migrateBerlimReminder();
 const tkR=localStorage.getItem('tasks');tasks=tkR?JSON.parse(tkR)||[]:[];
 renderCal();
 const act=document.querySelector('.sec.active');
