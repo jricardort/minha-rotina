@@ -411,7 +411,7 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 </div>
 <div class="sec" id="sec-medicoes">
 <div class="subtabs"><button class="subtab active" id="subtab-evolucao" onclick="switchMedSubtab('evolucao')"><i class="ti ti-trending-up"></i>Evolução / Metas</button><button class="subtab" id="subtab-balanca" onclick="switchMedSubtab('balanca')"><i class="ti ti-scale"></i>Balança</button></div>
-<div id="sub-evolucao"><div id="emag-dashboard"></div></div>
+<div id="sub-evolucao"><div id="goals-panel"></div><div id="emag-dashboard"></div></div>
 <div id="sub-balanca" style="display:none">
 <div class="card">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px"><span id="med-title" style="font-size:13px;font-weight:500"></span><span id="med-current" style="font-size:20px;font-weight:500"></span></div>
@@ -491,6 +491,11 @@ const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
 let calY=today.getFullYear(),calM=today.getMonth(),selDate=new Date(today);
 const START_DATE=new Date(2026,4,11);
 const RACE_DATE=new Date(2026,9,11);
+// Painel de Metas — provas separadas
+const MUNIQUE={name:'Munique 10K',date:new Date(2026,9,11),dist:10,paceTarget:360}; // sub-60 = 6:00/km
+const BERLIM={name:'Meia de Berlim',date:new Date(2027,3,4),dist:21.1,paceTarget:360}; // pelotão do meio ~2:06 (~6:00/km)
+// Glide do pace fácil (Z2): 7:30/km no início do plano -> 6:30/km na prova de Munique (coerente com sub-60)
+const EASY_GLIDE={startDate:new Date(2026,4,11),startPace:450,endDate:new Date(2026,9,11),endPace:390};
 function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 // Converte uma chave 'YYYY-MM-DD' em Date LOCAL (evita o deslocamento de fuso de new Date('YYYY-MM-DD'), que é interpretado como UTC).
 function dateFromKey(key){if(typeof key==='string'){const m=key.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);}return new Date(key);}
@@ -2670,12 +2675,76 @@ if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();
 if(window.syncNow)window.syncNow();
 }
 let emagChart=null;
+let longRunChartInst=null;
+// Corridas deduplicadas por data (a mesma sessão às vezes é lançada em 2 exercícios) — mantém a de maior km.
+function goalRuns(){
+const byDate={};
+Object.keys(cardioLog||{}).forEach(ex=>{(cardioLog[ex]||[]).forEach(r=>{
+if(!r||!r.date)return;
+const km=(typeof r.km==='number')?r.km:(parseBR(r.km)||0);
+const tSec=parseTime(r.total);
+const cur={date:r.date,km,tSec,pace:(km>0&&tSec>0)?tSec/km:null};
+const prev=byDate[r.date];
+if(!prev||km>prev.km)byDate[r.date]=cur;
+});});
+return Object.values(byDate).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+}
+function fmtDateBR(d){return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();}
+function renderGoalsPanel(){
+const c=document.getElementById('goals-panel');if(!c)return;
+const runs=goalRuns();
+const tMid=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const daysTo=d=>Math.max(0,Math.ceil((d-tMid)/86400000));
+const paced=runs.filter(r=>r.pace&&r.km>=2);
+const last3=paced.slice(-3);
+const actual=last3.length?last3.reduce((s,r)=>s+r.pace,0)/last3.length:null;
+const ga=EASY_GLIDE.startDate.getTime(),gb=EASY_GLIDE.endDate.getTime(),gt=tMid.getTime();
+const expected=gt<=ga?EASY_GLIDE.startPace:gt>=gb?EASY_GLIDE.endPace:EASY_GLIDE.startPace+(EASY_GLIDE.endPace-EASY_GLIDE.startPace)*((gt-ga)/(gb-ga));
+const maxKm=runs.reduce((m,r)=>Math.max(m,r.km||0),0);
+let h='';
+// Munique — foco PACE
+const pacePct=actual?Math.max(0,Math.min(100,Math.round((450-actual)/(450-360)*100))):0;
+const onTrack=actual&&actual<=expected;
+h+='<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-flag"></i>🏁 Munique 10K — sub-60</div>';
+h+='<div class="dash-stat-row"><span>Faltam</span><b>'+daysTo(MUNIQUE.date)+' dias</b></div>';
+h+='<div class="dash-stat-row"><span>Data</span><b>'+fmtDateBR(MUNIQUE.date)+'</b></div>';
+h+='<div class="dash-stat-row"><span>Pace fácil atual</span><b>'+(actual?formatPace(actual)+'/km':'—')+'</b></div>';
+h+='<div class="dash-stat-row"><span>Meta de pace fácil p/ hoje</span><b>'+formatPace(expected)+'/km</b></div>';
+h+='<div class="dash-stat-row"><span>Pace-alvo da prova</span><b>6:00/km</b></div>';
+h+='<div class="goal-bar"><div class="goal-bar-fill" style="width:'+pacePct+'%"></div></div>';
+h+='<div style="text-align:center;font-size:11px;color:#64748B;margin-top:4px">'+pacePct+'% do caminho 7:30 → 6:00/km</div>';
+if(actual)h+='<div class="dash-note '+(onTrack?'success':'warning')+'">'+(onTrack?'✅ Adiantado — teu pace fácil já está melhor que o previsto p/ hoje.':'⚠️ Levemente atrás do previsto. Consistência nas corridas fáceis resolve.')+'</div>';
+h+='</div>';
+// Berlim — foco DISTÂNCIA
+const distPct=Math.max(0,Math.min(100,Math.round(maxKm/BERLIM.dist*100)));
+h+='<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-flag"></i>🏁 Meia de Berlim — pelotão do meio</div>';
+h+='<div class="dash-stat-row"><span>Faltam</span><b>'+daysTo(BERLIM.date)+' dias</b></div>';
+h+='<div class="dash-stat-row"><span>Data</span><b>'+fmtDateBR(BERLIM.date)+'</b></div>';
+h+='<div class="goal-progress" style="margin-top:6px"><span>Maior longão: <b>'+maxKm.toFixed(1).replace('.',',')+'km</b></span><span>Meta: <b>21,1km</b></span></div>';
+h+='<div class="goal-bar"><div class="goal-bar-fill" style="width:'+distPct+'%"></div></div>';
+h+='<div style="text-align:center;font-size:11px;color:#64748B;margin-top:4px">'+distPct+'% da distância da prova</div>';
+h+='<div class="dash-stat-row" style="margin-top:6px"><span>Pace-alvo (≈2:06)</span><b>~6:00/km</b></div>';
+h+='<div class="dash-note">Até 11/out o foco são os 10k. O bloco específico da meia começa após Munique — a meta de longão sobe gradualmente para 18–20km.</div>';
+h+='</div>';
+// Progressão de longão
+h+='<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-chart-line"></i>Progressão de longão (km)</div><div class="dash-chart-wrap"><canvas id="longRunChart"></canvas></div></div>';
+c.innerHTML=h;
+const ctx=document.getElementById('longRunChart');
+if(ctx&&window.Chart){
+const cr=runs.filter(r=>r.km>0);
+const labels=cr.map(r=>{const d=dateFromKey(r.date);return d.getDate()+'/'+(d.getMonth()+1);});
+const data=cr.map(r=>+r.km.toFixed(2));
+if(longRunChartInst)longRunChartInst.destroy();
+longRunChartInst=new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderColor:'#2563EB',backgroundColor:'#2563EB18',borderWidth:2,pointRadius:3,pointBackgroundColor:'#2563EB',fill:true,tension:0.3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' km'}}},scales:{x:{ticks:{font:{size:9},color:'#94A3B8',maxRotation:0,autoSkip:true,maxTicksLimit:6}},y:{beginAtZero:true,grid:{color:'#F1F5F9'},ticks:{font:{size:10},color:'#94A3B8',callback:v=>v+'km'}}}}});
+}
+}
 function renderEmagDashboard(){
+renderGoalsPanel();
 const c=document.getElementById('emag-dashboard');
 if(!c)return;
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const peso=getLatestPeso();
-const target=76;
+const target=75;
 const start=83.5;
 const totalLoss=Math.max(0,start-target);
 const currentLoss=Math.max(0,start-peso);
