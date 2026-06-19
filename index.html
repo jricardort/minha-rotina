@@ -504,10 +504,10 @@ function dateFromKey(key){if(typeof key==='string'){const m=key.match(/^(\d{4})-
 function todayKey(){return dk(new Date());}
 function generatePlan(variant){
 const v2=variant!=='old',isNew=variant==='new';
-const MUSC_LEGS_HYP=['Leg press 45° 4x10-12','Cadeira extensora 4x12-15','Cadeira flexora 4x12-15','Glúteo na máquina 3x12','Abdutora 3x12','Adutora 3x12','Panturrilha em pé 4x15','Panturrilha sentado 3x15'];
+const MUSC_LEGS_HYP=['Leg press 45° 4x10-12','Cadeira extensora 4x12-15','Cadeira flexora 4x12-15','Glúteo na máquina 3x12','Abdutora 3x12','Adutora 3x12','Panturrilha em pé 4x15'];
 const MUSC_PUSH_HYP=v2?['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Desenvolvimento halteres 4x10','Elevação lateral halteres 3x12','Elevação frontal halteres 3x12','Tríceps pulley corda 3x12','Tríceps testa barra W 3x10']:['Supino reto halteres 4x10','Supino inclinado halteres 3x10','Pec deck 3x12','Desenvolvimento halteres 4x10','Elevação lateral halteres 3x12','Crucifixo inverso halteres 3x12','Tríceps pulley corda 3x12','Tríceps testa barra W 3x10'];
 const MUSC_PULL_HYP=isNew?['Puxada frente aberta 4x10','Puxada frente triângulo 3x12','Remada 4x10','Crucifixo inverso (fly reverse) 3x15','Rosca direta barra 3x12','Rosca scott barra 3x10','Rosca corda 3x12','Rosca pegada invertida 3x12']:v2?['Puxada frente aberta 4x10','Puxada frente fechada 3x12','Remada cavalinho 4x10','Crucifixo inverso (fly reverse) 3x15','Rosca direta barra 3x12','Rosca scott halteres 3x10']:['Puxada frente aberta 4x10','Remada cavalinho 4x10','Pulldown triangular 3x12','Remada curvada barra 4x10','Face pull corda 3x15','Rosca direta barra 3x12','Rosca scott halteres 3x10','Rosca martelo cabos 3x10'];
-const MUSC_LEGS_STR=['Leg press 45° 5x6-8','Cadeira extensora 3x10','Cadeira flexora 4x10','Glúteo na máquina 3x10','Panturrilha em pé 4x12','Panturrilha sentado 3x15'];
+const MUSC_LEGS_STR=['Leg press 45° 5x6-8','Cadeira extensora 3x10','Cadeira flexora 4x10','Glúteo na máquina 3x10','Panturrilha em pé 4x12'];
 const MUSC_PUSH_STR=['Supino reto halteres 5x6-8','Supino inclinado halteres 4x8','Pec deck 3x10','Desenvolvimento halteres 4x8','Elevação lateral halteres 3x10','Tríceps pulley corda 3x10','Tríceps testa barra W 3x8'];
 const MUSC_PULL_STR=isNew?['Puxada frente aberta 5x6-8','Puxada frente triângulo 3x10','Remada 4x8','Crucifixo inverso (fly reverse) 3x12','Rosca direta barra 3x10','Rosca scott barra 3x10','Rosca corda 3x12','Rosca pegada invertida 3x10']:v2?['Puxada frente aberta 5x6-8','Puxada frente fechada 3x10','Remada cavalinho 4x8','Crucifixo inverso (fly reverse) 3x12','Rosca direta barra 3x10','Rosca scott halteres 3x10']:['Puxada frente aberta 5x6-8','Remada cavalinho 4x8','Pulldown triangular 3x10','Remada curvada barra 4x8','Face pull corda 3x12','Rosca direta barra 3x10','Rosca martelo cabos 3x10'];
 const MUSC_LEGS_MAINT=['Leg press 45° 3x8','Cadeira flexora 3x10','Glúteo na máquina 3x10','Panturrilha em pé 3x12'];
@@ -662,6 +662,16 @@ let weightLog={};try{const _wl=localStorage.getItem('weightLog');weightLog=_wl?J
 let cardioLog={};try{const _cd=localStorage.getItem('cardioLog');cardioLog=_cd?JSON.parse(_cd)||{}:{};}catch(e){cardioLog={};}
 let coreLog={};try{const _cl=localStorage.getItem('coreLog');coreLog=_cl?JSON.parse(_cl)||{}:{};}catch(e){coreLog={};}
 let exerciseRenames={};try{const _r=localStorage.getItem('exerciseRenames');exerciseRenames=_r?JSON.parse(_r)||{}:{};}catch(e){exerciseRenames={};}
+// Remove o rename órfão "panturrilha sentado"→"Adutora 3x12" (exercício removido do dia de perna).
+function migrateRemovePanturrilhaRename(){
+if(exerciseRenames&&exerciseRenames['panturrilha sentado']==='Adutora 3x12'){
+delete exerciseRenames['panturrilha sentado'];
+try{localStorage.setItem('exerciseRenames',JSON.stringify(exerciseRenames));}catch(e){}
+if(window.syncNow)setTimeout(()=>window.syncNow(),600);
+console.log('✓ Rename órfão "panturrilha sentado→Adutora 3x12" removido');
+}
+}
+migrateRemovePanturrilhaRename();
 function getExerciseDisplay(exKey,defaultName){return exerciseRenames[exKey]||defaultName;}
 function saveExerciseName(input){
 const newName=(input.value||'').trim().slice(0,80);
@@ -3365,6 +3375,7 @@ const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{}
 const clR=localStorage.getItem('cardioLog');cardioLog=clR?JSON.parse(clR)||{}:{};
 try{const corL=localStorage.getItem('coreLog');coreLog=corL?JSON.parse(corL)||{}:{};}catch(e){coreLog={};}
 try{const erR=localStorage.getItem('exerciseRenames');exerciseRenames=erR?JSON.parse(erR)||{}:{};}catch(e){exerciseRenames={};}
+if(typeof migrateRemovePanturrilhaRename==='function')migrateRemovePanturrilhaRename();
 try{const uzR=localStorage.getItem('userZones');userZones=uzR?JSON.parse(uzR)||{}:{};}catch(e){userZones={};}
 try{const ovR=localStorage.getItem('workoutOverrides');workoutOverrides=ovR?JSON.parse(ovR)||{}:{};}catch(e){workoutOverrides={};}
 try{const dR=localStorage.getItem('diet');diet=dR?JSON.parse(dR)||{}:{};}catch(e){diet={};}
