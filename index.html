@@ -2911,10 +2911,12 @@ const el=document.getElementById('race-countdown');
 if(!el)return;
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const days=Math.ceil((RACE_DATE-tDate)/(24*60*60*1000));
+const berlimDays=Math.ceil((BERLIM.date-tDate)/(24*60*60*1000));
+const berlimLine=berlimDays>=0?`<div style="font-size:11px;margin-top:4px;opacity:.78;font-weight:500">🏁 Meia de Berlim · 04/Abr/2027 · faltam ${berlimDays} dias</div>`:'';
 let cls='',icon='🏃',main='';
 if(days<0){
 el.className='race-countdown race-soon';
-el.innerHTML=`<span class="rc-icon">🏁</span><div class="rc-content"><div class="rc-title">Maratona de Munique 10K</div><div class="rc-main">A prova já passou! Espero que tenha sido incrível.</div></div>`;
+el.innerHTML=`<span class="rc-icon">🏁</span><div class="rc-content"><div class="rc-title">Maratona de Munique 10K</div><div class="rc-main">A prova já passou! Espero que tenha sido incrível.</div>${berlimLine}</div>`;
 return;
 }
 if(days===0){cls='race-today';icon='🏁';main='<strong>É HOJE!</strong> Boa prova, Zé Ricardo!';}
@@ -2923,7 +2925,7 @@ else if(days<=14){cls='race-soon';main=`Faltam <span class="rc-days">${days}</sp
 else if(days<=30){main=`Faltam <span class="rc-days">${days}</span> dias para a prova`;}
 else{main=`Faltam <span class="rc-days">${days}</span> dias (${Math.floor(days/7)} sem.) para a prova`;}
 el.className='race-countdown'+(cls?' '+cls:'');
-el.innerHTML=`<span class="rc-icon">${icon}</span><div class="rc-content"><div class="rc-title">Maratona de Munique 10K · 11/Out/2026</div><div class="rc-main">${main}</div></div>`;
+el.innerHTML=`<span class="rc-icon">${icon}</span><div class="rc-content"><div class="rc-title">Maratona de Munique 10K · 11/Out/2026</div><div class="rc-main">${main}</div>${berlimLine}</div>`;
 }
 function renderCal(){
 renderCountdown();
