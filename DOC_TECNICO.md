@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 03/07/2026 (commit base: pós-32448cb + refeição personalizada + filtro nutri no gráfico)
+> **Última atualização:** 06/07/2026 (plano nutricional de 03/07/2026 aplicado ao meal builder — novos tipos `lanche_manha` e `jantar_pos`)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -44,7 +44,7 @@ Esquemas principais:
 
 - **`diet`** — `{ 'YYYY-MM-DD': { meals:[], beers:[], water:ml, supplements:{} } }`
   - `meal`: `{id, name, time:'HH:MM', kcal, prot, carb, gord, items:'a · b · c', type}`
-  - `type` ∈ `cafe|almoco|pre_treino|pos_treino|jantar|ceia|extra|off|custom` (só `'off'` tem lógica própria — limite semanal em `countOffMealsThisWeek`)
+  - `type` ∈ `cafe|lanche_manha|almoco|pre_treino|pos_treino|jantar|jantar_pos|ceia|extra|off|custom` (só `'off'` tem lógica própria — limite semanal em `countOffMealsThisWeek`)
 - **`medData`** — array de `{data:'YYYY-MM-DD', peso, gordura, musculo, proteina, agua, basal, nutriSent?:true}` — `nutriSent` marca medição enviada à nutricionista (renderiza ponto verde + badge "✓ nutri")
 - **`weightLog`** — `{ exKey: [{date, weight, ...}] }` — cargas de musculação; `exKey` vem de `getExKey()` — **preservar a chave ao renomear exercícios** (há `exerciseRenames` para display)
 - **`workoutOverrides`** — `{ 'YYYY-MM-DD': {type, title, duration, note} }` — substituições de treino por dia; `type:'cumprido'` marca plano feito
@@ -66,9 +66,10 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 1. **Plano de treino é retroativo por "eras"** — `generatePlan`/`planForDayKey` derivam o treino da DATA. Mudanças de plano devem ser aplicadas por data de corte (era v1/v2/v3 — ver commit `32448cb`), nunca editando a lista global, senão o histórico passado muda. Mesma lógica para listas de exercícios.
 2. **`getExKey()` é a chave do histórico de cargas** — renomear exercício na UI usa `exerciseRenames`; mudar a string base do exercício órfã o histórico em `weightLog`.
 3. **Meal builder** (`modal-meal-builder`):
-   - `MEAL_BUILDER_OPTIONS` = plano da nutri por tipo de refeição; itens por unidade (`kcal/prot/carb/gord`) ou por 100g (`kcalP100...` + `defaultG`).
+   - `MEAL_BUILDER_OPTIONS` = plano da nutri por tipo de refeição (revisão de **03/07/2026**); itens por unidade (`kcal/prot/carb/gord`) ou por 100g (`kcalP100...` + `defaultG` = quantidade auto-preenchida).
+   - Tipos: `cafe`, `lanche_manha` (pão + cottage 40g), `almoco` (carbo 80g/massa 100g, leguminosa 80g, proteína 120g, 3 ovos), `pre_treino` (fruta + ½ whey musculação; fruta + pão + cottage corrida), `pos_treino` (whey + banana se jantar >1h + iogurte proteico substituto), `jantar` (porção menor), `jantar_pos` (carbo 80g, leguminosa 100g, proteína 100g, 2 ovos), `ceia`, `extra`.
    - `getMealOptionsForCategory(type)` aplica `foodOverrides` e anexa `userFoods` por categoria (match exato com nome do grupo).
-   - **Tipo `custom` (refeição personalizada):** `getAllMealBuilderOptions()` mescla TODOS os grupos de todos os tipos (dedup por grupo — normaliza sufixo `" · porção menor)"` — e por nome de item, first-wins na ordem cafe→pos_treino→almoco→pre_treino→jantar→ceia→extra) + todos os `userFoods`. Nome obrigatório via `#mb-custom-name`; salvo como `name:'🍽️ <nome>'`, `type:'custom'`.
+   - **Tipo `custom` (refeição personalizada):** `getAllMealBuilderOptions()` mescla TODOS os grupos de todos os tipos (dedup por grupo — normaliza sufixos `" · porção menor)"`, `" · jantar pós-treino)"` e `" · pré-corrida)"` — e por nome de item, first-wins na ordem de definição de `MEAL_BUILDER_OPTIONS`) + todos os `userFoods`. Nome obrigatório via `#mb-custom-name`; salvo como `name:'🍽️ <nome>'`, `type:'custom'`.
 4. **Gráfico da balança** (`renderMedChart`): 3 datasets — linha carry-forward, pontos reais, overlay verde `nutriSent`. O filtro `medNutriOnly` (checkbox `#med-nutri-only`, `toggleNutriOnly()`) filtra só o **gráfico** (`chartData`); resumo (`renderMedSummary`) e histórico continuam com `medData` completo.
 5. **Balanço calórico** (`calcBalance`): gasto = basal (última medição) + treino (manual em `workoutKcal` OU estimado de musculação+corrida do dia). Alterar estimativas afeta o dashboard de emagrecimento.
 6. **Migrações**: padrão = função `migrate*()` idempotente chamada no boot (ex.: `migrateJunho`, `applyChurrascoPizzaMigration`). Novas correções de dados históricos seguem esse padrão.
