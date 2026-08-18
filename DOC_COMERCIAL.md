@@ -1,6 +1,6 @@
 # Minha Rotina — Documento Comercial
 
-> **Última atualização:** 03/07/2026
+> **Última atualização:** 18/08/2026 (era v4 do plano de treino — reestruturação rumo ao sub-60)
 > Documento vivo: deve ser atualizado sempre que uma funcionalidade for adicionada, alterada ou removida do app.
 
 ## O que é
@@ -25,6 +25,8 @@ Substituir a colcha de retalhos de planilhas, apps de academia, apps de dieta e 
 
 ### 🏋️ Treino
 - Plano de treino periodizado gerado automaticamente por data (musculação + corrida por zonas de FC)
+- **Plano adaptativo por "era"**: o plano é reescrito quando a realidade muda (parada por lesão/viagem, mudança de meta, novo compromisso fixo na semana) sem apagar o histórico do que já foi feito
+- **Dias com atividade alternativa**: um dia pode ter uma atividade prioritária (ex.: futebol semanal) e um "Plano B" de corrida embutido, para quando ela não acontecer
 - Registro de cargas por exercício com histórico e gráfico de evolução
 - Registro de corridas: tempo por zona cardíaca, distância, parciais por km e pace médio
 - Zonas de treino personalizáveis a partir de teste de FC
@@ -66,4 +68,6 @@ Substituir a colcha de retalhos de planilhas, apps de academia, apps de dieta e 
 
 ## Público e uso
 
-App de uso pessoal (single-user), moldado à rotina do Zé Ricardo: plano de corrida rumo ao 10k de Munique (out/2026) e à Meia de Berlim (abr/2027), acompanhamento nutricional com nutricionista no Brasil e rotina de musculação em Munique. A arquitetura, porém, permite adaptar o mesmo modelo para qualquer pessoa com plano de treino + dieta.
+App de uso pessoal (single-user), moldado à rotina do Zé Ricardo: plano de corrida rumo ao 10k de Munique (**11/10/2026 — meta sub-60**) e à Meia de Berlim (abr/2027), acompanhamento nutricional com nutricionista no Brasil e rotina de musculação em Munique. A arquitetura, porém, permite adaptar o mesmo modelo para qualquer pessoa com plano de treino + dieta.
+
+A semana atual (era v4, desde 19/08/2026) é: musculação de pernas na segunda, futebol na terça, corrida fácil na quarta, corrida de qualidade na quinta, superior na sexta, longão no sábado e descanso no domingo.

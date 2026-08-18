@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 06/07/2026 (plano nutricional de 03/07/2026 aplicado ao meal builder — novos tipos `lanche_manha` e `jantar_pos`)
+> **Última atualização:** 18/08/2026 (era **v4** do plano de treino — reestruturação rumo ao sub-60 após 44 dias sem corrida)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -63,8 +63,12 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 
 ## 5. Caminhos críticos e invariantes
 
-1. **Plano de treino é retroativo por "eras"** — `generatePlan`/`planForDayKey` derivam o treino da DATA. Mudanças de plano devem ser aplicadas por data de corte (era v1/v2/v3 — ver commit `32448cb`), nunca editando a lista global, senão o histórico passado muda. Mesma lógica para listas de exercícios.
+1. **Plano de treino é retroativo por "eras"** — `generatePlan`/`planForDayKey` derivam o treino da DATA. Mudanças de plano devem ser aplicadas por data de corte (era v1/v2/v3/v4), nunca editando a lista global, senão o histórico passado muda. Mesma lógica para listas de exercícios.
+   - Cortes atuais: `<11/06` → `planOld` · `=11/06` → `plan`(v2) · `12/06–28/06` → `planNew` · `29/06–18/08` → `planV3` · `>=19/08` (`V4_START`) → `planV4`.
+   - **A era v4 substitui as semanas 15–22 inteiras** (bloco `if(isV4){...return p;}` dentro de `generatePlan`). Semanas 1–14 são idênticas entre v3 e v4 — por isso `isV3` inclui `isV4`.
+   - ⚠️ **Cabeçalho da semana vs. dia**: fase/cor/número vinham de `plan[i]` (sempre v2) enquanto o dia vinha de `planForDayKey`. Corrigido com `weekMeta(i)` (usa `planV4` para `i>=14`). Ao criar uma era nova que renomeie fases, atualizar `weekMeta`.
 2. **`getExKey()` é a chave do histórico de cargas** — renomear exercício na UI usa `exerciseRenames`; mudar a string base do exercício órfã o histórico em `weightLog`.
+   - `exerciseRenames` sobrevive a mudanças de plano e pode **mascarar** um exercício que voltou ao template com nome de outro. Ao reintroduzir exercícios, checar renames órfãos (ver `migrateRenamesV4` e `V4_STALE_RENAMES`).
 3. **Meal builder** (`modal-meal-builder`):
    - `MEAL_BUILDER_OPTIONS` = plano da nutri por tipo de refeição (revisão de **03/07/2026**); itens por unidade (`kcal/prot/carb/gord`) ou por 100g (`kcalP100...` + `defaultG` = quantidade auto-preenchida).
    - Tipos: `cafe`, `lanche_manha` (pão + cottage 40g), `almoco` (carbo 80g/massa 100g, leguminosa 80g, proteína 120g, 3 ovos), `pre_treino` (fruta + ½ whey musculação; fruta + pão + cottage corrida), `pos_treino` (whey + banana se jantar >1h + iogurte proteico substituto), `jantar` (porção menor), `jantar_pos` (carbo 80g, leguminosa 100g, proteína 100g, 2 ovos), `ceia`, `extra`.
@@ -74,7 +78,20 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 5. **Balanço calórico** (`calcBalance`): gasto = basal (última medição) + treino (manual em `workoutKcal` OU estimado de musculação+corrida do dia). Alterar estimativas afeta o dashboard de emagrecimento.
 6. **Migrações**: padrão = função `migrate*()` idempotente chamada no boot (ex.: `migrateJunho`, `applyChurrascoPizzaMigration`). Novas correções de dados históricos seguem esse padrão.
 7. **Segurança de render:** strings de usuário passam por `escapeHtml()` antes de entrar em `innerHTML`. Manter.
-8. **IMC:** `calcIMC` usa altura fixa embutida (`peso/3.0276` ⇒ 1,74 m).
+8. **IMC:** `calcIMC` usa altura fixa embutida (`peso/3.0276` ⇒ 1,74 m). A meta de peso fica em `renderEmagDashboard` (`target`, hoje **74 kg**; início 83,5).
+9. **Linhas de nota no template não são exercício** — `isNoteLine()` (prefixos `⚡ 📍 ✈️ 💧 😴 🎽 🍝 📊 ⛔ ⚽ ─ ·` ou linha terminada em `:`) é avaliada **antes** de `isRunning()`, senão uma nota contendo "km" ("⚡ MARCO: os primeiros 10km") vira botão de registro de corrida. Notas caem no ramo `isCard` e renderizam como texto puro.
+10. **`PACE_ZONES` e `EASY_GLIDE` são calibrados pela meta da prova** — recalibrados em 18/08/2026 para sub-60 (Z2 = 7:05-7:40/km; glide 7:40 → 7:05/km). Antes: Z2 = 6:00-6:20/km e glide até 6:30/km, calibrados para sub-55 — exibiam como "fácil" um pace praticamente de prova, o que empurrava todo treino Z2 para Z3/Z4. **Ao mudar a meta da prova, recalibrar os dois juntos.**
+11. **Painel de metas ignora dados velhos** — `renderGoalsPanel` mostra aviso de "sem corrida há N dias" quando a última corrida tem mais de 14 dias, em vez de exibir pace antigo como se fosse o estado atual.
+
+### Migrações da era v4 (18/08/2026)
+
+| Função | O que corrige |
+|---|---|
+| `migrateRenamesV4` | Remove renames órfãos (`V4_STALE_RENAMES`) que mascarariam Stiff halteres, Afundo búlgaro, Panturrilha sentado e Tríceps corda no plano v4 |
+| `migrateEventsV4` | Move o lembrete `tt-reassess-reminder` de 07/09 → **14/09** (o TT de 5K passou de 04/09 para 11/09) e adiciona o evento `ironman-leipzig` em 23/08 |
+| `migrateMedMusculoJul24` | Corrige `medData` de 24/07: campo `musculo` recebeu 55,6 (valor em **kg**) num campo que guarda **%**; ajustado para 73,5 |
+
+Todas são idempotentes e estão registradas **duas vezes**: no escopo do módulo (boot) e dentro de `refreshDataFromStorage()` (após carga da nuvem) — sem o segundo ponto, o snapshot do Firestore sobrescreve a correção.
 
 ## 6. Workflow de desenvolvimento
 
