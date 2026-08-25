@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 18/08/2026 (era **v4** do plano de treino — reestruturação rumo ao sub-60 após 44 dias sem corrida)
+> **Última atualização:** 25/08/2026 (aderência reiniciada no plano vigente + `dayIsRest`; era **v4** em 18/08)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -82,6 +82,8 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 9. **Linhas de nota no template não são exercício** — `isNoteLine()` (prefixos `⚡ 📍 ✈️ 💧 😴 🎽 🍝 📊 ⛔ ⚽ ─ ·` ou linha terminada em `:`) é avaliada **antes** de `isRunning()`, senão uma nota contendo "km" ("⚡ MARCO: os primeiros 10km") vira botão de registro de corrida. Notas caem no ramo `isCard` e renderizam como texto puro.
 10. **`PACE_ZONES` e `EASY_GLIDE` são calibrados pela meta da prova** — recalibrados em 18/08/2026 para sub-60 (Z2 = 7:05-7:40/km; glide 7:40 → 7:05/km). Antes: Z2 = 6:00-6:20/km e glide até 6:30/km, calibrados para sub-55 — exibiam como "fácil" um pace praticamente de prova, o que empurrava todo treino Z2 para Z3/Z4. **Ao mudar a meta da prova, recalibrar os dois juntos.**
 11. **Painel de metas ignora dados velhos** — `renderGoalsPanel` mostra aviso de "sem corrida há N dias" quando a última corrida tem mais de 14 dias, em vez de exibir pace antigo como se fosse o estado atual.
+12. **Dia de descanso é marcado por `rest:true`, não pelo título** — `dayIsRest(day)` é a única fonte de verdade (`day.rest===true || day.t==='Descanso'`). Até a v3 todo descanso era o `REST_DAY` literal; a v4 usa títulos descritivos (`'⛔ OFF — volta de Leipzig'`), e um OFF planejado sem a flag é contado como **falta** na aderência e ganha botão "Cumprido" indevidamente. ⚠️ Nem todo título com `⛔` é descanso (`'⛔ Futebol SUSPENSO — trote leve'` tem corrida) — por isso a flag explícita em vez de regex no título. Usado em 6 pontos (aderência, `renderPlan`, `renderTreinoHistorico`, `renderDetail`, status do dia, calendário).
+13. **Aderência conta a partir do plano vigente** — `PLAN_RESET` (= `V4_START`) é o piso de `getAdherenceStats`. Dias anteriores à reestruturação pertencem a outro plano e contariam como falta em massa. Quando a janela de N dias é cortada pelo piso, `stats.clipped` fica `true` e o rótulo do card vira "desde o plano novo · DD/MM" em vez de "últimos 14 dias". **Ao criar uma era nova que reinicie a contagem, atualizar `PLAN_RESET`.**
 
 ### Migrações da era v4 (18/08/2026)
 

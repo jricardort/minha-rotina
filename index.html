@@ -507,6 +507,13 @@ function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')
 // Converte uma chave 'YYYY-MM-DD' em Date LOCAL (evita o deslocamento de fuso de new Date('YYYY-MM-DD'), que é interpretado como UTC).
 function dateFromKey(key){if(typeof key==='string'){const m=key.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);}return new Date(key);}
 function todayKey(){return dk(new Date());}
+// Dia de descanso planejado. Até a era v3 bastava o título ser 'Descanso'; a v4 usa títulos
+// descritivos ('⛔ OFF — volta de Leipzig'), então os dias de folga carregam `rest:true`.
+// Sem isso um OFF planejado era contado como FALTA na aderência.
+function dayIsRest(d){return !!(d&&(d.rest===true||d.t==='Descanso'));}
+// A aderência é contada a partir do início do plano vigente — dias anteriores à
+// reestruturação pertencem a outro plano e não dizem nada sobre a adesão ao atual.
+const PLAN_RESET=dateFromKey(V4_START);
 function generatePlan(variant){
 const v2=variant!=='old',isV4=variant==='v4',isNew=variant==='new'||variant==='v3'||isV4,isV3=variant==='v3'||isV4;
 // --- Era v4 (a partir de 19/08/2026) — blocos de musculação orientados à corrida ---
@@ -536,7 +543,7 @@ const CORE_BLOCK=['Prancha 3x45s','Abdominal infra 3x15','Oblíquos 3x15 cada la
 // A partir do plano novo (>=12/06) o core sai da terça (Push/Z2) e vai para a quarta (Z2 recuperação).
 const coreTue=isNew?[]:CORE_BLOCK;
 const coreWed=isNew?CORE_BLOCK:[];
-const REST_DAY={t:'Descanso',ex:['Descanso completo']};
+const REST_DAY={t:'Descanso',rest:true,ex:['Descanso completo']};
 const p=[];
 // Week 1 (May 11-17): Pré-plano — keep old base content for history
 p.push({phase:'Pré-plano',num:1,color:'#F1F5F9',text:'#475569',template:[
@@ -614,10 +621,10 @@ futDay(PLANB_EASY),
 {t:'🏋️ Pernas (corredor) — MANHÃ',ex:[...MUSC_LEGS_RUN,'Sauna 10min','✈️ Treinar de manhã — viagem para Leipzig às 19h']},
 {t:'🏃 Leipzig — Z2 4km',ex:['Corrida Z2 4km fácil','📍 Clara-Zetkin-Park ou Karl-Heine-Kanal (planos e corríveis)']},
 {t:'🏃 Leipzig — Longão 5km',ex:['Long Run 5km em Z2 (na rua)','⚡ Ritmo de conversa do início ao fim']},
-{t:'⛔ OFF — IronMan 70.3 Leipzig',ex:['Descanso total — torcida pelo amigo 🏊🚴🏃','⚡ 10-14h em pé é dia de FADIGA, não de descanso','Hidrata bem e alonga à noite']}
+{t:'⛔ OFF — IronMan 70.3 Leipzig',rest:true,ex:['Descanso total — torcida pelo amigo 🏊🚴🏃','⚡ 10-14h em pé é dia de FADIGA, não de descanso','Hidrata bem e alonga à noite']}
 ]});
 p.push({phase:'Reentrada — Sem 2',num:16,color:'#F0F9FF',text:'#0369A1',template:[
-{t:'⛔ OFF — volta de Leipzig',ex:['Descanso total','⚡ Chegada às 06:00 sem dormir — treino hoje não rende nada']},
+{t:'⛔ OFF — volta de Leipzig',rest:true,ex:['Descanso total','⚡ Chegada às 06:00 sem dormir — treino hoje não rende nada']},
 futDay(PLANB_EASY),
 {t:'🏃 Z2 4km',ex:['Corrida Z2 4km fácil (na rua)']},
 {t:'🌅 Z2 4km + strides / 🌙 Pernas',ex:['🌅 MANHÃ — Corrida Z2 4km + 4 strides de 20s ao final','🌙 FIM DO DIA — Musculação pernas:',...MUSC_LEGS_RUN,'Sauna 10min','⚡ Mínimo 6h entre as duas sessões']},
@@ -640,7 +647,7 @@ futDay(PLANB_FARTLEK),
 {t:'🏃 Z2 4km regenerativo',ex:['Corrida Z2 4km fácil (pós-futebol)']},
 {t:'🏃 3km bem leve + strides',ex:['Corrida 3km bem leve (Z1-Z2)','4 strides de 20s ao final','⚡ Perna fresca para o TT de amanhã']},
 {t:'🎯🎯 TIME TRIAL 5km — ALL OUT',ex:['Aquecimento 15min (10min Z2 + 4 strides de 20s)','5km NO MÁXIMO sustentável — cronometrado','Desaquecimento 10min Z1','⚡ ESTE É O JUIZ do sub-60','⚡ Regra: 10K ≈ tempo do 5K × 2,08','⚡ ≤29:00 = sub-60 vivo · 29:00-30:30 = 62-64min · >30:30 = reavaliar','📊 Anota a FC média dos últimos 2km — serve para recalibrar as zonas']},
-{t:'⛔ OFF + Sauna',ex:['Descanso total pós-TT','Sauna 15min','Alongamento leve']},
+{t:'⛔ OFF + Sauna',rest:true,ex:['Descanso total pós-TT','Sauna 15min','Alongamento leve']},
 {t:'🏃 Longão 9km',ex:['Long Run 9km em Z2 fácil (na rua)','⚡ Longão passou para domingo por causa do TT de sexta']}
 ]});
 p.push({phase:'Específico — Sem 1 ⭐ 10km',num:19,color:'#FEF2F2',text:'#991B1B',template:[
@@ -674,9 +681,9 @@ p.push({phase:'Taper + Prova',num:22,color:'#F5F3FF',text:'#6B21A8',template:[
 {t:'🏋️ Upper MUITO leve',ex:[...MUSC_UPPER_RUN_LIGHT,'⚡ Cargas a 60% — só manter o corpo acordado']},
 {t:'⛔ Futebol SUSPENSO — trote leve',ex:['🏃 Trote 4km bem leve (Z1-Z2)','⛔ SEM FUTEBOL — risco de torção a 5 dias da prova','⚡ Esta semana: nada de contato, nada de mudança de direção']},
 {t:'🏃 Race primer',ex:['Aquecimento 10min Z2','4×400m @ 5:40/km · recuperação 90s trote','Desaquecimento 5min Z1','⚡ Acorda a perna sem cansar']},
-{t:'⛔ Descanso total',ex:['Descanso completo','Hidratação + sono']},
+{t:'⛔ Descanso total',rest:true,ex:['Descanso completo','Hidratação + sono']},
 {t:'🏃 Shakeout 3km',ex:['Trote 3km BEM leve (Z1)','4-6 strides de 20s ao final','⚡ Só destravar a perna']},
-{t:'⛔ Véspera — descanso + carbo',ex:['Descanso total (caminhada leve só se quiser)','🍝 Carboidrato reforçado no almoço e no jantar','💧 Hidratação ao longo do dia','😴 Dormir cedo — o sono de HOJE é o que conta na prova','🎽 Separa roupa, tênis, número e gel']},
+{t:'⛔ Véspera — descanso + carbo',rest:true,ex:['Descanso total (caminhada leve só se quiser)','🍝 Carboidrato reforçado no almoço e no jantar','💧 Hidratação ao longo do dia','😴 Dormir cedo — o sono de HOJE é o que conta na prova','🎽 Separa roupa, tênis, número e gel']},
 {t:'🏁 PROVA — Munique 10K',ex:['MARATONA DE MUNIQUE — 10KM','🎯 META: SUB-60MIN (pace 6:00/km)','Km 1-3: 6:05/km — SEGURA a adrenalina','Km 4-7: assenta em 6:00/km','Km 8-10: 5:50/km — o sub-60 se ganha AQUI','⏱️ Projeção: 59:45','⚡ Largar rápido demais é a única forma de perder isso. Paciência nos 3 primeiros km.']}
 ]});
 return p;
@@ -1305,7 +1312,7 @@ const d=SPECIAL_WORKOUTS[dayKey]||d_orig;
 const ov=getWorkoutOverride(dayKey);
 const isCumprido=ov&&ov.type==='cumprido';
 const isOverrideDone=ov&&!isCumprido&&ov.done;
-const isRestDay=d.t==='Descanso';
+const isRestDay=dayIsRest(d);
 const badge=dn==='Dom'?'b-green':dn==='Qua'||dn==='Sex'?'b-amber':'b-blue';
 let statusDot='';
 if(isCumprido)statusDot=`<span style="font-size:10px;background:#DCFCE7;color:#16A34A;padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:600">✓ cumprido</span>`;
@@ -1384,18 +1391,24 @@ if(!ov||typeof ov!=='object'||!isValidOverrideType(ov.type))return null;
 return ov;
 }
 function getAdherenceStats(daysBack){
-const stats={cumprido:0,alterado:0,descanso:0,falta:0,total:0};
+// `from` = primeiro dia efetivamente contado; `clipped` = a janela foi cortada pelo início do plano
+// vigente (PLAN_RESET), o que muda o rótulo exibido de "últimos N dias" para "desde o plano novo".
+const stats={cumprido:0,alterado:0,descanso:0,falta:0,total:0,from:null,clipped:false};
 const days=Math.max(1,Math.min(90,daysBack||14));
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const floor=PLAN_RESET>START_DATE?PLAN_RESET:START_DATE;
+const windowStart=new Date(tDate);windowStart.setDate(windowStart.getDate()-(days-1));
+stats.clipped=floor>windowStart;
 for(let i=0;i<days;i++){
 const d=new Date(tDate);d.setDate(d.getDate()-i);
 if(d>tDate)continue;
-if(d<START_DATE||d>RACE_DATE)continue;
+if(d<floor||d>RACE_DATE)continue;
 const w=getWorkoutForDate(d);
 if(!w||!w.day)continue;
 stats.total++;
+if(!stats.from||d<stats.from)stats.from=new Date(d);
 const ov=getWorkoutOverride(d);
-const isRest=w.day.t==='Descanso';
+const isRest=dayIsRest(w.day);
 if(ov){
 if(ov.type==='cumprido')stats.cumprido++;
 else if(ov.type==='descanso')stats.descanso++;
@@ -1411,7 +1424,7 @@ function getDayStatus(dayKey,plannedDay){
 const d=new Date(dayKey+'T00:00:00');
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const ov=getWorkoutOverride(dayKey);
-const isRest=plannedDay&&plannedDay.t==='Descanso';
+const isRest=dayIsRest(plannedDay);
 if(ov){
 if(ov.type==='cumprido')return{key:'cumprido',label:'Cumprido',icon:'ti-check',color:'#16A34A',bg:'#DCFCE7'};
 if(ov.type==='descanso')return{key:'descanso',label:'Descanso',icon:'ti-moon',color:'#64748B',bg:'#F1F5F9'};
@@ -1497,7 +1510,8 @@ h+=`<div class="card" style="background:#EFF6FF;border-color:#BFDBFE;text-align:
 }else{
 const st=getAdherenceStats(14);
 if(st.total>0){
-h+=`<div class="adherence-card"><p class="section-label" style="margin:0">Aderência — últimos 14 dias</p><div class="adherence-row"><div class="adherence-stat"><div class="adherence-stat-val" style="color:#16A34A">${st.cumprido}</div><div class="adherence-stat-lbl">Cumpridos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#7C3AED">${st.alterado}</div><div class="adherence-stat-lbl">Alterados</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#64748B">${st.descanso}</div><div class="adherence-stat-lbl">Descansos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#DC2626">${st.falta}</div><div class="adherence-stat-lbl">Faltas</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#0F172A">${st.total}</div><div class="adherence-stat-lbl">Total</div></div></div></div>`;
+const advLbl=(st.clipped&&st.from)?`desde o plano novo · ${String(st.from.getDate()).padStart(2,'0')}/${String(st.from.getMonth()+1).padStart(2,'0')}`:'últimos 14 dias';
+h+=`<div class="adherence-card"><p class="section-label" style="margin:0">Aderência — ${advLbl}</p><div class="adherence-row"><div class="adherence-stat"><div class="adherence-stat-val" style="color:#16A34A">${st.cumprido}</div><div class="adherence-stat-lbl">Cumpridos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#7C3AED">${st.alterado}</div><div class="adherence-stat-lbl">Alterados</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#64748B">${st.descanso}</div><div class="adherence-stat-lbl">Descansos</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#DC2626">${st.falta}</div><div class="adherence-stat-lbl">Faltas</div></div><div class="adherence-stat"><div class="adherence-stat-val" style="color:#0F172A">${st.total}</div><div class="adherence-stat-lbl">Total</div></div></div></div>`;
 }
 }
 for(let i=si;i<ei;i++){
@@ -1526,7 +1540,7 @@ const isOverrideDone=ov&&!isCumprido&&ov.done;
 const isCompleted=isCumprido||isOverrideDone;
 const shouldDefaultCollapse=isPast||isCompleted;
 const isExpanded=!shouldDefaultCollapse||expandedPastDays.has(dayKey);
-const isRestDay=d.t==='Descanso';
+const isRestDay=dayIsRest(d);
 const status=getDayStatus(dayKey,d);
 const chevron=shouldDefaultCollapse?`<i class="ti ${isExpanded?'ti-chevron-up':'ti-chevron-down'}" style="color:#94A3B8;font-size:16px;margin-left:6px"></i>`:'';
 const hdrClick=shouldDefaultCollapse?` onclick="togglePastDay('${dayKey}')" style="cursor:pointer;user-select:none"`:'';
@@ -2095,7 +2109,7 @@ wk.template.forEach((dayTpl,di)=>{
 const dayDate=new Date(ws);dayDate.setDate(dayDate.getDate()+di);
 const dayKey=dk(dayDate);
 const d=SPECIAL_WORKOUTS[dayKey]||dayTpl;
-const isRest=d.t==='Descanso';
+const isRest=dayIsRest(d);
 const isRace=d.t.includes('PROVA');
 const isKey=d.t.includes('KEY')||d.t.includes('CHAVE')||d.t.includes('Time Trial')||isRace;
 const tc=isRace?'#DC2626':isKey?'#92400E':isRest?'#94A3B8':'#0F172A';
@@ -3227,7 +3241,7 @@ const ovDay=getWorkoutOverride(key);
 const tDate=new Date(today.getFullYear(),today.getMonth(),today.getDate());
 const canAlterDay=selDate<=tDate||Math.floor((selDate-tDate)/(24*60*60*1000))<=7;
 const isCumpridoDay=ovDay&&ovDay.type==='cumprido';
-const isRestDayDet=w.day.t==='Descanso';
+const isRestDayDet=dayIsRest(w.day);
 h+='<div class="cal-section"><i class="ti ti-barbell" style="color:#16A34A"></i>Treino do dia · Semana '+w.weekNum+'</div>';
 if(isCumpridoDay){
 h+='<div class="cumprido-banner"><span class="cb-label"><i class="ti ti-check"></i>Treino cumprido</span><button class="cb-undo" onclick="unmarkCumprido(\''+key+'\')">Desmarcar</button></div>';
