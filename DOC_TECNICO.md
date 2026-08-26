@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 25/08/2026 (aderência reiniciada no plano vigente + `dayIsRest`; era **v4** em 18/08)
+> **Última atualização:** 26/08/2026 (ajustes de calendário social via `SPECIAL_WORKOUTS`; era **v4** em 18/08)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -84,6 +84,12 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 11. **Painel de metas ignora dados velhos** — `renderGoalsPanel` mostra aviso de "sem corrida há N dias" quando a última corrida tem mais de 14 dias, em vez de exibir pace antigo como se fosse o estado atual.
 12. **Dia de descanso é marcado por `rest:true`, não pelo título** — `dayIsRest(day)` é a única fonte de verdade (`day.rest===true || day.t==='Descanso'`). Até a v3 todo descanso era o `REST_DAY` literal; a v4 usa títulos descritivos (`'⛔ OFF — volta de Leipzig'`), e um OFF planejado sem a flag é contado como **falta** na aderência e ganha botão "Cumprido" indevidamente. ⚠️ Nem todo título com `⛔` é descanso (`'⛔ Futebol SUSPENSO — trote leve'` tem corrida) — por isso a flag explícita em vez de regex no título. Usado em 6 pontos (aderência, `renderPlan`, `renderTreinoHistorico`, `renderDetail`, status do dia, calendário).
 13. **Aderência conta a partir do plano vigente** — `PLAN_RESET` (= `V4_START`) é o piso de `getAdherenceStats`. Dias anteriores à reestruturação pertencem a outro plano e contariam como falta em massa. Quando a janela de N dias é cortada pelo piso, `stats.clipped` fica `true` e o rótulo do card vira "desde o plano novo · DD/MM" em vez de "últimos 14 dias". **Ao criar uma era nova que reinicie a contagem, atualizar `PLAN_RESET`.**
+
+14. **Ajustes pontuais de calendário usam `SPECIAL_WORKOUTS`, não uma era nova** — `SPECIAL_WORKOUTS['YYYY-MM-DD']` sobrepõe o dia em TODOS os renders (`getWorkoutForDate`, `renderPlan`, `renderTreinoHistorico`, `renderInfoPlan`, `renderDetail`) e na aderência. Por ser indexado por data, é intrinsecamente não-retroativo: não cria era, não mexe em `PLAN_RESET`/`weekMeta` e não órfã chave de `weightLog`.
+    - Aplicado em **26/08/2026** para a agenda social de set/out (16 datas, de 29/08 a 06/10): Aniversário Aline, Wannda Circus, Churrasco Leozão, **Oktoberfest** e Jantar ADI.
+    - Regra de negócio adotada: o longão **muda de horário** (sábado de manhã) quando o evento é à tarde/noite; só **muda de dia** quando o fim de semana inteiro está tomado — caso único do **longão-chave de 12km, que foi de sáb 26/09 para qui 24/09** (Oktoberfest sáb+dom). Nessa semana o longão absorve a qualidade e os 5×1km saem.
+    - ⚠️ Ao escrever notas de evento, usar um prefixo reconhecido por `isNoteLine()` — a lista ganhou `🍺 🎂 🎪 🥩 🍽️ 🔄` justamente aqui. Sem prefixo, uma linha como "🍺 Oktoberfest 10h–16h" não casa com `isCardio()` e cai no ramo de musculação, ganhando botão de carga.
+15. **`renderInfoPlan` (Plano Completo do modal) precisa respeitar a era** — iterava `plan` (v2) e mostrava os treinos pré-v4 nas semanas 15–22. Corrigido em 26/08/2026: cabeçalho vem de `weekMeta(wi)` e o dia de `planForDayKey(dayKey)[wi].template[di]`, com `SPECIAL_WORKOUTS` por cima. `phaseColor`/`phaseBg` também passaram a reconhecer `Pico` (v4) além de `Peak` (v2).
 
 ### Migrações da era v4 (18/08/2026)
 

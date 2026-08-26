@@ -27,6 +27,7 @@ Substituir a colcha de retalhos de planilhas, apps de academia, apps de dieta e 
 - Plano de treino periodizado gerado automaticamente por data (musculação + corrida por zonas de FC)
 - **Plano adaptativo por "era"**: o plano é reescrito quando a realidade muda (parada por lesão/viagem, mudança de meta, novo compromisso fixo na semana) sem apagar o histórico do que já foi feito
 - **Dias com atividade alternativa**: um dia pode ter uma atividade prioritária (ex.: futebol semanal) e um "Plano B" de corrida embutido, para quando ela não acontecer
+- **Encaixe com a vida real**: quando a agenda social (festa, viagem, Oktoberfest) bate no treino-chave, o plano remaneja o dia — antecipa o longão para um dia de semana ou muda o horário — em vez de simplesmente marcar falta
 - Registro de cargas por exercício com histórico e gráfico de evolução
 - Registro de corridas: tempo por zona cardíaca, distância, parciais por km e pace médio
 - Zonas de treino personalizáveis a partir de teste de FC
