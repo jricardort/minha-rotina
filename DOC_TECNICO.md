@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 28/08/2026 (registro de **pedal**; exercício extra virou registrável; horários no dia; consumo externo pela Claudia)
+> **Última atualização:** 28/08/2026 (registro de **pedal**; exercício extra registrável e visível em dia alterado; horários no dia; consumo externo pela Claudia)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -112,6 +112,8 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 22. **O nome do extra decide se ele soma ao histórico ou abre um órfão** — `getExKey()` é a chave, então "Cadeira extensora 3x10" e "Perna: extensora - 3x10 - 32kg" viram séries diferentes. Por isso o campo de nome tem `<datalist>` alimentado por `knownExerciseNames()` (chaves de `weightLog` + exercícios do plano vigente) e `updateAeHistHint()` avisa ao vivo se o nome digitado cai num histórico existente e qual foi a última carga.
 23. **Extra de bicicleta guarda só o trajeto no label** (`🚴 Bike — <trajeto>`) — distância e tempo vão no registro. Se fossem para o label, cada pedal geraria uma chave nova de `getExKey()` e o botão nunca mostraria o pedal anterior daquele trajeto.
     - ⚠️ Ao inserir `<option>` em `<select>` por busca de texto, **conferir qual select recebeu**: `<option value="corrida">🏃 Corrida</option>` existe em `#ev-cat` (categoria de evento) **e** em `#ae-type` (tipo de exercício). Ancorar pelo vizinho único.
+
+24. **Exercício extra tem que sair nos DOIS ramos do `renderPlan`** — o ramo do treino substituído (`else if(ov)`) dá `return` antes da lista de exercícios. Até 28/08/2026, trocar o treino do dia **e** adicionar extras fazia os extras sumirem da tela, junto com o botão de registro deles. O bloco virou `extrasBlockHTML(dayKey)` e é emitido nos dois ramos, sempre **antes** do `</div>` que fecha a `.treino-day` — emitir depois joga os extras para fora do dia e desbalanceia o HTML.
 
 ### Migrações da era v4 (18/08/2026)
 

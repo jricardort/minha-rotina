@@ -1120,6 +1120,19 @@ el.innerHTML='<span style="color:#15803D">✓ Soma ao histórico de <b>'+escapeH
 el.innerHTML='<span style="color:#94A3B8">Exercício novo — vai começar um histórico próprio.</span>';
 }
 }
+/* Os exercícios extras precisam sair nos DOIS ramos do render: o dia normal e o
+   dia com treino substituído. O ramo do override dá return antes da lista de
+   exercícios, então até 28/08/2026 quem trocasse o treino E adicionasse extras
+   via perdia os extras da tela — inclusive o botão de registro deles. */
+function extrasBlockHTML(dayKey){
+const extras=dayExtraExercises[dayKey]||[];
+if(!extras.length)return '';
+let h=`<div style="margin-top:6px;padding:6px 12px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:6px"><div style="font-size:10px;font-weight:600;color:#92400E;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">+ Exercícios extras</div>`;
+extras.forEach(ex=>{
+h+=`<div style="display:flex;align-items:center;gap:6px;padding:5px 0;font-size:12px;color:#78350F"><span style="flex:1">${escapeHtml(ex.label)}</span>${extraControlHTML(ex.label,dayKey)}<button onclick="deleteExtraExercise('${dayKey}','${ex.id}')" style="background:0;border:0;cursor:pointer;color:#DC2626;font-size:14px;padding:0">×</button></div>`;
+});
+return h+'</div>';
+}
 /* Controle de registro de uma linha avulsa, na MESMA ordem de decisão do plano:
    pedal -> nota -> corrida -> core -> cardio -> carga.
    Sem isto o exercício extra é beco sem saída: rende texto puro, e o dado nunca
@@ -2048,6 +2061,7 @@ h+=`<div class="kcal-inline-card"><span>🔥 Kcal: <b>${sp.total}</b> <span styl
 if(isOverrideDone){h+=`<button class="alterar-btn" onclick="unmarkOverrideDone('${dayKey}')"><i class="ti ti-arrow-back-up"></i>Desmarcar concluído</button>`;}
 else{h+=`<button class="cumprido-btn" onclick="markOverrideDone('${dayKey}')"><i class="ti ti-check"></i>Concluído</button>`;}
 }
+h+=extrasBlockHTML(dayKey);
 h+=`</div>`;
 return;
 }
@@ -2098,14 +2112,7 @@ h+=`<div class="ex-row-weight"><span class="ex-name" style="color:#000">${displa
 }
 });
 h+=`</div>`;
-const extras=dayExtraExercises[dayKey]||[];
-if(extras.length>0){
-h+=`<div style="margin-top:6px;padding:6px 12px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:6px"><div style="font-size:10px;font-weight:600;color:#92400E;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">+ Exercícios extras</div>`;
-extras.forEach(ex=>{
-h+=`<div style="display:flex;align-items:center;gap:6px;padding:5px 0;font-size:12px;color:#78350F"><span style="flex:1">${escapeHtml(ex.label)}</span>${extraControlHTML(ex.label,dayKey)}<button onclick="deleteExtraExercise('${dayKey}','${ex.id}')" style="background:0;border:0;cursor:pointer;color:#DC2626;font-size:14px;padding:0">×</button></div>`;
-});
-h+=`</div>`;
-}
+h+=extrasBlockHTML(dayKey);
 if(d.isZoneTest&&userZones.fcmax){
 const z=userZones;
 h+=`<div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:12px;margin-top:8px"><div style="font-size:11px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">📊 Suas zonas calculadas</div><div style="font-size:14px;color:#0F172A;margin-bottom:8px">FCmáx: <b style="font-size:18px;color:#15803D">${z.fcmax} bpm</b></div><div style="display:flex;flex-direction:column;gap:4px;font-size:12px"><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#3B82F6"></span> <b>Z1</b> (&lt;80%)</span><span><b>&lt;${z.z1.max+1} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#22C55E"></span> <b>Z2</b> (80-87%)</span><span><b>${z.z2.min}-${z.z2.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#F59E0B"></span> <b>Z3</b> (87-93%)</span><span><b>${z.z3.min}-${z.z3.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#EF4444"></span> <b>Z4</b> (93-97%)</span><span><b>${z.z4.min}-${z.z4.max} bpm</b></span></div><div style="display:flex;justify-content:space-between"><span><span class="zone-dot" style="background:#7C3AED"></span> <b>Z5</b> (&gt;97%)</span><span><b>&gt;${z.z5.min-1} bpm</b></span></div></div><div style="font-size:10px;color:#15803D;margin-top:8px;font-style:italic">✓ Zonas aplicadas automaticamente em todo o plano</div></div>`;
