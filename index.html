@@ -1477,12 +1477,17 @@ const SPECIAL_WORKOUTS={
 // semana com OS DOIS dias tomados. Os demais sábados continuam sábado, só que DE MANHÃ, antes do evento.
 // Aplicado por DATA via SPECIAL_WORKOUTS: não cria era nova, não é retroativo, não reinicia a aderência
 // (PLAN_RESET continua em V4_START) e não toca em nenhuma chave de weightLog.
-'2026-08-29':{t:'🏃 Longão 7km — DE MANHÃ',ex:[
+'2026-08-29':{t:'🏃 Longão 7km (manhã) + 🚴 14km até a festa',ex:[
 'Long Run 7km em Z2 (na rua)',
 'Sauna 15min',
-'🎂 Aniversário da Aline 14h30–18h30 — o longão sai ANTES, não depois',
-'⚡ 7km em Z2 ≈ 50min: saindo 9h você está em casa às 10h',
-'💧 Um copo de água a cada bebida à tarde e o domingo se salva']},
+'🚴 Bike 14km até a festa — Z1-Z2, sem pressa nenhuma',
+'📍 09:00 sai para o longão · 10:00 de volta em casa',
+'📍 13:40 sai de bike · ~14:25 chega na festa (14km ≈ 45min)',
+'🎂 Aniversário da Aline 14h30–18h30',
+'🚆 Volta de S-Bahn com a bike — não pedala 14km depois de beber',
+'⚡ O pedal NÃO substitui o longão: os dois acontecem, nesta ordem',
+'⚡ Pedala leve. Já correu de manhã — chegar suado e faminto na festa não ajuda ninguém',
+'💧 Hidrata na ida (sol) e um copo de água a cada bebida na festa']},
 '2026-09-05':{t:'🏃 Longão 8km — DE MANHÃ',ex:[
 'Long Run 8km em Z2 (na rua)',
 'Sauna 15min',
@@ -1596,7 +1601,7 @@ function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Temp
 // Prefixos de evento (🍺 🎂 🎪 🥩 🍽️ 🔄) entraram em 26/08/2026 com os ajustes de calendário social:
 // sem eles, uma linha como "🍺 Oktoberfest 10h–16h" não casa com isCardio e cai no ramo de musculação (botão de carga).
 // Precisa ser checado ANTES de isRunning: notas como "⚡ MARCO: os primeiros 10km" contêm "km" e cairiam como corrida.
-function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄)/.test(s)||/:$/.test(s);}
+function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆)/.test(s)||/:$/.test(s);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
 function isCoreEx(e){return /Prancha|Abdominal|Oblíquos/i.test(e);}
 function getLastRun(exKey){const arr=(cardioLog[exKey]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));return arr[0]||null;}

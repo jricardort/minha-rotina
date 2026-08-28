@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 26/08/2026 (ajustes de calendário social via `SPECIAL_WORKOUTS`; era **v4** em 18/08)
+> **Última atualização:** 28/08/2026 (horários no dia + consumo externo pela Claudia; era **v4** em 18/08)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -86,10 +86,17 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 13. **Aderência conta a partir do plano vigente** — `PLAN_RESET` (= `V4_START`) é o piso de `getAdherenceStats`. Dias anteriores à reestruturação pertencem a outro plano e contariam como falta em massa. Quando a janela de N dias é cortada pelo piso, `stats.clipped` fica `true` e o rótulo do card vira "desde o plano novo · DD/MM" em vez de "últimos 14 dias". **Ao criar uma era nova que reinicie a contagem, atualizar `PLAN_RESET`.**
 
 14. **Ajustes pontuais de calendário usam `SPECIAL_WORKOUTS`, não uma era nova** — `SPECIAL_WORKOUTS['YYYY-MM-DD']` sobrepõe o dia em TODOS os renders (`getWorkoutForDate`, `renderPlan`, `renderTreinoHistorico`, `renderInfoPlan`, `renderDetail`) e na aderência. Por ser indexado por data, é intrinsecamente não-retroativo: não cria era, não mexe em `PLAN_RESET`/`weekMeta` e não órfã chave de `weightLog`.
-    - Aplicado em **26/08/2026** para a agenda social de set/out (16 datas, de 29/08 a 06/10): Aniversário Aline, Wannda Circus, Churrasco Leozão, **Oktoberfest** e Jantar ADI.
+    - Aplicado em **28/08/2026** para a agenda social de set/out (16 datas, de 29/08 a 06/10): Aniversário Aline, Wannda Circus, Churrasco Leozão, **Oktoberfest** e Jantar ADI.
     - Regra de negócio adotada: o longão **muda de horário** (sábado de manhã) quando o evento é à tarde/noite; só **muda de dia** quando o fim de semana inteiro está tomado — caso único do **longão-chave de 12km, que foi de sáb 26/09 para qui 24/09** (Oktoberfest sáb+dom). Nessa semana o longão absorve a qualidade e os 5×1km saem.
-    - ⚠️ Ao escrever notas de evento, usar um prefixo reconhecido por `isNoteLine()` — a lista ganhou `🍺 🎂 🎪 🥩 🍽️ 🔄` justamente aqui. Sem prefixo, uma linha como "🍺 Oktoberfest 10h–16h" não casa com `isCardio()` e cai no ramo de musculação, ganhando botão de carga.
+    - ⚠️ Ao escrever notas de evento, usar um prefixo reconhecido por `isNoteLine()` — a lista ganhou `🍺 🎂 🎪 🥩 🍽️ 🔄` e depois `🚴 🚆`. Sem prefixo, uma linha como "🍺 Oktoberfest 10h–16h" não casa com `isCardio()` e cai no ramo de musculação, ganhando botão de carga.
 15. **`renderInfoPlan` (Plano Completo do modal) precisa respeitar a era** — iterava `plan` (v2) e mostrava os treinos pré-v4 nas semanas 15–22. Corrigido em 26/08/2026: cabeçalho vem de `weekMeta(wi)` e o dia de `planForDayKey(dayKey)[wi].template[di]`, com `SPECIAL_WORKOUTS` por cima. `phaseColor`/`phaseBg` também passaram a reconhecer `Pico` (v4) além de `Peak` (v2).
+
+16. **`index.html` é fonte de dados para um consumidor EXTERNO** — a assistente Claudia (`C:UsersUserclaudiasrc	reino.js`) não duplica o plano: ela **recorta o texto** do `index.html` e executa num `vm` isolado para chamar `getWorkoutForDate`. O briefing dela cruza o treino com a previsão do tempo.
+    - Ela localiza os blocos por **prefixo de linha**: `const START_DATE=` até `function getWorkoutForDate` (fechando na primeira linha igual a `}`), e `const SPECIAL_WORKOUTS={` até a primeira linha começando em `};`.
+    - ⚠️ **Não reformatar essas declarações** (minificar, mudar indentação da abertura, mover `SPECIAL_WORKOUTS` para dentro de outro escopo) sem rodar `node src/treino.js AAAA-MM-DD` na Claudia depois. Ela falha alto de propósito — briefing sem treino é ruim, briefing com treino errado é pior.
+    - Ela detecta corrida no dia por regex sobre título+`ex` (`corrida|long ?run|longão|z2|z3|strides|intervalado|tempo run|time trial`) e sessão noturna por `🌙`/`FIM DO DIA`. Manter esse vocabulário nos títulos.
+17. **Horário de sessão vai em linha de nota, não no nome do exercício** — prefixar a linha do exercício com hora (`⏰ 09:00 — Long Run 7km`) muda o `getExKey()` e órfã o histórico em `cardioLog`. Os horários entram como linhas `📍` separadas.
+    - Pelo mesmo motivo, atividade que **não é corrida** (pedal, caminhada) entra como linha de nota com prefixo próprio: sem isso `isRunning()` casa com o "km" e cria um botão de registro que gravaria um pedal de 14 km como corrida, distorcendo pace médio e volume.
 
 ### Migrações da era v4 (18/08/2026)
 
