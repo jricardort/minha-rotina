@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 28/08/2026 (horários no dia + consumo externo pela Claudia; era **v4** em 18/08)
+> **Última atualização:** 28/08/2026 (registro de **pedal** com `bikeLog`; horários no dia; consumo externo pela Claudia)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -38,7 +38,7 @@
 ## 3. Modelo de dados (localStorage = fonte de verdade em sessão)
 
 Chaves sincronizadas com a nuvem (constante `KEYS`, ~linha 3447):
-`events, tasks, medData, weightLog, workoutTemplate, cardioLog, coreLog, workoutOverrides, diet, dietGoals, dietFavorites, workoutKcal, exerciseRenames, comprasList, comprasHistorico, userZones, dayExtraExercises, userFoods, foodOverrides`
+`events, tasks, medData, weightLog, workoutTemplate, cardioLog, bikeLog, coreLog, workoutOverrides, diet, dietGoals, dietFavorites, workoutKcal, exerciseRenames, comprasList, comprasHistorico, userZones, dayExtraExercises, userFoods, foodOverrides`
 
 Esquemas principais:
 
@@ -46,6 +46,7 @@ Esquemas principais:
   - `meal`: `{id, name, time:'HH:MM', kcal, prot, carb, gord, items:'a · b · c', type}`
   - `type` ∈ `cafe|lanche_manha|almoco|pre_treino|pos_treino|jantar|jantar_pos|ceia|extra|off|custom` (só `'off'` tem lógica própria — limite semanal em `countOffMealsThisWeek`)
 - **`medData`** — array de `{data:'YYYY-MM-DD', peso, gordura, musculo, proteina, agua, basal, nutriSent?:true}` — `nutriSent` marca medição enviada à nutricionista (renderiza ponto verde + badge "✓ nutri")
+- **`bikeLog`** — `{ exKey: [{date, km, kcal, z1..z5, total, avgSpeed, splits:[{t,bpm}], label, note}] }` — pedais. `avgSpeed` em km/h (string pt-BR com vírgula), `splits` por km com tempo e FC; a velocidade de cada parcial é **derivada** do tempo, não armazenada. `label` guarda o nome da linha do plano para o histórico global conseguir nomear o percurso.
 - **`weightLog`** — `{ exKey: [{date, weight, ...}] }` — cargas de musculação; `exKey` vem de `getExKey()` — **preservar a chave ao renomear exercícios** (há `exerciseRenames` para display)
 - **`workoutOverrides`** — `{ 'YYYY-MM-DD': {type, title, duration, note} }` — substituições de treino por dia; `type:'cumprido'` marca plano feito
 - **`userFoods`** / **`foodOverrides`** — alimentos do usuário e overrides da base (por `name`); categorias = nomes de grupos de `MEAL_BUILDER_OPTIONS`
@@ -97,6 +98,12 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - Ela detecta corrida no dia por regex sobre título+`ex` (`corrida|long ?run|longão|z2|z3|strides|intervalado|tempo run|time trial`) e sessão noturna por `🌙`/`FIM DO DIA`. Manter esse vocabulário nos títulos.
 17. **Horário de sessão vai em linha de nota, não no nome do exercício** — prefixar a linha do exercício com hora (`⏰ 09:00 — Long Run 7km`) muda o `getExKey()` e órfã o histórico em `cardioLog`. Os horários entram como linhas `📍` separadas.
     - Pelo mesmo motivo, atividade que **não é corrida** (pedal, caminhada) entra como linha de nota com prefixo próprio: sem isso `isRunning()` casa com o "km" e cria um botão de registro que gravaria um pedal de 14 km como corrida, distorcendo pace médio e volume.
+
+18. **`bikeLog` é separado de `cardioLog` por decisão de projeto, não por acaso** — `goalRuns()` e o painel do sub-60 agregam `cardioLog` para calcular pace médio e volume de corrida. Um pedal de 14 km a ~2:00/km entrando lá destruiria os dois números, que são justamente o critério da meta. **Nunca unificar os dois logs.**
+    - O pedal entra no balanço calórico pelo mesmo balde de cardio (`getDayKcalSpent` soma `bikeKcalForDay`), mas com METs de ciclismo (`z1:4 … z5:12`, contra `z1:7 … z5:16` da corrida) e dando prioridade à caloria informada pelo relógio.
+    - O histórico do pedal é **global** (`allBikeRides()` varre todas as chaves), ao contrário do da corrida que é por exercício: trajeto de bike muda de nome a cada dia e por chave o histórico ficaria em cacos.
+19. **Ordem das checagens de linha no `renderPlan`: `isBikeLine` → `isNoteLine` → `isRunning`** — `🚴` é prefixo de nota (senão `isRunning` casa com o "km" e cria botão de corrida), então sem avaliar `isBikeLine` primeiro o pedal nunca ganharia botão próprio. Só existe **um** caminho de render com essas checagens (`renderPlan`); ao criar outro, replicar a ordem.
+20. **O modal do pedal usa `.bike-time-group`, não `.time-input-group`** — `buildZoneTimePickers()` varre `.time-input-group` globalmente e reescreve o `innerHTML` com ids `r-<zona>-*`. Reaproveitar a classe no modal do pedal geraria ids duplicados e quebraria os dois modais.
 
 ### Migrações da era v4 (18/08/2026)
 

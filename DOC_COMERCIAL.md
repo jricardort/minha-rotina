@@ -30,6 +30,7 @@ Substituir a colcha de retalhos de planilhas, apps de academia, apps de dieta e 
 - **Encaixe com a vida real**: quando a agenda social (festa, viagem, Oktoberfest) bate no treino-chave, o plano remaneja o dia — antecipa o longão para um dia de semana ou muda o horário — em vez de simplesmente marcar falta
 - Registro de cargas por exercício com histórico e gráfico de evolução
 - Registro de corridas: tempo por zona cardíaca, distância, parciais por km e pace médio
+- **Registro de pedal, separado da corrida**: distância, velocidade média, calorias do relógio, tempo por zona e parciais por km com tempo e frequência cardíaca — com histórico próprio de percursos, sem contaminar as estatísticas de corrida
 - Zonas de treino personalizáveis a partir de teste de FC
 - Estatísticas de aderência ao plano e histórico completo
 - Exercícios extras por dia e edição do modelo semanal

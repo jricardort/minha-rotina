@@ -366,6 +366,17 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 .zone-row{display:flex;gap:8px;align-items:flex-start;padding:4px 0}
 .zone-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;white-space:nowrap;flex-shrink:0}
 .zone-desc{font-size:11px;color:#334155;line-height:1.4}
+.ex-row-bike{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F1F5F9}
+.bike-btn{display:flex;align-items:center;gap:5px;background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;border-radius:6px;padding:4px 9px;font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0}
+.bike-btn i{font-size:14px}
+.bike-current{color:#1D4ED8}
+.bike-empty{color:#94A3B8}
+.bike-time-group{display:flex;align-items:center;gap:4px}
+.bike-time-group input{width:52px;border:1px solid #CBD5E1;border-radius:5px;padding:5px 6px;font-size:14px;text-align:center}
+.bsplit-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid #F1F5F9;flex-wrap:wrap}
+.bsplit-row .split-lbl{min-width:44px;font-size:12px;color:#64748B;font-weight:600}
+.bsplit-bpm{width:62px;border:1px solid #CBD5E1;border-radius:5px;padding:5px 6px;font-size:14px;text-align:center}
+.bsplit-kmh{font-size:11px;color:#1D4ED8;font-weight:600;min-width:58px;text-align:right;margin-left:auto}
 </style>
 </head>
 <body>
@@ -450,6 +461,7 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="text" inputmode="decimal" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="text" inputmode="decimal" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="text" inputmode="decimal" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="text" inputmode="decimal" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="text" inputmode="decimal" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="text" inputmode="decimal" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto total do dia (relógio) ou deixe em branco para usar a estimativa.</p><div class="modal-field" style="margin-bottom:10px"><label>Total kcal do dia</label><input type="text" inputmode="decimal" id="kw-total-input" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8;margin-top:4px;display:block" id="kw-est"></span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
+<div class="modal-bg" id="modal-bike"><div class="modal"><h3 id="modal-bike-title">Registrar pedal</h3><p class="modal-hint">Distância, tempo por zona, parciais e as calorias do relógio.</p><div id="bike-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterBikeEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="bv-data"></b></div><div class="view-row" id="bv-km-row"><span>Distância</span><b id="bv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="bv-total"></b></div><div class="view-row" id="bv-speed-row"><span>Velocidade média</span><b id="bv-speed"></b></div><div class="view-row" id="bv-kcal-row"><span>Calorias</span><b id="bv-kcal"></b></div><div class="view-row" id="bv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="bv-z1"></b></div><div class="view-row" id="bv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="bv-z2"></b></div><div class="view-row" id="bv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="bv-z3"></b></div><div class="view-row" id="bv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="bv-z4"></b></div><div class="view-row" id="bv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="bv-z5"></b></div><div id="bv-splits-block" style="display:none"></div><div class="view-row" id="bv-note-row"><span>Notas</span><b id="bv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newBikeEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="bike-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="b-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="b-km" placeholder="Ex: 14"></div></div><div class="modal-grid" style="margin-bottom:10px"><div class="modal-field"><label>Calorias (do relógio)</label><input type="number" inputmode="numeric" id="b-kcal" placeholder="Ex: 320"></div><div class="modal-field"><label style="color:#1D4ED8;font-weight:600">Velocidade média</label><input type="text" id="b-speed" readonly style="background:#EFF6FF;color:#1D4ED8;font-weight:700;border-color:#BFDBFE;text-align:center;font-size:16px"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="bike-time-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="bike-time-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="bike-time-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="bike-time-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="bike-time-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#1D4ED8;font-weight:600">Tempo total</label><input type="text" id="b-total" readonly style="background:#EFF6FF;color:#1D4ED8;font-weight:700;border-color:#BFDBFE;text-align:center;font-size:16px"></div></div><div id="b-splits-section" style="display:none"><p class="section-label" style="margin:6px 0 8px">Parciais por km — tempo e FC</p><div id="b-splits"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="b-note" placeholder="Ex: vento contra, trajeto até a festa"></div></div><p class="section-label" id="bike-hist-label" style="display:none">Histórico de pedais</p><div id="bike-history" style="max-height:220px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeBikeModal()">Fechar</button><button class="btn-save" id="bike-save-btn" onclick="saveBike()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div id="rv-splits-block" style="display:none"></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="time-input-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="time-input-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="time-input-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="time-input-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="time-input-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#15803D;font-weight:600">Tempo total</label><input type="text" id="r-total" readonly style="background:#F0FDF4;color:#15803D;font-weight:700;border-color:#86EFAC;text-align:center;font-size:16px"></div></div><div id="r-splits-section" style="display:none"><p class="section-label" style="margin:6px 0 8px">Parciais por km</p><div id="r-splits"></div><div class="view-row" style="border-top:1px dashed #CBD5E1;margin-top:6px;padding-top:8px"><span style="font-size:13px;color:#15803D;font-weight:600">Pace médio</span><b id="r-avgpace" style="color:#15803D">—</b></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -772,6 +784,9 @@ return{phase:wk.phase,weekNum:wk.num,day:day,dayName:['Seg','Ter','Qua','Qui','S
 }
 let weightLog={};try{const _wl=localStorage.getItem('weightLog');weightLog=_wl?JSON.parse(_wl)||{}:{};}catch(e){weightLog={};}
 let cardioLog={};try{const _cd=localStorage.getItem('cardioLog');cardioLog=_cd?JSON.parse(_cd)||{}:{};}catch(e){cardioLog={};}
+// bikeLog é SEPARADO de cardioLog de propósito: goalRuns() e o painel do sub-60 leem cardioLog,
+// e um pedal de 14km entrando lá destruiria o pace médio e o volume de CORRIDA.
+let bikeLog={};try{const _bl=localStorage.getItem('bikeLog');bikeLog=_bl?JSON.parse(_bl)||{}:{};}catch(e){bikeLog={};}
 let coreLog={};try{const _cl=localStorage.getItem('coreLog');coreLog=_cl?JSON.parse(_cl)||{}:{};}catch(e){coreLog={};}
 let exerciseRenames={};try{const _r=localStorage.getItem('exerciseRenames');exerciseRenames=_r?JSON.parse(_r)||{}:{};}catch(e){exerciseRenames={};}
 // Remove o rename órfão "panturrilha sentado"→"Adutora 3x12" (exercício removido do dia de perna).
@@ -1229,6 +1244,268 @@ Object.keys(METs).forEach(z=>{const s=parseTime(run[z]);totalSec+=s;kcal+=METs[z
 if(kcal===0&&run.total){const s=parseTime(run.total);kcal=9*weight*(s/3600);}
 return Math.round(kcal);
 }
+
+/* ===== Pedal (bikeLog) =====================================================
+   Espelha o fluxo da corrida, mas com métrica de ciclismo: velocidade média
+   (km/h) em vez de pace (min/km), calorias vindas do relógio e parciais por km
+   com tempo + FC. Guardado em bikeLog, NUNCA em cardioLog — ver comentário na
+   declaração de bikeLog.
+   Entrada: {date,km,kcal,z1..z5,total,avgSpeed,splits:[{t,bpm}],label,note} */
+let currentBikeKey=null,currentBikeName=null,editBikeIdx=null;
+function kmhFrom(km,totalSec){if(!km||!totalSec)return null;return (km/(totalSec/3600)).toFixed(1).replace('.',',');}
+function buildBikeZonePickers(){
+document.querySelectorAll('.bike-time-group').forEach(el=>{
+if(el.dataset.built==='1')return;
+const z=el.getAttribute('data-zone');
+el.innerHTML='<input type="number" inputmode="numeric" id="b-'+z+'-min" min="0" max="999" placeholder="0"><span class="ti-lbl">min</span><input type="number" inputmode="numeric" id="b-'+z+'-sec" min="0" max="59" placeholder="0"><span class="ti-lbl">seg</span>';
+el.dataset.built='1';
+['min','sec'].forEach(p=>{const i=document.getElementById('b-'+z+'-'+p);if(i)i.oninput=updateBikeTotal;});
+});
+}
+function getBikeZoneTime(z){
+const mm=parseInt(document.getElementById('b-'+z+'-min')?.value)||0;
+const ss=parseInt(document.getElementById('b-'+z+'-sec')?.value)||0;
+return formatTime(mm*60+ss);
+}
+function setBikeZoneTime(z,t){
+const sec=parseTime(t||'00:00:00');
+const m=document.getElementById('b-'+z+'-min');if(m)m.value=Math.floor(sec/60)>0?String(Math.floor(sec/60)):'';
+const c=document.getElementById('b-'+z+'-sec');if(c)c.value=(sec%60)>0?String(sec%60):'';
+}
+function resetBikeZones(){['z1','z2','z3','z4','z5'].forEach(z=>setBikeZoneTime(z,'00:00:00'));}
+function bikeTotalSec(){let t=0;['z1','z2','z3','z4','z5'].forEach(z=>{t+=parseTime(getBikeZoneTime(z));});return t;}
+function updateBikeTotal(){
+document.getElementById('b-total').value=formatTime(bikeTotalSec());
+updateBikeSpeed();
+}
+function curBikeKm(){const v=document.getElementById('b-km');return v&&v.value?parseBR(v.value):null;}
+function updateBikeSpeed(){
+const el=document.getElementById('b-speed');if(!el)return;
+const v=kmhFrom(curBikeKm(),bikeTotalSec());
+el.value=v?v+' km/h':'—';
+}
+/* Parciais: tempo (min/seg) + FC por km. A velocidade de cada parcial é
+   derivada do tempo (1 km / tempo), então não se digita o que dá para calcular. */
+function buildBikeSplitFields(){
+const sec=document.getElementById('b-splits-section'),cont=document.getElementById('b-splits');
+if(!sec||!cont)return;
+const km=curBikeKm();const n=km?Math.ceil(km):0;
+if(n<1){sec.style.display='none';cont.innerHTML='';return;}
+const prev=[];const old=cont.querySelectorAll('.bsplit-row').length;
+for(let i=0;i<old;i++){const m=document.getElementById('b-split-'+i+'-min'),c=document.getElementById('b-split-'+i+'-sec'),b=document.getElementById('b-split-'+i+'-bpm');if(m)prev[i]=[m.value,c.value,b?b.value:''];}
+let h='';
+for(let i=0;i<n;i++){
+h+='<div class="bsplit-row"><span class="split-lbl">km '+(i+1)+'</span>'
++'<div class="bike-time-group"><input type="number" inputmode="numeric" id="b-split-'+i+'-min" min="0" max="59" placeholder="0"><span class="ti-lbl">min</span><input type="number" inputmode="numeric" id="b-split-'+i+'-sec" min="0" max="59" placeholder="0"><span class="ti-lbl">seg</span></div>'
++'<input type="number" inputmode="numeric" class="bsplit-bpm" id="b-split-'+i+'-bpm" min="0" max="230" placeholder="bpm">'
++'<span class="bsplit-kmh" id="b-split-'+i+'-kmh">—</span></div>';
+}
+cont.innerHTML=h;sec.style.display='block';
+for(let i=0;i<n;i++){
+const m=document.getElementById('b-split-'+i+'-min'),c=document.getElementById('b-split-'+i+'-sec'),b=document.getElementById('b-split-'+i+'-bpm');
+if(prev[i]){if(m)m.value=prev[i][0];if(c)c.value=prev[i][1];if(b)b.value=prev[i][2];}
+const upd=()=>updateSplitKmh(i);
+if(m)m.oninput=upd;if(c)c.oninput=upd;
+updateSplitKmh(i);
+}
+}
+function updateSplitKmh(i){
+const el=document.getElementById('b-split-'+i+'-kmh');if(!el)return;
+const m=parseInt(document.getElementById('b-split-'+i+'-min')?.value)||0;
+const c=parseInt(document.getElementById('b-split-'+i+'-sec')?.value)||0;
+const sec=m*60+c;
+el.textContent=sec>0?(3600/sec).toFixed(1).replace('.',',')+' km/h':'—';
+}
+function getBikeSplits(){
+const cont=document.getElementById('b-splits');if(!cont)return[];
+const n=cont.querySelectorAll('.bsplit-row').length,arr=[];
+for(let i=0;i<n;i++){
+const m=document.getElementById('b-split-'+i+'-min'),c=document.getElementById('b-split-'+i+'-sec'),b=document.getElementById('b-split-'+i+'-bpm');
+if(!m){arr.push(null);continue;}
+const sec=(parseInt(m.value)||0)*60+(parseInt(c.value)||0);
+const bpm=parseInt(b?.value)||null;
+if(!sec&&!bpm){arr.push(null);continue;}
+arr.push({t:sec?formatPace(sec):null,bpm});
+}
+return arr;
+}
+function setBikeSplits(arr){
+if(!Array.isArray(arr))return;
+arr.forEach((sp,i)=>{
+if(!sp)return;
+const m=document.getElementById('b-split-'+i+'-min'),c=document.getElementById('b-split-'+i+'-sec'),b=document.getElementById('b-split-'+i+'-bpm');
+if(sp.t&&m&&c){const t=parseTime(sp.t);m.value=Math.floor(t/60);c.value=t%60;}
+if(sp.bpm&&b)b.value=sp.bpm;
+updateSplitKmh(i);
+});
+}
+function showBikeEditMode(){
+document.getElementById('bike-view-mode').style.display='none';
+document.getElementById('bike-edit-mode').style.display='block';
+document.getElementById('bike-save-btn').style.display='block';
+buildBikeZonePickers();
+}
+function showBikeViewMode(en){
+document.getElementById('bike-view-mode').style.display='block';
+document.getElementById('bike-edit-mode').style.display='none';
+document.getElementById('bike-save-btn').style.display='none';
+const d=dateFromKey(en.date);
+document.getElementById('bv-data').textContent=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+document.getElementById('bv-km').textContent=en.km?en.km+' km':'—';
+document.getElementById('bv-km-row').style.display=en.km?'flex':'none';
+document.getElementById('bv-total').textContent=en.total||'00:00:00';
+document.getElementById('bv-speed').textContent=en.avgSpeed?en.avgSpeed+' km/h':'—';
+document.getElementById('bv-speed-row').style.display=en.avgSpeed?'flex':'none';
+document.getElementById('bv-kcal').textContent=en.kcal?en.kcal+' kcal':'—';
+document.getElementById('bv-kcal-row').style.display=en.kcal?'flex':'none';
+['z1','z2','z3','z4','z5'].forEach(z=>{
+const v=en[z]||'00:00:00';
+document.getElementById('bv-'+z).textContent=v;
+document.getElementById('bv-'+z+'-row').style.display=parseTime(v)>0?'flex':'none';
+});
+document.getElementById('bv-note').textContent=en.note||'—';
+document.getElementById('bv-note-row').style.display=en.note?'flex':'none';
+const sb=document.getElementById('bv-splits-block');
+if(sb){
+if(en.splits&&en.splits.some(x=>x)){
+let sh='<div class="view-row" style="border-top:1px dashed #CBD5E1;margin-top:4px;padding-top:8px"><span style="font-weight:600">Parciais</span><b></b></div>';
+en.splits.forEach((sp,i)=>{
+if(!sp)return;
+const sec=sp.t?parseTime(sp.t):0;
+const kmh=sec>0?(3600/sec).toFixed(1).replace('.',',')+' km/h':'—';
+const bits=[sp.t||'—',kmh];if(sp.bpm)bits.push(sp.bpm+' bpm');
+sh+='<div class="view-row"><span>km '+(i+1)+'</span><b>'+escapeHtml(bits.join(' · '))+'</b></div>';
+});
+sb.innerHTML=sh;sb.style.display='block';
+}else{sb.innerHTML='';sb.style.display='none';}
+}
+}
+function openBikeModal(exKey,exName){
+currentBikeKey=exKey;currentBikeName=exName;editBikeIdx=null;
+document.getElementById('modal-bike-title').textContent=exName;
+document.getElementById('b-data').value=todayKey();
+document.getElementById('b-km').value='';
+document.getElementById('b-kcal').value='';
+document.getElementById('b-total').value='00:00:00';
+document.getElementById('b-speed').value='—';
+document.getElementById('b-note').value='';
+buildBikeZonePickers();resetBikeZones();
+document.getElementById('b-km').oninput=function(){buildBikeSplitFields();updateBikeSpeed();};
+buildBikeSplitFields();
+const last=getLastBike(exKey);
+if(last)showBikeViewMode(last);else showBikeEditMode();
+renderBikeHistory();
+document.getElementById('modal-bike').classList.add('open');
+}
+function closeBikeModal(){document.getElementById('modal-bike').classList.remove('open');currentBikeKey=null;editBikeIdx=null;}
+function newBikeEntry(){
+editBikeIdx=null;showBikeEditMode();
+document.getElementById('b-data').value=todayKey();
+document.getElementById('b-km').value='';
+document.getElementById('b-kcal').value='';
+resetBikeZones();
+document.getElementById('b-total').value='00:00:00';
+document.getElementById('b-speed').value='—';
+document.getElementById('b-note').value='';
+buildBikeSplitFields();
+}
+function fillBikeForm(en){
+document.getElementById('b-data').value=en.date;
+document.getElementById('b-km').value=en.km!=null?formatBR(en.km):'';
+document.getElementById('b-kcal').value=en.kcal||'';
+['z1','z2','z3','z4','z5'].forEach(z=>setBikeZoneTime(z,en[z]||'00:00:00'));
+document.getElementById('b-total').value=en.total||'00:00:00';
+document.getElementById('b-note').value=en.note||'';
+buildBikeSplitFields();setBikeSplits(en.splits);updateBikeSpeed();
+}
+function enterBikeEditMode(){
+const last=getLastBike(currentBikeKey);
+showBikeEditMode();
+if(last){editBikeIdx=(bikeLog[currentBikeKey]||[]).findIndex(x=>x.date===last.date);fillBikeForm(last);}
+}
+function saveBike(){
+const data=document.getElementById('b-data').value;
+if(!data)return alert('Informe a data.');
+const km=document.getElementById('b-km').value?parseBR(document.getElementById('b-km').value):null;
+const totalSec=bikeTotalSec();
+if(totalSec===0&&!km)return alert('Informe pelo menos a distância ou um tempo de zona.');
+const kcal=parseInt(document.getElementById('b-kcal').value)||null;
+const entry={date:data,km,kcal,total:formatTime(totalSec),label:currentBikeName||'',note:document.getElementById('b-note').value.trim()};
+['z1','z2','z3','z4','z5'].forEach(z=>{entry[z]=getBikeZoneTime(z);});
+const sp=kmhFrom(km,totalSec);if(sp)entry.avgSpeed=sp;
+const splits=getBikeSplits();
+if(splits.some(x=>x))entry.splits=splits;
+if(!bikeLog[currentBikeKey])bikeLog[currentBikeKey]=[];
+if(editBikeIdx!=null){bikeLog[currentBikeKey][editBikeIdx]=entry;editBikeIdx=null;}
+else{
+const i=bikeLog[currentBikeKey].findIndex(x=>x.date===data);
+if(i>=0){if(!confirm('Já existe um pedal nesta data. Substituir?'))return;bikeLog[currentBikeKey][i]=entry;}
+else bikeLog[currentBikeKey].push(entry);
+}
+bikeLog[currentBikeKey].sort((a,b)=>a.date.localeCompare(b.date));
+try{localStorage.setItem('bikeLog',JSON.stringify(bikeLog));}catch(e){}
+renderBikeHistory();renderPlan();
+const last=getLastBike(currentBikeKey);
+if(last)showBikeViewMode(last);
+if(window.syncNow)window.syncNow();
+}
+function editBike(key,i){
+currentBikeKey=key;editBikeIdx=i;
+showBikeEditMode();fillBikeForm(bikeLog[key][i]);
+}
+function deleteBike(key,i){
+if(!confirm('Excluir este pedal?'))return;
+bikeLog[key].splice(i,1);
+if(!bikeLog[key].length)delete bikeLog[key];
+try{localStorage.setItem('bikeLog',JSON.stringify(bikeLog));}catch(e){}
+renderBikeHistory();renderPlan();
+if(window.syncNow)window.syncNow();
+const last=getLastBike(currentBikeKey);
+if(last)showBikeViewMode(last);else showBikeEditMode();
+}
+/* O histórico do pedal é GLOBAL (todos os percursos, não só a linha aberta):
+   trajeto de bike muda de nome a cada dia, e por chave o histórico ficaria em cacos. */
+function allBikeRides(){
+const out=[];
+Object.keys(bikeLog||{}).forEach(k=>{(bikeLog[k]||[]).forEach((r,i)=>{if(r&&r.date)out.push({key:k,idx:i,r});});});
+return out.sort((a,b)=>b.r.date.localeCompare(a.r.date));
+}
+function renderBikeHistory(){
+const cont=document.getElementById('bike-history'),lbl=document.getElementById('bike-hist-label');
+if(!cont||!lbl)return;
+const all=allBikeRides();
+if(!all.length){cont.innerHTML='';lbl.style.display='none';return;}
+lbl.style.display='block';
+let h='';
+all.forEach(({key,idx,r})=>{
+const d=dateFromKey(r.date);
+const dl=d.getDate()+'/'+(d.getMonth()+1)+'/'+(d.getFullYear()+'').slice(2);
+const parts=[];
+if(r.km)parts.push(r.km+'km');
+if(r.total&&r.total!=='00:00:00')parts.push(r.total);
+if(r.avgSpeed)parts.push(r.avgSpeed+'km/h');
+if(r.kcal)parts.push(r.kcal+'kcal');
+const rota=(r.label||key).replace(/^\s*\uD83D\uDEB4\s*/,'');
+h+='<div class="weight-hist-row" style="align-items:flex-start"><span class="weight-hist-date">'+dl+'</span><div style="flex:1"><span style="font-size:13px;font-weight:600;color:#1D4ED8">'+parts.join(' · ')+'</span><div class="weight-hist-note">'+escapeHtml(rota.slice(0,60))+'</div>'+(r.note?'<div class="weight-hist-note">'+escapeHtml(r.note)+'</div>':'')+'</div><div class="hist-actions"><button class="hist-btn edit-btn" onclick="editBike(\''+key.replace(/'/g,"\\'")+'\','+idx+')"><i class="ti ti-pencil" style="color:#2563EB!important"></i></button><button class="hist-btn del-btn" onclick="deleteBike(\''+key.replace(/'/g,"\\'")+'\','+idx+')"><i class="ti ti-trash" style="color:#DC2626!important"></i></button></div></div>';
+});
+cont.innerHTML=h;
+}
+/* METs de ciclismo, bem abaixo dos de corrida para o mesmo tempo de zona.
+   Só é usado quando o relógio não deu a caloria. */
+function estimateBikeKcal(b,weight){
+if(!b)return 0;
+const METs={z1:4,z2:6,z3:8,z4:10,z5:12};
+let kcal=0;
+Object.keys(METs).forEach(z=>{kcal+=METs[z]*weight*(parseTime(b[z])/3600);});
+if(kcal===0&&b.total)kcal=6*weight*(parseTime(b.total)/3600);
+return Math.round(kcal);
+}
+function bikeKcalForDay(dateKey,weight){
+let t=0;
+Object.values(bikeLog||{}).forEach(arr=>{const r=arr.find(x=>x.date===dateKey);if(r)t+=(r.kcal||estimateBikeKcal(r,weight));});
+return t;
+}
+
 function estimateMuscKcalForDay(dateKey){
 let hasEntries=false;
 Object.values(weightLog).forEach(entries=>{if(entries.some(e=>e.date===dateKey))hasEntries=true;});
@@ -1239,6 +1516,8 @@ const weight=getLatestPeso();
 const manual=workoutKcal[dateKey]||{};
 let runEst=0;
 Object.values(cardioLog).forEach(runs=>{const r=runs.find(x=>x.date===dateKey);if(r)runEst+=estimateRunKcal(r,weight);});
+// O pedal entra no mesmo balde de 'cardio' do balanço calórico — só não entra no cardioLog.
+runEst+=bikeKcalForDay(dateKey,weight);
 const muscEst=estimateMuscKcalForDay(dateKey);
 if(manual.total!=null){return{musc:0,run:0,total:manual.total,isManual:true,muscIsManual:true,runIsManual:true,muscEst,runEst};}
 const musc=manual.musc!=null?manual.musc:muscEst;
@@ -1603,7 +1882,11 @@ function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Temp
 // Precisa ser checado ANTES de isRunning: notas como "⚡ MARCO: os primeiros 10km" contêm "km" e cairiam como corrida.
 function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆)/.test(s)||/:$/.test(s);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
+// Linha de pedal: prefixo 🚴. Avaliada ANTES de isNoteLine/isRunning — 🚴 é prefixo de nota
+// (para não virar botão de corrida), então sem esta checagem o pedal nunca ganharia botão próprio.
+function isBikeLine(e){return /^\s*\uD83D\uDEB4/.test(String(e||''));}
 function isCoreEx(e){return /Prancha|Abdominal|Oblíquos/i.test(e);}
+function getLastBike(exKey){const arr=(bikeLog[exKey]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));return arr[0]||null;}
 function getLastRun(exKey){const arr=(cardioLog[exKey]||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));return arr[0]||null;}
 function parseTime(t){if(!t)return 0;const p=t.split(':').map(n=>parseInt(n,10)||0);if(p.length===3)return p[0]*3600+p[1]*60+p[2];if(p.length===2)return p[0]*60+p[1];return 0;}
 function formatTime(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
@@ -1698,10 +1981,17 @@ h+=`</div>`;
 return;
 }
 const displayE=addBpmToZones(e);
-const note=isNoteLine(e);
-const isRun=!note&&isRunning(e);
+const bike=isBikeLine(e);
+const note=!bike&&isNoteLine(e);
+const isRun=!note&&!bike&&isRunning(e);
 const isCard=note||isCardio(e);
-if(isRun){
+if(bike){
+const exKey=getExKey(e);
+const last=getLastBike(exKey);
+const lastTxt=last?[last.km?last.km+'km':null,last.avgSpeed?last.avgSpeed+'km/h':null].filter(Boolean).join(' · ')||last.total:'+ registro';
+const cls=last?'bike-current':'bike-empty';
+h+=`<div class="ex-row-bike"><span class="ex-name" style="color:#1D4ED8">${displayE}</span><button class="bike-btn" onclick="openBikeModal('${exKey.replace(/'/g,"\\'")}','${e.replace(/'/g,"\\'")}')"><i class="ti ti-bike"></i><span class="${cls}">${lastTxt}</span></button></div>`;
+}else if(isRun){
 const exKey=getExKey(e);
 const last=getLastRun(exKey);
 const lastTxt=last?(last.km?last.km+'km · '+last.total:last.total):'+ registro';
@@ -3723,6 +4013,7 @@ window.refreshDataFromStorage=function(){
 try{
 const wlR=localStorage.getItem('weightLog');weightLog=wlR?JSON.parse(wlR)||{}:{};
 const clR=localStorage.getItem('cardioLog');cardioLog=clR?JSON.parse(clR)||{}:{};
+try{const blR=localStorage.getItem('bikeLog');bikeLog=blR?JSON.parse(blR)||{}:{};}catch(e){bikeLog={};}
 try{const corL=localStorage.getItem('coreLog');coreLog=corL?JSON.parse(corL)||{}:{};}catch(e){coreLog={};}
 try{const erR=localStorage.getItem('exerciseRenames');exerciseRenames=erR?JSON.parse(erR)||{}:{};}catch(e){exerciseRenames={};}
 if(typeof migrateRemovePanturrilhaRename==='function')migrateRemovePanturrilhaRename();
@@ -3773,7 +4064,7 @@ const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 const provider = new GoogleAuthProvider();
 
-const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','coreLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones','dayExtraExercises','userFoods','foodOverrides'];
+const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','bikeLog','coreLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones','dayExtraExercises','userFoods','foodOverrides'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
 const origSetItem = localStorage.setItem.bind(localStorage);
