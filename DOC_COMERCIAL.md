@@ -33,7 +33,8 @@ Substituir a colcha de retalhos de planilhas, apps de academia, apps de dieta e 
 - **Registro de pedal, separado da corrida**: distância, velocidade média, calorias do relógio, tempo por zona e parciais por km com tempo e frequência cardíaca — com histórico próprio de percursos, sem contaminar as estatísticas de corrida
 - Zonas de treino personalizáveis a partir de teste de FC
 - Estatísticas de aderência ao plano e histórico completo
-- Exercícios extras por dia e edição do modelo semanal
+- **Exercícios extras por dia com registro completo**: a atividade avulsa entra na lista do dia como se estivesse prevista e ganha o mesmo botão de registro do plano — carga, corrida ou pedal. Ao digitar o nome, o app sugere exercícios que já têm histórico e avisa se o registro vai somar à progressão existente
+- Edição do modelo semanal
 
 ### 🍽️ Dieta
 - Plano alimentar da nutricionista embutido no app (grupos de alimentos e porções)

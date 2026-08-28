@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 28/08/2026 (registro de **pedal** com `bikeLog`; horários no dia; consumo externo pela Claudia)
+> **Última atualização:** 28/08/2026 (registro de **pedal**; exercício extra virou registrável; horários no dia; consumo externo pela Claudia)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -49,6 +49,7 @@ Esquemas principais:
 - **`bikeLog`** — `{ exKey: [{date, km, kcal, z1..z5, total, avgSpeed, splits:[{t,bpm}], label, note}] }` — pedais. `avgSpeed` em km/h (string pt-BR com vírgula), `splits` por km com tempo e FC; a velocidade de cada parcial é **derivada** do tempo, não armazenada. `label` guarda o nome da linha do plano para o histórico global conseguir nomear o percurso.
 - **`weightLog`** — `{ exKey: [{date, weight, ...}] }` — cargas de musculação; `exKey` vem de `getExKey()` — **preservar a chave ao renomear exercícios** (há `exerciseRenames` para display)
 - **`workoutOverrides`** — `{ 'YYYY-MM-DD': {type, title, duration, note} }` — substituições de treino por dia; `type:'cumprido'` marca plano feito
+- **`dayExtraExercises`** — `{ 'YYYY-MM-DD': [{id, type, label, addedAt}] }` — atividades avulsas do dia. `type` ∈ `musc|bike|corrida|alongamento|mobilidade|core|sauna|livre`, mas quem decide o controle de registro na tela é o **label**, não o type (ver invariante 21).
 - **`userFoods`** / **`foodOverrides`** — alimentos do usuário e overrides da base (por `name`); categorias = nomes de grupos de `MEAL_BUILDER_OPTIONS`
 - **`dietGoals`**, **`dietFavorites`**, **`userZones`** (zonas FC), **`cardioLog`**, **`coreLog`**, **`workoutKcal`** (gasto manual por dia), **`comprasList`/`comprasHistorico`**
 
@@ -104,6 +105,13 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - O histórico do pedal é **global** (`allBikeRides()` varre todas as chaves), ao contrário do da corrida que é por exercício: trajeto de bike muda de nome a cada dia e por chave o histórico ficaria em cacos.
 19. **Ordem das checagens de linha no `renderPlan`: `isBikeLine` → `isNoteLine` → `isRunning`** — `🚴` é prefixo de nota (senão `isRunning` casa com o "km" e cria botão de corrida), então sem avaliar `isBikeLine` primeiro o pedal nunca ganharia botão próprio. Só existe **um** caminho de render com essas checagens (`renderPlan`); ao criar outro, replicar a ordem.
 20. **O modal do pedal usa `.bike-time-group`, não `.time-input-group`** — `buildZoneTimePickers()` varre `.time-input-group` globalmente e reescreve o `innerHTML` com ids `r-<zona>-*`. Reaproveitar a classe no modal do pedal geraria ids duplicados e quebraria os dois modais.
+
+21. **Exercício extra precisa do MESMO controle de registro do plano** — até 28/08/2026 os itens de `dayExtraExercises` renderizavam como texto puro com um `×`: o usuário adicionava "Cadeira extensora" e não tinha onde lançar a carga, então o dado nunca entrava em `weightLog` e sumia da progressão. `extraControlHTML(label,dayKey)` resolve reaplicando a ordem de decisão do plano (pedal → nota → corrida → core → cardio → carga).
+    - É uma **segunda** implementação da mesma decisão, deliberadamente separada do `renderPlan` para não mexer num caminho que funciona. Ao mudar a ordem em um, mudar no outro (invariante 19).
+    - O label é a fonte da verdade, não o `type` do extra: assim um extra colado à mão ou vindo de versão antiga continua funcionando.
+22. **O nome do extra decide se ele soma ao histórico ou abre um órfão** — `getExKey()` é a chave, então "Cadeira extensora 3x10" e "Perna: extensora - 3x10 - 32kg" viram séries diferentes. Por isso o campo de nome tem `<datalist>` alimentado por `knownExerciseNames()` (chaves de `weightLog` + exercícios do plano vigente) e `updateAeHistHint()` avisa ao vivo se o nome digitado cai num histórico existente e qual foi a última carga.
+23. **Extra de bicicleta guarda só o trajeto no label** (`🚴 Bike — <trajeto>`) — distância e tempo vão no registro. Se fossem para o label, cada pedal geraria uma chave nova de `getExKey()` e o botão nunca mostraria o pedal anterior daquele trajeto.
+    - ⚠️ Ao inserir `<option>` em `<select>` por busca de texto, **conferir qual select recebeu**: `<option value="corrida">🏃 Corrida</option>` existe em `#ev-cat` (categoria de evento) **e** em `#ae-type` (tipo de exercício). Ancorar pelo vizinho único.
 
 ### Migrações da era v4 (18/08/2026)
 
