@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 28/08/2026 (registro de **pedal**; exercício extra registrável e visível em dia alterado; horários no dia; consumo externo pela Claudia)
+> **Última atualização:** 30/08/2026 (registro de **pedal**; exercício extra registrável e visível em dia alterado; horários no dia; consumo externo pela Claudia)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -46,7 +46,7 @@ Esquemas principais:
   - `meal`: `{id, name, time:'HH:MM', kcal, prot, carb, gord, items:'a · b · c', type}`
   - `type` ∈ `cafe|lanche_manha|almoco|pre_treino|pos_treino|jantar|jantar_pos|ceia|extra|off|custom` (só `'off'` tem lógica própria — limite semanal em `countOffMealsThisWeek`)
 - **`medData`** — array de `{data:'YYYY-MM-DD', peso, gordura, musculo, proteina, agua, basal, nutriSent?:true}` — `nutriSent` marca medição enviada à nutricionista (renderiza ponto verde + badge "✓ nutri")
-- **`bikeLog`** — `{ exKey: [{date, km, kcal, z1..z5, total, avgSpeed, splits:[{t,bpm}], label, note}] }` — pedais. `avgSpeed` em km/h (string pt-BR com vírgula), `splits` por km com tempo e FC; a velocidade de cada parcial é **derivada** do tempo, não armazenada. `label` guarda o nome da linha do plano para o histórico global conseguir nomear o percurso.
+- **`bikeLog`** — `{ exKey: [{date, km, kcal, z1..z5, total, avgSpeed, splits:[{t,bpm}], splitKm, label, note}] }` — pedais. `avgSpeed` em km/h (string pt-BR com vírgula), `splits` por km com tempo e FC; a velocidade de cada parcial é **derivada** do tempo e da distância do trecho, não armazenada. `splitKm` diz se cada parcial vale 1 km ou 5 km (ver invariante 25); ausente = 1 km, para entradas anteriores a 30/08/2026. `label` guarda o nome da linha do plano para o histórico global conseguir nomear o percurso.
 - **`weightLog`** — `{ exKey: [{date, weight, ...}] }` — cargas de musculação; `exKey` vem de `getExKey()` — **preservar a chave ao renomear exercícios** (há `exerciseRenames` para display)
 - **`workoutOverrides`** — `{ 'YYYY-MM-DD': {type, title, duration, note} }` — substituições de treino por dia; `type:'cumprido'` marca plano feito
 - **`dayExtraExercises`** — `{ 'YYYY-MM-DD': [{id, type, label, addedAt}] }` — atividades avulsas do dia. `type` ∈ `musc|bike|corrida|alongamento|mobilidade|core|sauna|livre`, mas quem decide o controle de registro na tela é o **label**, não o type (ver invariante 21).
@@ -114,6 +114,11 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - ⚠️ Ao inserir `<option>` em `<select>` por busca de texto, **conferir qual select recebeu**: `<option value="corrida">🏃 Corrida</option>` existe em `#ev-cat` (categoria de evento) **e** em `#ae-type` (tipo de exercício). Ancorar pelo vizinho único.
 
 24. **Exercício extra tem que sair nos DOIS ramos do `renderPlan`** — o ramo do treino substituído (`else if(ov)`) dá `return` antes da lista de exercícios. Até 28/08/2026, trocar o treino do dia **e** adicionar extras fazia os extras sumirem da tela, junto com o botão de registro deles. O bloco virou `extrasBlockHTML(dayKey)` e é emitido nos dois ramos, sempre **antes** do `</div>` que fecha a `.treino-day` — emitir depois joga os extras para fora do dia e desbalanceia o HTML.
+
+25. **Parciais do pedal são segmentadas por distância, não fixas em 1 km** — `bikeSegKm(km)` devolve 5 acima de `BIKE_SPLIT_LIMIAR` (10 km) e 1 abaixo, espelhando o iOS, que passa a entregar médias a cada 5 km quando o pedal ultrapassa 10 km. Um pedal de 30 km abria 30 campos e era inviável de preencher à mão; agora abre 6.
+    - `bikeSplitParts(km,seg)` é a fonte única dos trechos e é usada nos **três** pontos: montagem dos campos, cálculo da velocidade ao digitar e exibição no histórico. O último trecho pode ser parcial (23 km → `km 21–23`); sobra menor que 1 km vira `últimos X km`, porque `km 11–10,5` não se lê.
+    - A velocidade de cada trecho usa a distância **dele** (`dist*3600/seg`), não 1 km fixo. Sem `splitKm` gravado na entrada, o histórico exibiria velocidade 5× menor.
+    - O campo de minutos do trecho aceita até 599: 5 km em ritmo baixo passa de 59 min.
 
 ### Migrações da era v4 (18/08/2026)
 
