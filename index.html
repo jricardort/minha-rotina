@@ -1880,6 +1880,35 @@ const SPECIAL_WORKOUTS={
 // semana com OS DOIS dias tomados. Os demais sábados continuam sábado, só que DE MANHÃ, antes do evento.
 // Aplicado por DATA via SPECIAL_WORKOUTS: não cria era nova, não é retroativo, não reinicia a aderência
 // (PLAN_RESET continua em V4_START) e não toca em nenhuma chave de weightLog.
+// ===== Semana 17: descanso movido de domingo para segunda (31/08/2026) =====
+// O domingo de folga virou 1h51 de bike (35,17km), então a segunda vira o descanso
+// e o treino de perna vai para terça, junto com a corrida fácil da manhã.
+// Consequência assumida: o futebol de terça sai desta semana — não cabe uma terceira
+// sessão no mesmo dia. Perna na terça deixa 3 dias até o teste de 5km da sexta.
+'2026-08-31':{t:'⛔ OFF — descanso movido do domingo',rest:true,ex:[
+'Descanso total',
+'Alongamento leve',
+'⚡ Domingo virou 35km de bike em 1h51 — o descanso foi adiado, não cancelado',
+'⚡ Perna sai amanhã à noite, com 3 dias até o teste de sexta',
+'💧 Hidratação reforçada hoje',
+'⚖️ Sobe na balança amanhã de manhã, em jejum — a última pesagem é de 24/07']},
+'2026-09-01':{t:'🌅 Z2 4km fácil / 🌙 Pernas (corredor)',ex:[
+'🌅 MANHÃ — Corrida Z2 4km fácil (na rua)',
+'⚡ 7:05–7:40/km, teste da conversa. Hoje NÃO é dia de descobrir o que a perna aguenta',
+'🌙 FIM DO DIA — Musculação pernas:',
+'Leg press 45° 3x10',
+'Stiff halteres 3x10',
+'Afundo búlgaro 2x10 cada perna',
+'Cadeira flexora 3x12',
+'Panturrilha em pé 4x15',
+'Panturrilha sentado 3x15',
+'Prancha 3x45s',
+'Abdominal infra 3x15',
+'⚡ Sem falha — sempre 2 reps na reserva',
+'Sauna 10min',
+'⚡ Mínimo 6h entre as duas sessões',
+'⛔ SEM FUTEBOL esta semana — não cabe uma terceira sessão hoje',
+'⚡ Sexta tem o teste de 5km progressivo: a perna precisa chegar recuperada']},
 '2026-08-29':{t:'🏃 Longão 7km (manhã) + 🚴 14km até a festa',ex:[
 'Long Run 7km em Z2 (na rua)',
 'Sauna 15min',
@@ -2004,7 +2033,7 @@ function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Temp
 // Prefixos de evento (🍺 🎂 🎪 🥩 🍽️ 🔄) entraram em 26/08/2026 com os ajustes de calendário social:
 // sem eles, uma linha como "🍺 Oktoberfest 10h–16h" não casa com isCardio e cai no ramo de musculação (botão de carga).
 // Precisa ser checado ANTES de isRunning: notas como "⚡ MARCO: os primeiros 10km" contêm "km" e cairiam como corrida.
-function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆)/.test(s)||/:$/.test(s);}
+function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆|⚖️)/.test(s)||/:$/.test(s);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
 // Linha de pedal: prefixo 🚴. Avaliada ANTES de isNoteLine/isRunning — 🚴 é prefixo de nota
 // (para não virar botão de corrida), então sem esta checagem o pedal nunca ganharia botão próprio.
