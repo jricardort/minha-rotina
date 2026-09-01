@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 01/09/2026 (registro de **pedal**; exercício extra registrável e visível em dia alterado; horários no dia; consumo externo pela Claudia)
+> **Última atualização:** 01/09/2026 (FC por km na corrida; rotação da semana 17) (registro de **pedal**; exercício extra registrável e visível em dia alterado; horários no dia; consumo externo pela Claudia)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
