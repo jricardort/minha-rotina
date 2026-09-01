@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 31/08/2026 (registro de **pedal**; exercício extra registrável e visível em dia alterado; horários no dia; consumo externo pela Claudia)
+> **Última atualização:** 01/09/2026 (registro de **pedal**; exercício extra registrável e visível em dia alterado; horários no dia; consumo externo pela Claudia)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -49,6 +49,7 @@ Esquemas principais:
 - **`bikeLog`** — `{ exKey: [{date, km, kcal, z1..z5, total, avgSpeed, splits:[{t,bpm}], splitKm, label, note}] }` — pedais. `avgSpeed` em km/h (string pt-BR com vírgula), `splits` por km com tempo e FC; a velocidade de cada parcial é **derivada** do tempo e da distância do trecho, não armazenada. `splitKm` diz se cada parcial vale 1 km ou 5 km (ver invariante 25); ausente = 1 km, para entradas anteriores a 30/08/2026. `label` guarda o nome da linha do plano para o histórico global conseguir nomear o percurso.
 - **`weightLog`** — `{ exKey: [{date, weight, ...}] }` — cargas de musculação; `exKey` vem de `getExKey()` — **preservar a chave ao renomear exercícios** (há `exerciseRenames` para display)
 - **`workoutOverrides`** — `{ 'YYYY-MM-DD': {type, title, duration, note} }` — substituições de treino por dia; `type:'cumprido'` marca plano feito
+- **`cardioLog`** — `{ exKey: [{date, km, z1..z5, total, splits:[pace], splitBpm:[bpm], avgPace, note}] }` — `splits` são **strings de pace** e `splitBpm` é um array **paralelo** de FC por km (ver invariante 26).
 - **`dayExtraExercises`** — `{ 'YYYY-MM-DD': [{id, type, label, addedAt}] }` — atividades avulsas do dia. `type` ∈ `musc|bike|corrida|alongamento|mobilidade|core|sauna|livre`, mas quem decide o controle de registro na tela é o **label**, não o type (ver invariante 21).
 - **`userFoods`** / **`foodOverrides`** — alimentos do usuário e overrides da base (por `name`); categorias = nomes de grupos de `MEAL_BUILDER_OPTIONS`
 - **`dietGoals`**, **`dietFavorites`**, **`userZones`** (zonas FC), **`cardioLog`**, **`coreLog`**, **`workoutKcal`** (gasto manual por dia), **`comprasList`/`comprasHistorico`**
@@ -119,6 +120,11 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - `bikeSplitParts(km,seg)` é a fonte única dos trechos e é usada nos **três** pontos: montagem dos campos, cálculo da velocidade ao digitar e exibição no histórico. O último trecho pode ser parcial (23 km → `km 21–23`); sobra menor que 1 km vira `últimos X km`, porque `km 11–10,5` não se lê.
     - A velocidade de cada trecho usa a distância **dele** (`dist*3600/seg`), não 1 km fixo. Sem `splitKm` gravado na entrada, o histórico exibiria velocidade 5× menor.
     - O campo de minutos do trecho aceita até 599: 5 km em ritmo baixo passa de 59 min.
+
+26. **FC por km da corrida vai num array PARALELO (`splitBpm`), não dentro de `splits`** — diferente do pedal, que nasceu com `splits:[{t,bpm}]`. Motivo: `cardioLog.splits` é uma lista de strings de pace desde 12/06/2026 e alimenta `avgPaceFromSplits()`, lido em quatro pontos; trocar a forma exigiria migrar o histórico e mexer em todos eles. A assimetria é deliberada — **não "uniformizar" os dois sem migração**.
+    - `splitBpm[i]` corresponde a `splits[i]`. Registro sem `splitBpm` (anterior a 01/09/2026) renderiza normalmente, só sem FC.
+    - `zoneForBpm(bpm)` mapeia FC → zona pelas faixas de `userZones` (do teste de FCmáx). Devolve `null` quando não há `fcmax` configurado, e a badge mostra —. Acima do topo da Z5, satura em Z5.
+    - Objetivo: cruzar pace e zona parcial a parcial. A análise de 29/08 ficou em aberto porque só havia tempo por zona agregado do dia inteiro, sem saber a que ritmo cada zona foi atingida.
 
 ### Migrações da era v4 (18/08/2026)
 

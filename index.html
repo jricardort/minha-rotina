@@ -181,6 +181,10 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 .time-input-group .ti-lbl{font-size:11px;color:#64748B;font-weight:500;letter-spacing:.5px}
 .split-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .split-lbl{font-size:12px;color:#475569;font-weight:600;min-width:46px}
+.split-row{flex-wrap:wrap}
+.rsplit-bpm{width:62px;border:1px solid #CBD5E1;border-radius:5px;padding:5px 6px;font-size:14px;text-align:center}
+.rsplit-zona{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;min-width:30px;text-align:center;margin-left:auto}
+.rsplit-zona.vazia{background:#F1F5F9;color:#94A3B8}
 .override-card{border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid}
 .override-card .ov-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
 .override-card .ov-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:4px}
@@ -1852,6 +1856,26 @@ return z.min+'-'+z.max+'bpm';
 }
 return BPM_ZONES['Z'+n];
 }
+/* Zona correspondente a uma FC, usando as zonas do usuário (teste de FCmáx).
+   Serve para conferir, parcial a parcial, se o pace praticado bate com a zona
+   pretendida — a pergunta que a análise de 29/08 deixou em aberto. */
+const ZONA_COR={Z1:['#EFF6FF','#1D4ED8'],Z2:['#F0FDF4','#15803D'],Z3:['#FFFBEB','#B45309'],Z4:['#FEF2F2','#DC2626'],Z5:['#F5F3FF','#7C3AED']};
+function zoneForBpm(bpm){
+const n=parseInt(bpm);if(!n||n<=0)return null;
+const z=userZones||{};
+if(!z.fcmax)return null;
+for(const k of ['z1','z2','z3','z4','z5']){
+const r=z[k];if(!r)continue;
+if(n>=(r.min||0)&&n<=(r.max||0))return k.toUpperCase();
+}
+return n>(z.z5?.max||0)?'Z5':null;
+}
+function zonaBadgeHTML(bpm){
+const zn=zoneForBpm(bpm);
+if(!zn)return '<span class="rsplit-zona vazia">—</span>';
+const [bg,cor]=ZONA_COR[zn];
+return '<span class="rsplit-zona" style="background:'+bg+';color:'+cor+'">'+zn+'</span>';
+}
 function addBpmToZones(text){
 return String(text).replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+getBpmRange(n)+' · '+PACE_ZONES['Z'+n]+')');
 }
@@ -2383,7 +2407,19 @@ const sb=document.getElementById('rv-splits-block');
 if(sb){
 if(entry.splits&&entry.splits.some(x=>x)){
 let sh='<div class="view-row" style="border-top:1px dashed #CBD5E1;margin-top:4px;padding-top:8px"><span>Pace médio</span><b>'+escapeHtml(entry.avgPace||'—')+'</b></div>';
-entry.splits.forEach((p,i)=>{if(p)sh+='<div class="view-row"><span>km '+(i+1)+'</span><b>'+escapeHtml(p)+'</b></div>';});
+const bpms=entry.splitBpm||[];
+entry.splits.forEach((p,i)=>{
+if(!p)return;
+const b=bpms[i],zn=b?zoneForBpm(b):null;
+const dir=b?(' · '+b+' bpm'+(zn?' ('+zn+')':'')):'';
+sh+='<div class="view-row"><span>km '+(i+1)+'</span><b>'+escapeHtml(p+dir)+'</b></div>';
+});
+if(bpms.some(x=>x)){
+const val=bpms.filter(x=>x);
+const media=Math.round(val.reduce((a,b)=>a+b,0)/val.length);
+const zn=zoneForBpm(media);
+sh+='<div class="view-row"><span>FC média das parciais</span><b>'+media+' bpm'+(zn?' ('+zn+')':'')+'</b></div>';
+}
 sb.innerHTML=sh;sb.style.display='block';
 }else{sb.innerHTML='';sb.style.display='none';}
 }
@@ -2438,13 +2474,16 @@ const km=document.getElementById('r-km').value?parseBR(document.getElementById('
 const n=km?Math.ceil(km):0;
 if(!dateV||dateV<RUN_SPLITS_FROM||n<1){section.style.display='none';cont.innerHTML='';updateAvgPace();return;}
 const prev=[],old=cont.querySelectorAll('.split-row').length;
-for(let i=0;i<old;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');prev[i]=mn?(mn.value+'|'+sn.value):null;}
+for(let i=0;i<old;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec'),bp=document.getElementById('r-split-'+i+'-bpm');prev[i]=mn?(mn.value+'|'+sn.value+'|'+(bp?bp.value:'')):null;}
 let h='';
-for(let i=0;i<n;i++){h+='<div class="split-row"><span class="split-lbl">km '+(i+1)+'</span><div class="time-input-group">'+paceInputsHTML('r-split-'+i)+'</div></div>';}
+for(let i=0;i<n;i++){h+='<div class="split-row"><span class="split-lbl">km '+(i+1)+'</span><div class="time-input-group">'+paceInputsHTML('r-split-'+i)+'</div>'+'<input type="number" inputmode="numeric" class="rsplit-bpm" id="r-split-'+i+'-bpm" min="0" max="230" placeholder="bpm">'+'<span id="r-split-'+i+'-zona">'+zonaBadgeHTML(null)+'</span></div>';}
 cont.innerHTML=h;section.style.display='block';
 for(let i=0;i<n;i++){const mn=document.getElementById('r-split-'+i+'-min'),sn=document.getElementById('r-split-'+i+'-sec');
-if(prev[i]){const pp=prev[i].split('|');if(mn)mn.value=pp[0];if(sn)sn.value=pp[1];}
-if(mn)mn.oninput=updateAvgPace;if(sn)sn.oninput=updateAvgPace;}
+if(prev[i]){const pp=prev[i].split('|');if(mn)mn.value=pp[0];if(sn)sn.value=pp[1];const bp=document.getElementById('r-split-'+i+'-bpm');if(bp&&pp[2])bp.value=pp[2];}
+updateSplitZona(i);
+if(mn)mn.oninput=updateAvgPace;if(sn)sn.oninput=updateAvgPace;
+const bp=document.getElementById('r-split-'+i+'-bpm');
+if(bp)bp.oninput=(function(k){return function(){updateSplitZona(k);};})(i);}
 updateAvgPace();
 }
 function getRunSplits(){
@@ -2455,6 +2494,29 @@ if(!mn){arr.push('');continue;}
 if(mn.value===''&&sn.value===''){arr.push('');continue;}
 arr.push(formatPace((parseInt(mn.value)||0)*60+(parseInt(sn.value)||0)));}
 return arr;
+}
+function updateSplitZona(i){
+const el=document.getElementById('r-split-'+i+'-zona');if(!el)return;
+el.innerHTML=zonaBadgeHTML(document.getElementById('r-split-'+i+'-bpm')?.value);
+}
+/* As FCs vão num array PARALELO (splitBpm), não dentro de splits.
+   splits é uma lista de strings de pace desde junho e alimenta avgPaceFromSplits,
+   que por sua vez alimenta o histórico. Trocar a forma exigiria migrar os dados
+   antigos e mexer em quatro pontos de leitura — risco desnecessário. Por isso a
+   forma difere da do pedal, que nasceu com objetos {t,bpm}. */
+function getRunBpms(){
+const cont=document.getElementById('r-splits');if(!cont)return[];
+const n=cont.querySelectorAll('.split-row').length,arr=[];
+for(let i=0;i<n;i++){arr.push(parseInt(document.getElementById('r-split-'+i+'-bpm')?.value)||null);}
+return arr;
+}
+function setRunBpms(arr){
+if(!Array.isArray(arr))return;
+arr.forEach((b,i)=>{
+const el=document.getElementById('r-split-'+i+'-bpm');
+if(el&&b)el.value=b;
+updateSplitZona(i);
+});
 }
 function setRunSplits(arr){
 if(!Array.isArray(arr))return;
@@ -2510,7 +2572,7 @@ document.getElementById('r-km').value=last.km!=null?formatBR(last.km):'';
 ['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,last[z]||'00:00:00'));
 document.getElementById('r-total').value=last.total||'00:00:00';
 document.getElementById('r-note').value=last.note||'';
-buildSplitFields();setRunSplits(last.splits);
+buildSplitFields();setRunSplits(last.splits);setRunBpms(last.splitBpm);
 }
 }
 function newRunEntry(){
@@ -2540,7 +2602,11 @@ const note=document.getElementById('r-note').value.trim();
 if(!cardioLog[currentRunKey])cardioLog[currentRunKey]=[];
 const entry={date:data,km,z1,z2,z3,z4,z5,total,note};
 const splits=getRunSplits();
-if(data>=RUN_SPLITS_FROM&&splits.some(x=>x)){entry.splits=splits;entry.avgPace=avgPaceFromSplits(splits,km);}
+if(data>=RUN_SPLITS_FROM&&splits.some(x=>x)){
+entry.splits=splits;entry.avgPace=avgPaceFromSplits(splits,km);
+const bpms=getRunBpms();
+if(bpms.some(x=>x))entry.splitBpm=bpms;
+}
 if(editRunIdx!=null){cardioLog[currentRunKey][editRunIdx]=entry;editRunIdx=null;}
 else{
 const existIdx=cardioLog[currentRunKey].findIndex(w=>w.date===data);
@@ -2563,7 +2629,7 @@ document.getElementById('r-km').value=r.km||'';
 ['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,r[z]||'00:00:00'));
 document.getElementById('r-total').value=r.total||'00:00:00';
 document.getElementById('r-note').value=r.note||'';
-buildSplitFields();setRunSplits(r.splits);
+buildSplitFields();setRunSplits(r.splits);setRunBpms(r.splitBpm);
 }
 function deleteRun(i){
 if(!confirm('Excluir este registro?'))return;
