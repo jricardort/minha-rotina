@@ -1922,6 +1922,28 @@ const SPECIAL_WORKOUTS={
 // de 11/09. Perna na quinta à noite chegaria no teste com a perna destruída, e é esse
 // número que orienta a decisão do sub-60. Quarta deixa ~48h.
 // A corrida leve migrou de quarta para quinta, onde ainda ajuda a soltar antes de sexta.
+'2026-09-04':{t:'🎯 5km PROGRESSIVO — termômetro',ex:[
+'· Aquecimento 15min — 10min Z2 + 4 strides de 20s',
+'Corrida 5km progressivo — cronometrado',
+'· km 1-2 fácil (~7:15/km)',
+'· km 3-4 moderado (~6:40/km)',
+'· km 5 forte (~6:10/km)',
+'· Desaquecimento 5min Z1',
+'⚡ NÃO é all-out — é só medir a temperatura',
+'⚡ Aquecimento mais longo hoje: a perna treinou ontem',
+'⚡ Se os 2 primeiros km parecerem duros, é a perna de ontem. Segue o protocolo',
+'📊 UM lançamento só, dos 5km — com tempo e FC de cada quilômetro',
+'👟 Tênis de sempre. O CloudMonster estreia no longão de sábado']},
+'2026-09-11':{t:'🎯🎯 TIME TRIAL 5km — ALL OUT',ex:[
+'· Aquecimento 15min — 10min Z2 + 4 strides de 20s',
+'Time Trial 5km — no máximo sustentável, cronometrado',
+'· Desaquecimento 10min Z1',
+'⚡ ESTE É O JUIZ do sub-60',
+'⚡ Regra: 10K ≈ tempo do 5K × 2,08',
+'⚡ ≤29:00 = sub-60 vivo · 29:00-30:30 = 62-64min · >30:30 = reavaliar',
+'📊 UM lançamento só, dos 5km — com tempo e FC de cada quilômetro',
+'📊 A FC dos últimos 2km é o que recalibra as zonas',
+'👟 Tênis já rodado, nunca um novo']},
 '2026-09-01':{t:'🌅 Z2 4km (feita) / 🌙 Upper leve',ex:[
 '🌅 MANHÃ — Corrida Z2 4km fácil (na rua)',
 '📊 Feita: 4,04km a 7:16/km, 89% em Z2, deriva de só 13 bpm. Foi assim que tem que ser',
@@ -2077,7 +2099,7 @@ function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Temp
 // Prefixos de evento (🍺 🎂 🎪 🥩 🍽️ 🔄) entraram em 26/08/2026 com os ajustes de calendário social:
 // sem eles, uma linha como "🍺 Oktoberfest 10h–16h" não casa com isCardio e cai no ramo de musculação (botão de carga).
 // Precisa ser checado ANTES de isRunning: notas como "⚡ MARCO: os primeiros 10km" contêm "km" e cairiam como corrida.
-function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆|⚖️)/.test(s)||/:$/.test(s);}
+function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆|⚖️|👟)/.test(s)||/:$/.test(s);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
 // Linha de pedal: prefixo 🚴. Avaliada ANTES de isNoteLine/isRunning — 🚴 é prefixo de nota
 // (para não virar botão de corrida), então sem esta checagem o pedal nunca ganharia botão próprio.

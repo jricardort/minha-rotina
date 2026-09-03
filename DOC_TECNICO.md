@@ -91,7 +91,7 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 14. **Ajustes pontuais de calendário usam `SPECIAL_WORKOUTS`, não uma era nova** — `SPECIAL_WORKOUTS['YYYY-MM-DD']` sobrepõe o dia em TODOS os renders (`getWorkoutForDate`, `renderPlan`, `renderTreinoHistorico`, `renderInfoPlan`, `renderDetail`) e na aderência. Por ser indexado por data, é intrinsecamente não-retroativo: não cria era, não mexe em `PLAN_RESET`/`weekMeta` e não órfã chave de `weightLog`.
     - Aplicado em **28/08/2026** para a agenda social de set/out (16 datas, de 29/08 a 06/10): Aniversário Aline, Wannda Circus, Churrasco Leozão, **Oktoberfest** e Jantar ADI.
     - Regra de negócio adotada: o longão **muda de horário** (sábado de manhã) quando o evento é à tarde/noite; só **muda de dia** quando o fim de semana inteiro está tomado — caso único do **longão-chave de 12km, que foi de sáb 26/09 para qui 24/09** (Oktoberfest sáb+dom). Nessa semana o longão absorve a qualidade e os 5×1km saem.
-    - ⚠️ Ao escrever notas de evento, usar um prefixo reconhecido por `isNoteLine()` — a lista ganhou `🍺 🎂 🎪 🥩 🍽️ 🔄`, depois `🚴 🚆` e `⚖️`. Sem prefixo, uma linha como "🍺 Oktoberfest 10h–16h" não casa com `isCardio()` e cai no ramo de musculação, ganhando botão de carga.
+    - ⚠️ Ao escrever notas de evento, usar um prefixo reconhecido por `isNoteLine()` — a lista ganhou `🍺 🎂 🎪 🥩 🍽️ 🔄`, depois `🚴 🚆`, `⚖️` e `👟`. Sem prefixo, uma linha como "🍺 Oktoberfest 10h–16h" não casa com `isCardio()` e cai no ramo de musculação, ganhando botão de carga.
 15. **`renderInfoPlan` (Plano Completo do modal) precisa respeitar a era** — iterava `plan` (v2) e mostrava os treinos pré-v4 nas semanas 15–22. Corrigido em 26/08/2026: cabeçalho vem de `weekMeta(wi)` e o dia de `planForDayKey(dayKey)[wi].template[di]`, com `SPECIAL_WORKOUTS` por cima. `phaseColor`/`phaseBg` também passaram a reconhecer `Pico` (v4) além de `Peak` (v2).
 
 16. **`index.html` é fonte de dados para um consumidor EXTERNO** — a assistente Claudia (`C:UsersUserclaudiasrc	reino.js`) não duplica o plano: ela **recorta o texto** do `index.html` e executa num `vm` isolado para chamar `getWorkoutForDate`. O briefing dela cruza o treino com a previsão do tempo.
@@ -125,6 +125,9 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - `splitBpm[i]` corresponde a `splits[i]`. Registro sem `splitBpm` (anterior a 01/09/2026) renderiza normalmente, só sem FC.
     - `zoneForBpm(bpm)` mapeia FC → zona pelas faixas de `userZones` (do teste de FCmáx). Devolve `null` quando não há `fcmax` configurado, e a badge mostra —. Acima do topo da Z5, satura em Z5.
     - Objetivo: cruzar pace e zona parcial a parcial. A análise de 29/08 ficou em aberto porque só havia tempo por zona agregado do dia inteiro, sem saber a que ritmo cada zona foi atingida.
+
+27. **Dia de teste tem UMA linha de corrida, nunca uma por fase** — `goalRuns()` deduplica por data ficando com a **maior distância**, então um teste de 5 km lançado como 2+2+1 entra no painel de metas como corrida de 2 km, e `avgPaceFromSplits` só fecha sobre a corrida inteira. As fases (aquecimento, blocos de ritmo, desaquecimento) são linhas de **nota** com prefixo `·`.
+    - Isso também conserta um efeito colateral antigo: `Aquecimento 10min Z2` e `Desaquecimento 5min Z1` não casam com `isRunning()` nem com `isCardio()` e caíam no ramo final, ganhando botão de **carga**. Toda linha de instrução dentro de um dia de corrida precisa de prefixo de nota.
 
 ### Migrações da era v4 (18/08/2026)
 
