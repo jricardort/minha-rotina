@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 08/09/2026 (semana 20 reorganizada pelo Oktoberfest ADI; ensaio do TT)
+> **Última atualização:** 08/09/2026 (semana 18 e 20 ajustadas por eventos do calendário)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
