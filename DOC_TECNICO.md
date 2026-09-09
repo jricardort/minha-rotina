@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 09/09/2026 (semana 19 com a viagem a Milão; spinning entra como troca)
+> **Última atualização:** 09/09/2026 (upper migra para as terças; semana de Milão)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
