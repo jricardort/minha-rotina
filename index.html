@@ -2036,19 +2036,21 @@ const SPECIAL_WORKOUTS={
 '⚡ Substitui a corrida Z2 de 5km, não soma a ela',
 '⚡ Segura nos blocos de pico: a aula de 09/09 saiu com 64% do tempo em Z3 ou acima, e o sábado tem o longão de 10km',
 '⚡ Até a prova o spinning é troca, não acréscimo — a semana já tem perna na segunda e longão no sábado',
-'💧 Hidrata bem: amanhã é dia de voo']},
-'2026-09-17':{t:'✈️ Voo para Milão — trote leve ou OFF',ex:[
+'💧 Hidrata bem: amanhã é dia de estrada']},
+'2026-09-17':{t:'🚗 Estrada para Milão — trote de chegada',ex:[
 'Corrida 3km bem leve (Z1-Z2)',
-'⚡ Se o voo apertar, este dia pode virar OFF sem culpa — o que não pode faltar é o sábado',
-'✈️ Milão até domingo. Sem academia até dia 20',
-'💧 Voo desidrata: água antes, durante e depois',
-'😴 Dorme bem hoje e amanhã — o longão de sábado é o marco da semana']},
+'⚡ Melhor DEPOIS de chegar, não antes de sair: 5-6h sentado trava quadril e posterior, e o trote destrava',
+'🚗 Munique → Milão, ~500km pelos Alpes. Para a cada 2h e anda 5min fora do carro',
+'🚗 Sem academia até domingo — a semana é de corrida, e isso a estrada não atrapalha',
+'⚡ Se chegar tarde ou moído, vira OFF sem culpa. O que não pode faltar é o sábado',
+'💧 Estrada desidrata mais do que parece: garrafa de água no carro, não só café',
+'😴 Dorme bem hoje — o longão de sábado é o marco da semana']},
 '2026-09-18':{t:'🔥 QUALIDADE 4×1km — em Milão',ex:[
 'Corrida qualidade 4×1km a 5:55/km',
 '· Aquecimento 10min Z2',
 '· 4×1km a 5:55/km · recuperação 2min de trote',
 '· Desaquecimento 5min Z1',
-'⚡ Desceu da quinta, que virou dia de voo',
+'⚡ Desceu da quinta, que virou dia de estrada',
 '📍 Parco Sempione ou Parco Nord — planos, corríveis e com volta medida',
 '⚡ Se a viagem cansou, corta para 3×1km. Melhor chegar inteiro no sábado',
 '📊 UM lançamento só, com tempo e FC de cada quilômetro']},
@@ -2061,11 +2063,12 @@ const SPECIAL_WORKOUTS={
 '📍 Parco Sempione, Parco Nord ou a orla do Naviglio Grande',
 '💧 Setembro em Milão é quente: sai cedo e leva água',
 '📊 UM lançamento só, com tempo e FC de cada quilômetro']},
-'2026-09-20':{t:'⛔ OFF — volta de Milão',rest:true,ex:[
+'2026-09-20':{t:'⛔ OFF — estrada de volta',rest:true,ex:[
 'Descanso total',
-'✈️ Dia de volta',
+'🚗 Volta Milão → Munique, ~500km',
 '⚡ Ontem foram 10km mais o show — hoje não se treina nada',
-'💧 Hidratação e alongamento leve',
+'⚡ Para a cada 2h e alonga posterior e quadril: chegar travado estraga a segunda',
+'💧 Hidratação no carro',
 '😴 Segunda abre a semana do longão-chave de 12km']},
 '2026-09-09':{t:'🚴 Spinning + trote leve opcional',ex:[
 '🚴 Aula de spinning 08h40',
@@ -2276,7 +2279,7 @@ function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Temp
 // Prefixos de evento (🍺 🎂 🎪 🥩 🍽️ 🔄) entraram em 26/08/2026 com os ajustes de calendário social:
 // sem eles, uma linha como "🍺 Oktoberfest 10h–16h" não casa com isCardio e cai no ramo de musculação (botão de carga).
 // Precisa ser checado ANTES de isRunning: notas como "⚡ MARCO: os primeiros 10km" contêm "km" e cairiam como corrida.
-function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆|⚖️|👟|🎧|✈️)/.test(s)||/:$/.test(s);}
+function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆|⚖️|👟|🎧|✈️|🚗)/.test(s)||/:$/.test(s);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
 // Linha de pedal: prefixo 🚴. Avaliada ANTES de isNoteLine/isRunning — 🚴 é prefixo de nota
 // (para não virar botão de corrida), então sem esta checagem o pedal nunca ganharia botão próprio.
