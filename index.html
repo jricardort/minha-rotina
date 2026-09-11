@@ -1842,10 +1842,8 @@ if(d<tDate)return{key:'falta',label:'Falta',icon:'ti-x',color:'#DC2626',bg:'#FEE
 return null;
 }
 const BPM_ZONES={Z1:'<131bpm',Z2:'132-143bpm',Z3:'144-156bpm',Z4:'157-168bpm',Z5:'>169bpm'};
-// Paces por zona recalibrados em 18/08/2026 para a meta sub-60 (prova a 6:00/km).
-// Antes estavam calibrados para sub-55 e mandavam correr a Z2 "fácil" a 6:00-6:20/km — praticamente o pace de prova.
-// Era a causa raiz das corridas "Z2" saírem todas em Z3/Z4: o alvo exibido estava ~1min/km rápido demais.
-const PACE_ZONES={Z1:'7:45-8:15/km',Z2:'7:05-7:40/km',Z3:'6:20-6:40/km',Z4:'5:45-6:05/km',Z5:'5:15-5:35/km'};
+// A tabela fixa PACE_ZONES foi aposentada em 11/09/2026: o pace por zona agora é derivado
+// das parciais reais em paceZonesObservadas(), junto de addBpmToZones (DOC_TECNICO inv. 10 e 28).
 function getBpmRange(n){
 const zKey='z'+n;
 if(userZones&&userZones[zKey]&&userZones.fcmax){
@@ -1876,8 +1874,63 @@ if(!zn)return '<span class="rsplit-zona vazia">—</span>';
 const [bg,cor]=ZONA_COR[zn];
 return '<span class="rsplit-zona" style="background:'+bg+';color:'+cor+'">'+zn+'</span>';
 }
+/* Faixa de pace por zona OBSERVADA nos treinos (invariante 28). Substitui a tabela
+   fixa: o pace dentro de uma mesma zona varia demais para uma faixa fixa (01/09 e
+   10/09 tiveram 156/155 bpm e 39 s/km de diferença).
+   Cada parcial com FC vira amostra na zona da FC dela. Descarta:
+   - o 1º km: a FC demora a subir e lê uma zona abaixo do esforço real;
+   - o último trecho quando é parcial: ali o split guarda o TEMPO do trecho, não o pace;
+   - parcial acima de 9:30/km: caminhada lançada na mesma chave de corrida.
+   Só publica a zona com amostras e corridas suficientes, e só se a ordem física se
+   mantiver (Z1 mais lenta que Z2...). Com pouco dado a resposta honesta é bpm puro:
+   em 11/09/2026 os dados crus davam Z1 mais RÁPIDA que Z2 (sensor travado na cadência)
+   e Z2/Z3/Z4 sobrepostas (deriva cardíaca no longão). */
+const PZ_JANELA_DIAS=42, PZ_MIN_AMOSTRAS=8, PZ_MIN_CORRIDAS=3, PZ_CAMINHADA_SEG=570;
+let _pzCache=null,_pzAssinatura='';
+function paceZonesObservadas(){
+const z=userZones||{};
+if(!z.fcmax)return {};
+let nBpm=0,ult='';
+Object.keys(cardioLog||{}).forEach(k=>(cardioLog[k]||[]).forEach(r=>{if(r&&Array.isArray(r.splitBpm)){nBpm+=r.splitBpm.length;if(r.date>ult)ult=r.date;}}));
+const hoje=dk(new Date());
+const assinatura=nBpm+'|'+ult+'|'+hoje+'|'+JSON.stringify(z);
+if(_pzCache&&assinatura===_pzAssinatura)return _pzCache;
+const corte=dk(new Date(Date.now()-PZ_JANELA_DIAS*86400000));
+const amostras={Z1:[],Z2:[],Z3:[],Z4:[],Z5:[]};
+const corridas={Z1:new Set(),Z2:new Set(),Z3:new Set(),Z4:new Set(),Z5:new Set()};
+Object.keys(cardioLog||{}).forEach(k=>(cardioLog[k]||[]).forEach(r=>{
+if(!r||!r.date||r.date<corte||!Array.isArray(r.splits)||!Array.isArray(r.splitBpm))return;
+const km=(typeof r.km==='number')?r.km:(parseBR(r.km)||0);
+const frac=km?+(km-Math.floor(km)).toFixed(3):0,ultimo=r.splits.length-1;
+r.splits.forEach((p,i)=>{
+if(i===0||!p||!r.splitBpm[i])return;
+if(frac>0&&i===ultimo)return;
+const seg=parseTime(p);if(!seg||seg>PZ_CAMINHADA_SEG)return;
+const zn=zoneForBpm(r.splitBpm[i]);if(!zn)return;
+amostras[zn].push(seg);corridas[zn].add(r.date+'|'+k);
+});
+}));
+const quantil=(a,q)=>{const s=a.slice().sort((x,y)=>x-y),i=(s.length-1)*q,lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo);};
+const cand={};
+['Z1','Z2','Z3','Z4','Z5'].forEach(zn=>{
+const a=amostras[zn];
+if(a.length<PZ_MIN_AMOSTRAS||corridas[zn].size<PZ_MIN_CORRIDAS)return;
+cand[zn]={rapido:quantil(a,.25),mediana:quantil(a,.5),lento:quantil(a,.75)};
+});
+// Zona mais alta tem que ter mediana mais rápida (menos segundos). Se dois vizinhos
+// publicáveis invertem, nenhum dos dois é confiável — os dois voltam a bpm puro.
+const ordem=['Z1','Z2','Z3','Z4','Z5'].filter(zn=>cand[zn]);
+const invalida=new Set();
+for(let i=1;i<ordem.length;i++){if(cand[ordem[i]].mediana>=cand[ordem[i-1]].mediana){invalida.add(ordem[i]);invalida.add(ordem[i-1]);}}
+const out={};
+// Math.round antes do formatPace: com segundos fracionários ele erra a virada do minuto (419,6 s -> "6:00").
+ordem.forEach(zn=>{if(!invalida.has(zn))out[zn]=formatPace(Math.round(cand[zn].rapido))+'-'+formatPace(Math.round(cand[zn].lento))+'/km';});
+_pzCache=out;_pzAssinatura=assinatura;
+return out;
+}
 function addBpmToZones(text){
-return String(text).replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+getBpmRange(n)+' · '+PACE_ZONES['Z'+n]+')');
+const pz=paceZonesObservadas();
+return String(text).replace(/\bZ([1-5])\b(?!\s*\()/g,(m,n)=>'Z'+n+' ('+getBpmRange(n)+(pz['Z'+n]?' · ~'+pz['Z'+n]:'')+')');
 }
 function exToString(e){return (typeof e==='object'&&e!==null)?(e.step||e.t||''):String(e||'');}
 function exContains(e,s){return exToString(e).includes(s);}
@@ -2083,19 +2136,25 @@ const SPECIAL_WORKOUTS={
 '⚽ Bayern × Champions, 21h na Allianz Arena',
 '⚡ Com o TT cancelado, a noite curta não custa mais nada — aproveita o jogo',
 '💧 Água no estádio: dois dias até o treino de sábado']},
-'2026-09-11':{t:'🏋️ Upper (manutenção) + Sauna',ex:[
+'2026-09-11':{t:'🏋️ Upper completo — volta dos halteres + Sauna',ex:[
 'Puxada frente aberta 3x10',
 'Remada 3x10',
-'Pec deck 3x12',
+'Supino reto halteres 3x10',
+'Supino inclinado halteres 2x10',
+'Pec deck 2x12',
 'Desenvolvimento máquina 3x10 (pegada neutra)',
-'Crucifixo inverso (fly reverse) 3x15',
+'Elevação lateral halteres 3x12',
+'Crucifixo inverso (fly reverse) 2x15',
 'Rosca direta barra 2x12',
 'Tríceps pulley corda 2x12',
-'⚡ Zero halteres em empurrão até o punho parar de doer',
+'⚡ Punho melhorou: os halteres voltam só no SUPINO, com pegada neutra (palmas uma para a outra)',
+'⚡ Comece em 12kg no reto e 10kg no inclinado. O app vai sugerir 14 e 12 — foram as cargas COM dor em 05/08',
+'⚡ Doeu o punho durante ou depois da série? Larga o halter na hora e termina no Pec deck',
+'⚡ Ombro segue na máquina: um padrão de halter por vez. Se o supino passar limpo, o desenvolvimento volta na próxima',
+'⚡ 2 reps na reserva em tudo. A upper não custa perna, mas amanhã é a prova de durabilidade',
 'Sauna 10min',
-'⛔ TIME TRIAL CANCELADO — terça já entregou 28:39 no máximo real, com o corte de 29:00 batido',
-'⚡ A upper não custa nada para a perna: amanhã tem o treino que importa',
-'⚡ Única upper da semana. As costas seguem sendo o que protege o punho']},
+'💧 Uma rodada só. Depois 500-750ml de água com eletrólito, e sem álcool hoje',
+'⛔ TIME TRIAL CANCELADO — terça já entregou 28:39 no máximo real, com o corte de 29:00 batido']},
 '2026-09-01':{t:'🌅 Z2 4km (feita) / 🌙 Upper leve',ex:[
 '🌅 MANHÃ — Corrida Z2 4km fácil (na rua)',
 '📊 Feita: 4,04km a 7:16/km, 89% em Z2, deriva de só 13 bpm. Foi assim que tem que ser',

@@ -32,6 +32,7 @@ Substituir a colcha de retalhos de planilhas, apps de academia, apps de dieta e 
 - Registro de corridas: tempo por zona cardíaca, distância, parciais por km e pace médio
 - **Registro de pedal, separado da corrida**: distância, velocidade média, calorias do relógio, tempo por zona e parciais por km com tempo e frequência cardíaca — com histórico próprio de percursos, sem contaminar as estatísticas de corrida
 - Zonas de treino personalizáveis a partir de teste de FC
+- **Pace por zona aprendido dos seus próprios treinos**: em vez de uma tabela fixa, o app observa a que ritmo você realmente corre em cada zona cardíaca, quilômetro a quilômetro, e só mostra a faixa quando tem dados suficientes para ela ser verdadeira — até lá, orienta apenas pela frequência cardíaca
 - Estatísticas de aderência ao plano e histórico completo
 - **Exercícios extras por dia com registro completo**: a atividade avulsa entra na lista do dia como se estivesse prevista e ganha o mesmo botão de registro do plano — carga, corrida ou pedal. Ao digitar o nome, o app sugere exercícios que já têm histórico e avisa se o registro vai somar à progressão existente
 - Edição do modelo semanal
