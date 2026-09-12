@@ -513,10 +513,7 @@ const RACE_DATE=new Date(2026,9,11);
 // Painel de Metas — provas separadas
 const MUNIQUE={name:'Munique 10K',date:new Date(2026,9,11),dist:10,paceTarget:360}; // sub-60 = 6:00/km
 const BERLIM={name:'Meia de Berlim',date:new Date(2027,3,4),dist:21.1,paceTarget:360}; // pelotão do meio ~2:06 (~6:00/km)
-// Glide do pace fácil (Z2). Recalibrado em 18/08/2026 (era v4, pós-parada de 44 dias sem correr):
-// 7:40/km no reinício -> 7:05/km na prova. Pace FÁCIL fica bem acima do pace de prova (6:00/km) de propósito —
-// correr os dias fáceis rápido demais é o erro que impede o sub-60. Antes: 7:30 -> 6:30 (irreal e desmotivante).
-const EASY_GLIDE={startDate:new Date(2026,7,19),startPace:460,endDate:new Date(2026,9,11),endPace:425};
+// EASY_GLIDE (meta de pace fácil 7:40 -> 7:05/km) aposentado em 11/09/2026 — ver DOC_TECNICO inv. 10.
 // Data de corte da era v4 do plano (reestruturação para sub-60 após 44 dias sem corrida).
 const V4_START='2026-08-19';
 function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -1923,8 +1920,7 @@ const ordem=['Z1','Z2','Z3','Z4','Z5'].filter(zn=>cand[zn]);
 const invalida=new Set();
 for(let i=1;i<ordem.length;i++){if(cand[ordem[i]].mediana>=cand[ordem[i-1]].mediana){invalida.add(ordem[i]);invalida.add(ordem[i-1]);}}
 const out={};
-// Math.round antes do formatPace: com segundos fracionários ele erra a virada do minuto (419,6 s -> "6:00").
-ordem.forEach(zn=>{if(!invalida.has(zn))out[zn]=formatPace(Math.round(cand[zn].rapido))+'-'+formatPace(Math.round(cand[zn].lento))+'/km';});
+ordem.forEach(zn=>{if(!invalida.has(zn))out[zn]=formatPace(cand[zn].rapido)+'-'+formatPace(cand[zn].lento)+'/km';});
 _pzCache=out;_pzAssinatura=assinatura;
 return out;
 }
@@ -2743,7 +2739,7 @@ document.getElementById('r-total').value=formatTime(total);
 /* Parciais por km (pace) — só para corridas a partir de RUN_SPLITS_FROM.
    Campos digitáveis min/seg (teclado numérico no iPhone). Nº de km = arredonda p/ cima. */
 const RUN_SPLITS_FROM='2026-06-12';
-function formatPace(s){return Math.floor(s/60)+':'+String(Math.round(s)%60).padStart(2,'0');}
+function formatPace(s){s=Math.round(s);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
 function paceInputsHTML(base){
 return '<input type="number" inputmode="numeric" id="'+base+'-min" min="0" max="59" placeholder="0"><span class="ti-lbl">min</span><input type="number" inputmode="numeric" id="'+base+'-sec" min="0" max="59" placeholder="0"><span class="ti-lbl">seg</span>';
 }
@@ -3849,14 +3845,12 @@ const daysTo=d=>Math.max(0,Math.ceil((d-tMid)/86400000));
 const paced=runs.filter(r=>r.pace&&r.km>=2);
 const last3=paced.slice(-3);
 const actual=last3.length?last3.reduce((s,r)=>s+r.pace,0)/last3.length:null;
-const ga=EASY_GLIDE.startDate.getTime(),gb=EASY_GLIDE.endDate.getTime(),gt=tMid.getTime();
-const expected=gt<=ga?EASY_GLIDE.startPace:gt>=gb?EASY_GLIDE.endPace:EASY_GLIDE.startPace+(EASY_GLIDE.endPace-EASY_GLIDE.startPace)*((gt-ga)/(gb-ga));
+// EASY_GLIDE aposentado em 11/09/2026 por decisão do usuário: ele corre pelas zonas de FC no relógio
+// e ignorava a "meta de pace fácil". Saíram a linha da meta, o "% do caminho" da glide e o selo
+// "em dia / acima do previsto", que julgava o pace contra ela (DOC_TECNICO inv. 10).
 const maxKm=runs.reduce((m,r)=>Math.max(m,r.km||0),0);
 let h='';
 // Munique — foco PACE
-const gs=EASY_GLIDE.startPace,ge=EASY_GLIDE.endPace;
-const pacePct=actual?Math.max(0,Math.min(100,Math.round((gs-actual)/(gs-ge)*100))):0;
-const onTrack=actual&&actual<=expected;
 // Sem corrida registrada há mais de 14 dias os números de pace não representam o estado atual — avisa em vez de mentir.
 const lastRun=runs.length?runs[runs.length-1]:null;
 const daysOff=lastRun?Math.floor((tMid-dateFromKey(lastRun.date))/86400000):null;
@@ -3866,13 +3860,11 @@ h+='<div class="dash-card"><div class="dash-card-hdr"><i class="ti ti-flag"></i>
 h+='<div class="dash-stat-row"><span>Faltam</span><b>'+daysTo(MUNIQUE.date)+' dias</b></div>';
 h+='<div class="dash-stat-row"><span>Data</span><b>'+fmtDateBR(MUNIQUE.date)+'</b></div>';
 h+='<div class="dash-stat-row"><span>Pace fácil atual</span><b>'+(actual?formatPace(actual)+'/km':'—')+'</b></div>';
-h+='<div class="dash-stat-row"><span>Meta de pace fácil p/ hoje</span><b>'+formatPace(expected)+'/km</b></div>';
 h+='<div class="dash-stat-row"><span>Pace-alvo da prova</span><b>6:00/km</b></div>';
 h+='<div class="dash-stat-row"><span>Maior longão</span><b>'+maxKm.toFixed(1).replace('.',',')+'km de 10km</b></div>';
 h+='<div class="goal-bar"><div class="goal-bar-fill" style="width:'+lrPct+'%"></div></div>';
-h+='<div style="text-align:center;font-size:11px;color:#64748B;margin-top:4px">'+lrPct+'% da distância da prova · pace fácil '+pacePct+'% do caminho '+formatPace(gs)+' → '+formatPace(ge)+'/km</div>';
+h+='<div style="text-align:center;font-size:11px;color:#64748B;margin-top:4px">'+lrPct+'% da distância da prova</div>';
 if(stale)h+='<div class="dash-note warning">⚠️ Sem corrida registrada há '+daysOff+' dias. Os números de pace acima são do último registro e não valem como estado atual.</div>';
-else if(actual)h+='<div class="dash-note '+(onTrack?'success':'warning')+'">'+(onTrack?'✅ Em dia — teu pace fácil está dentro do previsto para hoje.':'⚠️ Pace fácil acima do previsto. Consistência nas corridas fáceis resolve — não é para correr mais rápido, é para correr mais vezes.')+'</div>';
 h+='</div>';
 // Berlim — foco DISTÂNCIA
 const distPct=Math.max(0,Math.min(100,Math.round(maxKm/BERLIM.dist*100)));
