@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 09/09/2026 (upper migra para as terças; semana de Milão)
+> **Última atualização:** 12/09/2026 (teto de frequência em todas as sessões até a prova)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -137,6 +137,11 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - **Por que existem:** em 11/09/2026, com 10 corridas com FC por km, os dados crus davam Z1 **mais rápida** que Z2 (25/08: 5:58/km a 138 bpm — sensor óptico travado na cadência) e Z2/Z3/Z4 praticamente sobrepostas (o longão de 29/08 manteve ~6:40/km com a FC subindo de 160 a 176 — deriva cardíaca, não intensidade). Publicar aquilo diria ao usuário que Z1 é mais rápida que Z2. Nessa data nenhuma zona passa nos guarda-corpos: o app mostra só bpm, e as faixas surgem sozinhas conforme entram corridas.
     - O resultado é memorizado por assinatura (total de FCs registradas + data da última corrida + dia + `userZones`), porque `addBpmToZones` roda em cada linha de exercício de cada render.
     - `formatPace()` arredonda os segundos **antes** de separar minuto e segundo (corrigido em 11/09/2026). Antes, o minuto vinha de `Math.floor(s/60)` e os segundos de `Math.round(s)%60`: com segundos fracionários a virada errava, e 419,6 s virava `6:00` em vez de `7:00`. O caso real era "Pace fácil atual" no painel de metas, que recebe uma média; as demais chamadas já passavam inteiros.
+
+28. **Prescrição passou de alvo de PACE para teto de FREQUÊNCIA** (12/09/2026) — em três de quatro sessões ele correu mais rápido que o prescrito, sempre se sentindo confortável (29/08 pedia 7:05–7:40 e saiu 6:44; 08/09 e 12/09 pediam 6:00 e saíram 5:44 e 5:46). Alvo de pace é burlável sem má intenção; teto de FC o relógio não deixa passar.
+    - Duas regras, e qual delas vale **define o objetivo da sessão**: em fácil/longão a **frequência é a meta** (teto 159, topo da Z2) e o pace é resultado; em ritmo de prova o **pace é a meta** (6:00 cravado) e a frequência é a **medida**, com teto 175 — empatando, manda a FC. Em tiros a FC pode passar de 175 no esforço, mas a recuperação volta abaixo de 160.
+    - Aplicado em todas as sessões de corrida de 17/09 a 06/10, e documentado no modal em seção própria.
+    - Racional: 6:00/km custava 175 bpm em 12/09 e precisa custar ~165 até a prova. É a única variável que ainda tem que mudar — velocidade já foi demonstrada (5 km a 5:44 em 08/09).
 
 ### Migrações da era v4 (18/08/2026)
 
