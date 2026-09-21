@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 21/09/2026 (longão-chave adiado para 22/09 pela viagem)
+> **Última atualização:** 21/09/2026 (prova virou 4ª perna de revezamento, 11,2km)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
@@ -81,6 +81,7 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 5. **Balanço calórico** (`calcBalance`): gasto = basal (última medição) + treino (manual em `workoutKcal` OU estimado de musculação+corrida do dia). Alterar estimativas afeta o dashboard de emagrecimento.
 6. **Migrações**: padrão = função `migrate*()` idempotente chamada no boot (ex.: `migrateJunho`, `applyChurrascoPizzaMigration`). Novas correções de dados históricos seguem esse padrão.
 7. **Segurança de render:** strings de usuário passam por `escapeHtml()` antes de entrar em `innerHTML`. Manter.
+7b. **A prova é a 4ª perna do revezamento da Maratona de Munique** (confirmado 21/09/2026): KM 31 (Ampfingstraße) à chegada no Willi-Daume-Platz, **11,2km**, largada da equipe 09:20 e troca dele por volta de 12:20-13:00. A constante `MUNIQUE` carrega `dist:11.2` porque ela alimenta o percentual do longão no painel de metas — com `dist:10` o painel diria 100% cedo demais.
 8. **IMC:** `calcIMC` usa altura fixa embutida (`peso/3.0276` ⇒ 1,74 m). A meta de peso fica em `renderEmagDashboard` (`target`, hoje **74 kg**; início 83,5).
 9. **Linhas de nota no template não são exercício** — `isNoteLine()` (prefixos `⚡ 📍 ✈️ 💧 😴 🎽 🍝 📊 ⛔ ⚽ ─ ·` ou linha terminada em `:`) é avaliada **antes** de `isRunning()`, senão uma nota contendo "km" ("⚡ MARCO: os primeiros 10km") vira botão de registro de corrida. Notas caem no ramo `isCard` e renderizam como texto puro.
 10. **Pace por zona é DERIVADO dos treinos, e não existe mais meta de pace fácil** — até 11/09/2026 `PACE_ZONES` era uma tabela fixa (recalibrada em 18/08 para sub-60: Z2 = 7:05-7:40/km; antes, calibrada para sub-55, exibia Z2 a 6:00-6:20/km e empurrava todo treino Z2 para Z3/Z4). A tabela fixa foi aposentada porque o pace dentro de uma mesma zona varia demais para caber numa faixa: 01/09 e 10/09 tiveram praticamente a mesma FC média (156/155 bpm) e 39 s/km de diferença. Agora `paceZonesObservadas()` calcula a faixa de cada zona a partir das parciais reais, e `addBpmToZones` só anota o pace de uma zona quando há dado suficiente — senão mostra só bpm (regras na invariante 28).
