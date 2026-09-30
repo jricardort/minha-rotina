@@ -2315,15 +2315,19 @@ const SPECIAL_WORKOUTS={
 'Corrida Z2 5km fácil (~7:05/km)',
 '📊 TETO DE 159 bpm. Se passar, desacelera — aqui o pace é consequência, não meta',
 '⚡ Amanhã é a prova do sub-60 em treino: hoje é só rodar']},
-'2026-10-01':{t:'🎯 3×2km a 6:00/km — a prova do sub-60',ex:[
-'· Aquecimento 10min Z2 + 4 strides de 20s',
-'Corrida 3×2km a 6:00/km — recuperação de 3min de trote entre os blocos',
-'· Desaquecimento 5min Z1',
-'📊 6:00/km cravado E teto de 175 bpm. Quando os dois discordarem, MANDA A FREQUÊNCIA',
-'⚡ Se os três blocos saírem no ritmo com a frequência abaixo de 175, o sub-60 está confirmado',
-'⚡ O terceiro bloco é o que conta: os dois primeiros qualquer um segura',
-'📊 UM lançamento só, com tempo e FC de cada quilômetro',
-'👟 Tênis de prova']},
+'2026-10-01':{t:'🩺 CORRIDA DIAGNÓSTICA — 4-5km fáceis, testando o tênis',ex:[
+'· Caminhada de 5min ANTES de começar a correr',
+'Corrida 4-5km fácil (na rua)',
+'· Desaquecimento e alongamento de panturrilha e fibulares',
+'⛔ Os 3×2km saíram. Não é lesão declarada, é prudência: a forma já está no banco desde 22/09',
+'🩺 HOJE NÃO É TREINO, É EXPERIMENTO. O objetivo é descobrir se a dor volta',
+'👟 CloudMonster — é ele que está sendo testado',
+'📊 TETO DE 159 bpm e NENHUM quilômetro abaixo de 6:45',
+'⚡ Em 30/09 você abriu o km1 a 5:39 num dia que pedia 7:05, e a dor veio no km 2,5. Se abrir rápido de novo, o teste não separa tênis de largada',
+'⚡ Doeu? PARA. Não tenta terminar os 5km — a informação já foi coletada',
+'📊 Anota na nota do registro: doeu ou não, em que quilômetro, e se passou',
+'⚡ Limpo → tênis absolvido, sábado mantém os 10km e você corre a prova com ele',
+'⚡ Doeu → troca para o tênis antigo no sábado e procura um fisioterapeuta esta semana']},
 '2026-10-02':{t:'⛔ OFF — Oktoberfest 12h–16h30',rest:true,ex:[
 'Descanso total (o upper leve de hoje foi cancelado)',
 '🍺 Oktoberfest 12h–16h30',
@@ -2369,6 +2373,7 @@ const SPECIAL_WORKOUTS={
 '· Os 6km de entrada: teto de 159 bpm',
 '📊 6:00/km cravado E teto de 175 bpm. Quando os dois discordarem, MANDA A FREQUÊNCIA',
 '⚡ Feriado (Tag der Deutschen Einheit): pode sair mais tarde, mas SAI',
+'🩺 CONDICIONADO ao resultado de quinta: se a perna doeu de novo, corta para 6km fáceis e sem o bloco a 6:00',
 '⚡ Amanhã são 7h de Oktoberfest — este treino não tem plano B']},
 '2026-10-04':{t:'⛔ Oktoberfest final — OFF e último álcool',rest:true,ex:[
 'Descanso total de treino',
@@ -2409,7 +2414,7 @@ function isCardio(e){return /Corrida|km|Tiros|Fartlek|PROVA|Caminhada|Trote|Temp
 // Prefixos de evento (🍺 🎂 🎪 🥩 🍽️ 🔄) entraram em 26/08/2026 com os ajustes de calendário social:
 // sem eles, uma linha como "🍺 Oktoberfest 10h–16h" não casa com isCardio e cai no ramo de musculação (botão de carga).
 // Precisa ser checado ANTES de isRunning: notas como "⚡ MARCO: os primeiros 10km" contêm "km" e cairiam como corrida.
-function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆|⚖️|👟|🎧|✈️|🚗|⏱️|🎯)/.test(s)||/:$/.test(s);}
+function isNoteLine(e){const s=String(e||'').trim();return /^(⚡|📍|✈️|💧|😴|🎽|🍝|📊|⛔|⚽|─|·|🍺|🎂|🎪|🥩|🍽️|🔄|🚴|🚆|⚖️|👟|🎧|✈️|🚗|⏱️|🎯|🩺)/.test(s)||/:$/.test(s);}
 function isRunning(e){return /Corrida|Tiros|Fartlek|Tempo Run|Intervalado|Shakeout|Long Run|Educativos|strides|PROVA|km/i.test(e)&&!/Core|Prancha|Abdominal|Oblíquos|Sauna|Descanso|Alongamento|Musculação/i.test(e);}
 // Linha de pedal: prefixo 🚴. Avaliada ANTES de isNoteLine/isRunning — 🚴 é prefixo de nota
 // (para não virar botão de corrida), então sem esta checagem o pedal nunca ganharia botão próprio.
