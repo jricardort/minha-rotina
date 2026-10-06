@@ -2347,7 +2347,8 @@ const SPECIAL_WORKOUTS={
 '· Chegada no Willi-Daume-Platz, Olympiapark',
 '⏱️ Largada oficial 09:20 — tua troca cai por volta de 12:20 às 13:00',
 '🎯 ALVO: 6:00/km · 10km em ~59:50 · os 11,2km em ~67:00',
-'· km 1-2 a 6:05 — você larga FRIO e ainda zigue-zagueando entre maratonistas',
+'· km 1-2 a 6:10 — larga FRIO, zigue-zagueando, e com pouca quilometragem nas 2 últimas semanas',
+'🩺 DECIDE NO KM 4, não no km 1: se a FC estiver abaixo de 170 e a perna quieta, assenta em 6:00 e vai atrás do sub-60. Se não, segura em 6:20 e termina forte',
 '· km 3-8 a 6:00 cravado — teto de 172 bpm',
 '· km 9-10 a 5:50 SE a frequência deixar — é aqui que o sub-60 se ganha',
 '· km 10 ao fim: o que sobrar. Os últimos 300m são da equipe, não do cronômetro',
@@ -2389,12 +2390,28 @@ const SPECIAL_WORKOUTS={
 '💧 Meta 3L de água hoje e amanhã — repor o fim de semana',
 '😴 Dormir 8h: o sono DESTA semana é o que aparece no domingo',
 '🍝 Comida normal e limpa — nada de dieta agressiva para "compensar"']},
-'2026-10-06':{t:'🏃 Trote leve 4km + Jantar da firma',ex:[
-'🏃 Trote 4km bem leve (Z1-Z2)',
+'2026-10-07':{t:'🩺 Teste na rua + 2×1km no ritmo de prova',ex:[
+'· Caminhada de 5min antes de começar',
+'Corrida 5km na rua — 2×1km a 6:00/km no meio',
+'· 1,5km fácil de entrada, teto de 159 bpm',
+'· + 2×1km a 6:00/km, com 3min de trote entre eles',
+'· + 1km solto para encerrar',
+'🩺 DOIS objetivos num treino: ver se a perna aguenta asfalto e lembrar a perna do ritmo de prova',
+'⚡ Substitui os 4×400m a 5:40 — mais rápido que o ritmo de prova não faz sentido com perna não testada',
+'⚡ A diagnóstica de quinta passada não aconteceu, então é HOJE que se descobre o estado da perna',
+'📊 Nos 2×1km: 6:00 cravado, teto de 175 bpm. Nada mais rápido',
+'⚡ Doeu a lateral da perna? PARA na hora e me avisa — ainda dá tempo de ajustar domingo',
+'📊 Anota a FC de cada km E se doeu ou não',
+'👟 O tênis que você vai usar na prova — último teste dele']},
+'2026-10-06':{t:'🏃 Trote leve 4km na esteira + sauna',ex:[
+'🏃 Trote 4km bem leve (Z1-Z2) — ESTEIRA',
+'📊 TETO DE 159 bpm. Digita 7:00/km e esquece o resto',
+'⚡ Esteira de propósito: trava o ritmo (em 30/09 você abriu a 5:39 num dia que pedia 7:05) e é o piso que menos exige o compartimento lateral que doeu',
+'· Sauna depois',
 '⛔ SEM FUTEBOL — risco de torção a 5 dias da prova',
-'🍽️ Jantar Firma ADI à noite — come normal, sem exagero e sem prato novo',
-'⛔ Álcool: zero. Se for socialmente impossível, uma e só.',
-'😴 Sair antes das 23h — hoje o sono conta mais que o networking']}
+'⚡ Primeiro treino em 6 dias. Hoje é destravar, não treinar',
+'💧 Sauna desidrata: bebe água depois',
+'⛔ Jantar da firma CANCELADO. Álcool zero até domingo de qualquer forma']}
 };
 let userZones={};try{const _uz=localStorage.getItem('userZones');userZones=_uz?JSON.parse(_uz)||{}:{};}catch(e){userZones={};}
 function computeZones(fcmax){return{z1:{min:0,max:Math.round(fcmax*0.80)-1},z2:{min:Math.round(fcmax*0.80),max:Math.round(fcmax*0.87)-1},z3:{min:Math.round(fcmax*0.87),max:Math.round(fcmax*0.93)-1},z4:{min:Math.round(fcmax*0.93),max:Math.round(fcmax*0.97)-1},z5:{min:Math.round(fcmax*0.97),max:fcmax}};}

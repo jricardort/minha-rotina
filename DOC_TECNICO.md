@@ -1,6 +1,6 @@
 # Minha Rotina — Documentação Técnica
 
-> **Última atualização:** 30/09/2026 (quinta 01/10 vira corrida diagnóstica)
+> **Última atualização:** 06/10/2026 (semana da prova reorganizada após 6 dias sem treino)
 > **Regra de manutenção:** este documento é referência de trabalho. Toda alteração no app que mude arquitetura, chaves de dados, esquema ou fluxo crítico DEVE ser refletida aqui. Números de linha são aproximados e derivam — use os **nomes de funções/constantes como âncoras** (grep) em vez de confiar na linha.
 
 ## 1. Visão geral
