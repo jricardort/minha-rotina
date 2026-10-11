@@ -4650,6 +4650,22 @@ const provider = new GoogleAuthProvider();
 const KEYS = ['events','tasks','medData','weightLog','workoutTemplate','cardioLog','bikeLog','coreLog','workoutOverrides','diet','dietGoals','dietFavorites','workoutKcal','exerciseRenames','comprasList','comprasHistorico','userZones','dayExtraExercises','userFoods','foodOverrides'];
 const TS_LOCAL = '_localModified';
 const TS_SYNC = '_lastSync';
+
+// Chaves append-only: encolher o numero de registros significa aparelho com dado
+// velho, nunca uso normal. Base da trava de encolhimento (invariante 29).
+const LOG_KEYS = ['weightLog','cardioLog','bikeLog','coreLog','dayExtraExercises','workoutOverrides','medData','diet','workoutKcal','comprasHistorico'];
+
+// Conta registros de uma chave de log em qualquer das formas usadas pelo app:
+// array -> tamanho; objeto -> soma dos arrays filhos (filho nao-array conta 1).
+function countRecords(v){
+  if (Array.isArray(v)) return v.length;
+  if (v && typeof v === 'object') {
+    let n = 0;
+    for (const k of Object.keys(v)) n += Array.isArray(v[k]) ? v[k].length : 1;
+    return n;
+  }
+  return (v === null || v === undefined) ? 0 : 1;
+}
 const origSetItem = localStorage.setItem.bind(localStorage);
 let currentUser = null;
 let syncTimer = null;
@@ -4711,8 +4727,9 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') flushPending();
 });
 
-async function syncToCloud(){
-  if (!currentUser) return;
+async function syncToCloud(force){
+  if (!currentUser) return false;
+  const docRef = doc(db, 'users', currentUser.uid, 'data', 'main');
   try {
     setStatus('Salvando na nuvem…');
     const data = { lastSync: new Date().toISOString(), localModified: parseInt(localStorage.getItem(TS_LOCAL) || '0') };
@@ -4722,16 +4739,74 @@ async function syncToCloud(){
         try { data[k] = JSON.parse(v); } catch { /* ignore */ }
       }
     });
-    await setDoc(doc(db, 'users', currentUser.uid, 'data', 'main'), data, { merge: true });
+    // Trava de encolhimento (invariante 29): nunca gravar menos registros do que a
+    // nuvem tem numa chave append-only. Protege TODOS os caminhos de push, porque
+    // todos passam por aqui — inclusive os dois de loadFromCloud.
+    if (!force) {
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        const cloud = snap.data();
+        const shrink = [];
+        LOG_KEYS.forEach(k => {
+          if (data[k] === undefined || cloud[k] === undefined) return;
+          const mine = countRecords(data[k]), theirs = countRecords(cloud[k]);
+          if (mine < theirs) shrink.push(k + ': aqui ' + mine + ', nuvem ' + theirs);
+        });
+        if (shrink.length) {
+          console.warn('[sync] gravacao BLOQUEADA — encolheria registros:', shrink);
+          setStatus('⚠️ Conflito de sync — clique', () => resolveShrinkConflict(shrink));
+          return false;
+        }
+      }
+    }
+    await setDoc(docRef, data, { merge: true });
     origSetItem(TS_SYNC, String(Date.now()));
     setStatus('Salvo na nuvem ✓');
     setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Salvo na nuvem ✓') setStatus(''); }, 2500);
+    return true;
   } catch (e) {
     console.error('Erro sync:', e);
     setStatus('Erro — tentando novamente em 5s', () => syncToCloud());
     setTimeout(() => { if (currentUser) syncToCloud(); }, 5000);
+    return false;
   }
 }
+
+// Resolucao do conflito de encolhimento. Caminho seguro primeiro; sobrescrever a
+// nuvem exige um segundo "sim" explicito. Os dois sao alcancaveis no celular —
+// nao dependem de console.
+async function resolveShrinkConflict(details){
+  if (!currentUser) return;
+  if (confirm(`A NUVEM TEM MAIS REGISTROS que este aparelho:
+
+${details.join(String.fromCharCode(10))}
+
+Nada foi gravado — nenhum dado seu foi perdido.
+Quase sempre isso quer dizer que este aparelho esta com dados velhos.
+
+OK = trazer os dados da nuvem para ca (seguro, recomendado)
+Cancelar = ver a outra opcao`)) {
+    try {
+      setStatus('Trazendo dados da nuvem…');
+      const snap = await getDoc(doc(db, 'users', currentUser.uid, 'data', 'main'));
+      if (!snap.exists()) { setStatus('Nuvem vazia'); return; }
+      const d = snap.data();
+      applyCloudData(d);
+      // Zera a vantagem deste aparelho na comparacao, senao ele volta a "ganhar".
+      origSetItem(TS_LOCAL, String(d.localModified || 0));
+      origSetItem(TS_SYNC, String(Date.now()));
+      if (window.refreshDataFromStorage) window.refreshDataFromStorage();
+      setStatus('Dados da nuvem aplicados ✓');
+      setTimeout(() => setStatus(''), 2500);
+    } catch (e) { console.error(e); setStatus('Erro ao trazer da nuvem'); }
+    return;
+  }
+  if (confirm(`Gravar ESTE aparelho por cima da nuvem?
+
+Isso APAGA de vez os registros que so existem na nuvem.
+So confirme se voce apagou esses registros de proposito.`)) await syncToCloud(true);
+}
+window.forceSyncToCloud = () => syncToCloud(true);
 
 function applyCloudData(d){
   let changed = false;

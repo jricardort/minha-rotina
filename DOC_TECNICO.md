@@ -62,6 +62,7 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 - **Fluxo:** cada `localStorage.setItem` relevante é seguido de `window.syncNow()` (debounced) → grava o snapshot das `KEYS` no Firestore. No login/snapshot remoto, `applyCloudData()` grava no localStorage e chama `window.refreshDataFromStorage()` que re-hidrata as variáveis globais **in-place e re-renderiza sem reload**.
 - **`stableStr()`**: comparação JSON com chaves ordenadas — evita falso "difere" por reordenação de chaves do Firestore (`cloudDiffers`). Não remover.
 - **Regra de ouro:** ao criar uma nova chave de dado sincronizável, adicioná-la em **três lugares**: constante `KEYS`, `refreshDataFromStorage()` e no carregamento inicial da variável global.
+- **Trava de encolhimento:** `syncToCloud()` lê a nuvem antes de gravar e **aborta** se alguma chave de `LOG_KEYS` sairia com menos registros do que a nuvem tem (invariante 29). Custo: 1 leitura do Firestore por sync.
 - **Leitura externa:** `node firebase-zes/ler-dados.js` (fora do repo, em `C:\Users\User\firebase-zes\`) lê o snapshot real do Firestore (chave de service account fora do repo).
 
 ## 5. Caminhos críticos e invariantes
@@ -143,6 +144,17 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - Duas regras, e qual delas vale **define o objetivo da sessão**: em fácil/longão a **frequência é a meta** (teto 159, topo da Z2) e o pace é resultado; em ritmo de prova o **pace é a meta** (6:00 cravado) e a frequência é a **medida**, com teto 175 — empatando, manda a FC. Em tiros a FC pode passar de 175 no esforço, mas a recuperação volta abaixo de 160.
     - Aplicado em todas as sessões de corrida de 17/09 a 06/10, e documentado no modal em seção própria.
     - Racional: 6:00/km custava 175 bpm em 12/09 e precisa custar ~165 até a prova. É a única variável que ainda tem que mudar — velocidade já foi demonstrada (5 km a 5:44 em 08/09).
+
+29. **Trava de encolhimento no sync — nenhuma gravação pode reduzir um log** (11/10/2026) — `syncToCloud(force)` faz um `getDoc` antes do `setDoc` e compara `countRecords()` de cada chave de `LOG_KEYS` (`weightLog`, `cardioLog`, `bikeLog`, `coreLog`, `dayExtraExercises`, `workoutOverrides`, `medData`, `diet`, `workoutKcal`, `comprasHistorico`). Se a gravação sairia com **menos** registros que a nuvem, nada é gravado e o status vira `⚠️ Conflito de sync — clique`.
+    - **Por que:** `loadFromCloud` resolvia conflito pelo documento INTEIRO com um único carimbo `localModified`. Um aparelho com `localStorage` velho que mexesse em qualquer chave carimbava um `localModified` novo, ganhava a comparação e empurrava seu snapshot inteiro; como `setDoc` usa `merge:true` (mescla por **campo**, não por registro), a chave inteira era substituída. Duas perdas reais confirmadas: a upper de **23/09/2026** (`weightLog`, não recuperada) e `dayExtraExercises` **inteiro — 31 registros, 18 dias — entre 06 e 07/10/2026** (recuperado do backup de 06/10).
+    - **Onde a trava mora e por quê:** dentro de `syncToCloud`, não em `loadFromCloud`. Todo caminho de push passa por `syncToCloud` — inclusive os **dois** de `loadFromCloud` (o push de mudanças pendentes antes da leitura, e o branch `localMod > cloudMod`). Uma trava só em `loadFromCloud` deixaria o push debounced do `localStorage.setItem` descoberto.
+    - **`countRecords(v)`** é agnóstico de forma porque as chaves têm formas diferentes: array → tamanho; objeto → soma dos arrays filhos (filho não-array conta 1). Serve para `cardioLog` (`{exKey:[...]}`), `medData` (`{0:{...},1:{...}}`) e `diet` (`{data:{...}}`) sem casos especiais.
+    - **Escape hatch, alcançável no celular:** o clique abre `resolveShrinkConflict()`. Primeiro confirm = trazer a nuvem para o aparelho (seguro) — aplica `applyCloudData` e **rebaixa `TS_LOCAL` para o `localModified` da nuvem**, senão o aparelho velho volta a ganhar a comparação no próximo login. Cancelar abre um segundo confirm, que sobrescreve a nuvem via `syncToCloud(true)`. Também existe `window.forceSyncToCloud()`.
+    - **Falso positivo é possível e aceito:** apagar um registro de propósito (ex.: uma corrida duplicada) dispara a trava. O custo é um clique; o benefício é que perda silenciosa fica impossível. Não trocar por um aviso que grava mesmo assim.
+    - ⚠️ `events`, `tasks` e `comprasList` **não** estão em `LOG_KEYS` — encolhem no uso normal.
+    - Camadas 2 (carimbo por chave) e 3 (união por registro nos logs append-only) seguem **pendentes**; esta sozinha já teria evitado as duas perdas.
+
+⚠️ **Numeração:** existem duas invariantes 28 (pace por zona e teto de FC) — colisão anterior a esta mudança, não renumerada porque há referências cruzadas no texto e nas notas do projeto.
 
 ### Migrações da era v4 (18/08/2026)
 
