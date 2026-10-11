@@ -165,6 +165,12 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - **A regra de ouro "na rua, não na esteira" virou duas**, porque era HTML estático no modal e não passa pelas eras: vale para Munique, e **inverte no Brasil** (14/12–01/02, esteira por segurança). Qualquer regra nova no modal que dependa de período tem esse mesmo problema.
     - **Contador e card de peso** passaram a promover Berlim quando `RACE_DATE` já passou (`emBerlim`/`raceTitle`), mantendo a linha de Munique como histórico cumprido.
 
+31. **Sub-aba "Resultados" da aba Treino — `PROVAS` é dado de referência em código, não chave sincronizada** (11/10/2026) — guarda o resultado de cada prova com a análise das parciais (tempo, pace, parciais km a km com FC, blocos de análise, observações, a nota do registro e a previsão dada na véspera). `PROVAS_FUTURAS` alimenta o rodapé de próximas provas.
+    - **Por que em código e não em `localStorage`:** prova é evento raro (três até set/2027) e o conteúdo é análise, não lançamento. Virar chave sincronizável exigiria entrar em `KEYS`, em `refreshDataFromStorage()` e na carga inicial (a regra de ouro do §4), além de `LOG_KEYS` da invariante 29 — risco desproporcional ao ganho. Para registrar uma prova nova, acrescentar um objeto no início de `PROVAS`.
+    - ⚠️ **Existiam QUATRO chamadas espalhadas** de `if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();` (em dois pontos de refresh, no `switchTab` e no `showSection`). Com a terceira aba, cada uma teria que conhecer a nova. Foram todas trocadas pelo despachante único **`renderTreinoSubtab()`**. Ao criar uma quarta sub-aba, mexer só nele.
+    - A FC da prova de 11/10 está marcada como inconfiável na própria aba (o km 3 aparece como `sem sinal`, em vermelho) — ver invariante 28 sobre sensor óptico travado na cadência.
+    - O cabeçalho da aba Treino era fixo em "10km sub-60 · Maratona de Munique · 11/Out/2026" e passou a apontar Berlim. **É HTML estático, não passa pelas eras** — mesmo problema da regra de ouro na invariante 30; trocar à mão a cada bloco novo.
+
 ### Migrações da era v4 (18/08/2026)
 
 | Função | O que corrige |

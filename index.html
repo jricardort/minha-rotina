@@ -411,10 +411,11 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <button class="add-btn" onclick="openEventModal()"><i class="ti ti-plus"></i>Novo evento</button>
 </div>
 <div class="sec" id="sec-treino">
-<div class="treino-tip" style="display:flex;align-items:center;justify-content:space-between"><span><strong>META:</strong> 10km sub-60 (pace 6:00/km) · Maratona de Munique · 11/Out/2026</span><button class="info-btn" onclick="openInfoModal()" title="Visão geral do plano"><i class="ti ti-info-circle"></i></button></div>
-<div class="subtabs"><button class="subtab active" id="subtab-treino-semanas" onclick="switchTreinoSubtab('semanas')"><i class="ti ti-calendar-week"></i>Semanas</button><button class="subtab" id="subtab-treino-hist" onclick="switchTreinoSubtab('hist')"><i class="ti ti-history"></i>Histórico</button></div>
+<div class="treino-tip" style="display:flex;align-items:center;justify-content:space-between"><span><strong>META:</strong> Meia de Berlim · 04/Abr/2027 · 21,1km — estreia na distância</span><button class="info-btn" onclick="openInfoModal()" title="Visão geral do plano"><i class="ti ti-info-circle"></i></button></div>
+<div class="subtabs"><button class="subtab active" id="subtab-treino-semanas" onclick="switchTreinoSubtab('semanas')"><i class="ti ti-calendar-week"></i>Semanas</button><button class="subtab" id="subtab-treino-hist" onclick="switchTreinoSubtab('hist')"><i class="ti ti-history"></i>Histórico</button><button class="subtab" id="subtab-treino-result" onclick="switchTreinoSubtab('resultados')"><i class="ti ti-trophy"></i>Resultados</button></div>
 <div id="treino-content"></div>
 <div id="treino-historico" style="display:none"></div>
+<div id="treino-resultados" style="display:none"></div>
 </div>
 <div class="sec" id="sec-dieta">
 <div class="subtabs"><button class="subtab active" id="subtab-diet-hoje" onclick="switchDietSubtab('hoje')"><i class="ti ti-tools-kitchen-2"></i>Hoje</button><button class="subtab" id="subtab-diet-hist" onclick="switchDietSubtab('hist')"><i class="ti ti-history"></i>Histórico</button></div>
@@ -1866,9 +1867,126 @@ function switchTreinoSubtab(name){
 treinoSubtab=name;
 document.getElementById('subtab-treino-semanas').classList.toggle('active',name==='semanas');
 document.getElementById('subtab-treino-hist').classList.toggle('active',name==='hist');
+document.getElementById('subtab-treino-result').classList.toggle('active',name==='resultados');
 document.getElementById('treino-content').style.display=name==='semanas'?'block':'none';
 document.getElementById('treino-historico').style.display=name==='hist'?'block':'none';
-if(name==='semanas')renderPlan();else renderTreinoHistorico();
+document.getElementById('treino-resultados').style.display=name==='resultados'?'block':'none';
+renderTreinoSubtab();
+}
+// Despachante unico da sub-aba de Treino. Existiam quatro chamadas espalhadas com
+// um if/else de duas vias; com a terceira aba, cada uma teria que saber da nova.
+function renderTreinoSubtab(){
+if(treinoSubtab==='hist')renderTreinoHistorico();
+else if(treinoSubtab==='resultados')renderProvas();
+else renderPlan();
+}
+// ===================== PROVAS CORRIDAS =====================
+// Resultado de cada prova, com a analise das parciais. E dado de referencia,
+// como o plano: vive no codigo e e retroativo. Para registrar uma prova nova,
+// acrescentar um objeto aqui (o mais recente primeiro).
+const PROVAS=[{
+data:'2026-10-11',
+nome:'Maratona de Munique — 4ª perna do revezamento',
+local:'Munique, Alemanha · do km 31 ao 42,2',
+dist:'11,12 km',
+tempo:'1:04:37',
+pace:'5:49/km',
+meta:'10 km em menos de 60 min (6:00/km)',
+cumprida:true,
+manchete:'Marca dos 10 km em <b>58:27</b>',
+submanchete:'1min33 abaixo da meta — e correndo 1,12 km a mais que a distância-alvo',
+splits:['5:50','6:09','5:56','5:53','6:00','6:00','5:46','5:52','5:42','5:19','5:20','0:35'],
+bpm:[162,140,null,177,181,181,178,178,181,175,166,169],
+analise:[
+{k:'Marca dos 10 km',v:'58:27',hl:true},
+{k:'1ª metade (km 1-5)',v:'29:48'},
+{k:'2ª metade (km 6-10)',v:'28:39',hl:true},
+{k:'Negative split',v:'69s mais rápido na 2ª metade'},
+{k:'Amplitude km 3-9',v:'18s (5:42 a 6:00)'},
+{k:'Km mais rápido',v:'km 10 — 5:19'},
+{k:'Peso na prova',v:'75,7 kg'},
+{k:'Tênis',v:'o antigo (o novo doeu)'}
+],
+obs:[
+{i:'⭐',t:'Os 28:39 da 2ª metade são, ao segundo, o tempo do Time Trial de 5 km de 08/09 — que na época foi esforço máximo real, 187 de pico, 14 dos 28 min em Z5. Cinco semanas depois, o que era limite virou a segunda metade de uma prova de 11 km.'},
+{i:'📉',t:'A amplitude de 18s entre os km 3 e 9 contra 92s em 04/09 enterra a hesitação de ritmo diagnosticada naquele dia. Só o km 1 saiu a 5:50 (o plano pedia 6:05) — e foi corrigido sozinho no km 2, primeira vez que o conserto aconteceu dentro da prova.'},
+{i:'🗣️',t:'Percepção dele: "de moderada para difícil, mas terminei com muito gás" — segurou no fim para cruzar a chegada junto com os amigos. Os dados concordam, e isso é novo: em setembro ele dizia "confortável" a 94% da FCmáx.'},
+{i:'⚠️',t:'A FREQUÊNCIA CARDÍACA DESTA PROVA NÃO SERVE. Ele relatou falha de registro (nada do km 2 ao km 3), e os 177-181 sustentados do km 4 ao 9 seriam 97% da máxima por 40 min — improvável. Ou a FCmáx real é bem acima de 187, ou o sensor travou na cadência. Não usar para calibrar zonas.'},
+{i:'🦵',t:'Dor lateral na perna direita começou no km 3, virou incómodo no km 5 e sumiu; doeu ao esfriar e depois passou. Melhorar com a carga aponta tendão, não osso — mas foi a 5ª corrida seguida com dor.'},
+{i:'⚖️',t:'75,7 kg contra os 74-74,5 do contrato. O quilo e dois valia ~35s; ele tinha 93s de folga. Item descumprido e irrelevante — lembrar disso antes de perseguir balança dentro de um bloco de construção.'}
+],
+nota:'O registro de batimentos tem uma inconsistência, não marcou no início da corrida do km 2 ao km 3. Dor na perna começou no km 3, passou no km 5 a virar incómodo, depois sem dor. Quando esfriou doeu, mas agora to sem dor.',
+previsao:'Estimativa dada na véspera: ~60% de chance, faixa 59:00 a 61:30. Ele passou do teto da faixa.'
+}];
+
+// Provas futuras — para a aba não ficar só com o passado.
+const PROVAS_FUTURAS=[
+{data:new Date(2027,3,4),nome:'Meia de Berlim',dist:'21,0975 km',papel:'ESTREIA na distância',meta:'completar bem · 2:03-2:05 por escolha'},
+{data:new Date(2027,8,19),nome:'Meia de Copenhague',dist:'21,0975 km',papel:'a prova de TEMPO',meta:'percurso plano, feito para recorde'}
+];
+
+function renderProvas(){
+const c=document.getElementById('treino-resultados');
+if(!c)return;
+let h='';
+if(!PROVAS.length){h='<div class="card" style="text-align:center;color:#64748B;font-size:13px;padding:20px">Nenhuma prova registrada ainda.</div>';}
+PROVAS.forEach(pv=>{
+const dt=dateFromKey(pv.data);
+h+=`<div class="card" style="padding:0;overflow:hidden;margin-bottom:12px">`;
+h+=`<div style="background:${pv.cumprida?'linear-gradient(135deg,#065F46,#047857)':'#475569'};color:#fff;padding:14px 14px 12px">`;
+h+=`<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">`;
+h+=`<div style="font-size:14px;font-weight:700;line-height:1.3">${escapeHtml(pv.nome)}</div>`;
+h+=`<span style="flex-shrink:0;font-size:10px;font-weight:700;background:${pv.cumprida?'#34D399':'#CBD5E1'};color:#064E3B;padding:3px 8px;border-radius:99px">${pv.cumprida?'META CUMPRIDA':'REGISTRADA'}</span></div>`;
+h+=`<div style="font-size:11px;opacity:.85;margin-top:3px">${fmtDateBR(dt)} · ${escapeHtml(pv.local)}</div>`;
+h+=`<div style="margin-top:10px;font-size:17px;font-weight:300;line-height:1.35">${pv.manchete}</div>`;
+h+=`<div style="font-size:11px;opacity:.85;margin-top:3px">${escapeHtml(pv.submanchete)}</div></div>`;
+// numeros principais
+h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid #E2E8F0">`;
+[['Distância',pv.dist],['Tempo',pv.tempo],['Pace médio',pv.pace]].forEach((x,i)=>{
+h+=`<div style="padding:10px 6px;text-align:center;${i<2?'border-right:1px solid #E2E8F0':''}"><div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.4px">${x[0]}</div><div style="font-size:15px;font-weight:700;color:#0F172A;margin-top:2px">${escapeHtml(x[1])}</div></div>`;});
+h+=`</div>`;
+h+=`<div style="padding:12px 14px">`;
+h+=`<div style="font-size:11px;color:#64748B;margin-bottom:8px"><b>Meta:</b> ${escapeHtml(pv.meta)}</div>`;
+// analise
+h+=`<p class="section-label" style="margin:4px 0 6px">Análise das parciais</p><div class="view-card" style="margin-bottom:12px">`;
+pv.analise.forEach(a=>{h+=`<div class="view-row"><span>${escapeHtml(a.k)}</span><b style="${a.hl?'color:#047857':''}">${escapeHtml(a.v)}</b></div>`;});
+h+=`</div>`;
+// parciais km a km
+const paces=pv.splits.map(x=>{const m=x.match(/^(\d+):(\d+)$/);return m?(+m[1]*60+ +m[2]):null;});
+const reais=paces.slice(0,-1).filter(x=>x!==null);
+const mn=Math.min(...reais),mx=Math.max(...reais);
+h+=`<p class="section-label" style="margin:4px 0 6px">Parciais por km</p>`;
+h+=`<div style="border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;margin-bottom:12px">`;
+h+=`<div style="display:grid;grid-template-columns:52px 1fr 70px;background:#F8F9FA;font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.4px;padding:6px 10px;border-bottom:1px solid #E2E8F0"><span>Km</span><span>Pace</span><span style="text-align:right">FC</span></div>`;
+pv.splits.forEach((sp,i)=>{
+const ult=i===pv.splits.length-1;
+const p0=paces[i];
+const cor=ult?'#94A3B8':(p0===mn?'#047857':(p0===mx?'#B45309':'#0F172A'));
+const peso=(!ult&&(p0===mn||p0===mx))?'700':'500';
+const b=pv.bpm[i];
+h+=`<div style="display:grid;grid-template-columns:52px 1fr 70px;padding:5px 10px;font-size:13px;${i%2?'background:#FCFCFD':''}${ult?'color:#94A3B8':''}">`;
+h+=`<span style="color:#64748B;font-size:12px">${ult?'final':i+1}</span>`;
+h+=`<span style="color:${cor};font-weight:${peso}">${sp}${ult?' (0,12 km)':''}</span>`;
+h+=`<span style="text-align:right;color:${b===null?'#DC2626':'#475569'};font-size:12px">${b===null?'sem sinal':b}</span></div>`;});
+h+=`</div>`;
+h+=`<div style="font-size:10px;color:#64748B;margin:-6px 0 12px">Verde = km mais rápido · âmbar = mais lento · a FC desta prova é inconfiável (ver observações)</div>`;
+// observacoes
+h+=`<p class="section-label" style="margin:4px 0 6px">Observações</p>`;
+pv.obs.forEach(o=>{
+h+=`<div style="display:flex;gap:8px;padding:8px 10px;background:#F8F9FA;border-radius:8px;margin-bottom:6px"><span style="flex-shrink:0;font-size:13px">${o.i}</span><span style="font-size:12px;color:#334155;line-height:1.5">${o.t}</span></div>`;});
+// nota dele + previsao
+if(pv.nota){h+=`<p class="section-label" style="margin:10px 0 6px">Nota do registro</p><div style="font-size:12px;color:#475569;line-height:1.5;font-style:italic;border-left:3px solid #CBD5E1;padding:2px 0 2px 10px">${escapeHtml(pv.nota)}</div>`;}
+if(pv.previsao){h+=`<div style="margin-top:10px;font-size:11px;color:#64748B;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:8px 10px">${escapeHtml(pv.previsao)}</div>`;}
+h+=`</div></div>`;});
+// proximas provas
+const fut=PROVAS_FUTURAS.filter(f=>f.data>=today);
+if(fut.length){
+h+=`<p class="section-label" style="margin:16px 0 8px">Próximas provas</p>`;
+fut.forEach(f=>{
+const d=Math.ceil((f.data-today)/(24*60*60*1000));
+h+=`<div class="card" style="padding:12px 14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><div style="font-size:13px;font-weight:600;color:#0F172A">${escapeHtml(f.nome)}</div><div style="font-size:11px;color:#64748B;margin-top:2px">${fmtDateBR(f.data)} · ${escapeHtml(f.dist)} · ${escapeHtml(f.papel)}</div><div style="font-size:11px;color:#475569;margin-top:4px">${escapeHtml(f.meta)}</div></div><span style="flex-shrink:0;font-size:11px;font-weight:700;color:#1D4ED8;background:#EFF6FF;padding:3px 8px;border-radius:99px">${d} dias</span></div></div>`;});
+}
+c.innerHTML=h;
 }
 function renderTreinoHistorico(){
 const c=document.getElementById('treino-historico');
@@ -4073,7 +4191,7 @@ if(t===''){delete workoutKcal[kcalWorkoutDate];}
 else{workoutKcal[kcalWorkoutDate]={total:parseBR(t)};}
 try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){return alert('Erro ao salvar: '+e.message);}
 closeKcalWorkoutModal();
-if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();
+renderTreinoSubtab();
 if(document.getElementById('sec-dieta').classList.contains('active'))renderDiet();
 if(window.syncNow)window.syncNow();
 }
@@ -4083,7 +4201,7 @@ if(!confirm('Voltar para os valores estimados?'))return;
 delete workoutKcal[kcalWorkoutDate];
 try{localStorage.setItem('workoutKcal',JSON.stringify(workoutKcal));}catch(e){}
 closeKcalWorkoutModal();
-if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();
+renderTreinoSubtab();
 if(window.syncNow)window.syncNow();
 }
 let emagChart=null;
@@ -4752,7 +4870,7 @@ const at=document.getElementById('tab-'+name);
 at.classList.add('active');
 at.querySelector('i').style.color='#000';
 if(name==='calendario'){selDate=new Date(today);calY=today.getFullYear();calM=today.getMonth();renderCal();}
-if(name==='treino'){if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();}
+if(name==='treino'){renderTreinoSubtab();}
 if(name==='medicoes'){
 const active=document.getElementById('subtab-balanca')?.classList.contains('active')?'balanca':'evolucao';
 switchMedSubtab(active);
@@ -4795,7 +4913,7 @@ renderCal();
 const act=document.querySelector('.sec.active');
 if(act){
 const id=act.id;
-if(id==='sec-treino'){if(treinoSubtab==='hist')renderTreinoHistorico();else renderPlan();}
+if(id==='sec-treino'){renderTreinoSubtab();}
 else if(id==='sec-dieta')renderDiet();
 else if(id==='sec-medicoes'){renderEmagDashboard();renderMedChart();}
 else if(id==='sec-tarefas')renderTasks();
