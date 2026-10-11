@@ -32,7 +32,7 @@
 | ~2947–3170 | Calendário (`renderCal`, `renderDetail`), histórico de dieta | |
 | ~3174–3370 | Compras (`COMPRA_CATEGORIES`, `renderCompras`, status flow) | |
 | ~3369–3400 | `switchMedSubtab`, `switchTab`, boot inicial | |
-| ~3400–3700 | **Firebase sync** (ver §4) | `KEYS`, `stableStr`, `syncNow` |
+| ~3400–3700 | **Firebase sync** (ver §4) | `KEYS`, `LOG_KEYS`, `countRecords`, `stableStr`, `syncNow` |
 | ~3710–fim | Registro do service worker | `serviceWorker` |
 
 ## 3. Modelo de dados (localStorage = fonte de verdade em sessão)
@@ -68,7 +68,7 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
 ## 5. Caminhos críticos e invariantes
 
 1. **Plano de treino é retroativo por "eras"** — `generatePlan`/`planForDayKey` derivam o treino da DATA. Mudanças de plano devem ser aplicadas por data de corte (era v1/v2/v3/v4), nunca editando a lista global, senão o histórico passado muda. Mesma lógica para listas de exercícios.
-   - Cortes atuais: `<11/06` → `planOld` · `=11/06` → `plan`(v2) · `12/06–28/06` → `planNew` · `29/06–18/08` → `planV3` · `>=19/08` (`V4_START`) → `planV4`.
+   - Cortes atuais: `<11/06` → `planOld` · `=11/06` → `plan`(v2) · `12/06–28/06` → `planNew` · `29/06–18/08` → `planV3` · `19/08–11/10` (`V4_START`) → `planV4` · `>=12/10/2026` (`BERLIM_START`) → `planBerlim` (ver invariante 30).
    - **A era v4 substitui as semanas 15–22 inteiras** (bloco `if(isV4){...return p;}` dentro de `generatePlan`). Semanas 1–14 são idênticas entre v3 e v4 — por isso `isV3` inclui `isV4`.
    - ⚠️ **Cabeçalho da semana vs. dia**: fase/cor/número vinham de `plan[i]` (sempre v2) enquanto o dia vinha de `planForDayKey`. Corrigido com `weekMeta(i)` (usa `planV4` para `i>=14`). Ao criar uma era nova que renomeie fases, atualizar `weekMeta`.
 2. **`getExKey()` é a chave do histórico de cargas** — renomear exercício na UI usa `exerciseRenames`; mudar a string base do exercício órfã o histórico em `weightLog`.
@@ -155,6 +155,15 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - Camadas 2 (carimbo por chave) e 3 (união por registro nos logs append-only) seguem **pendentes**; esta sozinha já teria evitado as duas perdas.
 
 ⚠️ **Numeração:** existem duas invariantes 28 (pace por zona e teto de FC) — colisão anterior a esta mudança, não renumerada porque há referências cruzadas no texto e nas notas do projeto.
+
+30. **Era BERLIM — o plano deixou de terminar na prova de Munique** (11/10/2026) — `generatePlan('berlim')` devolve **47 semanas**: as 22 do bloco de Munique, byte a byte iguais às da v4, mais 25 novas (índices 22–46) do bloco da Meia de Berlim, 12/10/2026 a 04/04/2027.
+    - **O índice de semana corre desde `START_DATE` (11/05/2026)**, não desde o início da era. Por isso a era Berlim ocupa 22–46 e não 0–24: `getWorkoutForDate` calcula `weekIdx` por diferença de dias contra `START_DATE`. Conferido: idx22 = 12/10/2026, idx31 = 14/12 (embarque), idx38 = 01/02 (volta), idx46 domingo = **04/04/2027**, dia da prova.
+    - ⚠️ **O bloco `if(isBerlim){...}` fica ANTES do `return p;` antecipado do `if(isV4)`** — e não no fim de `generatePlan`. Como `isV4` inclui `isBerlim` (as 22 primeiras semanas são as mesmas), a função retornava ali e a variante `berlim` saía com 22 semanas. Foi exatamente esse o bug na primeira tentativa. Ao criar a próxima era, lembrar que existem **dois** `return p;`.
+    - **Três limites travavam o plano em 11/10/2026** e passaram a usar `PLAN_END` (= 04/04/2027): o `dt>RACE_DATE` de `getWorkoutForDate`, o `weekIdx>=plan.length` (que usava `plan`, de 22 semanas — agora `planBerlim.length`) e o `d>RACE_DATE` do cálculo de aderência. `RACE_DATE` segue sendo Munique, de propósito: é o que o contador usa para saber que a prova passou.
+    - **Regra dos nomes de exercício (pedido explícito dele em 11/10):** a era Berlim **reusa as constantes `MUSC_*`** em vez de redeclarar listas. Verificado contra o `weightLog` real: as **13** chaves de carga em vigor na v4 (idx15–21) continuam todas em uso, mais `cadeira extensora`, que ganhou tela com os 6 registros que já existiam. **Zero órfãos** (ver invariante 2). Ao criar a próxima era, rodar essa comparação antes de commitar.
+    - **Linhas `📐 INCLINAÇÃO` nas sessões de esteira** — prefixo próprio para não se misturar com o `📊` do teto de FC. Fixa em 1% nas fáceis e nos tiros (esteira plana subestima o esforço de rua); variando 1→3% nos longões. Conferido: **19 de 19** sessões de esteira têm a linha.
+    - **A regra de ouro "na rua, não na esteira" virou duas**, porque era HTML estático no modal e não passa pelas eras: vale para Munique, e **inverte no Brasil** (14/12–01/02, esteira por segurança). Qualquer regra nova no modal que dependa de período tem esse mesmo problema.
+    - **Contador e card de peso** passaram a promover Berlim quando `RACE_DATE` já passou (`emBerlim`/`raceTitle`), mantendo a linha de Munique como histórico cumprido.
 
 ### Migrações da era v4 (18/08/2026)
 
