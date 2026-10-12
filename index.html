@@ -2744,7 +2744,10 @@ function renderPlan(){
 const c=document.getElementById('treino-content');
 let cw=Math.floor((today-START_DATE)/(7*24*60*60*1000));
 if(cw<0)cw=0;
-const si=Math.max(0,cw-1),ei=Math.min(plan.length,cw+4);
+// A janela usa planBerlim.length (47). Usava plan.length, que e a variante v2 de 22
+// semanas: em 12/10/2026, primeiro dia da era Berlim, cw virou 22 e a semana ATUAL
+// caia fora da janela — a sub-aba Semanas aparecia sem o plano.
+const si=Math.max(0,cw-1),ei=Math.min(planBerlim.length,cw+4);
 let h='';
 if(today<START_DATE){
 h+=`<div class="card" style="background:#EFF6FF;border-color:#BFDBFE;text-align:center"><p style="font-size:13px;color:#1E40AF;line-height:1.6"><strong>📅 Início do plano: 11/05/2026</strong><br>Mostrando primeiras 4 semanas do programa</p></div>`;
