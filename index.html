@@ -732,10 +732,22 @@ const PERNA={t:'Pernas (corredor) + core + sauna',ex:[...MUSC_LEGS_RUN,'\u00B7 S
 const PERNA_LEVE={t:'Pernas leve + core + sauna',ex:[...MUSC_LEGS_RUN_LIGHT,'\u00B7 Sauna depois']};
 const UPPER={t:'Upper manuten\u00E7\u00E3o',ex:MUSC_UPPER_RUN};
 const UPPER_LEVE={t:'Upper leve',ex:MUSC_UPPER_RUN_LIGHT};
-const easyRua=(km)=>({t:'Z2 f\u00E1cil '+km+'km',ex:['Corrida Z2 '+km+'km f\u00E1cil',TETO159]});
-const easyEst=(km)=>({t:'Z2 f\u00E1cil '+km+'km \u2014 ESTEIRA',ex:['Corrida Z2 '+km+'km f\u00E1cil \u2014 ESTEIRA',INCL_FIXA,TETO159]});
-const lrRua=(km)=>({t:'\u2B50 LONG\u00C3O '+km+'km',ex:['Long run '+km+'km',TETO159,'\u00B7 Sauna depois']});
-const lrEst=(km)=>({t:'\u2B50 LONG\u00C3O '+km+'km \u2014 ESTEIRA',ex:['Long run '+km+'km \u2014 ESTEIRA',INCL_VAR,TETO159,'\u00B7 Hidrata: esteira com ar-condicionado engana a sede']});
+// --- Adaptacao ao CloudMonster 3 ---
+// Estreou em 08/09 e a dor lateral apareceu 11 dias depois: transicao rapida demais.
+// Solado alto = mais alavanca no tornozelo = mais carga nos peroneais. A volta e por
+// fase, sempre entrando pela sessao mais curta e facil da semana. Rodizio de dois
+// tenis tambem reduz risco por variar o padrao de carga — por isso adaptar, nao aposentar.
+const TEN_ANT='\u{1F45F} T\u00CANIS: o antigo';
+const TEN_CM='\u{1F45F} T\u00CANIS: CloudMonster \u2014 \u26A0\uFE0F dor lateral antes do km 3? Encerra a sess\u00E3o, volta pro antigo e me avisa';
+const TEN_CM_LONG='\u{1F45F} T\u00CANIS: CloudMonster neste long\u00E3o (alterna \u2014 o pr\u00F3ximo \u00E9 no antigo)';
+const TEN_ANT_LONG='\u{1F45F} T\u00CANIS: o antigo neste long\u00E3o (alterna \u2014 o anterior foi no CloudMonster)';
+const TEN_EST_CM='\u{1F45F} T\u00CANIS: CloudMonster \u2014 esteira \u00E9 o melhor piso para adaptar (plano, sem inclina\u00E7\u00E3o lateral)';
+const TEN_EST_ANT='\u{1F45F} T\u00CANIS: o antigo \u2014 uma corrida por semana nele, para n\u00E3o perder o costume';
+const TEN_LIVRE='\u{1F45F} T\u00CANIS: o que estiver melhor adaptado \u2014 mant\u00E9m os dois em rod\u00EDzio';
+const easyRua=(km,ten)=>({t:'Z2 f\u00E1cil '+km+'km',ex:['Corrida Z2 '+km+'km f\u00E1cil',TETO159].concat(ten?[ten]:[])});
+const easyEst=(km,ten)=>({t:'Z2 f\u00E1cil '+km+'km \u2014 ESTEIRA',ex:['Corrida Z2 '+km+'km f\u00E1cil \u2014 ESTEIRA',INCL_FIXA,TETO159].concat(ten?[ten]:[])});
+const lrRua=(km,ten)=>({t:'\u2B50 LONG\u00C3O '+km+'km',ex:['Long run '+km+'km',TETO159].concat(ten?[ten]:[],['\u00B7 Sauna depois'])});
+const lrEst=(km,ten)=>({t:'\u2B50 LONG\u00C3O '+km+'km \u2014 ESTEIRA',ex:['Long run '+km+'km \u2014 ESTEIRA',INCL_VAR,TETO159].concat(ten?[ten]:[],['\u00B7 Hidrata: esteira com ar-condicionado engana a sede'])});
 
 // --- S1 (idx22) 12-18/10: recuperacao pos-prova + reabilitar a perna. ZERO corrida. ---
 p.push({phase:'Recupera\u00E7\u00E3o \u2014 Sem 1 \u{1F9B5} reabilita\u00E7\u00E3o',num:23,color:'#F0F9FF',text:'#0369A1',template:[
@@ -748,13 +760,19 @@ p.push({phase:'Recupera\u00E7\u00E3o \u2014 Sem 1 \u{1F9B5} reabilita\u00E7\u00E
 REST_DAY
 ]});
 // --- S2 (idx23) 19-25/10: volta gradual ---
+// A semana 23 (12-18/10) passou sem nenhum treino registrado. Duas mudancas aqui:
+// o futebol SAI (seria a 1a atividade em 11 dias, e sprint com mudanca de direcao e
+// justamente a carga que mais cobra os peroneais, ainda sem tratamento) e a
+// reabilitacao dobra, porque nao chegou a comecar. A corrida fica como estava:
+// o que ele perdeu foi descanso e reabilitacao, nao volume de corrida.
 p.push({phase:'Recupera\u00E7\u00E3o \u2014 Sem 2 \u25B6\uFE0F volta',num:24,color:'#F0F9FF',text:'#0369A1',template:[
-PERNA_LEVE,FUT,
-{t:'Trote 4km',ex:['Corrida Z2 4km bem leve',TETO159,DOR,'\u26A1 Primeira corrida em 9 dias. \u00C9 destravar, n\u00E3o treinar']},
+PERNA_LEVE,
+{t:'\u26D4 SEM futebol \u2014 Reabilita\u00E7\u00E3o B',ex:[...REAB_B,'\u26D4 FUTEBOL CANCELADO: seria a 1\u00AA atividade em 11 dias, e sprint com mudan\u00E7a de dire\u00E7\u00E3o \u00E9 a carga que mais cobra a lateral da perna','\u26A1 A reabilita\u00E7\u00E3o da semana passada n\u00E3o aconteceu \u2014 esta semana ela \u00E9 a prioridade, n\u00E3o a corrida']},
+{t:'Trote 4km',ex:['Corrida Z2 4km bem leve',TETO159,TEN_ANT,DOR,'\u26A1 Primeira corrida em 11 dias. \u00C9 destravar, n\u00E3o treinar']},
 {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A},
 UPPER_LEVE,
-{t:'\u2B50 LONG\u00C3O 6km',ex:['Long run 6km',TETO159,DOR,'\u00B7 Sauna depois']},
-REST_DAY
+{t:'\u2B50 LONG\u00C3O 6km',ex:['Long run 6km',TETO159,TEN_ANT,DOR,'\u00B7 Sauna depois']},
+{t:'Descanso \u2014 e o CloudMonster come\u00E7a aqui',ex:['Descanso total','\u{1F45F} FASE 0 da adapta\u00E7\u00E3o: usa o CloudMonster CAMINHANDO no dia a dia, 20-30min por dia','\u26A1 Zero corrida nele esta semana \u2014 caminhar adapta o tornozelo sem carga de impacto'],rest:true}
 ]});
 // --- S3..S9 (idx24..30) 26/10-13/12: BASE em Munique ---
 const bLR=[8,10,11,12,9,13,14], bEasy=[4,5,5,6,4,6,6];
@@ -769,8 +787,14 @@ const bQual=[
 ];
 for(let i=0;i<7;i++){
 const cut=(i===4);
-p.push({phase:'Base Berlim \u2014 Sem '+(i+1)+(cut?' \u{1F7E1} al\u00EDvio':''),num:i+25,color:'#EFF6FF',text:'#1E40AF',template:[
-cut?PERNA_LEVE:PERNA, FUT, easyRua(bEasy[i]), bQual[i], cut?UPPER_LEVE:UPPER, lrRua(bLR[i]),
+// Adaptacao do CloudMonster, por fase: f1 (i=0,1) so a facil de quarta; f2 (i=2,3,4)
+// facil + qualidade; f3 (i=5,6) entra no longao, alternando com o antigo.
+const fase=i<=1?1:(i<=4?2:3);
+const tenQual=fase>=2?TEN_CM:TEN_ANT;
+const tenLong=fase<3?TEN_ANT:(i===5?TEN_CM_LONG:TEN_ANT_LONG);
+const qual={...bQual[i],ex:[...bQual[i].ex,tenQual]};
+p.push({phase:'Base Berlim \u2014 Sem '+(i+1)+(cut?' \u{1F7E1} al\u00EDvio':'')+' \u00B7 t\u00EAnis f'+fase,num:i+25,color:'#EFF6FF',text:'#1E40AF',template:[
+cut?PERNA_LEVE:PERNA, FUT, easyRua(bEasy[i],TEN_CM), qual, cut?UPPER_LEVE:UPPER, lrRua(bLR[i],tenLong),
 i===6?{t:'Descanso \u2014 v\u00E9spera do voo',ex:['Descanso total','\u2708\uFE0F Amanh\u00E3 20:50: embarque Frankfurt \u2192 Guarulhos','\u00B7 Separa o el\u00E1stico de reabilita\u00E7\u00E3o na mala'],rest:true}:REST_DAY
 ]});
 }
@@ -780,26 +804,26 @@ p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem 1 \u2708\uFE0F chegada',num:
 {t:'\u2708\uFE0F Chegada 05:05 \u2014 descanso',ex:['Descanso','\u26A1 Chegou 05:05. Hoje \u00E9 dormir e reajustar o rel\u00F3gio'],rest:true},
 {t:'\u{1F3CB}\uFE0F RESOLVER A ACADEMIA',ex:['\u{1F3CB}\uFE0F Ir \u00E0 Gavi\u00F5es 24h da Paulic\u00E9ia e fechar o plano mensal','\u26A1 Esta \u00E9 A tarefa da semana. Assinar s\u00F3 em janeiro custa 3 semanas do bloco','\u00B7 Caminhada leve']},
 {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A},
-easyEst(4),
-lrEst(8),
+easyEst(4,TEN_EST_CM),
+lrEst(8,TEN_EST_ANT),
 REST_DAY
 ]});
 p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem 2 \u{1F384} Natal',num:33,color:'#FFFBEB',text:'#92400E',template:[
 PERNA_LEVE,
 {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A},
-easyEst(5),
+easyEst(5,TEN_EST_CM),
 UPPER_LEVE,
 {t:'\u{1F384} Natal \u2014 OFF',ex:['Descanso total','\u26A1 Natal n\u00E3o se negocia e n\u00E3o se compensa'],rest:true},
-lrEst(9),
+lrEst(9,TEN_EST_ANT),
 REST_DAY
 ]});
 p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem 3 \u{1F389} Ano Novo',num:34,color:'#FFFBEB',text:'#92400E',template:[
 PERNA_LEVE,
-easyEst(5),
+easyEst(5,TEN_EST_CM),
 {t:'Reabilita\u00E7\u00E3o B',ex:REAB_B},
 {t:'\u{1F389} V\u00E9spera de Ano Novo \u2014 OFF',ex:['Descanso total'],rest:true},
-{t:'Trote leve',ex:['Corrida Z2 4km bem leve \u2014 ESTEIRA',INCL_FIXA,TETO159,'\u26A1 Se a virada foi longa, isso vira caminhada. Sem culpa']},
-lrEst(10),
+{t:'Trote leve',ex:['Corrida Z2 4km bem leve \u2014 ESTEIRA',INCL_FIXA,TETO159,TEN_EST_CM,'\u26A1 Se a virada foi longa, isso vira caminhada. Sem culpa']},
+lrEst(10,TEN_EST_ANT),
 REST_DAY
 ]});
 const brLR=[12,14,16,10], brEasy=[5,6,6,5];
@@ -812,7 +836,7 @@ const brQual=[
 for(let i=0;i<4;i++){
 const ult=(i===3);
 p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem '+(i+4)+(ult?' \u2708\uFE0F volta':(i===2?' \u2B50\u2B50 CHAVE':'')),num:i+35,color:'#FFFBEB',text:'#92400E',template:[
-ult?PERNA_LEVE:PERNA, {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A}, easyEst(brEasy[i]), brQual[i], ult?UPPER_LEVE:UPPER, lrEst(brLR[i]),
+ult?PERNA_LEVE:PERNA, {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A}, easyEst(brEasy[i],TEN_EST_CM), {...brQual[i],ex:[...brQual[i].ex,TEN_EST_CM]}, ult?UPPER_LEVE:UPPER, lrEst(brLR[i],i%2?TEN_EST_ANT:TEN_EST_CM),
 ult?{t:'\u2708\uFE0F Volta \u2014 embarque 23:10',ex:['Descanso','\u2708\uFE0F 23:10 Guarulhos \u2192 Frankfurt, chega 01/02 14:55','\u26A1 Voc\u00EA volta com base de 16km. Era 12km no plano original'],rest:true}:REST_DAY
 ]});
 }
@@ -820,10 +844,10 @@ ult?{t:'\u2708\uFE0F Volta \u2014 embarque 23:10',ex:['Descanso','\u2708\uFE0F 2
 p.push({phase:'Reentrada \u2014 \u2708\uFE0F esteira \u2192 rua',num:39,color:'#F0F9FF',text:'#0369A1',template:[
 {t:'\u2708\uFE0F Chegada 14:55 \u2014 descanso',ex:['Descanso','\u26A1 Sete semanas de ver\u00E3o paulista para o inverno de Munique. Hoje n\u00E3o se treina'],rest:true},
 {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A},
-{t:'Trote 5km \u2014 RUA, devagar',ex:['Corrida Z2 5km f\u00E1cil \u2014 na RUA',TETO159,DOR,'\u26A0\uFE0F Primeira corrida na rua em 7 semanas. Pace 30s/km mais lento que na esteira, de prop\u00F3sito','\u26A1 A esteira n\u00E3o treinou seus estabilizadores laterais. A rua vai cobrar isso']},
+{t:'Trote 5km \u2014 RUA, devagar',ex:['Corrida Z2 5km f\u00E1cil \u2014 na RUA',TETO159,TEN_ANT,DOR,'\u26A0\uFE0F Primeira corrida na rua em 7 semanas. Pace 30s/km mais lento que na esteira, de prop\u00F3sito','\u26A1 A esteira n\u00E3o treinou seus estabilizadores laterais. A rua vai cobrar isso']},
 {t:'Reabilita\u00E7\u00E3o B',ex:REAB_B},
 UPPER_LEVE,
-{t:'\u2B50 LONG\u00C3O 10km \u2014 RUA',ex:['Long run 10km \u2014 na RUA',TETO159,DOR,'\u26A0\uFE0F Sem pressa nenhuma. O objetivo \u00E9 o terreno, n\u00E3o o tempo','\u00B7 Sauna depois']},
+{t:'\u2B50 LONG\u00C3O 10km \u2014 RUA',ex:['Long run 10km \u2014 na RUA',TETO159,TEN_ANT,DOR,'\u26A0\uFE0F Sem pressa nenhuma. O objetivo \u00E9 o terreno, n\u00E3o o tempo','\u00B7 Sauna depois']},
 REST_DAY
 ]});
 // --- S18..S21 (idx39..42) 08/02-07/03: BUILD ---
@@ -837,37 +861,37 @@ const buQual=[
 for(let i=0;i<4;i++){
 const cut=(i===2);
 p.push({phase:'Build Berlim \u2014 Sem '+(i+1)+(cut?' \u{1F7E1} al\u00EDvio':''),num:i+40,color:'#F0FDF4',text:'#166534',template:[
-cut?PERNA_LEVE:PERNA, FUT, easyRua(buEasy[i]), buQual[i], cut?UPPER_LEVE:UPPER, lrRua(buLR[i]), REST_DAY
+cut?PERNA_LEVE:PERNA, FUT, easyRua(buEasy[i],TEN_LIVRE), {...buQual[i],ex:[...buQual[i].ex,TEN_LIVRE]}, cut?UPPER_LEVE:UPPER, lrRua(buLR[i],i%2?TEN_ANT_LONG:TEN_CM_LONG), REST_DAY
 ]});
 }
 // --- S22..S23 (idx43..44) 08-21/03: PICO. Longao maximo 20km na S23. ---
 p.push({phase:'Pico \u2014 Sem 1',num:44,color:'#FEF2F2',text:'#991B1B',template:[
-PERNA, FUT, easyRua(6),
-{t:'Ritmo de meia \u2014 3\u00D73km',ex:['Aquecimento 10min Z2','3\u00D73km a 5:50/km','Recupera\u00E7\u00E3o: 3min trote entre',TETO175]},
-UPPER, lrRua(15), REST_DAY
+PERNA, FUT, easyRua(6,TEN_LIVRE),
+{t:'Ritmo de meia \u2014 3\u00D73km',ex:['Aquecimento 10min Z2','3\u00D73km a 5:50/km','Recupera\u00E7\u00E3o: 3min trote entre',TETO175,TEN_LIVRE]},
+UPPER, lrRua(15,TEN_CM_LONG), REST_DAY
 ]});
 p.push({phase:'Pico \u2014 Sem 2 \u2B50\u2B50 LONG\u00C3O M\u00C1XIMO',num:45,color:'#FEF2F2',text:'#991B1B',template:[
-PERNA_LEVE, FUT, easyRua(5),
-{t:'Trote leve + strides',ex:['Corrida Z2 5km leve','4-6 strides de 20s',TETO159,'\u26A1 Poupa: s\u00E1bado \u00E9 o long\u00E3o de 20km']},
+PERNA_LEVE, FUT, easyRua(5,TEN_LIVRE),
+{t:'Trote leve + strides',ex:['Corrida Z2 5km leve','4-6 strides de 20s',TETO159,TEN_LIVRE,'\u26A1 Poupa: s\u00E1bado \u00E9 o long\u00E3o de 20km']},
 UPPER_LEVE,
-{t:'\u2B50\u2B50 LONG\u00C3O 20km \u2014 o maior do bloco',ex:['Long run 20km',TETO159,'\u26A1 20km duas semanas antes da prova. Se der, a meia est\u00E1 feita','\u00B7 Treina o abastecimento que voc\u00EA vai usar em Berlim','\u00B7 Sauna depois']},
+{t:'\u2B50\u2B50 LONG\u00C3O 20km \u2014 o maior do bloco',ex:['Long run 20km',TETO159,'\u{1F45F} T\u00CANIS: o que voc\u00EA pretende usar em Berlim. \u00C9 ESTE long\u00E3o que decide \u2014 21km no dia da prova n\u00E3o \u00E9 hora de descobrir','\u26A1 20km duas semanas antes da prova. Se der, a meia est\u00E1 feita','\u00B7 Treina o abastecimento que voc\u00EA vai usar em Berlim','\u00B7 Sauna depois']},
 REST_DAY
 ]});
 // --- S24 (idx45) 22-28/03: TAPER ---
 p.push({phase:'Taper \u2014 Sem 1',num:46,color:'#F5F3FF',text:'#6B21A8',template:[
-PERNA_LEVE, FUT, easyRua(5),
-{t:'Ritmo de meia \u2014 2\u00D73km',ex:['Aquecimento 10min Z2','2\u00D73km a 5:50/km','Recupera\u00E7\u00E3o: 3min trote entre',TETO175]},
-UPPER_LEVE, lrRua(14), REST_DAY
+PERNA_LEVE, FUT, easyRua(5,TEN_LIVRE),
+{t:'Ritmo de meia \u2014 2\u00D73km',ex:['Aquecimento 10min Z2','2\u00D73km a 5:50/km','Recupera\u00E7\u00E3o: 3min trote entre',TETO175,'\u{1F45F} T\u00CANIS: o da prova \u2014 come\u00E7a a rodar s\u00F3 nele a partir daqui']},
+UPPER_LEVE, lrRua(14,'\u{1F45F} T\u00CANIS: o da prova \u2014 \u00FAltimo ensaio com ele'), REST_DAY
 ]});
 // --- S25 (idx46) 29/03-04/04: TAPER + PROVA ---
 p.push({phase:'Taper + \u{1F3C1} PROVA',num:47,color:'#F5F3FF',text:'#6B21A8',template:[
 {t:'Pernas leve (\u00FAltima)',ex:[...MUSC_LEGS_RUN_LIGHT,'\u26A1 \u00DAltima sess\u00E3o de carga. Depois disso, s\u00F3 perna fresca']},
 {t:'\u26D4 SEM futebol \u2014 semana de prova',ex:['Descanso ou caminhada','\u26D4 SEM FUTEBOL \u2014 risco de tor\u00E7\u00E3o a 5 dias da prova'],rest:true},
-{t:'Trote 5km + strides',ex:['Corrida Z2 5km leve','4 strides de 20s',TETO159]},
-{t:'Trote 4km',ex:['Corrida Z2 4km bem leve',TETO159,'\u26A1 \u00DAltimo treino de verdade']},
+{t:'Trote 5km + strides',ex:['Corrida Z2 5km leve','4 strides de 20s',TETO159,'\u{1F45F} T\u00CANIS: o da prova']},
+{t:'Trote 4km',ex:['Corrida Z2 4km bem leve',TETO159,'\u{1F45F} T\u00CANIS: o da prova','\u26A1 \u00DAltimo treino de verdade']},
 {t:'Descanso + carb load',ex:['Descanso total','\u00B7 Arroz caprichado no almo\u00E7o e no jantar','\u00B7 Separa roupa, n\u00FAmero e t\u00EAnis hoje'],rest:true},
-{t:'Shakeout 3km',ex:['Corrida Z1 3km bem leve','3 strides de 20s','\u00B7 V\u00E9spera: dormir cedo']},
-{t:'\u{1F3C1} PROVA \u2014 Meia de Berlim',ex:['MEIA DE BERLIM \u2014 21,0975km','\u{1F3AF} Berlim \u00E9 a ESTREIA na dist\u00E2ncia. Copenhague (19/09/27) \u00E9 a prova de TEMPO','· Km 1-5: 5:55-6:00/km \u2014 SEGURA. A adrenalina de meia dura mais que a de 10k','· Km 6-15: assenta em 5:50/km \u00B7 teto 175 bpm','· Km 16-21: se a perna responder, solta. Se n\u00E3o, mant\u00E9m e termina inteiro','\u26A1 Chegar com 2:00 na perna e correr 2:03-2:05 por escolha \u00E9 vit\u00F3ria, n\u00E3o concess\u00E3o']}
+{t:'Shakeout 3km',ex:['Corrida Z1 3km bem leve','3 strides de 20s','\u{1F45F} T\u00CANIS: o da prova \u2014 deixa separado hoje','\u00B7 V\u00E9spera: dormir cedo']},
+{t:'\u{1F3C1} PROVA \u2014 Meia de Berlim',ex:['MEIA DE BERLIM \u2014 21,0975km','\u{1F45F} T\u00CANIS: o que passou no long\u00E3o de 20km. Nada novo hoje','\u{1F3AF} Berlim \u00E9 a ESTREIA na dist\u00E2ncia. Copenhague (19/09/27) \u00E9 a prova de TEMPO','· Km 1-5: 5:55-6:00/km \u2014 SEGURA. A adrenalina de meia dura mais que a de 10k','· Km 6-15: assenta em 5:50/km \u00B7 teto 175 bpm','· Km 16-21: se a perna responder, solta. Se n\u00E3o, mant\u00E9m e termina inteiro','\u26A1 Chegar com 2:00 na perna e correr 2:03-2:05 por escolha \u00E9 vit\u00F3ria, n\u00E3o concess\u00E3o']}
 ]});
 }
 
