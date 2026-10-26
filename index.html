@@ -827,7 +827,7 @@ p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem 1 \u2708\uFE0F chegada',num:
 {t:'\u{1F3CB}\uFE0F RESOLVER A ACADEMIA',ex:['\u{1F3CB}\uFE0F Ir \u00E0 Gavi\u00F5es 24h da Paulic\u00E9ia e fechar o plano mensal','\u26A1 Esta \u00E9 A tarefa da semana. Assinar s\u00F3 em janeiro custa 3 semanas do bloco','\u00B7 Caminhada leve']},
 {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A},
 easyEst(4,TEN_EST_CM),
-lrEst(8,TEN_EST_ANT),
+{t:'\u2B50 LONG\u00C3O 10km \u2014 RUA, de manh\u00E3',ex:['Long run 10km \u2014 na RUA, antes das 7h',TETO159,TEN_ANT,DOR,'\u2600\uFE0F 1\u00AA de tr\u00EAs sess\u00F5es de ACLIMATA\u00C7\u00C3O AO CALOR antes da S\u00E3o Silvestre','\u26A1 Esteira com ar n\u00E3o prepara para 15km a 25\u00B0C. Esta prepara','\u00B7 Leva \u00E1gua. O pace vai cair 30-60s/km e isso \u00E9 esperado']},
 REST_DAY
 ]});
 p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem 2 \u{1F384} Natal',num:33,color:'#FFFBEB',text:'#92400E',template:[
@@ -836,19 +836,33 @@ PERNA_LEVE,
 easyEst(5,TEN_EST_CM),
 UPPER_LEVE,
 {t:'\u{1F384} Natal \u2014 OFF',ex:['Descanso total','\u26A1 Natal n\u00E3o se negocia e n\u00E3o se compensa'],rest:true},
-lrEst(9,TEN_EST_ANT),
+{t:'\u2B50 LONG\u00C3O 12km \u2014 RUA, de manh\u00E3',ex:['Long run 12km \u2014 na RUA, antes das 7h',TETO159,TEN_ANT,DOR,'\u2600\uFE0F 2\u00AA de tr\u00EAs sess\u00F5es de ACLIMATA\u00C7\u00C3O \u2014 e o ensaio geral da S\u00E3o Silvestre','\u26A1 \u00DAltimo long\u00E3o antes da prova. Mesmo t\u00EAnis, mesmo hor\u00E1rio, mesma hidrata\u00E7\u00E3o que voc\u00EA vai usar dia 31','\u00B7 Se achar uma subida no caminho, melhor ainda']},
 REST_DAY
 ]});
-p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem 3 \u{1F389} Ano Novo',num:34,color:'#FFFBEB',text:'#92400E',template:[
-PERNA_LEVE,
-easyEst(5,TEN_EST_CM),
-{t:'Reabilita\u00E7\u00E3o B',ex:REAB_B},
-{t:'\u{1F389} V\u00E9spera de Ano Novo \u2014 OFF',ex:['Descanso total'],rest:true},
-{t:'Trote leve',ex:['Corrida Z2 4km bem leve \u2014 ESTEIRA',INCL_FIXA,TETO159,TEN_EST_CM,'\u26A1 Se a virada foi longa, isso vira caminhada. Sem culpa']},
-lrEst(10,TEN_EST_ANT),
+// Semana da Sao Silvestre. Inscricao paga em 26/10/2026, pelotao geral,
+// pace declarado 6:30/km. Largada 08h08 em ondas; 15km; percurso com subidas.
+p.push({phase:'\u{1F3C1} S\u00C3O SILVESTRE \u2014 31/12',num:34,color:'#FEF2F2',text:'#991B1B',template:[
+{t:'Trote 5km leve + strides',ex:['Corrida Z2 5km bem leve \u2014 ESTEIRA',INCL_FIXA,'4 strides de 20s',TETO159,TEN_EST_CM,'\u26A1 Semana de prova: a partir de hoje \u00E9 s\u00F3 afunilar']},
+{t:'Trote 4km bem leve',ex:['Corrida Z2 4km bem leve \u2014 ESTEIRA',INCL_FIXA,TETO159,TEN_ANT,'\u{1F45F} No DURAMO: solta a perna no t\u00EAnis da prova','\u26A1 \u00DAltimo treino antes da S\u00E3o Silvestre']},
+{t:'\u{1F3AB} Retirada do kit + descanso',ex:['Descanso total','\u{1F3AB} Retirar o kit na Expo, em S\u00E3o Paulo \u2014 confere endere\u00E7o e hor\u00E1rio antes de sair de S\u00E3o Bernardo','\u00B7 Separa roupa, n\u00FAmero, chip e o DURAMO hoje','\u00B7 Arroz caprichado no almo\u00E7o e no jantar','\u00B7 Dormir cedo: a largada \u00E9 08h08 e voc\u00EA precisa estar l\u00E1 bem antes'],rest:true},
+{t:'\u{1F3C1} PROVA \u2014 S\u00C3O SILVESTRE 15km',ex:[
+'S\u00C3O SILVESTRE \u2014 15km \u00B7 S\u00E3o Paulo \u00B7 largada do pelot\u00E3o geral \u00E0s 08h08, em ondas',
+'\u{1F45F} T\u00CANIS: o DURAMO. \u00C9 o de prova e o que tem rua nas pernas \u2014 nada novo hoje',
+'\u{1F3AF} SEM META DE TEMPO. Primeira vez na dist\u00E2ncia, percurso com subidas, calor e 55 mil pessoas',
+'\u00B7 Km 1-2: 7:00/km e deixa a multid\u00E3o se organizar. N\u00C3O tenta furar',
+'\u00B7 Km 3-10: assenta em 6:30/km se o corpo deixar \u2014 teto 175 bpm',
+'\u00B7 Subidas: encurta a passada e mant\u00E9m o ESFOR\u00C7O, n\u00E3o o pace. O rel\u00F3gio vai piorar e tudo bem',
+'\u00B7 Km 11-15: se sobrar, solta. Se n\u00E3o, mant\u00E9m e termina inteiro',
+'\u2600\uFE0F \u00C1gua em TODOS os postos, mesmo sem sede. Calor \u00E9 a vari\u00E1vel n\u00FAmero um aqui',
+'\u26A1 Faixa realista: 1h38 a 1h45. Entrar querendo 1h28 \u00E9 o jeito mais r\u00E1pido de estourar no km 8',
+'\u26A0\uFE0F Dor lateral antes do km 3: encerra. N\u00E3o vale Berlim nem Copenhague']},
+{t:'\u{1F389} Ano Novo \u2014 OFF total',ex:['Descanso total','\u26A1 Correu 15km ontem e virou o ano. Hoje n\u00E3o se treina nada'],rest:true},
+{t:'Regenerativo 5km ou caminhada',ex:['Corrida Z1 5km bem leve, ou caminhada de 40min','\u{1F4CA} Teto 150 bpm \u2014 isso \u00E9 soltar a perna','\u26A1 Se a perna estiver queixando da prova, caminha e pronto'],rest:false},
 REST_DAY
 ]});
-const brLR=[12,14,16,10], brEasy=[5,6,6,5];
+// Depois da Sao Silvestre: S35 recupera (10km), S36 reconstroi (13km), S37 segue
+// sendo a semana-chave (16km) e S38 afunila para o voo.
+const brLR=[10,13,16,10], brEasy=[4,6,6,5];
 const brQual=[
  {t:'Qualidade \u2014 4\u00D71km (esteira)',ex:['Aquecimento 10min Z2','4\u00D71km a 5:55/km \u2014 ESTEIRA',INCL_FIXA,'Recupera\u00E7\u00E3o: 2min trote entre',TETO175]},
  {t:'Tempo Z3 25min (esteira)',ex:['Aquecimento 10min Z2','25min cont\u00EDnuos em Z3 \u2014 ESTEIRA',INCL_FIXA,'Desaquecimento 5min Z1',TETO175]},
@@ -857,7 +871,7 @@ const brQual=[
 ];
 for(let i=0;i<4;i++){
 const ult=(i===3);
-p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem '+(i+4)+(ult?' \u2708\uFE0F volta':(i===2?' \u2B50\u2B50 CHAVE':'')),num:i+35,color:'#FFFBEB',text:'#92400E',template:[
+p.push({phase:'\u{1F1E7}\u{1F1F7} Brasil \u2014 Sem '+(i+4)+(ult?' \u2708\uFE0F volta':(i===2?' \u2B50\u2B50 CHAVE':(i===0?' \u{1F504} p\u00F3s-prova':''))),num:i+35,color:'#FFFBEB',text:'#92400E',template:[
 ult?PERNA_LEVE:PERNA, {t:'Reabilita\u00E7\u00E3o A',ex:REAB_A}, easyEst(brEasy[i],TEN_EST_CM), {...brQual[i],ex:[...brQual[i].ex,TEN_EST_CM]}, ult?UPPER_LEVE:UPPER, lrEst(brLR[i],i%2?TEN_EST_ANT:TEN_EST_CM),
 ult?{t:'\u2708\uFE0F Volta \u2014 embarque 23:10',ex:['Descanso','\u2708\uFE0F 23:10 Guarulhos \u2192 Frankfurt, chega 01/02 14:55','\u26A1 Voc\u00EA volta com base de 16km. Era 12km no plano original'],rest:true}:REST_DAY
 ]});
@@ -1967,6 +1981,7 @@ previsao:'Estimativa dada na véspera: ~60% de chance, faixa 59:00 a 61:30. Ele 
 
 // Provas futuras — para a aba não ficar só com o passado.
 const PROVAS_FUTURAS=[
+{data:new Date(2026,11,31),nome:'\u{1F3C1} S\u00E3o Silvestre \u2014 101\u00AA edi\u00E7\u00E3o',dist:'15 km',papel:'inscri\u00E7\u00E3o paga \u00B7 largada 08h08',meta:'sem meta de tempo \u00B7 faixa realista 1h38-1h45'},
 {data:new Date(2027,3,4),nome:'Meia de Berlim',dist:'21,0975 km',papel:'ESTREIA na distância',meta:'completar bem · 2:03-2:05 por escolha'},
 {data:new Date(2027,8,19),nome:'Meia de Copenhague',dist:'21,0975 km',papel:'a prova de TEMPO',meta:'percurso plano, feito para recorde'}
 ];
