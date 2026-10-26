@@ -774,28 +774,42 @@ UPPER_LEVE,
 {t:'\u2B50 LONG\u00C3O 6km',ex:['Long run 6km',TETO159,TEN_ANT,DOR,'\u00B7 Sauna depois']},
 {t:'Descanso \u2014 e o CloudMonster come\u00E7a aqui',ex:['Descanso total','\u{1F45F} FASE 0 da adapta\u00E7\u00E3o: usa o CloudMonster CAMINHANDO no dia a dia, 20-30min por dia','\u26A1 Zero corrida nele esta semana \u2014 caminhar adapta o tornozelo sem carga de impacto'],rest:true}
 ]});
-// --- S3..S9 (idx24..30) 26/10-13/12: BASE em Munique ---
-const bLR=[8,10,11,12,9,13,14], bEasy=[4,5,5,6,4,6,6];
+// --- S25 (idx24) 26/10-01/11: VOLTA, 2a tentativa ---
+// A S23 e a S24 passaram as duas sem nenhum treino: 15 dias sem correr desde a
+// prova. A S25 era a 1a semana de base (qualidade 4x1km + longao 8km + futebol) e
+// isso e demais para quem volta de 15 dias parado com a perna ainda sem reabilitar.
+// Vira a volta gradual. A base perde uma semana e chega a 13km antes do voo, nao 14
+// — o Brasil recomeca em 8km de qualquer jeito, entao o pico pre-viagem pesa pouco.
+p.push({phase:'Volta \u2014 2\u00AA tentativa \u{1F6B6}',num:25,color:'#F0F9FF',text:'#0369A1',template:[
+PERNA_LEVE,
+{t:'\u26D4 SEM futebol \u2014 Reabilita\u00E7\u00E3o B',ex:[...REAB_B,'\u26D4 Futebol volta s\u00F3 na pr\u00F3xima semana \u2014 15 dias parado e sprint com mudan\u00E7a de dire\u00E7\u00E3o n\u00E3o combinam','\u26A1 A reabilita\u00E7\u00E3o ainda n\u00E3o come\u00E7ou. Ela \u00E9 a prioridade da semana, n\u00E3o a corrida']},
+{t:'Trote 4km',ex:['Corrida Z2 4km bem leve',TETO159,TEN_ANT,DOR,'\u26A1 Primeira corrida em 15 dias. Se vier vontade de acelerar, n\u00E3o acelera']},
+{t:'Reabilita\u00E7\u00E3o A',ex:REAB_A},
+UPPER_LEVE,
+{t:'\u2B50 LONG\u00C3O 6km',ex:['Long run 6km',TETO159,TEN_ANT,DOR,'\u26A1 Seis, n\u00E3o oito. O oito fica para a semana que vem','\u00B7 Sauna depois']},
+{t:'Descanso \u2014 e o CloudMonster come\u00E7a aqui',ex:['Descanso total','\u{1F45F} FASE 0: usa o CloudMonster CAMINHANDO no dia a dia, 20-30min por dia','\u26A1 Zero corrida nele esta semana \u2014 caminhar adapta o tornozelo sem carga de impacto'],rest:true}
+]});
+// --- S26..S31 (idx25..30) 02/11-13/12: BASE em Munique, 6 semanas ---
+const bLR=[8,10,11,9,12,13], bEasy=[4,5,5,4,6,6];
 const bQual=[
  {t:'Qualidade \u2014 4\u00D71km',ex:['Aquecimento 10min Z2','4\u00D71km a 5:55/km','Recupera\u00E7\u00E3o: 2min trote entre','Desaquecimento 5min Z1',TETO175]},
- {t:'Tempo Z3 20min',ex:['Aquecimento 10min Z2','20min cont\u00EDnuos em Z3','Desaquecimento 5min Z1',TETO175]},
  {t:'Qualidade \u2014 5\u00D71km',ex:['Aquecimento 10min Z2','5\u00D71km a 5:55/km','Recupera\u00E7\u00E3o: 2min trote entre','Desaquecimento 5min Z1',TETO175]},
  {t:'Tempo Z3 25min',ex:['Aquecimento 10min Z2','25min cont\u00EDnuos em Z3','Desaquecimento 5min Z1',TETO175]},
  {t:'Trote leve + strides',ex:['Corrida Z2 4km leve','4-6 strides de 20s ao final',TETO159,'\u26A1 Semana de al\u00EDvio \u2014 nada de qualidade']},
  {t:'Tempo Z3 30min',ex:['Aquecimento 10min Z2','30min cont\u00EDnuos em Z3','Desaquecimento 5min Z1',TETO175]},
  {t:'Qualidade \u2014 3\u00D72km',ex:['Aquecimento 10min Z2','3\u00D72km a 6:00/km','Recupera\u00E7\u00E3o: 3min trote entre','Desaquecimento 5min Z1',TETO175]}
 ];
-for(let i=0;i<7;i++){
-const cut=(i===4);
-// Adaptacao do CloudMonster, por fase: f1 (i=0,1) so a facil de quarta; f2 (i=2,3,4)
-// facil + qualidade; f3 (i=5,6) entra no longao, alternando com o antigo.
-const fase=i<=1?1:(i<=4?2:3);
+for(let i=0;i<6;i++){
+const cut=(i===3);
+// Adaptacao do CloudMonster na base: f1 (i=0,1) so a facil de quarta; f2 (i>=2)
+// facil + qualidade. O longao segue no Duramo ate o Brasil de proposito: a esteira
+// e o piso mais gentil com os peroneais, e la o CloudMonster assume os longoes.
+const fase=i<=1?1:2;
 const tenQual=fase>=2?TEN_CM:TEN_ANT;
-const tenLong=fase<3?TEN_ANT:(i===5?TEN_CM_LONG:TEN_ANT_LONG);
 const qual={...bQual[i],ex:[...bQual[i].ex,tenQual]};
-p.push({phase:'Base Berlim \u2014 Sem '+(i+1)+(cut?' \u{1F7E1} al\u00EDvio':'')+' \u00B7 t\u00EAnis f'+fase,num:i+25,color:'#EFF6FF',text:'#1E40AF',template:[
-cut?PERNA_LEVE:PERNA, FUT, easyRua(bEasy[i],TEN_CM), qual, cut?UPPER_LEVE:UPPER, lrRua(bLR[i],tenLong),
-i===6?{t:'Descanso \u2014 v\u00E9spera do voo',ex:['Descanso total','\u2708\uFE0F Amanh\u00E3 20:50: embarque Frankfurt \u2192 Guarulhos','\u00B7 Separa o el\u00E1stico de reabilita\u00E7\u00E3o na mala'],rest:true}:REST_DAY
+p.push({phase:'Base Berlim \u2014 Sem '+(i+1)+(cut?' \u{1F7E1} al\u00EDvio':'')+' \u00B7 t\u00EAnis f'+fase,num:i+26,color:'#EFF6FF',text:'#1E40AF',template:[
+cut?PERNA_LEVE:PERNA, FUT, easyRua(bEasy[i],TEN_CM), qual, cut?UPPER_LEVE:UPPER, lrRua(bLR[i],TEN_ANT),
+i===5?{t:'Descanso \u2014 v\u00E9spera do voo',ex:['Descanso total','\u2708\uFE0F Amanh\u00E3 20:50: embarque Frankfurt \u2192 Guarulhos','\u00B7 Separa o el\u00E1stico de reabilita\u00E7\u00E3o na mala'],rest:true}:REST_DAY
 ]});
 }
 // --- S10..S16 (idx31..37) 14/12-31/01: BRASIL, Sao Bernardo, Gavioes 24h, esteira ---
