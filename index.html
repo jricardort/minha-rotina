@@ -5090,13 +5090,16 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') flushPending();
 });
 
-async function syncToCloud(force){
+// `somenteChaves` manda so parte das chaves. Como o setDoc usa merge:true, a chave
+// omitida fica INTACTA na nuvem — e assim um aparelho atrasado numa chave nao
+// precisa deixar de enviar aquelas em que esta a frente.
+async function syncToCloud(force, somenteChaves){
   if (!currentUser) return false;
   const docRef = doc(db, 'users', currentUser.uid, 'data', 'main');
   try {
     setStatus('Salvando na nuvem…');
     const data = { lastSync: new Date().toISOString(), localModified: parseInt(localStorage.getItem(TS_LOCAL) || '0') };
-    KEYS.forEach(k => {
+    (somenteChaves || KEYS).forEach(k => {
       const v = localStorage.getItem(k);
       if (v !== null && v !== 'null') {
         try { data[k] = JSON.parse(v); } catch { /* ignore */ }
@@ -5147,8 +5150,8 @@ ${details.join(String.fromCharCode(10))}
 Nada foi gravado — nenhum dado seu foi perdido.
 Quase sempre isso quer dizer que este aparelho esta com dados velhos.
 
-OK = trazer os dados da nuvem para ca (seguro, recomendado)
-Cancelar = ver a outra opcao`)) {
+OK = trazer a nuvem para ca - ATENCAO: apaga o que so existe neste aparelho
+Cancelar = ver a outra opcao (enviar ESTE aparelho para a nuvem)`)) {
     try {
       setStatus('Trazendo dados da nuvem…');
       const snap = await getDoc(doc(db, 'users', currentUser.uid, 'data', 'main'));
@@ -5171,10 +5174,12 @@ So confirme se voce apagou esses registros de proposito.`)) await syncToCloud(tr
 }
 window.forceSyncToCloud = () => syncToCloud(true);
 
-function applyCloudData(d){
+// `somenteChaves` permite aplicar a nuvem em PARTE das chaves — usado quando o
+// aparelho esta a frente numas e atras noutras: traz so o que ele nao tem.
+function applyCloudData(d, somenteChaves){
   let changed = false;
   suppressSync = true;
-  KEYS.forEach(k => {
+  (somenteChaves || KEYS).forEach(k => {
     if (d[k] === undefined || d[k] === null) return;
     const cloudHash = stableStr(d[k]);
     const localRaw = localStorage.getItem(k);
@@ -5192,6 +5197,64 @@ function applyCloudData(d){
   });
   suppressSync = false;
   return changed;
+}
+
+// Nome legivel de cada chave de log, para as caixas de dialogo.
+const NOME_CHAVE = {weightLog:'Cargas de muscula\u00e7\u00e3o',cardioLog:'Corridas',bikeLog:'Pedais',coreLog:'Core',dayExtraExercises:'Atividades extras',workoutOverrides:'Ajustes de treino',medData:'Pesagens',diet:'Dieta',workoutKcal:'Calorias de treino',comprasHistorico:'Hist\u00f3rico de compras'};
+
+// Compara localStorage x nuvem, chave de log por chave de log.
+// `frente` = o aparelho tem registros que a nuvem nao tem (o que se perde ao aplicar).
+// `atras`  = a nuvem tem registros que o aparelho nao tem.
+function compararComNuvem(d){
+  const frente = [], atras = [];
+  LOG_KEYS.forEach(k => {
+    if (d[k] === undefined || d[k] === null) return;
+    const raw = localStorage.getItem(k);
+    if (raw === null || raw === 'null') return;   // o aparelho nao tem a chave: nada a perder
+    let loc; try { loc = JSON.parse(raw); } catch { return; }
+    const nLoc = countRecords(loc), nNuv = countRecords(d[k]);
+    if (nLoc > nNuv) frente.push({k, loc:nLoc, nuv:nNuv});
+    else if (nLoc < nNuv) atras.push({k, loc:nLoc, nuv:nNuv});
+  });
+  return {frente, atras};
+}
+
+function fmtQuando(v){
+  if (!v) return 'desconhecida';
+  const x = (typeof v === 'number') ? new Date(v) : new Date(v);
+  if (isNaN(x)) return 'desconhecida';
+  const p = n => String(n).padStart(2,'0');
+  return p(x.getDate())+'/'+p(x.getMonth()+1)+' '+p(x.getHours())+':'+p(x.getMinutes());
+}
+
+// Guarda de login (invariante 33). O estrago mora aqui, na LEITURA: aplicar a
+// nuvem por cima de um aparelho que tem lancamentos nao enviados os apaga em
+// silencio. Isso aconteceu em 27/10/2026 com as cargas da academia.
+// Regra: so interrompe quando ha registro que so existe no aparelho.
+async function resolverConflitoDeLogin(d, cmp){
+  const linhas = cmp.frente.map(x => '   \u2022 ' + (NOME_CHAVE[x.k]||x.k) + ': aqui ' + x.loc + ' \u00b7 nuvem ' + x.nuv + '  (+' + (x.loc-x.nuv) + ' s\u00f3 aqui)').join(String.fromCharCode(10));
+  const msg =
+    'ESTE APARELHO TEM DADOS QUE A NUVEM N\u00c3O TEM' + String.fromCharCode(10,10) +
+    linhas + String.fromCharCode(10,10) +
+    '\u00daltima grava\u00e7\u00e3o na nuvem:        ' + fmtQuando(d.lastSync) + String.fromCharCode(10) +
+    '\u00daltima altera\u00e7\u00e3o neste aparelho: ' + fmtQuando(parseInt(localStorage.getItem(TS_LOCAL)||'0')) + String.fromCharCode(10,10) +
+    'Trazer a nuvem agora APAGARIA esses registros.' + String.fromCharCode(10,10) +
+    'OK = enviar o que est\u00e1 neste aparelho (recomendado)' + String.fromCharCode(10) +
+    'Cancelar = n\u00e3o fazer nada agora';
+  if (!confirm(msg)) { setStatus('\u26a0\ufe0f Dados locais n\u00e3o enviados \u2014 clique', () => resolverConflitoDeLogin(d, cmp)); return; }
+  // Envia so as chaves em que o aparelho NAO esta atras. Chave omitida fica
+  // intacta na nuvem (merge:true), entao nenhum dos dois lados perde nada.
+  const atrasadas = cmp.atras.map(a => a.k);
+  const enviar = KEYS.filter(k => atrasadas.indexOf(k) === -1);
+  const okEnvio = await syncToCloud(false, enviar);
+  if (!okEnvio) return;   // a trava de encolhimento ja mostrou o conflito
+  // E traz da nuvem so o que falta aqui.
+  if (atrasadas.length) {
+    applyCloudData(d, atrasadas);
+    if (window.refreshDataFromStorage) window.refreshDataFromStorage();
+  }
+  setStatus('Unificado \u2713 \u00b7 nuvem de ' + fmtQuando(new Date().toISOString()));
+  setTimeout(() => setStatus(''), 4000);
 }
 
 // Verifica (somente leitura) se o documento da nuvem difere do que está no localStorage.
@@ -5224,12 +5287,20 @@ async function loadFromCloud(uid){
         setStatus('Local mais recente — mantendo dados locais');
         await syncToCloud();
       } else {
-        const changed = applyCloudData(snap.data());
-        if (changed && window.refreshDataFromStorage) {
-          window.refreshDataFromStorage();
+        // Guarda de login: so interrompe se houver registro que so existe aqui.
+        const cmp = compararComNuvem(snap.data());
+        if (cmp.frente.length) {
+          const d0 = snap.data();
+          setStatus('⚠️ Dados locais não enviados — clique', () => resolverConflitoDeLogin(d0, cmp));
+          resolverConflitoDeLogin(d0, cmp);
+        } else {
+          const changed = applyCloudData(snap.data());
+          if (changed && window.refreshDataFromStorage) {
+            window.refreshDataFromStorage();
+          }
+          setStatus('Sincronizado ✓ · nuvem de ' + fmtQuando(snap.data().lastSync));
+          setTimeout(() => { if (/^Sincronizado/.test(document.getElementById('sync-status').textContent)) setStatus(''); }, 4000);
         }
-        setStatus('Sincronizado ✓');
-        setTimeout(() => { if (document.getElementById('sync-status').textContent === 'Sincronizado ✓') setStatus(''); }, 2000);
       }
     } else {
       await syncToCloud();
