@@ -466,8 +466,8 @@ input[type=number],input[type=text],input[type=date],input[type=time],input[type
 <div class="modal-bg" id="modal-goals"><div class="modal"><h3>Metas diárias</h3><p class="modal-hint">Defina seus objetivos de macros e hidratação. Pode ajustar depois da consulta com a nutricionista.</p><div class="modal-grid"><div class="modal-field"><label>Calorias (kcal)</label><input type="text" inputmode="decimal" id="g-kcal" step="50" placeholder="2200"></div><div class="modal-field"><label>Déficit alvo (kcal)</label><input type="text" inputmode="decimal" id="g-deficit" step="50" placeholder="500"></div></div><div class="modal-grid"><div class="modal-field"><label>Proteína (g)</label><input type="text" inputmode="decimal" id="g-prot" step="1" placeholder="160"></div><div class="modal-field"><label>Carbo (g)</label><input type="text" inputmode="decimal" id="g-carb" step="1" placeholder="250"></div></div><div class="modal-grid"><div class="modal-field"><label>Gordura (g)</label><input type="text" inputmode="decimal" id="g-gord" step="1" placeholder="70"></div><div class="modal-field"><label>Água (ml)</label><input type="text" inputmode="decimal" id="g-water" step="100" placeholder="2500"></div></div><div class="modal-btns" style="margin-top:14px"><button class="btn-cancel" onclick="closeGoalsModal()">Cancelar</button><button class="btn-save" onclick="saveGoals()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-kcal-workout"><div class="modal"><h3>Kcal gasto no treino</h3><p class="modal-hint" id="kcal-workout-hint">Anote o gasto total do dia (relógio) ou deixe em branco para usar a estimativa.</p><div class="modal-field" style="margin-bottom:10px"><label>Total kcal do dia</label><input type="text" inputmode="decimal" id="kw-total-input" step="1" placeholder=""><span style="font-size:10px;color:#94A3B8;margin-top:4px;display:block" id="kw-est"></span></div><div class="modal-btns" id="kw-btns" style="margin-top:14px"></div></div></div>
 <div class="modal-bg" id="modal-override"><div class="modal"><h3 id="modal-override-title">Mudar treino do dia</h3><p class="modal-hint">Registre o que você fez de fato neste dia. O plano original fica preservado para referência.</p><div class="modal-field" style="margin-bottom:10px"><label>Data</label><input type="date" id="ov-date" readonly style="background:#F1F5F9"></div><div class="modal-field" style="margin-bottom:10px"><label>Tipo de alteração</label><select id="ov-type"><option value="">Selecione…</option><option value="outro_esporte">🏆 Outro esporte (futebol, vôlei…)</option><option value="atividade_leve">🚶 Atividade leve (caminhada, passeio)</option><option value="descanso">😴 Descanso forçado</option><option value="lesao">🤕 Lesão / dor</option><option value="doenca">🤒 Doença</option><option value="customizado">✏️ Personalizado</option></select></div><div class="modal-field" style="margin-bottom:10px"><label>Descrição (opcional)</label><input type="text" id="ov-title" maxlength="80" placeholder="Ex: Futebol com amigos"></div><div class="modal-field" style="margin-bottom:10px"><label>Duração (opcional)</label><input type="text" id="ov-duration" maxlength="20" placeholder="Ex: 90min"></div><div class="modal-field" style="margin-bottom:12px"><label>Notas (opcional)</label><input type="text" id="ov-note" maxlength="200" placeholder="Ex: joelho ok"></div><div style="background:#F8F9FA;border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Plano original</div><div id="ov-original-plan" style="font-size:12px;color:#475569;line-height:1.5"></div></div><div class="modal-btns" id="ov-btns"></div></div></div>
-<div class="modal-bg" id="modal-bike"><div class="modal"><h3 id="modal-bike-title">Registrar pedal</h3><p class="modal-hint">Distância, tempo por zona, parciais e as calorias do relógio.</p><div id="bike-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterBikeEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="bv-data"></b></div><div class="view-row" id="bv-km-row"><span>Distância</span><b id="bv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="bv-total"></b></div><div class="view-row" id="bv-speed-row"><span>Velocidade média</span><b id="bv-speed"></b></div><div class="view-row" id="bv-kcal-row"><span>Calorias</span><b id="bv-kcal"></b></div><div class="view-row" id="bv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="bv-z1"></b></div><div class="view-row" id="bv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="bv-z2"></b></div><div class="view-row" id="bv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="bv-z3"></b></div><div class="view-row" id="bv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="bv-z4"></b></div><div class="view-row" id="bv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="bv-z5"></b></div><div id="bv-splits-block" style="display:none"></div><div class="view-row" id="bv-note-row"><span>Notas</span><b id="bv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newBikeEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="bike-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="b-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="b-km" placeholder="Ex: 14"></div></div><div class="modal-grid" style="margin-bottom:10px"><div class="modal-field"><label>Calorias (do relógio)</label><input type="number" inputmode="numeric" id="b-kcal" placeholder="Ex: 320"></div><div class="modal-field"><label style="color:#1D4ED8;font-weight:600">Velocidade média</label><input type="text" id="b-speed" readonly style="background:#EFF6FF;color:#1D4ED8;font-weight:700;border-color:#BFDBFE;text-align:center;font-size:16px"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="bike-time-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="bike-time-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="bike-time-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="bike-time-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="bike-time-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#1D4ED8;font-weight:600">Tempo total</label><input type="text" id="b-total" readonly style="background:#EFF6FF;color:#1D4ED8;font-weight:700;border-color:#BFDBFE;text-align:center;font-size:16px"></div></div><div id="b-splits-section" style="display:none"><p class="section-label" id="b-splits-label" style="margin:6px 0 8px">Parciais por km — tempo e FC</p><div id="b-splits"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="b-note" placeholder="Ex: vento contra, trajeto até a festa"></div></div><p class="section-label" id="bike-hist-label" style="display:none">Histórico de pedais</p><div id="bike-history" style="max-height:220px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeBikeModal()">Fechar</button><button class="btn-save" id="bike-save-btn" onclick="saveBike()">Salvar</button></div></div></div>
-<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div id="rv-splits-block" style="display:none"></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 (&lt;131bpm)</label><div class="time-input-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 (132-143bpm)</label><div class="time-input-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 (144-156bpm)</label><div class="time-input-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 (157-168bpm)</label><div class="time-input-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 (&gt;169bpm)</label><div class="time-input-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#15803D;font-weight:600">Tempo total</label><input type="text" id="r-total" readonly style="background:#F0FDF4;color:#15803D;font-weight:700;border-color:#86EFAC;text-align:center;font-size:16px"></div></div><div id="r-splits-section" style="display:none"><p class="section-label" style="margin:6px 0 8px">Parciais por km</p><div id="r-splits"></div><div class="view-row" style="border-top:1px dashed #CBD5E1;margin-top:6px;padding-top:8px"><span style="font-size:13px;color:#15803D;font-weight:600">Pace médio</span><b id="r-avgpace" style="color:#15803D">—</b></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-bike"><div class="modal"><h3 id="modal-bike-title">Registrar pedal</h3><p class="modal-hint">Distância, tempo por zona, parciais e as calorias do relógio.</p><div id="bike-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterBikeEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="bv-data"></b></div><div class="view-row" id="bv-km-row"><span>Distância</span><b id="bv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="bv-total"></b></div><div class="view-row" id="bv-speed-row"><span>Velocidade média</span><b id="bv-speed"></b></div><div class="view-row" id="bv-kcal-row"><span>Calorias</span><b id="bv-kcal"></b></div><div class="view-row" id="bv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="bv-z1"></b></div><div class="view-row" id="bv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="bv-z2"></b></div><div class="view-row" id="bv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="bv-z3"></b></div><div class="view-row" id="bv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="bv-z4"></b></div><div class="view-row" id="bv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="bv-z5"></b></div><div id="bv-splits-block" style="display:none"></div><div class="view-row" id="bv-note-row"><span>Notas</span><b id="bv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newBikeEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="bike-edit-mode"><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="b-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="b-km" placeholder="Ex: 14"></div></div><div class="modal-grid" style="margin-bottom:10px"><div class="modal-field"><label>Calorias (do relógio)</label><input type="number" inputmode="numeric" id="b-kcal" placeholder="Ex: 320"></div><div class="modal-field"><label style="color:#1D4ED8;font-weight:600">Velocidade média</label><input type="text" id="b-speed" readonly style="background:#EFF6FF;color:#1D4ED8;font-weight:700;border-color:#BFDBFE;text-align:center;font-size:16px"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 <span class="z-faixa" data-z="z1"></span></label><div class="bike-time-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 <span class="z-faixa" data-z="z2"></span></label><div class="bike-time-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 <span class="z-faixa" data-z="z3"></span></label><div class="bike-time-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 <span class="z-faixa" data-z="z4"></span></label><div class="bike-time-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 <span class="z-faixa" data-z="z5"></span></label><div class="bike-time-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#1D4ED8;font-weight:600">Tempo total</label><input type="text" id="b-total" readonly style="background:#EFF6FF;color:#1D4ED8;font-weight:700;border-color:#BFDBFE;text-align:center;font-size:16px"></div></div><div id="b-splits-section" style="display:none"><p class="section-label" id="b-splits-label" style="margin:6px 0 8px">Parciais por km — tempo e FC</p><div id="b-splits"></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="b-note" placeholder="Ex: vento contra, trajeto até a festa"></div></div><p class="section-label" id="bike-hist-label" style="display:none">Histórico de pedais</p><div id="bike-history" style="max-height:220px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeBikeModal()">Fechar</button><button class="btn-save" id="bike-save-btn" onclick="saveBike()">Salvar</button></div></div></div>
+<div class="modal-bg" id="modal-run"><div class="modal"><h3 id="modal-run-title">Registrar corrida</h3><p class="modal-hint">Tempo gasto em cada zona, distância e notas.</p><div id="run-view-mode" style="display:none"><div class="view-card"><button class="view-edit" onclick="enterRunEditMode()"><i class="ti ti-pencil"></i>Editar</button><div class="view-row"><span>Data</span><b id="rv-data"></b></div><div class="view-row" id="rv-km-row"><span>Distância</span><b id="rv-km"></b></div><div class="view-row"><span>Tempo total</span><b id="rv-total"></b></div><div class="view-row" id="rv-z1-row"><span><span class="zone-dot" style="background:#3B82F6"></span>Z1</span><b id="rv-z1"></b></div><div class="view-row" id="rv-z2-row"><span><span class="zone-dot" style="background:#22C55E"></span>Z2</span><b id="rv-z2"></b></div><div class="view-row" id="rv-z3-row"><span><span class="zone-dot" style="background:#F59E0B"></span>Z3</span><b id="rv-z3"></b></div><div class="view-row" id="rv-z4-row"><span><span class="zone-dot" style="background:#EF4444"></span>Z4</span><b id="rv-z4"></b></div><div class="view-row" id="rv-z5-row"><span><span class="zone-dot" style="background:#7C3AED"></span>Z5</span><b id="rv-z5"></b></div><div id="rv-splits-block" style="display:none"></div><div class="view-row" id="rv-note-row"><span>Notas</span><b id="rv-note"></b></div></div><button class="add-btn" style="margin:0 0 12px" onclick="newRunEntry()"><i class="ti ti-plus"></i>Adicionar outro registro</button></div><div id="run-edit-mode"><button class="add-btn" id="btn-strava" style="margin:12px 0 0" onclick="stravaAbrirPicker()"><i class="ti ti-cloud-download"></i><span id="btn-strava-txt">Importar do Strava</span></button><div id="strava-painel" style="display:none;margin-top:10px;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden"><div style="padding:8px 10px;background:#F8FAFC;font-size:12px;font-weight:600;color:#475569;display:flex;justify-content:space-between;align-items:center"><span>Suas corridas no Strava</span><button onclick="stravaFecharPicker()" style="background:0;border:0;cursor:pointer;color:#64748B;font-size:16px;line-height:1">&times;</button></div><div id="strava-lista" style="max-height:260px;overflow-y:auto"></div></div><div class="modal-grid" style="margin-top:12px;margin-bottom:10px"><div class="modal-field"><label>Data</label><input type="date" id="r-data"></div><div class="modal-field"><label>Distância (km)</label><input type="text" inputmode="decimal" id="r-km" step="0.1" placeholder="Ex: 5.2"></div></div><div class="zone-grid"><div class="modal-field"><label><span class="zone-dot" style="background:#3B82F6"></span>Z1 <span class="z-faixa" data-z="z1"></span></label><div class="time-input-group" data-zone="z1"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#22C55E"></span>Z2 <span class="z-faixa" data-z="z2"></span></label><div class="time-input-group" data-zone="z2"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#F59E0B"></span>Z3 <span class="z-faixa" data-z="z3"></span></label><div class="time-input-group" data-zone="z3"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#EF4444"></span>Z4 <span class="z-faixa" data-z="z4"></span></label><div class="time-input-group" data-zone="z4"></div></div><div class="modal-field"><label><span class="zone-dot" style="background:#7C3AED"></span>Z5 <span class="z-faixa" data-z="z5"></span></label><div class="time-input-group" data-zone="z5"></div></div><div class="modal-field"><label style="color:#15803D;font-weight:600">Tempo total</label><input type="text" id="r-total" readonly style="background:#F0FDF4;color:#15803D;font-weight:700;border-color:#86EFAC;text-align:center;font-size:16px"></div></div><div id="r-splits-section" style="display:none"><p class="section-label" style="margin:6px 0 8px">Parciais por km</p><div id="r-splits"></div><div class="view-row" style="border-top:1px dashed #CBD5E1;margin-top:6px;padding-top:8px"><span style="font-size:13px;color:#15803D;font-weight:600">Pace médio</span><b id="r-avgpace" style="color:#15803D">—</b></div></div><div class="modal-field" style="margin-bottom:14px"><label>Notas (opcional)</label><input type="text" id="r-note" placeholder="Ex: pace 5:40, calor"></div></div><p class="section-label" id="run-hist-label" style="display:none">Histórico</p><div id="run-history" style="max-height:200px;overflow-y:auto;margin-bottom:14px"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeRunModal()">Fechar</button><button class="btn-save" id="run-save-btn" onclick="saveRun()">Salvar</button></div></div></div>
 <div class="modal-bg" id="modal-workout"><div class="modal"><h3>Editar treino semanal</h3><p class="modal-hint">Personalize os exercícios de cada dia da semana. Aplica como modelo padrão.</p><div id="workout-edit-content"></div><div class="modal-btns"><button class="btn-cancel" onclick="closeWorkoutModal()">Cancelar</button><button class="btn-save" onclick="saveWorkout()">Salvar</button></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
@@ -722,7 +722,7 @@ const INCL_FIXA='\u{1F4D0} INCLINA\u00C7\u00C3O 1% fixa \u2014 esteira plana sub
 const INCL_VAR='\u{1F4D0} INCLINA\u00C7\u00C3O sobe 1\u21923% e volta, a cada 2km \u2014 passada id\u00EAntica por tantos km \u00E9 risco biomec\u00E2nico, n\u00E3o s\u00F3 t\u00E9dio';
 // Teto do facil = TOPO DA Z2. Com a FCmax corrigida para 191 (medida no TT de
 // 08/09 via Strava: 48s acima de 190 bpm), a Z2 vai ate 165, nao mais 159.
-const TETO_FACIL='\u{1F4CA} TETO DE 165 bpm (topo da Z2) \u2014 a frequ\u00EAncia \u00E9 a meta, o pace \u00E9 consequ\u00EAncia';
+const TETO_FACIL='\u{1F4CA} TETO DE 165 bpm, topo da Z2 \u2014 a frequ\u00EAncia \u00E9 a meta, o pace \u00E9 consequ\u00EAncia';
 const TETO175='\u{1F4CA} Teto 175 bpm \u2014 empatando, manda a FC';
 const DOR='\u26A0\uFE0F Dor lateral na perna direita: se aparecer antes do km 3, encerra e avisa';
 // Reabilitacao da cadeia lateral (peroneais). Panturrilha e cadeiras mantem o nome EXATO
@@ -1767,6 +1767,7 @@ sb.innerHTML=sh;sb.style.display='block';
 }
 }
 function openBikeModal(exKey,exName){
+atualizarRotulosZona();
 currentBikeKey=exKey;currentBikeName=exName;editBikeIdx=null;
 document.getElementById('modal-bike-title').textContent=exName;
 document.getElementById('b-data').value=todayKey();
@@ -3304,6 +3305,72 @@ try{localStorage.setItem('coreLog',JSON.stringify(coreLog));}catch(err){}
 if(window.syncNow)window.syncNow();
 if(btn){btn.classList.toggle('done',chkd);const ic=btn.querySelector('i');if(ic)ic.className='ti ti-'+(chkd?'square-check-filled':'square');}
 }
+
+// Os rotulos de zona dos modais saem de userZones, nunca escritos a mao: quando a
+// FCmax muda, eles acompanham. Antes diziam "Z1 (<131bpm)", que nunca bateu com nada.
+function atualizarRotulosZona(){
+document.querySelectorAll('.z-faixa').forEach(el=>{
+const z=(userZones||{})[el.dataset.z];
+if(!z||z.max==null){el.textContent='';return;}
+el.textContent = el.dataset.z==='z1' ? '(ate '+z.max+'bpm)'
+  : el.dataset.z==='z5' ? '('+z.min+'bpm+)'
+  : '('+z.min+'-'+z.max+'bpm)';
+});
+}
+// ---------- Strava: UI dentro do modal de corrida ----------
+// O botao fica DENTRO do modal de proposito: assim a linha de exercicio (currentRunKey)
+// ja esta escolhida, e a importacao nao precisa adivinhar a qual treino do dia pertence.
+function atualizarBotaoStrava(){
+const b=document.getElementById('btn-strava'), t=document.getElementById('btn-strava-txt');
+if(!b||!t)return;
+if(!window.stravaConfigurado||!window.stravaConfigurado()){b.style.display='none';return;}
+b.style.display='';
+t.textContent=window.stravaConectado()?'Importar do Strava':'Conectar ao Strava';
+}
+function stravaFecharPicker(){const p=document.getElementById('strava-painel');if(p)p.style.display='none';}
+async function stravaAbrirPicker(){
+if(!window.stravaConectado()){window.stravaConectar();return;}
+const painel=document.getElementById('strava-painel'), lista=document.getElementById('strava-lista');
+painel.style.display='block';
+lista.innerHTML='<div style="padding:14px;text-align:center;color:#64748B;font-size:13px">Buscando…</div>';
+try{
+const corridas=await window.stravaListarCorridas();
+if(!corridas.length){lista.innerHTML='<div style="padding:14px;text-align:center;color:#64748B;font-size:13px">Nenhuma corrida encontrada.</div>';return;}
+const hhmm=n=>Math.floor(n/60)+':'+String(n%60).padStart(2,'0');
+lista.innerHTML=corridas.map(c=>{
+const [a,m,d]=c.data.split('-');
+const piso=c.subida===0?' · esteira':'';
+return '<div onclick="stravaEscolher('+c.id+')" style="padding:9px 10px;border-top:1px solid #F1F5F9;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center" onmouseover="this.style.background=\'#F8FAFC\'" onmouseout="this.style.background=\'\'">'+
+'<div style="min-width:0"><div style="font-size:13px;color:#0F172A;font-weight:500">'+d+'/'+m+' · '+formatBR(c.km)+' km</div>'+
+'<div style="font-size:11px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escapeHtml(c.nome)+piso+'</div></div>'+
+'<span style="font-size:12px;color:#475569;flex-shrink:0">'+hhmm(c.tempo)+'</span></div>';
+}).join('');
+}catch(e){lista.innerHTML='<div style="padding:14px;color:#DC2626;font-size:12px">'+escapeHtml(e.message)+'</div>';}
+}
+async function stravaEscolher(id){
+const lista=document.getElementById('strava-lista');
+lista.innerHTML='<div style="padding:14px;text-align:center;color:#64748B;font-size:13px">Convertendo…</div>';
+try{
+const r=await window.stravaConverter(id);
+// Preenche os MESMOS campos que o enterRunEditMode preenche, na mesma ordem:
+// km antes de buildSplitFields, porque ele monta as linhas a partir da distancia.
+showRunEditMode();
+editRunIdx=null;
+document.getElementById('r-data').value=r.date;
+document.getElementById('r-km').value=formatBR(r.km);
+['z1','z2','z3','z4','z5'].forEach(z=>setZoneTime(z,r[z]||'00:00:00'));
+document.getElementById('r-total').value=r.total||'00:00:00';
+if(r.note)document.getElementById('r-note').value=r.note;
+buildSplitFields();setRunSplits(r.splits);setRunBpms(r.splitBpm);
+updateAvgPace();
+stravaFecharPicker();
+const extra=(r.subida!=null?' · '+Math.round(r.subida)+'m de subida':'');
+setTimeout(()=>alert('Importado: '+r.nome+String.fromCharCode(10)+
+formatBR(r.km)+' km · '+r.total+' · pace '+(r.avgPace||'?')+extra+String.fromCharCode(10,10)+
+'Confira os campos e toque em Salvar.'+(r.aviso?String.fromCharCode(10,10)+'ATENCAO: '+r.aviso:'')),60);
+}catch(e){lista.innerHTML='<div style="padding:14px;color:#DC2626;font-size:12px">'+escapeHtml(e.message)+'</div>';}
+}
+
 function openRunModal(exKey,exName){
 currentRunKey=exKey;currentRunName=exName;editRunIdx=null;
 document.getElementById('modal-run-title').textContent=exName;
@@ -3319,6 +3386,9 @@ buildSplitFields();
 const last=getLastRun(exKey);
 if(last){showRunViewMode(last);}else{showRunEditMode();}
 renderRunHistory();
+atualizarRotulosZona();
+atualizarBotaoStrava();
+stravaFecharPicker();
 document.getElementById('modal-run').classList.add('open');
 }
 function enterRunEditMode(){
@@ -5286,6 +5356,149 @@ async function resolverConflitoDeLogin(d, cmp){
   setTimeout(() => setStatus(''), 4000);
 }
 
+
+// ==================== STRAVA ====================
+// O app e estatico, mas o Strava libera CORS (medido em 28/10: GET /athlete/activities
+// e POST /oauth/token respondem do navegador). Como nao ha PKCE, o client_secret e
+// obrigatorio — ele vive no campo `stravaCfg` do proprio documento do usuario, FORA
+// do array KEYS: nunca vai para o localStorage nem para o payload de sync, e sobrevive
+// porque o setDoc usa merge:true. Tokens ficam em `stravaTok`, mesma regra.
+let stravaCfg = null, stravaTok = null;
+const stravaRef = () => doc(db, 'users', currentUser.uid, 'data', 'main');
+
+function stravaLerDoDoc(d) {
+  stravaCfg = (d && d.stravaCfg) || null;
+  stravaTok = (d && d.stravaTok) || null;
+  if (window.atualizarBotaoStrava) window.atualizarBotaoStrava();
+}
+
+async function stravaGravarTok(tok) {
+  stravaTok = tok;
+  await setDoc(stravaRef(), { stravaTok: tok }, { merge: true });
+  if (window.atualizarBotaoStrava) window.atualizarBotaoStrava();
+}
+
+async function stravaAccessToken() {
+  if (!stravaCfg) throw new Error('Strava nao configurado neste usuario');
+  if (!stravaTok || !stravaTok.refresh_token) throw new Error('Strava nao conectado');
+  if (stravaTok.access_token && stravaTok.expires_at > Math.floor(Date.now() / 1000) + 60) return stravaTok.access_token;
+  const res = await fetch('https://www.strava.com/api/v3/oauth/token', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: String(stravaCfg.client_id), client_secret: String(stravaCfg.client_secret),
+      refresh_token: stravaTok.refresh_token, grant_type: 'refresh_token'
+    })
+  });
+  const j = await res.json();
+  if (!res.ok) throw new Error('nao consegui renovar o acesso ao Strava');
+  await stravaGravarTok({ ...stravaTok, ...j });
+  return j.access_token;
+}
+
+async function stravaApi(caminho) {
+  const tk = await stravaAccessToken();
+  const res = await fetch('https://www.strava.com/api/v3' + caminho, { headers: { Authorization: 'Bearer ' + tk } });
+  if (res.status === 429) throw new Error('limite do Strava atingido — tente em 15min');
+  if (!res.ok) throw new Error('Strava respondeu ' + res.status);
+  return res.json();
+}
+
+window.stravaConectado = () => !!(stravaCfg && stravaTok && stravaTok.refresh_token);
+window.stravaConfigurado = () => !!stravaCfg;
+
+window.stravaConectar = function () {
+  if (!stravaCfg) { alert('O Strava ainda nao foi configurado para este usuario.'); return; }
+  const volta = location.origin + location.pathname;
+  location.href = 'https://www.strava.com/oauth/authorize?client_id=' + stravaCfg.client_id +
+    '&redirect_uri=' + encodeURIComponent(volta) +
+    '&response_type=code&approval_prompt=auto&scope=activity:read_all';
+};
+
+window.stravaDesconectar = async function () {
+  if (!confirm('Desconectar o Strava deste app?')) return;
+  await setDoc(stravaRef(), { stravaTok: null }, { merge: true });
+  stravaTok = null;
+  if (window.atualizarBotaoStrava) window.atualizarBotaoStrava();
+  alert('Strava desconectado.');
+};
+
+// Chamado no fim do loadFromCloud: se voltamos da autorizacao, troca o code por tokens.
+async function stravaTratarRetorno() {
+  const p = new URLSearchParams(location.search);
+  const code = p.get('code');
+  if (!code || !stravaCfg) return;
+  try {
+    setStatus('Conectando ao Strava…');
+    const res = await fetch('https://www.strava.com/api/v3/oauth/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: String(stravaCfg.client_id), client_secret: String(stravaCfg.client_secret),
+        code, grant_type: 'authorization_code'
+      })
+    });
+    const j = await res.json();
+    if (!res.ok) throw new Error(JSON.stringify(j).slice(0, 120));
+    await stravaGravarTok({ access_token: j.access_token, refresh_token: j.refresh_token, expires_at: j.expires_at, scope: j.scope });
+    setStatus('Strava conectado \u2713');
+    setTimeout(() => setStatus(''), 3000);
+  } catch (e) {
+    console.error('Strava:', e);
+    setStatus('Falha ao conectar o Strava');
+  } finally {
+    history.replaceState({}, '', location.origin + location.pathname);
+  }
+}
+
+window.stravaListarCorridas = async function () {
+  const lista = await stravaApi('/athlete/activities?per_page=30');
+  return lista.filter(a => a.type === 'Run').map(a => ({
+    id: a.id, nome: a.name, km: +(a.distance / 1000).toFixed(2),
+    tempo: a.moving_time, data: String(a.start_date_local).slice(0, 10),
+    subida: a.total_elevation_gain
+  }));
+};
+
+// Converte uma atividade para o formato do cardioLog.
+// FONTES (escolhidas por medicao, nao por suposicao — ver DOC_TECNICO inv. 36):
+//   parciais -> splits_metric[].moving_time / (distance/1000)
+//   FC/km    -> splits_metric[].average_heartrate
+//   z1..z5   -> GET /activities/{id}/zones (as faixas do Strava = userZones do app)
+//   total    -> soma das zonas, que e como o modal deriva o campo
+// Calcular pelos streams NAO funciona: o stream `time` e decorrido.
+window.stravaConverter = async function (id) {
+  const a = await stravaApi('/activities/' + id);
+  let zonas = null;
+  try { zonas = await stravaApi('/activities/' + id + '/zones'); } catch (e) { /* segue sem */ }
+
+  // O Strava as vezes emite uma parcial residual de ~0m; ela gera divisao por zero.
+  const sm = (a.splits_metric || []).filter(x => x.distance >= 20);
+  if (!sm.length) throw new Error('atividade sem parciais por km');
+  const splits = sm.map(x => formatPace(Math.round(x.moving_time / (x.distance / 1000))));
+  const splitBpm = sm.map(x => (x.average_heartrate == null ? null : Math.round(x.average_heartrate)));
+
+  const z = { z1: 0, z2: 0, z3: 0, z4: 0, z5: 0 };
+  const fc = (zonas || []).find(x => x.type === 'heartrate');
+  let aviso = '';
+  if (fc && fc.distribution_buckets) {
+    fc.distribution_buckets.forEach((b, i) => { if (i < 5) z['z' + (i + 1)] = b.time; });
+    // Se as faixas do Strava divergirem das userZones, z1..z5 significam coisas
+    // diferentes nos dois lugares — melhor avisar do que gravar torto.
+    const esp = [userZones.z1, userZones.z2, userZones.z3, userZones.z4, userZones.z5];
+    const bate = fc.distribution_buckets.every((b, i) => !esp[i] || i >= 5 || (i === 0 || b.min === esp[i].min));
+    if (!bate) aviso = 'As zonas do Strava nao batem com as do app — confira os tempos por zona.';
+  } else aviso = 'Esta atividade nao tem zonas de FC no Strava — preencha os tempos por zona a mao.';
+
+  const hhmmss = n => { const t = Math.round(n); return [Math.floor(t / 3600), Math.floor(t / 60) % 60, t % 60].map(v => String(v).padStart(2, '0')).join(':'); };
+  const km = +(a.distance / 1000).toFixed(2);
+  return {
+    date: String(a.start_date_local).slice(0, 10), km,
+    z1: hhmmss(z.z1), z2: hhmmss(z.z2), z3: hhmmss(z.z3), z4: hhmmss(z.z4), z5: hhmmss(z.z5),
+    total: hhmmss(z.z1 + z.z2 + z.z3 + z.z4 + z.z5),
+    note: (a.description || '').trim(), splits, splitBpm,
+    avgPace: avgPaceFromSplits(splits, km), nome: a.name, subida: a.total_elevation_gain, aviso
+  };
+};
+
 // Verifica (somente leitura) se o documento da nuvem difere do que está no localStorage.
 function cloudDiffers(d){
   return KEYS.some(k => {
@@ -5334,6 +5547,7 @@ async function loadFromCloud(uid){
     } else {
       await syncToCloud();
     }
+    if (snap.exists()) { stravaLerDoDoc(snap.data()); await stravaTratarRetorno(); }
     if (cloudUnsub) cloudUnsub();
     cloudUnsub = onSnapshot(docRef, (s) => {
       if (s.metadata.hasPendingWrites) return;

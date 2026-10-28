@@ -187,6 +187,28 @@ Preferências locais **não sincronizadas**: `medNutriOnly` ('1'/'0') — filtro
     - **Fases do tênis reorganizadas na mesma revisão:** a base agora tem só f1 (S26–S27, facil de quarta) e f2 (S28–S31, + qualidade). **O longão fica no Duramo até o Brasil de propósito** — o 1º longão no CloudMonster não pode ser o maior do bloco, e a esteira do Brasil é o piso mais gentil com os peroneais para fazer essa estreia.
     - **S24 (19–25/10) perdeu o futebol** porque a S23 inteira passou sem treino: seria a 1ª atividade em 11 dias, e sprint com mudança de direção é a carga que mais cobra os peroneais. Entrou Reabilitação B no lugar. **A corrida não mudou** — a S23 não tinha corrida nenhuma, então não houve perda de volume e o bloco de 25 semanas **não foi deslocado**.
 
+36. **Importação do Strava — sem servidor, com o segredo no Firestore** (28/10/2026) — botão **dentro do modal de corrida**, que é o que resolve o problema mais chato: ali o `currentRunKey` já está escolhido, então a importação não precisa adivinhar a qual linha do dia a atividade pertence.
+    - **Por que dá para ser 100% no navegador:** medido, não suposto. O Strava **libera CORS** (`GET /athlete/activities` e `POST /oauth/token` respondem da origem do app — 401/400, ou seja, chegaram). Mas **não há PKCE nem implicit grant**, então o `client_secret` é obrigatório. Ele vive no campo **`stravaCfg`** de `users/{uid}/data/main`, e os tokens em **`stravaTok`** — ambos **FORA do array `KEYS`**: nunca vão para o `localStorage`, não entram no payload de sync, e sobrevivem porque o `setDoc` usa `merge:true`.
+    - **Onde mora o código:** o cliente de rede vai no **módulo** (precisa de `db`, `currentUser`, `getDoc`, `setDoc`) e expõe `window.strava*`; a UI fica no **script clássico**, onde estão os campos do modal. `loadFromCloud` chama `stravaLerDoDoc(snap.data())` e `stravaTratarRetorno()` — este troca o `?code=` por tokens quando voltamos da autorização, e limpa a URL com `replaceState`.
+    - **O preenchimento espelha `enterRunEditMode` na MESMA ordem**, porque `buildSplitFields()` monta as linhas a partir da distância: `r-km` primeiro, depois `buildSplitFields()`, depois `setRunSplits`/`setRunBpms`. E **preenche o formulário em vez de salvar** — ele confere e toca em Salvar, pelo caminho de sempre. A entrada manual fica intacta.
+    - **FONTES, escolhidas por medição** (validado contra a corrida de 28/10: **9 de 10 campos idênticos** ao que ele digitou; o décimo erra 1s num km, por arredondamento de metros de borda):
+
+      | Campo | Fonte |
+      |---|---|
+      | `splits` | `splits_metric[].moving_time / (distance/1000)` |
+      | `splitBpm` | `splits_metric[].average_heartrate` — **existe** (o exemplo da doc só não tinha FC) |
+      | `z1`…`z5` | `GET /activities/{id}/zones` — as faixas dele no Strava são idênticas às `userZones` |
+      | `total` | soma das zonas (é como o modal deriva o campo) |
+      | `avgPace` | `avgPaceFromSplits()`, a função do próprio app, para não divergir |
+
+    - ⛔ **Calcular as parciais pelos streams NÃO funciona** e foi descartado: o stream `time` é tempo **decorrido**; mesmo descontando o stream `moving`, sobram ~25s de divergência no total. Tentado, medido, abandonado.
+    - **Dois bugs pegos no teste:** arredondar segundos depois de separar o minuto gerava `"5:60"` — **o mesmo bug que o app já corrigira no `formatPace`** (invariante 28), repetido; e parciais residuais de ~0m geravam `NaN` no `avgPace` (agora filtradas por `distance >= 20`).
+    - **Trava:** se as faixas do Strava divergirem das `userZones`, a conversão **avisa** em vez de gravar torto.
+    - Scripts de apoio ficam fora do repositório, em `firebase-zes/`: `strava-token.js`, `strava-importar.js`, `strava-comparar-tudo.js`. O `strava.json` está no `.gitignore`.
+
+37. **Rótulos de zona dos modais saem de `userZones`, nunca escritos à mão** (28/10/2026) — os modais de corrida e pedal traziam `Z1 (<131bpm)`, `Z2 (132-143bpm)`… **fixos no HTML, e esses números nunca bateram com `userZones`** — nem antes nem depois da correção da FCmáx. Viraram `<span class="z-faixa" data-z="z1">` preenchidos por `atualizarRotulosZona()`, chamada ao abrir cada modal.
+    - ⚠️ `BPM_ZONES` (a constante com os mesmos valores) **continua existindo de propósito**: é o *fallback* de `getBpmRange()` para quando não há `userZones` — o que acontece em localhost sem login. Ver aquele `132-143` na tela ali **não é bug**; com dados reais o plano renderiza `Corrida Z2 (153-165bpm)`.
+
 35. **FCmáx corrigida de 184 para 191 — e o teto do fácil subiu de 159 para 165** (28/10/2026) — medido no Strava, no TT de 5km de 08/09: **412s acima de 185 bpm, 93s acima de 189, 48s acima de 190, pico 191**. Não é pico de sensor, é esforço sustentado. **Máxima observada é um PISO, não estimativa** — não dá para ultrapassar a própria máxima.
     - `userZones` regravado com a **fórmula do próprio app** (`computeZones`), e os 191 foram para o campo `fc2` (o teste de 2km em esforço máximo, que é justamente o TT) — senão a tela de zonas recalcularia 184 de volta, já que `fcmax = max(fc1, fc2)`.
     - **Zonas novas:** Z1 ≤152 · Z2 153–165 · Z3 166–177 · Z4 178–184 · Z5 185–191.
