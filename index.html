@@ -769,6 +769,7 @@ const BIKE_CURTA={t:'\u{1F6B4} Bike indoor leve 30min',ex:['\u{1F6B4} Bike indoo
 // Sexta deixou de ser so upper: entrou um trote regenerativo curto. Base passa de
 // 3 para 4 corridas por semana, a pedido dele ("em Munique quero focar mais").
 const TROTE_SEX=(km)=>({t:'Trote regenerativo '+km+'km + upper',ex:['Corrida Z2 '+km+'km regenerativa',TETO_FACIL,TEN_ANT,PLANO_B_FRIO,'\u26A1 Curta e lenta de prop\u00F3sito \u2014 o s\u00E1bado \u00E9 o long\u00E3o',...MUSC_UPPER_RUN_LIGHT]});
+const TROTE_SEX_SO=(km)=>({t:'Trote regenerativo '+km+'km',ex:['Corrida Z2 '+km+'km regenerativa',TETO_FACIL,TEN_ANT,PLANO_B_FRIO,'\u26A1 Curta e lenta de prop\u00F3sito \u2014 o s\u00E1bado \u00E9 o long\u00E3o','\u26A1 O upper desta semana saiu no domingo 08/11 \u2014 hoje \u00E9 s\u00F3 a corrida']});
 const PERNA={t:'Pernas (corredor) + core + sauna',ex:[...MUSC_LEGS_RUN,'\u00B7 Sauna depois']};
 const PERNA_LEVE={t:'Pernas leve + core + sauna',ex:[...MUSC_LEGS_RUN_LIGHT,'\u00B7 Sauna depois']};
 const UPPER={t:'Upper manuten\u00E7\u00E3o',ex:MUSC_UPPER_RUN};
@@ -848,9 +849,16 @@ const cut=(i===3);
 const fase=i<=1?1:2;
 const tenQual=fase>=2?TEN_CM:TEN_ANT;
 const qual={...bQual[i],ex:[...bQual[i].ex,tenQual,PLANO_B_FRIO]};
+// O upper saiu da sexta da S27 e foi para o domingo 08/11 (fim da S26). Mudanca de
+// UM dia em cada uma das duas semanas — as outras quatro semanas de base nao mudam.
+const sexta = cut ? UPPER_LEVE : (i===1 ? TROTE_SEX_SO(bSex[i]) : TROTE_SEX(bSex[i]));
+const domingo = i===0
+ ? {t:'\u{1F3CB}\uFE0F Upper leve + sauna',ex:[...MUSC_UPPER_RUN_LIGHT,'\u00B7 Sauna 10min depois','\u{1F9B5} ZERO perna hoje \u2014 amanh\u00E3 \u00E9 o dia dela, e ela est\u00E1 devendo desde 27/10','\u26A1 Era descanso: o upper de sexta veio para hoje. N\u00E3o disputa com o long\u00E3o de ontem nem com a perna de amanh\u00E3']}
+ : i===5
+ ? {t:'Descanso \u2014 v\u00E9spera do voo',ex:['Descanso total','\u2708\uFE0F Amanh\u00E3 20:50: embarque Frankfurt \u2192 Guarulhos','\u00B7 Separa o el\u00E1stico de reabilita\u00E7\u00E3o na mala'],rest:true}
+ : REST_DAY;
 p.push({phase:'Base Berlim \u2014 Sem '+(i+1)+(cut?' \u{1F7E1} al\u00EDvio':'')+' \u00B7 t\u00EAnis f'+fase,num:i+26,color:'#EFF6FF',text:'#1E40AF',template:[
-cut?PERNA_LEVE:PERNA, cut?BIKE_CURTA:BIKE, easyRua(bEasy[i],TEN_CM), qual, cut?UPPER_LEVE:TROTE_SEX(bSex[i]), lrRua(bLR[i],TEN_ANT),
-i===5?{t:'Descanso \u2014 v\u00E9spera do voo',ex:['Descanso total','\u2708\uFE0F Amanh\u00E3 20:50: embarque Frankfurt \u2192 Guarulhos','\u00B7 Separa o el\u00E1stico de reabilita\u00E7\u00E3o na mala'],rest:true}:REST_DAY
+cut?PERNA_LEVE:PERNA, cut?BIKE_CURTA:BIKE, easyRua(bEasy[i],TEN_CM), qual, sexta, lrRua(bLR[i],TEN_ANT), domingo
 ]});
 }
 // --- S10..S16 (idx31..37) 14/12-31/01: BRASIL, Sao Bernardo, Gavioes 24h, esteira ---
